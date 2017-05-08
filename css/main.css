@@ -1696,7 +1696,7 @@ pre .javascript .function {
   width: 4px;
   height: 4px;
   border-radius: 50%;
-  background: #2252ff;
+  background: #ff4f8c;
 }
 .links-of-blogroll {
   font-size: 13px;
@@ -2632,6 +2632,10 @@ pre .javascript .function {
 .sidebar-position-right .footer-inner {
   padding-left: 0;
   padding-right: 260px;
+}
+.posts-collapse .collection-title h1,
+h2 {
+  margin-left: 20px;
 }
 .site-brand-wrapper {
   position: relative;
