@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+
+
+    
+  <url>
+    <loc>http://johnnyshieh.github.io/2014/11/06/android-add-foreground-selector/</loc>
+    <lastmod>2017-05-08T06:34:55.000Z</lastmod>
+    <data>
+        <display>
+        <title>[译] Android 为 View、ViewGroup 添加前景色</title>
+        <pubTime>2014-11-05T16:00:00.000Z</pubTime>
+        
+        <tag>android</tag>
+         
+        <tag>android-ui</tag>
+         
+         
+           
+             
+              <breadCrumb title="Android" url="http://johnnyshieh.github.io/categories/Android/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://johnnyshieh.github.io/2014/08/02/top10-mistakes-java-developers-make/</loc>
+    <lastmod>2017-05-08T06:34:03.000Z</lastmod>
+    <data>
+        <display>
+        <title>[转] Java 程序员们最常犯的 10 个错误</title>
+        <pubTime>2014-08-01T16:00:00.000Z</pubTime>
+        
+        <tag>java</tag>
+         
+         
+           
+             
+              <breadCrumb title="Java" url="http://johnnyshieh.github.io/categories/Java/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+    
+    
+    
+  <url>
+    <loc>http://johnnyshieh.github.io/2014/09/12/android-accessing-resources/</loc>
+    <lastmod>2017-05-05T11:40:42.000Z</lastmod>
+    <data>
+        <display>
+        <title>Android xml 资源文件中 @、@android:、@*、？的含义和区别</title>
+        <pubTime>2014-09-11T16:00:00.000Z</pubTime>
+        
+        <tag>android</tag>
+         
+        <tag>android-ui</tag>
+         
+         
+           
+             
+              <breadCrumb title="Android" url="http://johnnyshieh.github.io/categories/Android/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+    
+  <url>
+    <loc>http://johnnyshieh.github.io/2014/07/23/android-system-widget/</loc>
+    <lastmod>2017-05-05T11:33:59.000Z</lastmod>
+    <data>
+        <display>
+        <title>获得 Android 系统 Widget 控件的方法</title>
+        <pubTime>2014-07-22T16:00:00.000Z</pubTime>
+        
+        <tag>android</tag>
+         
+        <tag>android-ui</tag>
+         
+         
+           
+             
+              <breadCrumb title="Android" url="http://johnnyshieh.github.io/categories/Android/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://johnnyshieh.github.io/2014/07/30/android-setenable-false-not-work/</loc>
+    <lastmod>2017-05-05T11:33:55.000Z</lastmod>
+    <data>
+        <display>
+        <title>Android View setEnabled false 没有效果的解决方法</title>
+        <pubTime>2014-07-29T16:00:00.000Z</pubTime>
+        
+        <tag>android</tag>
+         
+        <tag>android-ui</tag>
+         
+         
+           
+             
+              <breadCrumb title="Android" url="http://johnnyshieh.github.io/categories/Android/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://johnnyshieh.github.io/2013/05/01/android-listview-edittext-search/</loc>
+    <lastmod>2017-05-05T11:33:51.000Z</lastmod>
+    <data>
+        <display>
+        <title>Android ListView 用 EditText 实现搜索功能</title>
+        <pubTime>2013-04-30T16:00:00.000Z</pubTime>
+        
+        <tag>android</tag>
+         
+        <tag>android-ui</tag>
+         
+         
+           
+             
+              <breadCrumb title="Android" url="http://johnnyshieh.github.io/categories/Android/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://johnnyshieh.github.io/2014/10/11/android-editext-contextmenu/</loc>
+    <lastmod>2017-05-05T11:33:46.000Z</lastmod>
+    <data>
+        <display>
+        <title>Android Edittext 长按没有弹出上下文菜单</title>
+        <pubTime>2014-10-10T16:00:00.000Z</pubTime>
+        
+        <tag>android</tag>
+         
+        <tag>android-ui</tag>
+         
+         
+           
+             
+              <breadCrumb title="Android" url="http://johnnyshieh.github.io/categories/Android/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://johnnyshieh.github.io/2015/01/09/linux-18-tar-command-examples/</loc>
+    <lastmod>2017-05-05T11:26:56.000Z</lastmod>
+    <data>
+        <display>
+        <title>[译] Linux 中 18 个 tar 命令示例</title>
+        <pubTime>2015-01-08T16:00:00.000Z</pubTime>
+        
+        <tag>linux</tag>
+         
+        <tag>command</tag>
+         
+         
+           
+             
+              <breadCrumb title="Linux" url="http://johnnyshieh.github.io/categories/Linux/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://johnnyshieh.github.io/2012/09/08/ubuntu-install-jdk/</loc>
+    <lastmod>2017-05-05T09:21:47.000Z</lastmod>
+    <data>
+        <display>
+        <title>Ubuntu 12.04环境下安装JDK 7</title>
+        <pubTime>2012-09-07T16:00:00.000Z</pubTime>
+        
+        <tag>java</tag>
+         
+        <tag>unbuntu</tag>
+         
+         
+           
+             
+              <breadCrumb title="Linux" url="http://johnnyshieh.github.io/categories/Linux/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+    
+</urlset>
