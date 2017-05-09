@@ -2,6 +2,20 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://johnnyshieh.github.io/footprints/index.html</loc>
+    
+    <lastmod>2017-05-09T12:27:53.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://johnnyshieh.github.io/about/index.html</loc>
+    
+    <lastmod>2017-05-09T12:25:13.000Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://johnnyshieh.github.io/2015/09/03/android-handler-memory-leak/</loc>
     
     <lastmod>2017-05-09T10:18:33.000Z</lastmod>
@@ -75,13 +89,6 @@
     <loc>http://johnnyshieh.github.io/friends/index.html</loc>
     
     <lastmod>2017-05-08T14:06:55.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://johnnyshieh.github.io/about/index.html</loc>
-    
-    <lastmod>2017-05-08T14:06:32.000Z</lastmod>
     
   </url>
   
