@@ -78,7 +78,11 @@
 <link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css">
 
 
-<meta name="keywords" content="Johnny, Shieh, Johnny Shieh, johnny shieh's blog, ">
+
+  
+  
+
+
 
 
 
@@ -92,18 +96,18 @@
 
 
 
-<meta name="description" content="一般学过一段时间的 Android 的开发者都知道 LayoutInflater 可以用来动态把 layout 布局文件生成 View。下面我结合实例与源码一步一步分析 LayoutInflater 的使用方法和内部原理，首先从如何获得 LayoutInflater 的实例开始。 获得 LayoutInflater 实例我们没法通过构造函数实例化 LayoutInflater 对象，因为构造函数是">
-<meta name="keywords" content="android,android-ui">
+<meta name="description" content="从源码一步一步解析 LayoutInflater 内部逻辑">
+<meta name="keywords" content="Android, LayoutInflater, Johnny, Shieh, Johnny Shieh, johnny shieh blog, ">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Android LayoutInflater 深层解析">
 <meta property="og:url" content="http://johnnyshieh.me/2015/09/09/android-layoutinflater-analysis/index.html">
 <meta property="og:site_name" content="Johnny Shieh">
-<meta property="og:description" content="一般学过一段时间的 Android 的开发者都知道 LayoutInflater 可以用来动态把 layout 布局文件生成 View。下面我结合实例与源码一步一步分析 LayoutInflater 的使用方法和内部原理，首先从如何获得 LayoutInflater 的实例开始。 获得 LayoutInflater 实例我们没法通过构造函数实例化 LayoutInflater 对象，因为构造函数是">
+<meta property="og:description" content="从源码一步一步解析 LayoutInflater 内部逻辑">
 <meta property="og:image" content="http://oph5rhcqp.bkt.clouddn.com/layoutinflater_demo.jpg">
-<meta property="og:updated_time" content="2017-05-09T09:45:03.000Z">
+<meta property="og:updated_time" content="2017-05-10T06:52:35.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Android LayoutInflater 深层解析">
-<meta name="twitter:description" content="一般学过一段时间的 Android 的开发者都知道 LayoutInflater 可以用来动态把 layout 布局文件生成 View。下面我结合实例与源码一步一步分析 LayoutInflater 的使用方法和内部原理，首先从如何获得 LayoutInflater 的实例开始。 获得 LayoutInflater 实例我们没法通过构造函数实例化 LayoutInflater 对象，因为构造函数是">
+<meta name="twitter:description" content="从源码一步一步解析 LayoutInflater 内部逻辑">
 <meta name="twitter:image" content="http://oph5rhcqp.bkt.clouddn.com/layoutinflater_demo.jpg">
 
 

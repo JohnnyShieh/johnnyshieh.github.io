@@ -78,7 +78,11 @@
 <link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css">
 
 
-<meta name="keywords" content="Johnny, Shieh, Johnny Shieh, johnny shieh's blog, 资源文件, @android, @*">
+
+  
+  
+
+
 
 
 
@@ -93,13 +97,13 @@
 
 
 <meta name="description" content="Android xml 资源文件中 @、@android:、@*、？的含义和区别">
-<meta name="keywords" content="资源文件, @android, @*">
+<meta name="keywords" content="资源文件, @android, @*, Johnny, Shieh, Johnny Shieh, johnny shieh blog, ">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Android xml 资源文件中 @、@android:、@*、？的含义和区别">
 <meta property="og:url" content="http://johnnyshieh.me/2014/09/12/android-accessing-resources/index.html">
 <meta property="og:site_name" content="Johnny Shieh">
 <meta property="og:description" content="Android xml 资源文件中 @、@android:、@*、？的含义和区别">
-<meta property="og:updated_time" content="2017-05-10T06:19:05.000Z">
+<meta property="og:updated_time" content="2017-05-10T06:46:06.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Android xml 资源文件中 @、@android:、@*、？的含义和区别">
 <meta name="twitter:description" content="Android xml 资源文件中 @、@android:、@*、？的含义和区别">
@@ -393,34 +397,32 @@
 
       
         <h2 id="引用自定义资源文件"><a href="#引用自定义资源文件" class="headerlink" title="引用自定义资源文件"></a>引用自定义资源文件</h2><ul>
-<li>在 xml 中引用的格式为：@[<package_name>:]<resource_type>/<resource_name></resource_name></resource_type></package_name></li>
+<li>在 xml 中引用的格式为：<code>@[&lt;package_name&gt;:]&lt;resource_type&gt;/&lt;resource_name&gt;</code></li>
 </ul>
-<p><package_name>: 资源文件所在的包名( layout文件和自定义其他resource文件在同一个包，所以可以省略)</package_name></p>
-<p><resource_type>:资源文件的类型</resource_type></p>
-<p><resource_name>:资源文件的名称</resource_name></p>
+<p><code>&lt;package_name&gt;</code>: 资源文件所在的包名( layout文件和自定义其他resource文件在同一个包，所以可以省略)<br><code>&lt;resource_type&gt;</code>:资源文件的类型<br><code>&lt;resource_name&gt;</code>:资源文件的名称</p>
 <p>例如： android:text=”@string/hello”</p>
 <ul>
-<li>在代码中引用的格式为：R.<resource_type>.<resource_name>,   如：R.string.hello</resource_name></resource_type></li>
+<li>在代码中引用的格式为：<code>R.&lt;resource_type&gt;.&lt;resource_name&gt;</code>，如：R.string.hello</li>
 </ul>
-<h2 id="引用系统资源文件"><a href="#引用系统资源文件" class="headerlink" title="引用系统资源文件"></a>引用系统资源文件</h2><p>系统资源文件分为 pulbic 和非 public，public 的声明在：<sdk_path>/platforms/android-19/data/res/values/public.xml</sdk_path></p>
+<h2 id="引用系统资源文件"><a href="#引用系统资源文件" class="headerlink" title="引用系统资源文件"></a>引用系统资源文件</h2><p>系统资源文件分为 pulbic 和非 public，public 的声明在：<code>&lt;sdk_path&gt;/platforms/android-19/data/res/values/public.xml</code></p>
 <ul>
 <li>引用 public 资源文件</li>
 </ul>
-<p>xml:  @android:<resource_type>/<resource_name><br>code: android.R.<resource_type>.<resource_name></resource_name></resource_type></resource_name></resource_type></p>
+<p>xml:  <code>@android:&lt;resource_type&gt;/&lt;resource_name&gt;</code><br>code: <code>android.R.&lt;resource_type&gt;.&lt;resource_name&gt;</code></p>
 <p>例如：android:drawable=”@android:drawable/dialog_frame”<br>      getResources.getDrawable( android.R.drawable.dialog_frame );</p>
 <a id="more"></a>
 <ul>
 <li>引用非 public 资源文件 (没在 public.xml 中声明的资源是 Android 不推荐使用的)</li>
 </ul>
-<p>xml:  @*android:<resource_type>/<resource_name><br>code: com.android.internal.R.<resource_type>.<resource_name>  (如果只是基于原生 Android 开发第三方应用会报错)</resource_name></resource_type></resource_name></resource_type></p>
+<p>xml:  <code>@*android:&lt;resource_type&gt;/&lt;resource_name&gt;</code><br>code: <code>com.android.internal.R.&lt;resource_type&gt;.&lt;resource_name&gt;</code>  (如果只是基于原生 Android 开发第三方应用会报错)</p>
 <p>但是如果要在代码中引用系统非 public 资源，可以通过 XML 引用中转，例如，需要引用 mz_btn_list_attachment_delete 这个 drawable 资源<br>先在 res/drawable/ 下新建 mz_btn_list_attachment_delete.xml</p>
 <figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">&lt;?xml version="1.0" encoding="utf-8"?&gt;</div><div class="line"></div><div class="line"><span class="tag">&lt;<span class="name">selector</span> <span class="attr">xmlns:android</span>=<span class="string">"http://schemas.android.com/apk/res/android"</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">item</span> <span class="attr">android:state_pressed</span>=<span class="string">"true"</span> <span class="attr">android:drawable</span>=<span class="string">"@*android:drawable/mz_btn_list_attachment_delete_pressed"</span>/&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">item</span> <span class="attr">android:drawable</span>=<span class="string">"@*android:drawable/mz_btn_list_attachment_delete_normal"</span>/&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">selector</span>&gt;</span></div></pre></td></tr></table></figure>
 <p>最后在代码中 getResources.getDrawable( R.drawable.mz_btn_list_attachment_delete );</p>
 <h2 id="引用主题属性"><a href="#引用主题属性" class="headerlink" title="引用主题属性"></a>引用主题属性</h2><ul>
-<li>格式为：?[<package_name>:]<resource_type>/<resource_name></resource_name></resource_type></package_name></li>
+<li>格式为：<code>?[&lt;package_name&gt;:]&lt;resource_type&gt;/&lt;resource_name&gt;</code></li>
 </ul>
 <p>例如：android:textColor=”?android:textDisabledColor”</p>
-<p>Android 中还可以引用当前主题中定义的属性值或者 style，不需要 <resource_type>( type = ?android:attr/textDisabledColor)，它会在主题中被查找</resource_type></p>
+<p>Android 中还可以引用当前主题中定义的属性值或者 style，不需要 <code>&lt;resource_type&gt;</code>( type = ?android:attr/textDisabledColor)，它会在主题中被查找</p>
 <p><strong>参考文章：</strong></p>
 <ul>
 <li><p><a href="http://www.cnblogs.com/greatverve/archive/2011/12/27/Android-xml.html" target="_blank" rel="external">http://www.cnblogs.com/greatverve/archive/2011/12/27/Android-xml.html</a></p>

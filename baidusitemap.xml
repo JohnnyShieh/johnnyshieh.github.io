@@ -4,76 +4,8 @@
 
     
   <url>
-    <loc>http://johnnyshieh.me/2014/09/12/android-accessing-resources/</loc>
-    <lastmod>2017-05-10T06:19:05.000Z</lastmod>
-    <data>
-        <display>
-        <title>Android xml 资源文件中 @、@android:、@*、？的含义和区别</title>
-        <pubTime>2014-09-11T16:00:00.000Z</pubTime>
-        
-        <tag>android</tag>
-         
-        <tag>android-ui</tag>
-         
-         
-           
-             
-              <breadCrumb title="Android" url="http://johnnyshieh.me/categories/Android/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-    
-    
-  <url>
-    <loc>http://johnnyshieh.me/2015/09/03/android-handler-memory-leak/</loc>
-    <lastmod>2017-05-09T10:18:33.000Z</lastmod>
-    <data>
-        <display>
-        <title>[译] Android 中由 Handler 和内部类引起的内存泄漏</title>
-        <pubTime>2015-09-02T16:00:00.000Z</pubTime>
-        
-        <tag>android</tag>
-         
-        <tag>handler</tag>
-         
-        <tag>memory-leak</tag>
-         
-         
-           
-             
-              <breadCrumb title="Android" url="http://johnnyshieh.me/categories/Android/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://johnnyshieh.me/2015/12/31/summary-of-2015/</loc>
-    <lastmod>2017-05-09T10:15:37.000Z</lastmod>
-    <data>
-        <display>
-        <title>2015 年终总结</title>
-        <pubTime>2015-12-30T16:00:00.000Z</pubTime>
-        
-        <tag>年终总结</tag>
-         
-         
-           
-             
-              <breadCrumb title="随笔" url="http://johnnyshieh.me/categories/%E9%9A%8F%E7%AC%94/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
     <loc>http://johnnyshieh.me/2015/12/26/ubuntu14.04-tutorial/</loc>
-    <lastmod>2017-05-09T10:09:03.000Z</lastmod>
+    <lastmod>2017-05-10T07:08:18.000Z</lastmod>
     <data>
         <display>
         <title>如何优雅地使用 Ubuntu 14.04 LTS</title>
@@ -92,21 +24,21 @@
 
     
   <url>
-    <loc>http://johnnyshieh.me/2015/09/09/android-layoutinflater-analysis/</loc>
-    <lastmod>2017-05-09T09:45:03.000Z</lastmod>
+    <loc>http://johnnyshieh.me/2012/09/08/ubuntu-install-jdk/</loc>
+    <lastmod>2017-05-10T07:07:22.000Z</lastmod>
     <data>
         <display>
-        <title>Android LayoutInflater 深层解析</title>
-        <pubTime>2015-09-08T16:00:00.000Z</pubTime>
+        <title>Ubuntu 12.04环境下安装JDK 7</title>
+        <pubTime>2012-09-07T16:00:00.000Z</pubTime>
         
-        <tag>android</tag>
+        <tag>java</tag>
          
-        <tag>android-ui</tag>
+        <tag>unbuntu</tag>
          
          
            
              
-              <breadCrumb title="Android" url="http://johnnyshieh.me/categories/Android/"/>
+              <breadCrumb title="Linux" url="http://johnnyshieh.me/categories/Linux/"/>
           
         </display>
     </data>
@@ -114,16 +46,14 @@
 
     
   <url>
-    <loc>http://johnnyshieh.me/2015/08/24/how-hashmap-work/</loc>
-    <lastmod>2017-05-09T09:20:51.000Z</lastmod>
+    <loc>http://johnnyshieh.me/2014/08/02/top10-mistakes-java-developers-make/</loc>
+    <lastmod>2017-05-10T07:06:51.000Z</lastmod>
     <data>
         <display>
-        <title>[转] Java HashMap 的工作原理</title>
-        <pubTime>2015-08-23T16:00:00.000Z</pubTime>
+        <title>[转] Java 程序员们最常犯的 10 个错误</title>
+        <pubTime>2014-08-01T16:00:00.000Z</pubTime>
         
         <tag>java</tag>
-         
-        <tag>hashmap</tag>
          
          
            
@@ -136,21 +66,19 @@
 
     
   <url>
-    <loc>http://johnnyshieh.me/2015/08/02/python-remove-utf8-bom/</loc>
-    <lastmod>2017-05-09T09:06:15.000Z</lastmod>
+    <loc>http://johnnyshieh.me/2015/12/31/summary-of-2015/</loc>
+    <lastmod>2017-05-10T07:06:02.000Z</lastmod>
     <data>
         <display>
-        <title>UTF-8 编码去除 BOM 头的 python 脚本</title>
-        <pubTime>2015-08-01T16:00:00.000Z</pubTime>
+        <title>2015 年终总结</title>
+        <pubTime>2015-12-30T16:00:00.000Z</pubTime>
         
-        <tag>python</tag>
-         
-        <tag>script</tag>
+        <tag>年终总结</tag>
          
          
            
              
-              <breadCrumb title="Python" url="http://johnnyshieh.me/categories/Python/"/>
+              <breadCrumb title="随笔" url="http://johnnyshieh.me/categories/%E9%9A%8F%E7%AC%94/"/>
           
         </display>
     </data>
@@ -159,7 +87,7 @@
     
   <url>
     <loc>http://johnnyshieh.me/2015/07/17/scrollview-detect-scroll-stop/</loc>
-    <lastmod>2017-05-09T08:58:29.000Z</lastmod>
+    <lastmod>2017-05-10T07:05:24.000Z</lastmod>
     <data>
         <display>
         <title>Android 中 ScrollView 监听滚动停止的方案</title>
@@ -182,8 +110,52 @@
 
     
   <url>
+    <loc>http://johnnyshieh.me/2015/08/02/python-remove-utf8-bom/</loc>
+    <lastmod>2017-05-10T07:04:42.000Z</lastmod>
+    <data>
+        <display>
+        <title>UTF-8 编码去除 BOM 头的 python 脚本</title>
+        <pubTime>2015-08-01T16:00:00.000Z</pubTime>
+        
+        <tag>python</tag>
+         
+        <tag>script</tag>
+         
+         
+           
+             
+              <breadCrumb title="Python" url="http://johnnyshieh.me/categories/Python/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://johnnyshieh.me/2015/01/09/linux-18-tar-command-examples/</loc>
+    <lastmod>2017-05-10T07:03:24.000Z</lastmod>
+    <data>
+        <display>
+        <title>[译] Linux 中 18 个 tar 命令示例</title>
+        <pubTime>2015-01-08T16:00:00.000Z</pubTime>
+        
+        <tag>linux</tag>
+         
+        <tag>command</tag>
+         
+         
+           
+             
+              <breadCrumb title="Linux" url="http://johnnyshieh.me/categories/Linux/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://johnnyshieh.me/2015/01/30/java-reflection/</loc>
-    <lastmod>2017-05-09T08:54:06.000Z</lastmod>
+    <lastmod>2017-05-10T07:03:00.000Z</lastmod>
     <data>
         <display>
         <title>Java 反射机制</title>
@@ -204,8 +176,52 @@
 
     
   <url>
+    <loc>http://johnnyshieh.me/2015/01/16/how-to-use-android-studio/</loc>
+    <lastmod>2017-05-10T07:02:08.000Z</lastmod>
+    <data>
+        <display>
+        <title>如何优雅地使用 AndroidStudio</title>
+        <pubTime>2015-01-15T16:00:00.000Z</pubTime>
+        
+        <tag>android</tag>
+         
+        <tag>android-studio</tag>
+         
+         
+           
+             
+              <breadCrumb title="Android" url="http://johnnyshieh.me/categories/Android/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://johnnyshieh.me/2015/08/24/how-hashmap-work/</loc>
+    <lastmod>2017-05-10T07:01:07.000Z</lastmod>
+    <data>
+        <display>
+        <title>[转] Java HashMap 的工作原理</title>
+        <pubTime>2015-08-23T16:00:00.000Z</pubTime>
+        
+        <tag>java</tag>
+         
+        <tag>hashmap</tag>
+         
+         
+           
+             
+              <breadCrumb title="Java" url="http://johnnyshieh.me/categories/Java/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://johnnyshieh.me/2015/06/25/four-way-to-query-from-contentresolver/</loc>
-    <lastmod>2017-05-09T08:50:18.000Z</lastmod>
+    <lastmod>2017-05-10T06:59:57.000Z</lastmod>
     <data>
         <display>
         <title>Android 中利用 ContentResolver 查询数据库的四种方式</title>
@@ -226,75 +242,8 @@
 
     
   <url>
-    <loc>http://johnnyshieh.me/2015/01/16/how-to-use-android-studio/</loc>
-    <lastmod>2017-05-09T08:35:03.000Z</lastmod>
-    <data>
-        <display>
-        <title>如何优雅地使用 AndroidStudio</title>
-        <pubTime>2015-01-15T16:00:00.000Z</pubTime>
-        
-        <tag>android</tag>
-         
-        <tag>android-studio</tag>
-         
-         
-           
-             
-              <breadCrumb title="Android" url="http://johnnyshieh.me/categories/Android/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-    
-  <url>
-    <loc>http://johnnyshieh.me/2014/11/06/android-add-foreground-selector/</loc>
-    <lastmod>2017-05-08T06:34:55.000Z</lastmod>
-    <data>
-        <display>
-        <title>[译] Android 为 View、ViewGroup 添加前景色</title>
-        <pubTime>2014-11-05T16:00:00.000Z</pubTime>
-        
-        <tag>android</tag>
-         
-        <tag>android-ui</tag>
-         
-         
-           
-             
-              <breadCrumb title="Android" url="http://johnnyshieh.me/categories/Android/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://johnnyshieh.me/2014/08/02/top10-mistakes-java-developers-make/</loc>
-    <lastmod>2017-05-08T06:34:03.000Z</lastmod>
-    <data>
-        <display>
-        <title>[转] Java 程序员们最常犯的 10 个错误</title>
-        <pubTime>2014-08-01T16:00:00.000Z</pubTime>
-        
-        <tag>java</tag>
-         
-         
-           
-             
-              <breadCrumb title="Java" url="http://johnnyshieh.me/categories/Java/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-    
-    
-  <url>
     <loc>http://johnnyshieh.me/2014/07/23/android-system-widget/</loc>
-    <lastmod>2017-05-05T11:33:59.000Z</lastmod>
+    <lastmod>2017-05-10T06:58:38.000Z</lastmod>
     <data>
         <display>
         <title>获得 Android 系统 Widget 控件的方法</title>
@@ -316,7 +265,7 @@
     
   <url>
     <loc>http://johnnyshieh.me/2014/07/30/android-setenable-false-not-work/</loc>
-    <lastmod>2017-05-05T11:33:55.000Z</lastmod>
+    <lastmod>2017-05-10T06:57:54.000Z</lastmod>
     <data>
         <display>
         <title>Android View setEnabled false 没有效果的解决方法</title>
@@ -338,7 +287,7 @@
     
   <url>
     <loc>http://johnnyshieh.me/2013/05/01/android-listview-edittext-search/</loc>
-    <lastmod>2017-05-05T11:33:51.000Z</lastmod>
+    <lastmod>2017-05-10T06:54:08.000Z</lastmod>
     <data>
         <display>
         <title>Android ListView 用 EditText 实现搜索功能</title>
@@ -359,8 +308,54 @@
 
     
   <url>
+    <loc>http://johnnyshieh.me/2015/09/09/android-layoutinflater-analysis/</loc>
+    <lastmod>2017-05-10T06:52:35.000Z</lastmod>
+    <data>
+        <display>
+        <title>Android LayoutInflater 深层解析</title>
+        <pubTime>2015-09-08T16:00:00.000Z</pubTime>
+        
+        <tag>android</tag>
+         
+        <tag>android-ui</tag>
+         
+         
+           
+             
+              <breadCrumb title="Android" url="http://johnnyshieh.me/categories/Android/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://johnnyshieh.me/2015/09/03/android-handler-memory-leak/</loc>
+    <lastmod>2017-05-10T06:51:10.000Z</lastmod>
+    <data>
+        <display>
+        <title>[译] Android 中由 Handler 和内部类引起的内存泄漏</title>
+        <pubTime>2015-09-02T16:00:00.000Z</pubTime>
+        
+        <tag>android</tag>
+         
+        <tag>handler</tag>
+         
+        <tag>memory-leak</tag>
+         
+         
+           
+             
+              <breadCrumb title="Android" url="http://johnnyshieh.me/categories/Android/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://johnnyshieh.me/2014/10/11/android-editext-contextmenu/</loc>
-    <lastmod>2017-05-05T11:33:46.000Z</lastmod>
+    <lastmod>2017-05-10T06:50:10.000Z</lastmod>
     <data>
         <display>
         <title>Android Edittext 长按没有弹出上下文菜单</title>
@@ -381,21 +376,21 @@
 
     
   <url>
-    <loc>http://johnnyshieh.me/2015/01/09/linux-18-tar-command-examples/</loc>
-    <lastmod>2017-05-05T11:26:56.000Z</lastmod>
+    <loc>http://johnnyshieh.me/2014/11/06/android-add-foreground-selector/</loc>
+    <lastmod>2017-05-10T06:48:22.000Z</lastmod>
     <data>
         <display>
-        <title>[译] Linux 中 18 个 tar 命令示例</title>
-        <pubTime>2015-01-08T16:00:00.000Z</pubTime>
+        <title>[译] Android 为 View、ViewGroup 添加前景色</title>
+        <pubTime>2014-11-05T16:00:00.000Z</pubTime>
         
-        <tag>linux</tag>
+        <tag>android</tag>
          
-        <tag>command</tag>
+        <tag>android-ui</tag>
          
          
            
              
-              <breadCrumb title="Linux" url="http://johnnyshieh.me/categories/Linux/"/>
+              <breadCrumb title="Android" url="http://johnnyshieh.me/categories/Android/"/>
           
         </display>
     </data>
@@ -403,26 +398,31 @@
 
     
   <url>
-    <loc>http://johnnyshieh.me/2012/09/08/ubuntu-install-jdk/</loc>
-    <lastmod>2017-05-05T09:21:47.000Z</lastmod>
+    <loc>http://johnnyshieh.me/2014/09/12/android-accessing-resources/</loc>
+    <lastmod>2017-05-10T06:46:06.000Z</lastmod>
     <data>
         <display>
-        <title>Ubuntu 12.04环境下安装JDK 7</title>
-        <pubTime>2012-09-07T16:00:00.000Z</pubTime>
+        <title>Android xml 资源文件中 @、@android:、@*、？的含义和区别</title>
+        <pubTime>2014-09-11T16:00:00.000Z</pubTime>
         
-        <tag>java</tag>
+        <tag>android</tag>
          
-        <tag>unbuntu</tag>
+        <tag>android-ui</tag>
          
          
            
              
-              <breadCrumb title="Linux" url="http://johnnyshieh.me/categories/Linux/"/>
+              <breadCrumb title="Android" url="http://johnnyshieh.me/categories/Android/"/>
           
         </display>
     </data>
     </url>
 
+    
+    
+    
+    
+    
     
     
 </urlset>
