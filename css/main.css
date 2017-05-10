@@ -1696,7 +1696,7 @@ pre .javascript .function {
   width: 4px;
   height: 4px;
   border-radius: 50%;
-  background: #d4ffe2;
+  background: #367fff;
 }
 .links-of-blogroll {
   font-size: 13px;
@@ -2873,4 +2873,8 @@ h2 {
   .post-body {
     text-align: justify;
   }
+}
+#yun-tie-sdk-wrap .single-tie .tie-author .name-desp,
+#yun-tie-sdk-wrap .single-tie .tie-author .name-ip {
+  display: none;
 }
