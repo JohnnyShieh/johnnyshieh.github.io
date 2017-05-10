@@ -96,7 +96,7 @@
 <meta name="keywords" content="java,reflection">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Java 反射机制">
-<meta property="og:url" content="http://johnnyshieh.github.io/2015/01/30/java-reflection/index.html">
+<meta property="og:url" content="http://johnnyshieh.me/2015/01/30/java-reflection/index.html">
 <meta property="og:site_name" content="Johnny Shieh">
 <meta property="og:description" content="什么是反射？Java 的反射机制可以使得程序在 Java 运行时能够检测、访问并且修改编译时完全未知的 classes，这个概念很容易和内省混淆。下面是 WiKi 上对这两个概念给出的定义： 反射（Reflection）：反射是指计算机程序在运行时可以访问、检测和修改它本身状态或行为的一种能力。内省（Introspection）：内省是指计算机程序在运行检查对象类型的一种能力，通常也可以称作运行时">
 <meta property="og:updated_time" content="2017-05-09T08:54:06.000Z">
@@ -130,7 +130,7 @@
 
 
 
-  <link rel="canonical" href="http://johnnyshieh.github.io/2015/01/30/java-reflection/">
+  <link rel="canonical" href="http://johnnyshieh.me/2015/01/30/java-reflection/">
 
 
 
@@ -285,7 +285,7 @@
   
 
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://johnnyshieh.github.io/2015/01/30/java-reflection/">
+    <link itemprop="mainEntityOfPage" href="http://johnnyshieh.me/2015/01/30/java-reflection/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Johnny Shieh">
@@ -440,7 +440,7 @@
 <h3 id="新建一个数组"><a href="#新建一个数组" class="headerlink" title="新建一个数组"></a>新建一个数组</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * 新建一个类型的数组</div><div class="line"> * <span class="doctag">@param</span> className 数组的类型的类名</div><div class="line"> * <span class="doctag">@param</span> len       数组的大小</div><div class="line"> * <span class="doctag">@return</span> 数组</div><div class="line"> */</div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Object <span class="title">newArrayInstance</span> <span class="params">(String className, <span class="keyword">int</span> len)</span> </span>&#123;</div><div class="line">    Object result = <span class="keyword">null</span>;</div><div class="line">    <span class="keyword">try</span> &#123;</div><div class="line">        Class classObj = Class.forName(className);</div><div class="line">        result = Array.newInstance(classObj, len);</div><div class="line">    &#125; <span class="keyword">catch</span> (ClassNotFoundException e) &#123;</div><div class="line">        e.printStackTrace();</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> result;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <h3 id="获得数组的元素"><a href="#获得数组的元素" class="headerlink" title="获得数组的元素"></a>获得数组的元素</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * 获得数组中的一个元素</div><div class="line"> * <span class="doctag">@param</span> array 数组</div><div class="line"> * <span class="doctag">@param</span> index 元素在数组中的位置</div><div class="line"> * <span class="doctag">@return</span> 数组中的这个元素</div><div class="line"> */</div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Object <span class="title">getObjectInArray</span><span class="params">(Object array, <span class="keyword">int</span> index)</span> </span>&#123;</div><div class="line">    <span class="keyword">return</span> Array.get(array, index);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <h3 id="修改数组的元素"><a href="#修改数组的元素" class="headerlink" title="修改数组的元素"></a>修改数组的元素</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * 修改数组中的一个元素的值</div><div class="line"> * <span class="doctag">@param</span> array 数组</div><div class="line"> * <span class="doctag">@param</span> index 元素在数组中的位置</div><div class="line"> * <span class="doctag">@param</span> value 修改后的元素值</div><div class="line"> */</div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">setObjectInArray</span><span class="params">(Object array, <span class="keyword">int</span> index, Object value)</span> </span>&#123;</div><div class="line">    Array.set(array, index, value);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>最后给出我个人的源代码 <a href="http://johnnyshieh.me/uploads/ReflectionUtils.java" target="_blank" rel="external">http://johnnyshieh.me/uploads/ReflectionUtils.java</a></p>
+<p>最后给出我个人的源代码 <a href="http://johnnyshieh.me/uploads/ReflectionUtils.java">http://johnnyshieh.me/uploads/ReflectionUtils.java</a></p>
 <p><strong>参考链接：</strong></p>
 <ul>
 <li><p><a href="http://www.programcreek.com/2013/09/java-reflection-tutorial/" target="_blank" rel="external">http://www.programcreek.com/2013/09/java-reflection-tutorial/</a></p>

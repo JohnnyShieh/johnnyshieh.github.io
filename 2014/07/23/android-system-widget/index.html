@@ -96,7 +96,7 @@
 <meta name="keywords" content="android,android-ui">
 <meta property="og:type" content="article">
 <meta property="og:title" content="获得 Android 系统 Widget 控件的方法">
-<meta property="og:url" content="http://johnnyshieh.github.io/2014/07/23/android-system-widget/index.html">
+<meta property="og:url" content="http://johnnyshieh.me/2014/07/23/android-system-widget/index.html">
 <meta property="og:site_name" content="Johnny Shieh">
 <meta property="og:description" content="最近在工作中需要改变 Android 系统的一些控件的属性，一开始不知从何下手，经过一段时间的 google 得到了答案，如果我们知道 Widget 的 ID，那么就可以得到它了。 获得 System Widget ID应用程序自身创建的 View 的 ID 的结构是：R.id.XXX 而由系统自身创建的 View 的 ID 的结构是：com.android.internal.R.id.XXX 可">
 <meta property="og:updated_time" content="2017-05-05T11:33:59.000Z">
@@ -130,7 +130,7 @@
 
 
 
-  <link rel="canonical" href="http://johnnyshieh.github.io/2014/07/23/android-system-widget/">
+  <link rel="canonical" href="http://johnnyshieh.me/2014/07/23/android-system-widget/">
 
 
 
@@ -285,7 +285,7 @@
   
 
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://johnnyshieh.github.io/2014/07/23/android-system-widget/">
+    <link itemprop="mainEntityOfPage" href="http://johnnyshieh.me/2014/07/23/android-system-widget/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Johnny Shieh">
@@ -404,7 +404,7 @@ action_bar_subtitle  -- ActionBar 的 subtitle 的 ID
 <p>然后，findViewById , ( that is it ).</p>
 <a id="more"></a>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">View view = getActivity().getWindow().getDecorView()</div><div class="line">                .findViewById ( com.android.internal.R.id.action_bar_title );</div><div class="line"><span class="keyword">if</span> ( <span class="keyword">null</span> != view ) &#123;</div><div class="line">    TextView action_bar_title = ( TextView ) view;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<h2 id="推荐文章"><a href="#推荐文章" class="headerlink" title="推荐文章:"></a>推荐文章:</h2><p><a href="http://johnnyshieh.github.io/android/2014/09/12/android-accessing-resources/">Android xml 资源文件中 @、@android:、@*、？的含义和区别</a></p>
+<h2 id="推荐文章"><a href="#推荐文章" class="headerlink" title="推荐文章:"></a>推荐文章:</h2><p><a href="http://johnnyshieh.github.io/android/2014/09/12/android-accessing-resources/" target="_blank" rel="external">Android xml 资源文件中 @、@android:、@*、？的含义和区别</a></p>
       
     </div>
 
