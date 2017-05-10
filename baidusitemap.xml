@@ -3,6 +3,28 @@
 
 
     
+  <url>
+    <loc>http://johnnyshieh.me/2014/09/12/android-accessing-resources/</loc>
+    <lastmod>2017-05-10T06:19:05.000Z</lastmod>
+    <data>
+        <display>
+        <title>Android xml 资源文件中 @、@android:、@*、？的含义和区别</title>
+        <pubTime>2014-09-11T16:00:00.000Z</pubTime>
+        
+        <tag>android</tag>
+         
+        <tag>android-ui</tag>
+         
+         
+           
+             
+              <breadCrumb title="Android" url="http://johnnyshieh.me/categories/Android/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
     
     
   <url>
@@ -268,28 +290,6 @@
     </url>
 
     
-    
-  <url>
-    <loc>http://johnnyshieh.me/2014/09/12/android-accessing-resources/</loc>
-    <lastmod>2017-05-05T11:40:42.000Z</lastmod>
-    <data>
-        <display>
-        <title>Android xml 资源文件中 @、@android:、@*、？的含义和区别</title>
-        <pubTime>2014-09-11T16:00:00.000Z</pubTime>
-        
-        <tag>android</tag>
-         
-        <tag>android-ui</tag>
-         
-         
-           
-             
-              <breadCrumb title="Android" url="http://johnnyshieh.me/categories/Android/"/>
-          
-        </display>
-    </data>
-    </url>
-
     
     
   <url>
