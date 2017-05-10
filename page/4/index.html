@@ -96,7 +96,7 @@
 <meta name="description" content="我本微末，心向天空">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Johnny Shieh">
-<meta property="og:url" content="http://johnnyshieh.me/page/2/index.html">
+<meta property="og:url" content="http://johnnyshieh.me/page/4/index.html">
 <meta property="og:site_name" content="Johnny Shieh">
 <meta property="og:description" content="我本微末，心向天空">
 <meta name="twitter:card" content="summary">
@@ -129,7 +129,7 @@
 
 
 
-  <link rel="canonical" href="http://johnnyshieh.me/page/2/">
+  <link rel="canonical" href="http://johnnyshieh.me/page/4/">
 
 
 
@@ -284,7 +284,7 @@
   
 
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://johnnyshieh.me/2015/08/02/python-remove-utf8-bom/">
+    <link itemprop="mainEntityOfPage" href="http://johnnyshieh.me/2014/07/30/android-setenable-false-not-work/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Johnny Shieh">
@@ -303,7 +303,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2015/08/02/python-remove-utf8-bom/" itemprop="url">UTF-8 编码去除 BOM 头的 python 脚本</a></h1>
+                <a class="post-title-link" href="/2014/07/30/android-setenable-false-not-work/" itemprop="url">Android View setEnabled false 没有效果的解决方法</a></h1>
         
 
         <div class="post-meta">
@@ -315,162 +315,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-08-02T00:00:00+08:00">
-                2015-08-02
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Python/" itemprop="url" rel="index">
-                    <span itemprop="name">Python</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2015/08/02/python-remove-utf8-bom/" class="leancloud_visitors" data-flag-title="UTF-8 编码去除 BOM 头的 python 脚本">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数 </span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>前几天我在 Windows 写完一篇 markdown 格式的文章，上传到 github page 后，这个文章的页面把 jekyll 的 YAML 头信息也显示出来了，没有像我之前在 Ubuntu 中写的文章一样正常解析 YAML 头信息，最后谷歌了半天发现原因是在 Windows 用记事本保存 UTF-8 编码的文件时会默认加上 BOM 头字符。而 jekyll 的文档中也明确写明了如果使用 UTF-8 编码，那么在文件中一定不要出现 BOM 头字符。</p>
-<p>所以我把如何在 Windows 和 Linux 系统中去除 UTF-8 的 BOM 头的方法做个记录。</p>
-<h2 id="UTF-8-与-UTF-8-BOM-的区别"><a href="#UTF-8-与-UTF-8-BOM-的区别" class="headerlink" title="UTF-8 与 UTF-8 + BOM 的区别"></a>UTF-8 与 UTF-8 + BOM 的区别</h2><p>下面是我从网上复制过来 <strong>BOM</strong> 的简介：</p>
-<p>BOM – Byte Order Mark，中文名译作“字节顺序标记”。在 UCS 编码中有一个叫做 “Zero Width No-Break Space” ，中文译名作“零宽无间断间隔”的字符，它的编码是 FEFF。而 FFFE 在 UCS 中是不存在的字符，所以不应该出现在实际传输中。UCS 规范建议我们在传输字节流前，先传输字符 “Zero Width No-Break Space”。这样如果接收者收到 FEFF，就表明这个字节流是 Big-Endian 的；如果收到 FFFE，就表明这个字节流是 Little- Endian 的。因此字符 “Zero Width No-Break Space” （“零宽无间断间隔”）又被称作 BOM。</p>
-<p>UTF-8 不需要 BOM 来表明字节顺序，但可以用 BOM 来表明编码方式。字符 “Zero Width No-Break Space” 的 UTF-8 编码是 EF BB BF。所以如果接收者收到以 EF BB BF （十六进制）开头的字节流，就知道这是 UTF-8编码了。Windows 就是使用 BOM 来标记文本文件的编码方式的。</p>
-<p>所以 UTF-8 + BOM 其实就是在文件的开头加上了 0xEF 0xBB 0xBF 这三个字节,而这个三个字节是一串隐藏字符。</p>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2015/08/02/python-remove-utf8-bom/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://johnnyshieh.me/2015/07/17/scrollview-detect-scroll-stop/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Johnny Shieh">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Johnny Shieh">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2015/07/17/scrollview-detect-scroll-stop/" itemprop="url">Android 中 ScrollView 监听滚动停止的方案</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-07-17T00:00:00+08:00">
-                2015-07-17
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2014-07-30T00:00:00+08:00">
+                2014-07-30
               </time>
             
 
@@ -509,7 +355,7 @@
 
           
           
-             <span id="/2015/07/17/scrollview-detect-scroll-stop/" class="leancloud_visitors" data-flag-title="Android 中 ScrollView 监听滚动停止的方案">
+             <span id="/2014/07/30/android-setenable-false-not-work/" class="leancloud_visitors" data-flag-title="Android View setEnabled false 没有效果的解决方法">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -538,336 +384,19 @@
 
       
         
-          <p>前几天工作上遇到一个需要监听 Scrollview 滚动停止的问题，然后开始谷歌解决方案，但是都不是很满意，最后在和同事的讨论中获得灵感得出了下面的解决方案，经实测有效，供大家参考一下。</p>
-<h2 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h2><p>思路是这样的：首先要确定监听的时机，因为 ScrollView 在滚动的过程中和绘制的时候需要 computeScroll，所以在 computeScroll 的时候监听; 然后用反射检测滚动是否停止； 最后由于工作的需求是在 Touch 的情况下都不算停止所以还要监听 touch event。</p>
-<p>其中有用到反射，对反射不是很了解的可以看我的这篇博客 <a href="http://johnnyshieh.me/2015/01/30/java-reflection/">Java 反射机制</a></p>
-<h2 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h2><p>关键代码如下：</p>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2015/07/17/scrollview-detect-scroll-stop/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://johnnyshieh.me/2015/06/25/four-way-to-query-from-contentresolver/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Johnny Shieh">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Johnny Shieh">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2015/06/25/four-way-to-query-from-contentresolver/" itemprop="url">Android 中利用 ContentResolver 查询数据库的四种方式</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-06-25T00:00:00+08:00">
-                2015-06-25
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Android/" itemprop="url" rel="index">
-                    <span itemprop="name">Android</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2015/06/25/four-way-to-query-from-contentresolver/" class="leancloud_visitors" data-flag-title="Android 中利用 ContentResolver 查询数据库的四种方式">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数 </span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h2 id="直接使用-ContentResolver-的-query-方法在主线程中查询数据（非异步查询）"><a href="#直接使用-ContentResolver-的-query-方法在主线程中查询数据（非异步查询）" class="headerlink" title="直接使用 ContentResolver 的 query 方法在主线程中查询数据（非异步查询）"></a>直接使用 ContentResolver 的 query 方法在主线程中查询数据（非异步查询）</h2><p>由于是在主线程中执行查询操作，为了不阻塞主线程，尽量在数据量小的时候使用，而且要注意及时关闭 cursor</p>
-<p>代码示例</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">Cursor cursor = getContentResolver().query(ContactsContract.Data.CONTENT_URI, <span class="keyword">null</span>, <span class="keyword">null</span>, <span class="keyword">null</span>, <span class="keyword">null</span>);</div><div class="line"><span class="comment">// 获得 cursor 中数据 ...</span></div><div class="line">cursor.close();</div></pre></td></tr></table></figure>
-<h2 id="利用-Activity-的-managedQuery-方法在主线程中查询数据（非异步查询）"><a href="#利用-Activity-的-managedQuery-方法在主线程中查询数据（非异步查询）" class="headerlink" title="利用 Activity 的 managedQuery 方法在主线程中查询数据（非异步查询）"></a>利用 Activity 的 managedQuery 方法在主线程中查询数据（非异步查询）</h2><p>相对于上一种方式，我们不需要处理 cusor 的关闭，但是同样只适合在数据量小的时候。</p>
-<p>对于 Android 3.0 HONEYCOMB 以上的版本，Android 官方建议使用 LoaderManager 替代，这也是下一种查询方式。</p>
-<p>代码示例：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">Cursor cursor = managedQuery(ContactsContract.Data.CONTENT_URI, <span class="keyword">null</span>, <span class="keyword">null</span>, <span class="keyword">null</span>, <span class="keyword">null</span>);</div><div class="line"><span class="comment">// 获得 cursor 中数据 ...</span></div></pre></td></tr></table></figure>
-<h2 id="利用-LoaderManager-机制中的-CursorLoader-异步查询数据库（异步查询）"><a href="#利用-LoaderManager-机制中的-CursorLoader-异步查询数据库（异步查询）" class="headerlink" title="利用 LoaderManager 机制中的 CursorLoader 异步查询数据库（异步查询）"></a>利用 LoaderManager 机制中的 CursorLoader 异步查询数据库（异步查询）</h2><p>Android3.0 以上可以直接使用，3.0 以下需要使用 support 库.</p>
-<p>注：LoaderManager 开始一个 Loader 之后，如果没有调用 destroyLoader 方法，在 activity 的 onStart 时候会重新开始 Loader 中的任务</p>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2015/06/25/four-way-to-query-from-contentresolver/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://johnnyshieh.me/2015/01/30/java-reflection/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Johnny Shieh">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Johnny Shieh">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2015/01/30/java-reflection/" itemprop="url">Java 反射机制</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-01-30T00:00:00+08:00">
-                2015-01-30
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Java/" itemprop="url" rel="index">
-                    <span itemprop="name">Java</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2015/01/30/java-reflection/" class="leancloud_visitors" data-flag-title="Java 反射机制">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数 </span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h2 id="什么是反射？"><a href="#什么是反射？" class="headerlink" title="什么是反射？"></a>什么是反射？</h2><p>Java 的反射机制可以使得程序在 Java 运行时能够检测、访问并且修改编译时完全未知的 classes，这个概念很容易和内省混淆。下面是 WiKi 上对这两个概念给出的定义：</p>
-<p><strong>反射</strong>（Reflection）：反射是指计算机程序在运行时可以访问、检测和修改它本身状态或行为的一种能力。<br><strong>内省</strong>（Introspection）：内省是指计算机程序在运行检查对象类型的一种能力，通常也可以称作<strong>运行时类型检查</strong>。</p>
-<p>从上面的定义可以看出，相对于内省，反射更进一步。例如，Java 具有反射特性，而 C++ 不具有反射特性只具有内省特性。</p>
-<h2 id="反射有什么用途？"><a href="#反射有什么用途？" class="headerlink" title="反射有什么用途？"></a>反射有什么用途？</h2><p>反射主要提供以下功能：</p>
+          <h2 id="问题场景"><a href="#问题场景" class="headerlink" title="问题场景"></a>问题场景</h2><p>今天遇到了一个很诡异的问题，Android 中 setEnable(false) 没有作用，网上找的很多方法还是没用。会出现这种情况的有下面几个场景：</p>
 <ol>
-<li><p>在运行时检查对象的类型</p>
-</li>
-<li><p>在运行时新建类的实例</p>
-</li>
-<li><p>在运行时检测对象一个类的成员变量和方法</p>
-</li>
-<li><p>在运行时调用对象的任意方法</p>
-</li>
-<li><p>在运行时修改构造函数、成员变量和方法的访问权限</p>
-</li>
-<li><p>等等</p>
-</li>
+<li>ListView 中的子视图 setEnable(false) 后点击仍然会响应 onItemClick</li>
+<li>FrameLayout 中上层试图 disable 后，上层试图没有响应事件，但是 touch 事件传递到下层视图了</li>
+<li>ViewGroup 调用 setEnable(false)，不会自动把子视图设为 disabled</li>
 </ol>
+<p>针对第一个场景，同事给出了一个解决方法：设置一个空的 onClickListener</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">view.setEnabled ( <span class="keyword">false</span> );</div><div class="line">view.setOnClickListener( <span class="keyword">new</span> OnClickListener() &#123;</div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onClick</span><span class="params">(View v)</span> </span>&#123;</div><div class="line">        <span class="comment">// nothing, just to fix the bug that the view can be clicked.</span></div><div class="line">    &#125;</div><div class="line">&#125; );</div></pre></td></tr></table></figure>
+<p>其实上面的做法就是<strong>消费点击事件</strong>但是什么都不做，并不是一般情况下的不消费点击事件。在 Android 的 View 源码中我找到了产生这个效果的原因，具体看下面代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">onTouchEvent</span><span class="params">(MotionEvent event)</span> </span>&#123;</div><div class="line">    <span class="keyword">final</span> <span class="keyword">float</span> x = event.getX();</div><div class="line">    <span class="keyword">final</span> <span class="keyword">float</span> y = event.getY();</div><div class="line">    <span class="keyword">final</span> <span class="keyword">int</span> viewFlags = mViewFlags;</div><div class="line"></div><div class="line">    <span class="keyword">if</span> ((viewFlags &amp; ENABLED_MASK) == DISABLED) &#123;</div><div class="line">        <span class="keyword">if</span> (event.getAction() == MotionEvent.ACTION_UP &amp;&amp; (mPrivateFlags &amp; PFLAG_PRESSED) != <span class="number">0</span>) &#123;</div><div class="line">            setPressed(<span class="keyword">false</span>);</div><div class="line">        &#125;</div><div class="line">        <span class="comment">// A disabled view that is clickable still consumes the touch</span></div><div class="line">        <span class="comment">// events, it just doesn't respond to them.</span></div><div class="line">        <span class="keyword">return</span> (((viewFlags &amp; CLICKABLE) == CLICKABLE ||</div><div class="line">                (viewFlags &amp; LONG_CLICKABLE) == LONG_CLICKABLE));</div><div class="line">    &#125;</div><div class="line"><span class="comment">// ENABLED_MASK为DISABLED时，且isClickable()或isLongClickable()为true时，onTouchEvent 直接return true，消费了事件却不做其他事情</span></div><div class="line"><span class="comment">// 而setOnClickListener时，会setClickable(true).</span></div><div class="line">    ...</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * Register a callback to be invoked when this view is clicked. If this view is not</div><div class="line"> * clickable, it becomes clickable.</div><div class="line"> *</div><div class="line"> * <span class="doctag">@param</span> l The callback that will run</div><div class="line"> *</div><div class="line"> * <span class="doctag">@see</span> #setClickable(boolean)</div><div class="line"> */</div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setOnClickListener</span><span class="params">(OnClickListener l)</span> </span>&#123;</div><div class="line">    <span class="keyword">if</span> (!isClickable()) &#123;</div><div class="line">        setClickable(<span class="keyword">true</span>);</div><div class="line">    &#125;</div><div class="line">    getListenerInfo().mOnClickListener = l;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2015/01/30/java-reflection/#more" rel="contents">
+            <a class="btn" href="/2014/07/30/android-setenable-false-not-work/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -913,7 +442,7 @@
   
 
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://johnnyshieh.me/2015/01/16/how-to-use-android-studio/">
+    <link itemprop="mainEntityOfPage" href="http://johnnyshieh.me/2014/07/23/android-system-widget/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Johnny Shieh">
@@ -932,7 +461,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2015/01/16/how-to-use-android-studio/" itemprop="url">如何优雅地使用 AndroidStudio</a></h1>
+                <a class="post-title-link" href="/2014/07/23/android-system-widget/" itemprop="url">获得 Android 系统 Widget 控件的方法</a></h1>
         
 
         <div class="post-meta">
@@ -944,8 +473,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-01-16T00:00:00+08:00">
-                2015-01-16
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2014-07-23T00:00:00+08:00">
+                2014-07-23
               </time>
             
 
@@ -984,7 +513,7 @@
 
           
           
-             <span id="/2015/01/16/how-to-use-android-studio/" class="leancloud_visitors" data-flag-title="如何优雅地使用 AndroidStudio">
+             <span id="/2014/07/23/android-system-widget/" class="leancloud_visitors" data-flag-title="获得 Android 系统 Widget 控件的方法">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -1013,14 +542,329 @@
 
       
         
-          <p>在 Android Studio 1.0 正式版发布之前，我用的是 IDE 是 Intellij Idea 13（而 Android Studio 就是基于 IDEA 开发的），所以两者在基本使用上没什么大的区别。但是对于之前一直坚守在 Eclipse 阵营的同学们来说，一开始接触 Android Studio 的时候可能会很不习惯，所以在这里，我总结一下自己的优雅的使用方案，希望对大家有所帮助。</p>
-<h2 id="使用-Darcula-黑色极客主题"><a href="#使用-Darcula-黑色极客主题" class="headerlink" title="使用 Darcula 黑色极客主题"></a>使用 Darcula 黑色极客主题</h2><p>Android Studio 有一个非常具有极客范的主题，一眼看上去非常的高大上，而且长时间写代码也不会觉得刺眼（如果觉得太暗了可以适当调高下亮度）。具体如下：</p>
-<p>点菜单栏中 File &gt; Settings ，进入设置页面，在左侧的 IDE Setting 下面选中 Appearance，然后在右侧的 Theme 中选择 Darcula，如下图：</p>
-<p><img src="http://oph5rhcqp.bkt.clouddn.com/studio_theme.png" alt=""></p>
-<h2 id="修改默认字体"><a href="#修改默认字体" class="headerlink" title="修改默认字体"></a>修改默认字体</h2>
+          <p>最近在工作中需要改变 Android 系统的一些控件的属性，一开始不知从何下手，经过一段时间的 google 得到了答案，如果我们知道 Widget 的 ID，那么就可以得到它了。</p>
+<h2 id="获得-System-Widget-ID"><a href="#获得-System-Widget-ID" class="headerlink" title="获得 System Widget ID"></a>获得 System Widget ID</h2><p>应用程序自身创建的 View 的 ID 的结构是：R.id.XXX</p>
+<p>而由系统自身创建的 View 的 ID 的结构是：com.android.internal.R.id.XXX</p>
+<p>可以通过 Android 的 Hierarchyviewer Tools 来获得 System Widget 的 ID</p>
+<p>例如，ActionBar相关ID如下：</p>
+<pre><code>action_bar_container -- ActionBar 的 parent view 的 ID
+action_bar_title     -- ActionBar 的 title 的 ID (它是一个 TextView)
+action_bar_subtitle  -- ActionBar 的 subtitle 的 ID
+</code></pre><h2 id="通过-findViewById-获得-View"><a href="#通过-findViewById-获得-View" class="headerlink" title="通过 findViewById 获得 View"></a>通过 findViewById 获得 View</h2><p>首先，需要获得当前页的 root View – <code>getActivity().getWindow().getDecorView()</code></p>
+<p>然后，findViewById , ( that is it ).</p>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2015/01/16/how-to-use-android-studio/#more" rel="contents">
+            <a class="btn" href="/2014/07/23/android-system-widget/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://johnnyshieh.me/2013/05/01/android-listview-edittext-search/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Johnny Shieh">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Johnny Shieh">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2013/05/01/android-listview-edittext-search/" itemprop="url">Android ListView 用 EditText 实现搜索功能</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2013-05-01T00:00:00+08:00">
+                2013-05-01
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android/" itemprop="url" rel="index">
+                    <span itemprop="name">Android</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2013/05/01/android-listview-edittext-search/" class="leancloud_visitors" data-flag-title="Android ListView 用 EditText 实现搜索功能">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h2 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h2><p>我最近遇到这样一个问题：ListView 显示城市列表，上面有个 EditText 控件，当在 EditText 输入关键字如‘南’时，ListView 重新显示与此相关的城市列表，从而实现搜索功能。</p>
+<p>由于 ListView 用的是系统的 ArrayAdapter,它实现 Filterable 接口，所以这个问题就简单很多了，只需要监听 Edittext 的输入就可以了。</p>
+<h2 id="方案"><a href="#方案" class="headerlink" title="方案"></a>方案</h2><p>下面是关键代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">searchEdittext.addTextChangedListener(<span class="keyword">new</span> TextWatcher() &#123;</div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onTextChanged</span><span class="params">(CharSequence cs, <span class="keyword">int</span> arg1, <span class="keyword">int</span> arg2, <span class="keyword">int</span> arg3)</span> </span>&#123;</div><div class="line">        <span class="comment">// When user change the text</span></div><div class="line">        mAdapter.getFilter().filter(cs);</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">beforeTextChanged</span><span class="params">(CharSequence cs, <span class="keyword">int</span> arg1, <span class="keyword">int</span> arg2, <span class="keyword">int</span> arg3)</span> </span>&#123;</div><div class="line">        <span class="comment">//</span></div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">afterTextChanged</span><span class="params">(Editable arg0)</span> </span>&#123;</div><div class="line">        <span class="comment">//</span></div><div class="line">    &#125;</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<p><strong>如果是自定义的Adapter，也可以实现Filterable接口</strong></p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2013/05/01/android-listview-edittext-search/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://johnnyshieh.me/2012/09/08/ubuntu-install-jdk/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Johnny Shieh">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Johnny Shieh">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2012/09/08/ubuntu-install-jdk/" itemprop="url">Ubuntu 12.04环境下安装JDK 7</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2012-09-08T00:00:00+08:00">
+                2012-09-08
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Linux/" itemprop="url" rel="index">
+                    <span itemprop="name">Linux</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2012/09/08/ubuntu-install-jdk/" class="leancloud_visitors" data-flag-title="Ubuntu 12.04环境下安装JDK 7">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>最近想在 Ubuntu 上做 Android 开发，将自己的摸索的经验给大家分享一下。我觉得网上很多文章说的不太清楚，因此记录下自己的安装过程。<br>现在 Google 最新出的 Android Studio 1.0 正式版，需要 JDK 的最低版本为 jdk7 ,所以推荐安装 JDK 7U71。</p>
+<h2 id="下载-JDK"><a href="#下载-JDK" class="headerlink" title="下载 JDK"></a>下载 JDK</h2><p>自行去官网下载，文件为 <strong>jdk-7u71-linux-x64.tar.gz</strong></p>
+<h2 id="安装JDK"><a href="#安装JDK" class="headerlink" title="安装JDK"></a>安装JDK</h2><p>JDK_PATH – 为你想要安装 JDK 的路径</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">sudo tar axvf jdk-<span class="number">7</span>u71-linux-x64.tar.gz -C JDK_PATH</div><div class="line">cd JDK_PATH</div><div class="line">sudo chmod -R <span class="number">777</span> jdk1.7.0_71</div></pre></td></tr></table></figure>
+<h2 id="配置环境变量"><a href="#配置环境变量" class="headerlink" title="配置环境变量"></a>配置环境变量</h2><p>配置环境变量有两种:</p>
+<p>(1) 为所有用户,配置文件路径 /etc/profile ;(我是用的第1种)</p>
+<p>(2) 为单个用户,配置文件路径 home/user_name/.bashrc ,这样其他用户就没有这个环境变量.</p>
+<h3 id="为所有用户"><a href="#为所有用户" class="headerlink" title="为所有用户"></a>为所有用户</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo gedit /etc/profile</div></pre></td></tr></table></figure>
+<p>在文件最后加入下面代码：    XXXXX – JDK 的安装目录</p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2012/09/08/ubuntu-install-jdk/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1061,7 +905,7 @@
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/page/3/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span>
   </nav>
 
 
