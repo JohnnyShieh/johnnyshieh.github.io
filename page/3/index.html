@@ -285,7 +285,7 @@
   
 
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://johnnyshieh.me/2015/06/25/four-way-to-query-from-contentresolver/">
+    <link itemprop="mainEntityOfPage" href="http://johnnyshieh.me/2015/12/26/ubuntu14.04-tutorial/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Johnny Shieh">
@@ -304,7 +304,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2015/06/25/four-way-to-query-from-contentresolver/" itemprop="url">Android 中利用 ContentResolver 查询数据库的四种方式</a></h1>
+                <a class="post-title-link" href="/2015/12/26/ubuntu14.04-tutorial/" itemprop="url">如何优雅地使用 Ubuntu 14.04 LTS</a></h1>
         
 
         <div class="post-meta">
@@ -316,8 +316,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-06-25T00:00:00+08:00">
-                2015-06-25
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-12-26T00:00:00+08:00">
+                2015-12-26
               </time>
             
 
@@ -339,8 +339,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Android/" itemprop="url" rel="index">
-                    <span itemprop="name">Android</span>
+                  <a href="/categories/Ubuntu/" itemprop="url" rel="index">
+                    <span itemprop="name">Ubuntu</span>
                   </a>
                 </span>
 
@@ -356,7 +356,7 @@
 
           
           
-             <span id="/2015/06/25/four-way-to-query-from-contentresolver/" class="leancloud_visitors" data-flag-title="Android 中利用 ContentResolver 查询数据库的四种方式">
+             <span id="/2015/12/26/ubuntu14.04-tutorial/" class="leancloud_visitors" data-flag-title="如何优雅地使用 Ubuntu 14.04 LTS">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -385,18 +385,29 @@
 
       
         
-          <h2 id="直接使用-ContentResolver-的-query-方法在主线程中查询数据（非异步查询）"><a href="#直接使用-ContentResolver-的-query-方法在主线程中查询数据（非异步查询）" class="headerlink" title="直接使用 ContentResolver 的 query 方法在主线程中查询数据（非异步查询）"></a>直接使用 ContentResolver 的 query 方法在主线程中查询数据（非异步查询）</h2><p>由于是在主线程中执行查询操作，为了不阻塞主线程，尽量在数据量小的时候使用，而且要注意及时关闭 cursor</p>
-<p>代码示例</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">Cursor cursor = getContentResolver().query(ContactsContract.Data.CONTENT_URI, <span class="keyword">null</span>, <span class="keyword">null</span>, <span class="keyword">null</span>, <span class="keyword">null</span>);</div><div class="line"><span class="comment">// 获得 cursor 中数据 ...</span></div><div class="line">cursor.close();</div></pre></td></tr></table></figure>
-<h2 id="利用-Activity-的-managedQuery-方法在主线程中查询数据（非异步查询）"><a href="#利用-Activity-的-managedQuery-方法在主线程中查询数据（非异步查询）" class="headerlink" title="利用 Activity 的 managedQuery 方法在主线程中查询数据（非异步查询）"></a>利用 Activity 的 managedQuery 方法在主线程中查询数据（非异步查询）</h2><p>相对于上一种方式，我们不需要处理 cusor 的关闭，但是同样只适合在数据量小的时候。</p>
-<p>对于 Android 3.0 HONEYCOMB 以上的版本，Android 官方建议使用 LoaderManager 替代，这也是下一种查询方式。</p>
-<p>代码示例：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">Cursor cursor = managedQuery(ContactsContract.Data.CONTENT_URI, <span class="keyword">null</span>, <span class="keyword">null</span>, <span class="keyword">null</span>, <span class="keyword">null</span>);</div><div class="line"><span class="comment">// 获得 cursor 中数据 ...</span></div></pre></td></tr></table></figure>
-<h2 id="利用-LoaderManager-机制中的-CursorLoader-异步查询数据库（异步查询）"><a href="#利用-LoaderManager-机制中的-CursorLoader-异步查询数据库（异步查询）" class="headerlink" title="利用 LoaderManager 机制中的 CursorLoader 异步查询数据库（异步查询）"></a>利用 LoaderManager 机制中的 CursorLoader 异步查询数据库（异步查询）</h2><p>Android3.0 以上可以直接使用，3.0 以下需要使用 support 库.</p>
-<p>注：LoaderManager 开始一个 Loader 之后，如果没有调用 destroyLoader 方法，在 activity 的 onStart 时候会重新开始 Loader 中的任务</p>
+          <p>最近在折腾我的本本 Lenovo I1000，本来想安装 Windows 系统，但是安装 win7 和 win8 中途都出现了文件损坏的问题，就索性用 U 盘安装了 Ubuntu 14.04 系统。之前在 2012 年就开始尝试过 12.04 版本,感觉用来开发还是不错的,因为玩游戏上 QQ 都不太方便，所以少了很多干扰. 不过安装完系统后需要做一些优化，才能让自己用的更加顺手。</p>
+<p>建议安装的时候先选择中文语言，在 language-support 更新语言包再切换到 English，这样中文编码的问题可以少一点.</p>
+<p>这里先给给出我的电脑配置:</p>
+<p>机型: Lenovo I1000 (联想小新出色版)</p>
+<p>显卡: Intel 集成显卡</p>
+<p>系统: Ubuntu 14.04 64 位</p>
+<p>声卡: High Definition Audio</p>
+<p>语言: English</p>
+<p>下面把自己体验的 Ubuntu 14.04 的优化方案整理一下，以防下次折腾的时候四处 Google，也希望对大家有些帮助。</p>
+<p>下面的命令中有的是用<code>sudo</code>有的是用<code>gksudo</code>，而<code>gksudo</code>需要先通过<code>sudo apt-get install gksu</code>安装后才能使用。</p>
+<p>简单说明一下两者的区别:</p>
+<p>sudo: 用来执行命令行 (CLI) 程序，是当前用户的 home 目录</p>
+<p>gksudo: 用来执行图形的 (GUI) 程序，是 root 用户的 home 目录</p>
+<h2 id="Dash-关闭在线搜索建议"><a href="#Dash-关闭在线搜索建议" class="headerlink" title="Dash 关闭在线搜索建议"></a>Dash 关闭在线搜索建议</h2><p>在 Dash 搜索内容的时候会显示在线搜索建议，显然这个完全没有必要，很影响体验。</p>
+<p>可以在系统的 System Settings &gt; Security &amp; Privacy &gt; Search 中去掉 Include online search results 的选项。</p>
+<p>然后可以 Dash App 下禁用很多不需要的 Dash Plugins，提高运行速度.</p>
+<h2 id="解决-gedit-中文乱码"><a href="#解决-gedit-中文乱码" class="headerlink" title="解决 gedit 中文乱码"></a>解决 gedit 中文乱码</h2><p>一般情况都是用 gedit 编辑文本文件，gedit 可以设置显示行数和高亮当前行,但是 gedit 对中文字符集的支持不是很好，有时会出现乱码的情况。</p>
+<p>可以在终端输入下面命令，添加中文编码</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">gsettings <span class="built_in">set</span> org.gnome.gedit.preferences.encodings auto-detected <span class="string">"['GB18030', 'GB2312', 'GBK', 'UTF-8', 'BIG5', 'CURRENT', 'UTF-16']"</span></div><div class="line">gsettings <span class="built_in">set</span> org.gnome.gedit.preferences.encodings shown-in-menu <span class="string">"['GB18030', 'GB2312', 'GBK', 'UTF-8', 'BIG5', 'CURRENT', 'UTF-16']"</span></div></pre></td></tr></table></figure>
+<p>也通过 dconf-editor 编辑修改，需要先安装 dconf-tools。</p>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2015/06/25/four-way-to-query-from-contentresolver/#more" rel="contents">
+            <a class="btn" href="/2015/12/26/ubuntu14.04-tutorial/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -442,7 +453,7 @@
   
 
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://johnnyshieh.me/2015/01/30/java-reflection/">
+    <link itemprop="mainEntityOfPage" href="http://johnnyshieh.me/2015/09/09/android-layoutinflater-analysis/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Johnny Shieh">
@@ -461,7 +472,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2015/01/30/java-reflection/" itemprop="url">Java 反射机制</a></h1>
+                <a class="post-title-link" href="/2015/09/09/android-layoutinflater-analysis/" itemprop="url">Android LayoutInflater 深层解析</a></h1>
         
 
         <div class="post-meta">
@@ -473,8 +484,329 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-01-30T00:00:00+08:00">
-                2015-01-30
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-09-09T00:00:00+08:00">
+                2015-09-09
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android/" itemprop="url" rel="index">
+                    <span itemprop="name">Android</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2015/09/09/android-layoutinflater-analysis/" class="leancloud_visitors" data-flag-title="Android LayoutInflater 深层解析">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>一般学过一段时间的 Android 的开发者都知道 LayoutInflater 可以用来动态把 layout 布局文件生成 View。下面我结合实例与源码一步一步分析 LayoutInflater 的使用方法和内部原理，首先从如何获得 LayoutInflater 的实例开始。</p>
+<h2 id="获得-LayoutInflater-实例"><a href="#获得-LayoutInflater-实例" class="headerlink" title="获得 LayoutInflater 实例"></a>获得 LayoutInflater 实例</h2><p>我们没法通过构造函数实例化 LayoutInflater 对象，因为构造函数是 protected 的，一般通过下面两种方法得到一个标准的 LayoutInflater 实例。</p>
+<h3 id="第一种方式"><a href="#第一种方式" class="headerlink" title="第一种方式"></a>第一种方式</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//android.app.Activity#getLayoutInflater()</span></div><div class="line">LayoutInflater layoutInflater = mActivity.getLayoutInflater();</div></pre></td></tr></table></figure>
+<h3 id="第二种方式"><a href="#第二种方式" class="headerlink" title="第二种方式"></a>第二种方式</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">LayoutInflater inflater = (LayoutInflater)context.getSystemService</div><div class="line">    (Context.LAYOUT_INFLATER_SERVICE);</div></pre></td></tr></table></figure>
+<p>LayoutInflater 有个静态方法对第二种方式做了一下封装，也是我经常使用的方式，源码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * Obtains the LayoutInflater from the given context.</div><div class="line"> */</div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> LayoutInflater <span class="title">from</span><span class="params">(Context context)</span> </span>&#123;</div><div class="line">    LayoutInflater LayoutInflater =</div><div class="line">            (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);</div><div class="line">    <span class="keyword">if</span> (LayoutInflater == <span class="keyword">null</span>) &#123;</div><div class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> AssertionError(<span class="string">"LayoutInflater not found."</span>);</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> LayoutInflater;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="inflate-加载布局文件"><a href="#inflate-加载布局文件" class="headerlink" title="inflate 加载布局文件"></a>inflate 加载布局文件</h2><p>得到 LayoutInflater 实例后就可以调用 inflate 方法加载布局文件了，一般使用其提供的下面两个方法：</p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2015/09/09/android-layoutinflater-analysis/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://johnnyshieh.me/2015/09/03/android-handler-memory-leak/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Johnny Shieh">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Johnny Shieh">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2015/09/03/android-handler-memory-leak/" itemprop="url">[译] Android 中由 Handler 和内部类引起的内存泄漏</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-09-03T00:00:00+08:00">
+                2015-09-03
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android/" itemprop="url" rel="index">
+                    <span itemprop="name">Android</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2015/09/03/android-handler-memory-leak/" class="leancloud_visitors" data-flag-title="[译] Android 中由 Handler 和内部类引起的内存泄漏">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p><strong>原文链接：</strong><a href="http://www.androiddesignpatterns.com/2013/01/inner-class-handler-memory-leak.html" target="_blank" rel="external">How to Leak a Context: Handlers &amp; Inner Classes</a>    </p>
+<p> <strong>作者：</strong><a href="https://plus.google.com/+AlexLockwood/posts" target="_blank" rel="external">Alex Lockwood</a></p>
+<h2 id="泄露场景"><a href="#泄露场景" class="headerlink" title="泄露场景"></a>泄露场景</h2><p>在 Android 中我们经常用 Handler 来处理异步消息，把非主线程的操作结果放在主线程中更新 UI。请思考一下下面的代码有没有问题：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SampleActivity</span> <span class="keyword">extends</span> <span class="title">Activity</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="keyword">private</span> <span class="keyword">final</span> Handler mLeakyHandler = <span class="keyword">new</span> Handler() &#123;</div><div class="line">        <span class="meta">@Override</span></div><div class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">handleMessage</span><span class="params">(Message msg)</span> </span>&#123;</div><div class="line">        <span class="comment">// ... </span></div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>虽然看起来好像没什么问题，但是这段代码可能引起内存泄露。Android Lint 工具会给出以下警告：</p>
+<blockquote>
+<p>In Android, Handler classes should be static or leaks might occur, Messages enqueued on the application thread’s MessageQueue also retain their target Handler. If the Handler is an inner class, its outer class will be retained as well. To avoid leaking the outer class, declare the Handler as a static nested class with a WeakReference to its outer class</p>
+</blockquote>
+<p>但是什么东西泄漏了，内存泄漏怎么发生的我们还是不清楚。接下来我们慢慢分析泄漏的原因：</p>
+<ol>
+<li><p>当一个 Android 应用启动时，框架会分配到一个 Looper 实例给应用的主线程。这个 Looper 的主要工作就是处理一个接着一个的消息对象。在 Android 中，所有 Android 框架的事件（比如 Activity 的生命周期方法的调用和按钮的点击等）都是放到消息中，然后加入到 Looper 要处理的消息队列中，由 Looper 依次处理。主线程的 Looper 的生命周期和应用的一样长。</p>
+</li>
+<li><p>当在主线程中初始化一个 Handler 时，它就会关联到 Looper 的消息队列。发送到消息队列的消息本身就持有 Handler 的引用，只有这样 Looper 在处理这个条消息的时候才能调用 Handler#handleMessage(Message) 处理消息。</p>
+</li>
+<li><p>在 Java 中，非静态的内部类和匿名内部类都会隐式地持有其外部类的引用，而静态的内部类则不会。</p>
+</li>
+</ol>
+<p>上面的代码还是很难察觉哪里会导致内存泄漏，那么再看看下面这个例子：</p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2015/09/03/android-handler-memory-leak/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://johnnyshieh.me/2015/08/24/how-hashmap-work/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Johnny Shieh">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Johnny Shieh">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2015/08/24/how-hashmap-work/" itemprop="url">[转] Java HashMap 的工作原理</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-08-24T00:00:00+08:00">
+                2015-08-24
               </time>
             
 
@@ -513,7 +845,7 @@
 
           
           
-             <span id="/2015/01/30/java-reflection/" class="leancloud_visitors" data-flag-title="Java 反射机制">
+             <span id="/2015/08/24/how-hashmap-work/" class="leancloud_visitors" data-flag-title="[转] Java HashMap 的工作原理">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -542,27 +874,13 @@
 
       
         
-          <h2 id="什么是反射？"><a href="#什么是反射？" class="headerlink" title="什么是反射？"></a>什么是反射？</h2><p>Java 的反射机制可以使得程序在 Java 运行时能够检测、访问并且修改编译时完全未知的 classes，这个概念很容易和内省混淆。下面是 WiKi 上对这两个概念给出的定义：</p>
-<p><strong>反射</strong>（Reflection）：反射是指计算机程序在运行时可以访问、检测和修改它本身状态或行为的一种能力。<br><strong>内省</strong>（Introspection）：内省是指计算机程序在运行检查对象类型的一种能力，通常也可以称作<strong>运行时类型检查</strong>。</p>
-<p>从上面的定义可以看出，相对于内省，反射更进一步。例如，Java 具有反射特性，而 C++ 不具有反射特性只具有内省特性。</p>
-<h2 id="反射有什么用途？"><a href="#反射有什么用途？" class="headerlink" title="反射有什么用途？"></a>反射有什么用途？</h2><p>反射主要提供以下功能：</p>
-<ol>
-<li><p>在运行时检查对象的类型</p>
-</li>
-<li><p>在运行时新建类的实例</p>
-</li>
-<li><p>在运行时检测对象一个类的成员变量和方法</p>
-</li>
-<li><p>在运行时调用对象的任意方法</p>
-</li>
-<li><p>在运行时修改构造函数、成员变量和方法的访问权限</p>
-</li>
-<li><p>等等</p>
-</li>
-</ol>
+          <p><strong>本文转载自 <a href="http://www.importnew.com/" target="_blank" rel="external">ImportNew</a> - <a href="http://www.importnew.com/author/miracle1919" target="_blank" rel="external">miracle1919</a>, 翻译自 <a href="http://www.javacodegeeks.com/2014/03/how-hashmap-works-in-java.html" target="_blank" rel="external">javacodegeeks</a>。</strong></p>
+<p>面试的时候经常会遇见诸如：“Java 中的 HashMap 是怎么工作的”，“HashMap 的 get 和 put 内部的工作原理”这样的问题。本文将用一个简单的例子来解释下 HashMap 内部的工作原理。首先我们从一个例子开始，而不仅仅是从理论上，这样，有助于更好地理解，然后，我们来看下 get 和 put 到底是怎样工作的。</p>
+<p>我们来看个非常简单的例子。有一个“国家”（Country）类，我们将要用 Country 对象作为 key，它的首都的名字（String 类型）作为 value。下面的例子有助于我们理解 key-value 对在 HashMap 中是如何存储的。</p>
+<h2 id="Country-java"><a href="#Country-java" class="headerlink" title="Country.java"></a>Country.java</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Country</span> </span>&#123;</div><div class="line"></div><div class="line">    String name;</div><div class="line">    <span class="keyword">long</span> population;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Country</span><span class="params">(String name, <span class="keyword">long</span> population)</span> </span>&#123;</div><div class="line">        <span class="keyword">super</span>();</div><div class="line">        <span class="keyword">this</span>.name = name;</div><div class="line">        <span class="keyword">this</span>.population = population;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getName</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> name;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setName</span><span class="params">(String name)</span> </span>&#123;</div><div class="line">        <span class="keyword">this</span>.name = name;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">long</span> <span class="title">getPopulation</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> population;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setPopulation</span><span class="params">(<span class="keyword">long</span> population)</span> </span>&#123;</div><div class="line">        <span class="keyword">this</span>.population = population;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">// If length of name in country object is even then return 31(any random number) and if odd then return 95(any random number).</span></div><div class="line">    <span class="comment">// This is not a good practice to generate hashcode as below method but I am doing so to give better and easy understanding of hashmap.</span></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">hashCode</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">if</span>(<span class="keyword">this</span>.name.length() % <span class="number">2</span> == <span class="number">0</span>)</div><div class="line">            <span class="keyword">return</span> <span class="number">31</span>;</div><div class="line">        <span class="keyword">else</span> </div><div class="line">            <span class="keyword">return</span> <span class="number">95</span>;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">equals</span><span class="params">(Object obj)</span> </span>&#123;</div><div class="line">        <span class="keyword">if</span>(<span class="keyword">this</span> == obj) &#123;</div><div class="line">            <span class="keyword">return</span> <span class="keyword">true</span>;</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">if</span>(<span class="keyword">null</span> == obj || !(obj <span class="keyword">instanceof</span> Country)) &#123;</div><div class="line">            <span class="keyword">return</span> <span class="keyword">false</span>;</div><div class="line">        &#125;</div><div class="line">        Country other = (Country) obj;</div><div class="line">        <span class="keyword">if</span> (name.equalsIgnoreCase((other.name)))</div><div class="line">            <span class="keyword">return</span> <span class="keyword">true</span>;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">false</span>;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2015/01/30/java-reflection/#more" rel="contents">
+            <a class="btn" href="/2015/08/24/how-hashmap-work/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -608,7 +926,7 @@
   
 
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://johnnyshieh.me/2015/01/16/how-to-use-android-studio/">
+    <link itemprop="mainEntityOfPage" href="http://johnnyshieh.me/2015/08/02/python-remove-utf8-bom/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Johnny Shieh">
@@ -627,7 +945,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2015/01/16/how-to-use-android-studio/" itemprop="url">如何优雅地使用 AndroidStudio</a></h1>
+                <a class="post-title-link" href="/2015/08/02/python-remove-utf8-bom/" itemprop="url">UTF-8 编码去除 BOM 头的 python 脚本</a></h1>
         
 
         <div class="post-meta">
@@ -639,8 +957,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-01-16T00:00:00+08:00">
-                2015-01-16
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-08-02T00:00:00+08:00">
+                2015-08-02
               </time>
             
 
@@ -662,8 +980,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Android/" itemprop="url" rel="index">
-                    <span itemprop="name">Android</span>
+                  <a href="/categories/Python/" itemprop="url" rel="index">
+                    <span itemprop="name">Python</span>
                   </a>
                 </span>
 
@@ -679,7 +997,7 @@
 
           
           
-             <span id="/2015/01/16/how-to-use-android-studio/" class="leancloud_visitors" data-flag-title="如何优雅地使用 AndroidStudio">
+             <span id="/2015/08/02/python-remove-utf8-bom/" class="leancloud_visitors" data-flag-title="UTF-8 编码去除 BOM 头的 python 脚本">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -708,334 +1026,15 @@
 
       
         
-          <p>在 Android Studio 1.0 正式版发布之前，我用的是 IDE 是 Intellij Idea 13（而 Android Studio 就是基于 IDEA 开发的），所以两者在基本使用上没什么大的区别。但是对于之前一直坚守在 Eclipse 阵营的同学们来说，一开始接触 Android Studio 的时候可能会很不习惯，所以在这里，我总结一下自己的优雅的使用方案，希望对大家有所帮助。</p>
-<h2 id="使用-Darcula-黑色极客主题"><a href="#使用-Darcula-黑色极客主题" class="headerlink" title="使用 Darcula 黑色极客主题"></a>使用 Darcula 黑色极客主题</h2><p>Android Studio 有一个非常具有极客范的主题，一眼看上去非常的高大上，而且长时间写代码也不会觉得刺眼（如果觉得太暗了可以适当调高下亮度）。具体如下：</p>
-<p>点菜单栏中 File &gt; Settings ，进入设置页面，在左侧的 IDE Setting 下面选中 Appearance，然后在右侧的 Theme 中选择 Darcula，如下图：</p>
-<p><img src="http://oph5rhcqp.bkt.clouddn.com/studio_theme.png" alt=""></p>
-<h2 id="修改默认字体"><a href="#修改默认字体" class="headerlink" title="修改默认字体"></a>修改默认字体</h2>
+          <p>前几天我在 Windows 写完一篇 markdown 格式的文章，上传到 github page 后，这个文章的页面把 jekyll 的 YAML 头信息也显示出来了，没有像我之前在 Ubuntu 中写的文章一样正常解析 YAML 头信息，最后谷歌了半天发现原因是在 Windows 用记事本保存 UTF-8 编码的文件时会默认加上 BOM 头字符。而 jekyll 的文档中也明确写明了如果使用 UTF-8 编码，那么在文件中一定不要出现 BOM 头字符。</p>
+<p>所以我把如何在 Windows 和 Linux 系统中去除 UTF-8 的 BOM 头的方法做个记录。</p>
+<h2 id="UTF-8-与-UTF-8-BOM-的区别"><a href="#UTF-8-与-UTF-8-BOM-的区别" class="headerlink" title="UTF-8 与 UTF-8 + BOM 的区别"></a>UTF-8 与 UTF-8 + BOM 的区别</h2><p>下面是我从网上复制过来 <strong>BOM</strong> 的简介：</p>
+<p>BOM – Byte Order Mark，中文名译作“字节顺序标记”。在 UCS 编码中有一个叫做 “Zero Width No-Break Space” ，中文译名作“零宽无间断间隔”的字符，它的编码是 FEFF。而 FFFE 在 UCS 中是不存在的字符，所以不应该出现在实际传输中。UCS 规范建议我们在传输字节流前，先传输字符 “Zero Width No-Break Space”。这样如果接收者收到 FEFF，就表明这个字节流是 Big-Endian 的；如果收到 FFFE，就表明这个字节流是 Little- Endian 的。因此字符 “Zero Width No-Break Space” （“零宽无间断间隔”）又被称作 BOM。</p>
+<p>UTF-8 不需要 BOM 来表明字节顺序，但可以用 BOM 来表明编码方式。字符 “Zero Width No-Break Space” 的 UTF-8 编码是 EF BB BF。所以如果接收者收到以 EF BB BF （十六进制）开头的字节流，就知道这是 UTF-8编码了。Windows 就是使用 BOM 来标记文本文件的编码方式的。</p>
+<p>所以 UTF-8 + BOM 其实就是在文件的开头加上了 0xEF 0xBB 0xBF 这三个字节,而这个三个字节是一串隐藏字符。</p>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2015/01/16/how-to-use-android-studio/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://johnnyshieh.me/2015/01/09/linux-18-tar-command-examples/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Johnny Shieh">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Johnny Shieh">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2015/01/09/linux-18-tar-command-examples/" itemprop="url">[译] Linux 中 18 个 tar 命令示例</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-01-09T00:00:00+08:00">
-                2015-01-09
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Linux/" itemprop="url" rel="index">
-                    <span itemprop="name">Linux</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2015/01/09/linux-18-tar-command-examples/" class="leancloud_visitors" data-flag-title="[译] Linux 中 18 个 tar 命令示例">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数 </span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>Linux 中 “tar” 是 tape archive（磁带归档）的缩写，起初经常被 Linux/Unix 系统管理员用来做磁带驱动器的备份。在 Linux 中 tar 命令用来将一些文件和目录变成高度压缩存档文件，这种文件一般是 tarball、tar、gzip 或者 bzip。人们通常用 tar 命令创建压缩存档文件以便在硬盘和机器之间移动复制。</p>
-<p>在这篇文章中我将讲述讨论不同的 tar 命令示例，包括怎么用（tar、tar.gz 和 tar.bz2）压缩算法创建存档文件、怎么解压存档文件、在存档文件中解压出单个文件、查看存档文件的目录、添加文件或目录到存档文件中、在归档文件中删除文件等等。</p>
-<p>这篇文章的主要目的是提供各种 tar 命令示例帮助大家理解 tar 存档的方法。</p>
-<h2 id="创建tar存档文件"><a href="#创建tar存档文件" class="headerlink" title="创建tar存档文件"></a>创建tar存档文件</h2><p>下面命令示例将在当前目录在为 <strong>/home/tecmint</strong> 目录创建名为 <strong>tecmint-14-09-12.tar</strong> 的 <strong>tar</strong> 存档文件。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># tar cvf tecmint-14-09-12.tar /home/tecmint/</span></div><div class="line"></div><div class="line">/home/tecmint/</div><div class="line">/home/tecmint/cleanfiles.sh</div><div class="line">/home/tecmint/openvpn-2.1.4.tar.gz</div><div class="line">/home/tecmint/tecmint-14-09-12.tar</div><div class="line">/home/tecmint/phpmyadmin-2.11.11.3-1.el5.rf.noarch.rpm</div><div class="line">/home/tecmint/rpmforge-release-0.5.2-2.el5.rf.i386.rpm</div><div class="line"></div><div class="line"><span class="comment">## If you want create tar file from multiple file</span></div><div class="line"><span class="comment"># tar cvf backup.tar johnnyshieh.png ubuntu_config.txt</span></div><div class="line"></div><div class="line">johnnyshieh.png</div><div class="line">ubuntu_config.txt</div></pre></td></tr></table></figure>
-<p>让我们来讨论下上面用到的几个参数的含义。</p>
-<p><strong>c</strong> ：创建新的 .tar 存档文件</p>
-<p><strong>v</strong> ：详细显示存档 .tar 文件的进度</p>
-<p><strong>f</strong> ：指定存档文件的文件名</p>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2015/01/09/linux-18-tar-command-examples/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://johnnyshieh.me/2014/11/06/android-add-foreground-selector/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Johnny Shieh">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Johnny Shieh">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2014/11/06/android-add-foreground-selector/" itemprop="url">[译] Android 为 View、ViewGroup 添加前景色</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2014-11-06T00:00:00+08:00">
-                2014-11-06
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Android/" itemprop="url" rel="index">
-                    <span itemprop="name">Android</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2014/11/06/android-add-foreground-selector/" class="leancloud_visitors" data-flag-title="[译] Android 为 View、ViewGroup 添加前景色">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数 </span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>很多人都知道 Android 的卡片式点击效果，这个 selector 是画在前景上的而不是背景上的，虽然我们一般都是用背景色。这个点击效果实现方式也并不难，下面就给出几种情况下的方法。</p>
-<p>下图是 Google Play 应用中按压效果的一个截图：</p>
-<p><img src="http://oph5rhcqp.bkt.clouddn.com/screenshot_googleplay.png" alt=""></p>
-<h2 id="若为-FrameLayout"><a href="#若为-FrameLayout" class="headerlink" title="若为 FrameLayout"></a>若为 FrameLayout</h2><p>添加前景色会非常简单，因为 FrameLayout 本身就有这样一个方法叫 setForeground。实际上，只需要通过在 XML 中<code>android:foreground</code>或代码中动态传一个 selector 作为参数，然后调用 setForeground 就可以了。</p>
-<h2 id="若不为-FrameLayout"><a href="#若不为-FrameLayout" class="headerlink" title="若不为 FrameLayout"></a>若不为 FrameLayout</h2><p>别担心，这也不会很难。我们只要设置给 selector 设置合适的状态（pressed, focused …），然后设置边界并且在视图画好自己后再画它。这样，selector 就会覆盖在视图之上。</p>
-<ul>
-<li>Changing the State</li>
-</ul>
-<p>在 View 这个类，每次视图改变自己的 drawable state 时都会调用的方法：drawableStateChanged</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Override</span></div><div class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">drawableStateChanged</span> <span class="params">()</span> </span>&#123;</div><div class="line">    <span class="keyword">super</span>.drawableStateChanged();</div><div class="line"></div><div class="line">    mForegroundSelector.setState(getDrawableState());</div><div class="line"></div><div class="line">    <span class="comment">//redraw</span></div><div class="line">    invalidate();</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<ul>
-<li>Updating the Drawable Bounds</li>
-</ul>
-<p>每次视图改变大小时都会调用的方法：onSizeChanged</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Override</span></div><div class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onSizeChanged</span> <span class="params">(<span class="keyword">int</span> width, <span class="keyword">int</span> height, <span class="keyword">int</span> oldwidth, <span class="keyword">int</span> oldheight)</span> </span>&#123;</div><div class="line">    <span class="keyword">super</span>.onSizeChanged(width, height, oldwidth, oldheight);</div><div class="line"></div><div class="line">    mForegroundSelector.setBounds(<span class="number">0</span>, <span class="number">0</span>, width, height);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2014/11/06/android-add-foreground-selector/#more" rel="contents">
+            <a class="btn" href="/2015/08/02/python-remove-utf8-bom/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1076,7 +1075,7 @@
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/2/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/4/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/page/2/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><a class="extend next" rel="next" href="/page/4/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1119,7 +1118,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">22</span>
+                <span class="site-state-item-count">28</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -1130,7 +1129,7 @@
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">6</span>
+                <span class="site-state-item-count">7</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -1141,7 +1140,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">20</span>
+                <span class="site-state-item-count">23</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>

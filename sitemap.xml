@@ -2,6 +2,48 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://johnnyshieh.me/2016/10/19/android-arraymap-and-sparsearray/</loc>
+    
+    <lastmod>2017-05-11T10:04:45.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://johnnyshieh.me/2016/11/02/explore-threadlocal/</loc>
+    
+    <lastmod>2017-05-11T10:00:16.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://johnnyshieh.me/2016/10/13/java-singleton-pattern/</loc>
+    
+    <lastmod>2017-05-11T09:34:41.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://johnnyshieh.me/2016/09/21/android-annotation/</loc>
+    
+    <lastmod>2017-05-11T09:24:04.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://johnnyshieh.me/2016/09/07/annotation-basic/</loc>
+    
+    <lastmod>2017-05-11T09:23:54.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://johnnyshieh.me/2016/06/12/android-develop-tips-and-tricks/</loc>
+    
+    <lastmod>2017-05-11T08:51:12.000Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://johnnyshieh.me/2016/02/23/volleyex-ttl/</loc>
     
     <lastmod>2017-05-11T06:36:36.000Z</lastmod>

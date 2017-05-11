@@ -1,0 +1,1047 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta http-equiv="Content-Language" content="zh-cn">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+  <meta name="google-site-verification" content="r1Es2KSXuS6zYdab4rZeEA6X-pEwRwyT4x89S7a4EHE">
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css">
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1">
+
+
+
+
+
+
+<meta name="description" content="Java 中注解的基本概念, 以及是如何工作的">
+<meta name="keywords" content="探索注解, 注解, Annotation, 基本概念, Johnny, Shieh, Johnny Shieh, johnny shieh blog, ">
+<meta property="og:type" content="article">
+<meta property="og:title" content="探索注解之注解的基本概念">
+<meta property="og:url" content="http://johnnyshieh.me/2016/09/07/annotation-basic/index.html">
+<meta property="og:site_name" content="Johnny Shieh">
+<meta property="og:description" content="Java 中注解的基本概念, 以及是如何工作的">
+<meta property="og:updated_time" content="2017-05-11T09:23:54.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="探索注解之注解的基本概念">
+<meta name="twitter:description" content="Java 中注解的基本概念, 以及是如何工作的">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"right","display":"always","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://johnnyshieh.me/2016/09/07/annotation-basic/">
+
+
+
+
+
+  <title>探索注解之注解的基本概念 | Johnny Shieh</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Johnny Shieh</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">人如果没有梦想，和咸鱼有什么分别</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-friends">
+          <a href="/friends" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-users"></i> <br>
+            
+            小伙伴
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://johnnyshieh.me/2016/09/07/annotation-basic/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Johnny Shieh">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Johnny Shieh">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">探索注解之注解的基本概念</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-09-07T16:51:51+08:00">
+                2016-09-07
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java/" itemprop="url" rel="index">
+                    <span itemprop="name">Java</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a class="cloud-tie-join-count" href="/2016/09/07/annotation-basic/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count join-count" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2016/09/07/annotation-basic/" class="leancloud_visitors" data-flag-title="探索注解之注解的基本概念">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>自从 Java 5.0 版本引入<strong>注解</strong>后，它就成为 Java 平台中非常重要的一部分。在日常开发过程中时常可以看到 @Override，@Deprecated 这样的注解，在使用 Butterknife 减少 findViewById 这样的重复劳动时也经常用到 @BindView 注解。下面几篇文章将讲述注解的基本概念，注解处理器的使用以及 Android中 的注解：</p>
+<ul>
+<li><p><a href="http://johnnyshieh.me/2016/09/07/annotation-basic/">探索注解之注解的基本概念</a></p>
+</li>
+<li><p><a href="http://blog.csdn.net/lmj623565791/article/details/51931859" target="_blank" rel="external">探索注解之 APT 编译时处理注解</a> (鸿神写编译时注解的文章，非常好，所以自己就不再重复写了)</p>
+</li>
+<li><p><a href="http://johnnyshieh.me/2016/09/21/android-annotation/">探索注解之 Android 中的注解</a></p>
+</li>
+</ul>
+<h2 id="什么是注解？"><a href="#什么是注解？" class="headerlink" title="什么是注解？"></a>什么是注解？</h2><p><strong>注解（Annotations），就是元数据，一种描述程序代码的数据，并且对程序运行没有任何影响。</strong></p>
+<p>例如下面这段代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Override</span></div><div class="line"><span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span> </span>&#123;</div><div class="line">    <span class="keyword">return</span> <span class="string">"This is String Representation of current object"</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>在上面的代码中，我重写了 toString() 方法并使用了 @Override 注解。但是即便我不使用 @Override 注解标记代码，程序也能正常运行。那么这个注解有什么意义？@Override 告诉编译器这个方法是重写父类的方法，如果父类中没有该方法，编译器就会报错，提示没有重写父类中的方法。如果我不小心把 toString 写成 toStrings，而且也没有使用 @Override 注解的话，程序依然可以运行，但是跟之前期望就会大有不同。</p>
+<p>注解有下面几种作用：</p>
+<ul>
+<li><strong>为编译器提供信息</strong> – 注解可以被编译器用来检测错误或抑制警告</li>
+<li><strong>编译时和部署时处理</strong> – 一些工具可以根据注解信息生成代码，XML 文件等等，例如 APT（Annotation Processing Tool）</li>
+<li><strong>运行时处理</strong> – 有些注解可以在运行时通过反射获取</li>
+</ul>
+<p>在引入注解之前，开发人员通常使用标记 interfaces，注释或者 javadoc 定义元数据，没有统一的一种方式。注解定义了一种标准的描述元数据的方式，注解是一种应用于类、方法、参数、变量、构造器及包声明中的特殊修饰符。它是一种由 JSR-175 标准选择用来描述元数据的一种工具。</p>
+<a id="more"></a>
+<h2 id="Java-内置注解"><a href="#Java-内置注解" class="headerlink" title="Java 内置注解"></a>Java 内置注解</h2><p>在了解注解的定义后，先看看我们熟悉的 Java 内置的注解：</p>
+<p><strong>@Deprecated</strong> – 意味着标记的元素这已经弃用了，如果使用了 @Deprecated 标记的元素编译器会提示警告。Java 推荐在 Javadoc 中提供弃用的原因并提供替代的方案.</p>
+<p>Date 的 pare 方法<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line">* Returns the millisecond value of the date and time parsed from the</div><div class="line">* specified &#123;<span class="doctag">@code</span> String&#125;. Many date/time formats are recognized, including IETF</div><div class="line">* standard syntax, i.e. Tue, 22 Jun 1999 12:16:00 GMT-0500</div><div class="line">*</div><div class="line">* <span class="doctag">@param</span> string</div><div class="line">*            the String to parse.</div><div class="line">* <span class="doctag">@return</span> the millisecond value parsed from the String.</div><div class="line">*</div><div class="line">* <span class="doctag">@deprecated</span> Use &#123;<span class="doctag">@link</span> DateFormat&#125; instead.</div><div class="line">*/</div><div class="line"><span class="meta">@Deprecated</span></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">long</span> <span class="title">parse</span><span class="params">(String string)</span></span></div></pre></td></tr></table></figure></p>
+<p><strong>@Override</strong> – 标记该方法是重写父类的，当父类的该方法移除或修改时，编译器会提供错误信息。</p>
+<p><strong>@SuppressWarnings</strong> – 告诉编译器忽略某些特定的警告。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@SuppressWarnings</span>(&#123;<span class="string">"unchecked"</span>, <span class="string">"deprecation"</span>&#125;)</div></pre></td></tr></table></figure>
+<p><strong>@SafeVarargs</strong> – 忽略”堆污染”警告，Java 7 引入的</p>
+<p><strong>@FunctionalInterface</strong> – Java 8 引入的，用来表示接口是函数式接口</p>
+<h2 id="元注解"><a href="#元注解" class="headerlink" title="元注解"></a>元注解</h2><p>在上面 Java 自带注解或者自定义注解时，会发现应用于注解本身的注解，这就是元注解。这些元注解都定义在<code>java.lang.annotation</code>包中。</p>
+<p><strong>@Retention</strong> – 定义了注解的生命周期</p>
+<ul>
+<li><p>RetentionPolicy.SOURCE - 只能在源文件中保留，被编译器丢弃</p>
+</li>
+<li><p>RetentionPolicy.CLASS - 可以在 .Class 文件中保留，被 JVM 丢弃，这也是默认值</p>
+</li>
+<li><p>RetentionPolicy.RUNTIME - 可以在运行时保留</p>
+</li>
+</ul>
+<p><strong>@Documented</strong> – 可以使用 javadoc 或类似工具文档化</p>
+<p><strong>@Target</strong> –  指定注解可修饰的元素范围，即可以标记在哪里（方法上、类上等等），如果不使用 @Target 注解，可以修饰任何元素。下面是取值列表：</p>
+<ul>
+<li><p>ElementType.ANNOTATION_TYPE - 描述其他注解</p>
+</li>
+<li><p>ElementType.CONSTRUCTOR - 描述构造器</p>
+</li>
+<li><p>ElementType.FIELD - 描述类属性（包括 enum 常量）</p>
+</li>
+<li><p>ElementType.LOCAL_VARIABLE - 描述局部变量</p>
+</li>
+<li><p>ElementType.METHOD - 描述方法</p>
+</li>
+<li><p>ElementType.PACKAGE - 描述包</p>
+</li>
+<li><p>ElementType.PARAMETER - 描述参数</p>
+</li>
+<li><p>ElementType.TYPE - 描述类、接口（包括注解）、枚举 enum</p>
+</li>
+</ul>
+<p><strong>@Inherited</strong> – 表明被标注的注解可被子类继承</p>
+<p><strong>@Repeatable</strong> – Java 8 引入，表明被标记的注解可以在一个声明或类型中使用多次</p>
+<h2 id="自定义注解"><a href="#自定义注解" class="headerlink" title="自定义注解"></a>自定义注解</h2><p>自定义注解有点类似写接口，只是<code>interface</code>关键字需要前缀<code>@</code>。我们可以声明一个描述类属性的注解，下面是具体例子：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Documented</span></div><div class="line"><span class="meta">@Target</span>(ElementType.FIELD)</div><div class="line"><span class="meta">@Retention</span>(RetentionPolicy.RUNTIME)</div><div class="line"><span class="keyword">public</span> <span class="meta">@interface</span> Column &#123;</div><div class="line">    <span class="function">String <span class="title">name</span><span class="params">()</span></span>;       <span class="comment">// 定义 name 属性</span></div><div class="line">    <span class="function">String <span class="title">type</span><span class="params">()</span></span>;       <span class="comment">// 定义 type 属性</span></div><div class="line">    <span class="function"><span class="keyword">boolean</span> <span class="title">isPrimaryKey</span><span class="params">()</span> <span class="keyword">default</span> <span class="keyword">false</span></span>;   <span class="comment">// 定义 isPrimaryKey 属性，默认值为 false。</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>上面定义了 @Column 注解，有三个成员变量，成员变量的声明类似无参方法的声明，定义注解的规则如下：</p>
+<ul>
+<li><p>注解可以用元注解标记，指定可应用的元素类型，或确定生命周期等</p>
+</li>
+<li><p>注解的属性用类似无参方法的声明，不能带有任何参数</p>
+</li>
+<li><p>注解的属性类型只能是基本数据类型、String、Enum、注解以及相应的数组</p>
+</li>
+<li><p>注解的属性可以有默认值，非基本数据类型的值不能为<code>null</code></p>
+</li>
+<li><p>如果只有一个属性，建议命名为 “value”，使用时就无需标明属性名</p>
+</li>
+</ul>
+<h2 id="Java-注解解析（运行时）"><a href="#Java-注解解析（运行时）" class="headerlink" title="Java 注解解析（运行时）"></a>Java 注解解析（运行时）</h2><p>上面我们已经定义了 @Column 注解，下面是注解使用的例子：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="keyword">final</span> <span class="class"><span class="keyword">class</span> <span class="title">Bookmarks</span> </span>&#123;</div><div class="line">    </div><div class="line">    <span class="function"><span class="keyword">private</span> <span class="title">Bookmarks</span><span class="params">()</span> </span>&#123;&#125;</div><div class="line">    </div><div class="line">    <span class="meta">@Column</span>(name = <span class="string">"_id"</span>, type = <span class="string">"INTEGER"</span>, isPrimaryKey = <span class="keyword">true</span>)</div><div class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> String ID = <span class="string">"_id"</span>;</div><div class="line">    </div><div class="line">    <span class="meta">@Column</span>(name = <span class="string">"title"</span>, type = <span class="string">"TEXT"</span>)</div><div class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> String TITLE = <span class="string">"title"</span>;</div><div class="line">    </div><div class="line">    <span class="meta">@Column</span>(name = <span class="string">"url"</span>, type = <span class="string">"TEXT"</span>)</div><div class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> String URL = <span class="string">"url"</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>之前说过注解不会影响代码的运行，因此必须配合相应的注解处理工具，否则注解跟注释没什么分别。根据 @Retention 指定的值不同，有不同的处理方式。声明为 RetentionPolicy.CLASS 时，可以用 javac 内置的 APT（Annotation Processing Tool）在编译时扫描处理注解，而声明为 RetentionPolicy.RUNTIME 时，可以用反射 API 的 AnnotatedElement 接口解析注解。</p>
+<p>下面的代码示例是用反射解析上面 Bookmarks 类中的注解：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">parseColumnAnnotation</span><span class="params">()</span> </span>&#123;</div><div class="line">    Field[] fields = Bookmarks.class.getDeclaredFields();</div><div class="line">    <span class="keyword">for</span> (Field field : fields) &#123;</div><div class="line">        Column column = field.getAnnotation(Column.class);</div><div class="line">        System.out.println(<span class="string">"column name = "</span> + column.name() + <span class="string">" type = "</span> + column.type() + <span class="string">" isPrimaryKey = "</span> + column.isPrimaryKey());</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>运行结果如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">column name = _id type = INTEGER isPrimaryKey = true</div><div class="line">column name = title type = TEXT isPrimaryKey = false</div><div class="line">column name = url type = TEXT isPrimaryKey = false</div></pre></td></tr></table></figure>
+<p><strong>参考文章：</strong></p>
+<ul>
+<li><p><a href="https://www.javacodegeeks.com/2012/11/java-annotations-tutorial-with-custom-annotation.html" target="_blank" rel="external">Java Annotations Tutorial with Custom Annotation</a></p>
+</li>
+<li><p><a href="http://docs.oracle.com/javase/tutorial/java/annotations/index.html" target="_blank" rel="external">Oracle Annotation Tutorials</a></p>
+</li>
+<li><p><a href="http://idlebrains.org/tutorials/java-tutorials/how-annotations-work-java/" target="_blank" rel="external">How Annotations Work in Java</a></p>
+</li>
+</ul>
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/android/" rel="tag"># android</a>
+          
+            <a href="/tags/注解/" rel="tag"># 注解</a>
+          
+            <a href="/tags/java/" rel="tag"># java</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/06/12/android-develop-tips-and-tricks/" rel="next" title="Android 开发过程中的坑和小技巧">
+                <i class="fa fa-chevron-left"></i> Android 开发过程中的坑和小技巧
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/09/21/android-annotation/" rel="prev" title="探索注解之 Android 中的注解">
+                探索注解之 Android 中的注解 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="cloud-tie-wrapper" class="cloud-tie-wrapper"></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image" src="/uploads/avatar.png" alt="Johnny Shieh">
+          <p class="site-author-name" itemprop="name">Johnny Shieh</p>
+           
+              <p class="site-description motion-element" itemprop="description">我本微末，心向天空</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">28</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">7</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">23</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/JohnnyShieh" rel="external nofollow" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/johnnyshieh17" rel="external nofollow" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  Weibo
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="mailto:JohnnyShieh17@gmail.com" rel="external nofollow" target="_blank" title="Gmail">
+                  
+                    <i class="fa fa-fw fa-envelope"></i>
+                  
+                  Gmail
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="" rel="external nofollow" target="_blank" title="Wechat">
+                  
+                    <i class="fa fa-fw fa-wechat"></i>
+                  
+                  Wechat
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#什么是注解？"><span class="nav-number">1.</span> <span class="nav-text">什么是注解？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Java-内置注解"><span class="nav-number">2.</span> <span class="nav-text">Java 内置注解</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#元注解"><span class="nav-number">3.</span> <span class="nav-text">元注解</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#自定义注解"><span class="nav-number">4.</span> <span class="nav-text">自定义注解</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Java-注解解析（运行时）"><span class="nav-number">5.</span> <span class="nav-text">Java 注解解析（运行时）</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy;  2015 - 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Johnny Shieh</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" rel="external nofollow" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" rel="external nofollow" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.1"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+    
+    <script>
+      var cloudTieConfig = {
+        url: document.location.href, 
+        sourceId: "",
+        productKey: "e11372e4458e492087d70c31cf1e0d8c",
+        target: "cloud-tie-wrapper"
+      };
+    </script>
+    <script src="https://img1.ws.126.net/f2e/tie/yun/sdk/loader.js"></script>
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("n55tIxEzsDxW0BEFhehOkP2K-gzGzoHsz", "TwYjARitxhv7iOhbg7k2a9xB");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  
+
+  
+
+</body>
+</html>
