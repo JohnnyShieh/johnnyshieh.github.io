@@ -9,6 +9,7 @@
 <head>
   <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta http-equiv="Content-Language" content="zh-cn">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
 
 
@@ -274,6 +275,483 @@
           <div id="content" class="content">
             
   <section id="posts" class="posts-expand">
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://johnnyshieh.me/2016/02/23/volleyex-ttl/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Johnny Shieh">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Johnny Shieh">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/02/23/volleyex-ttl/" itemprop="url">一步一步扩展 Volley (二)，缓存生存时间 TTL</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-02-23T14:29:50+08:00">
+                2016-02-23
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android/" itemprop="url" rel="index">
+                    <span itemprop="name">Android</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2016/02/23/volleyex-ttl/" class="leancloud_visitors" data-flag-title="一步一步扩展 Volley (二)，缓存生存时间 TTL">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>之前根据 Volley 的工作流程大致解析了它的框架，接下来继续分析 Volley 的缓存机制,下面我在解析其缓存机制的同时也讲述一下个人对缓存生存时间的扩展.</p>
+<h2 id="缓存调度器的处理流程"><a href="#缓存调度器的处理流程" class="headerlink" title="缓存调度器的处理流程"></a>缓存调度器的处理流程</h2><p>要明白 Volley 的缓存机制，关键在于分析缓存调度器处理请求的过程，下面是我画的流程图:</p>
+<p><img src="http://oph5rhcqp.bkt.clouddn.com/volley_cache_flow.png" alt=""></p>
+<p>这张流程图主要对应 CacheDispatcher 的 run 方法，首先根据 cachekey 查找缓存，如果没有缓存就把请求放到网络等待队列中，缓存调度器继续处理下一个请求；如果有缓存，但是缓存已经过期了，也将请求放到网络等待队列中并处理下一个请求，如果缓存没有过期，继续判断缓存是否需要刷新；如果不需要更新缓存，则直接传递解析后的缓存数据到主线程，如果需要更新缓存，则在传递解析后的缓存数据到主线程之后还会把请求添加到网络等待队列。</p>
+<p>下面再看下流程中的两个关键的方法的源码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * Data and metadata for an entry returned by the cache.</div><div class="line"> */</div><div class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">Entry</span> </span>&#123;</div><div class="line">    <span class="comment">/** The data returned from cache. */</span></div><div class="line">    <span class="keyword">public</span> <span class="keyword">byte</span>[] data;</div><div class="line"></div><div class="line">    <span class="comment">/** ETag for cache coherency. */</span></div><div class="line">    <span class="keyword">public</span> String etag;</div><div class="line"></div><div class="line">    <span class="comment">/** Date of this response as reported by the server. */</span></div><div class="line">    <span class="keyword">public</span> <span class="keyword">long</span> serverDate;</div><div class="line"></div><div class="line">    <span class="comment">/** The last modified date for the requested object. */</span></div><div class="line">    <span class="keyword">public</span> <span class="keyword">long</span> lastModified;</div><div class="line"></div><div class="line">    <span class="comment">/** TTL for this record. */</span></div><div class="line">    <span class="keyword">public</span> <span class="keyword">long</span> ttl;</div><div class="line"></div><div class="line">    <span class="comment">/** Soft TTL for this record. */</span></div><div class="line">    <span class="keyword">public</span> <span class="keyword">long</span> softTtl;</div><div class="line"></div><div class="line">    <span class="comment">/** Immutable response headers as received from server; must be non-null. */</span></div><div class="line">    <span class="keyword">public</span> Map&lt;String, String&gt; responseHeaders = Collections.emptyMap();</div><div class="line"></div><div class="line">    <span class="comment">/** True if the entry is expired. */</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isExpired</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">this</span>.ttl &lt; System.currentTimeMillis();</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">/** True if a refresh is needed from the original data source. */</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">refreshNeeded</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">this</span>.softTtl &lt; System.currentTimeMillis();</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>从上面的代码中可以看出 ttl 就是缓存的生存时间，如果当前时间大于这个时间，缓存就过期，需要重新从网络请求数据。而 softTtl 代表软生存时间，过了这个时间缓存没有完全过期，可以返回给主线程，但是需要从网络请求新的数据刷新缓存.</p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2016/02/23/volleyex-ttl/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://johnnyshieh.me/2016/02/18/asynctaskloader-rejectedexecutionexception/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Johnny Shieh">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Johnny Shieh">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/02/18/asynctaskloader-rejectedexecutionexception/" itemprop="url">Android 中 LoaderManager 用 restartLoader 频繁启动 AsyncTaskLoader 产生 RejectedExecutionException 的解决方案</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-02-18T14:20:36+08:00">
+                2016-02-18
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android/" itemprop="url" rel="index">
+                    <span itemprop="name">Android</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2016/02/18/asynctaskloader-rejectedexecutionexception/" class="leancloud_visitors" data-flag-title="Android 中 LoaderManager 用 restartLoader 频繁启动 AsyncTaskLoader 产生 RejectedExecutionException 的解决方案">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>在项目过程中遇到 AsyncTaskLoader 出现 RejectedExecutionException 报错应用退出的问题，问题是偶现的，后面发现根本原因是因为 AsyncTask 的 cancel(false) 方法并没有真正的取消掉任务。下面我写了一个会出现这个问题的 demo，看看这个问题是如何产生的。</p>
+<h2 id="问题分析"><a href="#问题分析" class="headerlink" title="问题分析"></a>问题分析</h2><p>demo 的关键代码如下：</p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2016/02/18/asynctaskloader-rejectedexecutionexception/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://johnnyshieh.me/2016/01/13/volleyex-brief/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Johnny Shieh">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Johnny Shieh">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/01/13/volleyex-brief/" itemprop="url">一步一步扩展 Volley (一)，Volley 框架解析</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-01-13T00:00:00+08:00">
+                2016-01-13
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android/" itemprop="url" rel="index">
+                    <span itemprop="name">Android</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2016/01/13/volleyex-brief/" class="leancloud_visitors" data-flag-title="一步一步扩展 Volley (一)，Volley 框架解析">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>去年 11 月开始写一个扩展 Volley 的网络通信框架 ———— VolleyEx，虽然 Github 上已经有 <a href="https://github.com/DWorkS/VolleyPlus" target="_blank" rel="external">VolleyPlus</a> 等优秀的扩展框架，但我想借此研究异步加载网络请求的原理，学习下 Volley 的代码设计，所以还是自己重新写一个扩展框架。并且把我一步一步扩展 Volley 的过程用博客的形式记录下来，希望可以帮助大家更好地理解 Volley 及网络加载。在扩展 Volley 之前，需要先了解其大致框架，明白它的优势与不足，这也是这篇文章的主要内容。</p>
+<h2 id="Volley-简介"><a href="#Volley-简介" class="headerlink" title="Volley 简介"></a>Volley 简介</h2><p><img src="http://oph5rhcqp.bkt.clouddn.com/volley.png" alt=""></p>
+<p>Volley 是 2013 Google I/O Session 推出的一个网络通信框架，便于异步加载网络请求和图片请求，适用于<strong>数据量小</strong>和<strong>通信频繁</strong>的网络操作。但是对于数据量大的网络（例如文件下载），Volley 的表现就很糟糕了，这种情况推荐用 DownloadManager。</p>
+<p>根据 Android 官方培训课程中 <a href="http://developer.android.com/training/volley/index.html" target="_blank" rel="external">Volley 教程</a>的说明，Volle 有下面几个优点：</p>
+<ol>
+<li><p>自动调度网络请求</p>
+</li>
+<li><p>高并发网络连接</p>
+</li>
+<li><p>通过标准的 HTTP cache coherence 缓存磁盘，内存透明的响应</p>
+</li>
+<li><p>支持指定请求的优先级</p>
+</li>
+<li><p>框架容易定制，如重试和回退功能</p>
+</li>
+<li><p>清晰的加载流程使异步加载网络数据并正确地显示到UI更加简单</p>
+</li>
+<li><p>包含了调试与追踪工具</p>
+</li>
+</ol>
+<p>关于 Volley 的不足之处，在解析完其框架再来讨论。</p>
+<p>Volley 的官方项目地址： <a href="https://android.googlesource.com/platform/frameworks/volley/" target="_blank" rel="external">https://android.googlesource.com/platform/frameworks/volley/</a></p>
+<p>Volley 的 Github 地址（由国人做的映射）： <a href="https://github.com/mcxiaoke/android-volley" target="_blank" rel="external">https://github.com/mcxiaoke/android-volley</a></p>
+<p>这是 2013 Google I/O 大会上关于 Volley 的文档： <a href="http://oph5rhcqp.bkt.clouddn.com/Volley-Easy_Fast_Networking_for_Android.pdf" target="_blank" rel="external">Volley-Easy,Fast Networking for Android.pdf</a></p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2016/01/13/volleyex-brief/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
     
       
 
@@ -593,484 +1071,11 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://johnnyshieh.me/2015/09/09/android-layoutinflater-analysis/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Johnny Shieh">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Johnny Shieh">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2015/09/09/android-layoutinflater-analysis/" itemprop="url">Android LayoutInflater 深层解析</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-09-09T00:00:00+08:00">
-                2015-09-09
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Android/" itemprop="url" rel="index">
-                    <span itemprop="name">Android</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2015/09/09/android-layoutinflater-analysis/" class="leancloud_visitors" data-flag-title="Android LayoutInflater 深层解析">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数 </span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>一般学过一段时间的 Android 的开发者都知道 LayoutInflater 可以用来动态把 layout 布局文件生成 View。下面我结合实例与源码一步一步分析 LayoutInflater 的使用方法和内部原理，首先从如何获得 LayoutInflater 的实例开始。</p>
-<h2 id="获得-LayoutInflater-实例"><a href="#获得-LayoutInflater-实例" class="headerlink" title="获得 LayoutInflater 实例"></a>获得 LayoutInflater 实例</h2><p>我们没法通过构造函数实例化 LayoutInflater 对象，因为构造函数是 protected 的，一般通过下面两种方法得到一个标准的 LayoutInflater 实例。</p>
-<h3 id="第一种方式"><a href="#第一种方式" class="headerlink" title="第一种方式"></a>第一种方式</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//android.app.Activity#getLayoutInflater()</span></div><div class="line">LayoutInflater layoutInflater = mActivity.getLayoutInflater();</div></pre></td></tr></table></figure>
-<h3 id="第二种方式"><a href="#第二种方式" class="headerlink" title="第二种方式"></a>第二种方式</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">LayoutInflater inflater = (LayoutInflater)context.getSystemService</div><div class="line">    (Context.LAYOUT_INFLATER_SERVICE);</div></pre></td></tr></table></figure>
-<p>LayoutInflater 有个静态方法对第二种方式做了一下封装，也是我经常使用的方式，源码如下：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * Obtains the LayoutInflater from the given context.</div><div class="line"> */</div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> LayoutInflater <span class="title">from</span><span class="params">(Context context)</span> </span>&#123;</div><div class="line">    LayoutInflater LayoutInflater =</div><div class="line">            (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);</div><div class="line">    <span class="keyword">if</span> (LayoutInflater == <span class="keyword">null</span>) &#123;</div><div class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> AssertionError(<span class="string">"LayoutInflater not found."</span>);</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> LayoutInflater;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<h2 id="inflate-加载布局文件"><a href="#inflate-加载布局文件" class="headerlink" title="inflate 加载布局文件"></a>inflate 加载布局文件</h2><p>得到 LayoutInflater 实例后就可以调用 inflate 方法加载布局文件了，一般使用其提供的下面两个方法：</p>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2015/09/09/android-layoutinflater-analysis/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://johnnyshieh.me/2015/09/03/android-handler-memory-leak/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Johnny Shieh">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Johnny Shieh">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2015/09/03/android-handler-memory-leak/" itemprop="url">[译] Android 中由 Handler 和内部类引起的内存泄漏</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-09-03T00:00:00+08:00">
-                2015-09-03
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Android/" itemprop="url" rel="index">
-                    <span itemprop="name">Android</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2015/09/03/android-handler-memory-leak/" class="leancloud_visitors" data-flag-title="[译] Android 中由 Handler 和内部类引起的内存泄漏">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数 </span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p><strong>原文链接：</strong><a href="http://www.androiddesignpatterns.com/2013/01/inner-class-handler-memory-leak.html" target="_blank" rel="external">How to Leak a Context: Handlers &amp; Inner Classes</a>    </p>
-<p> <strong>作者：</strong><a href="https://plus.google.com/+AlexLockwood/posts" target="_blank" rel="external">Alex Lockwood</a></p>
-<h2 id="泄露场景"><a href="#泄露场景" class="headerlink" title="泄露场景"></a>泄露场景</h2><p>在 Android 中我们经常用 Handler 来处理异步消息，把非主线程的操作结果放在主线程中更新 UI。请思考一下下面的代码有没有问题：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SampleActivity</span> <span class="keyword">extends</span> <span class="title">Activity</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="keyword">private</span> <span class="keyword">final</span> Handler mLeakyHandler = <span class="keyword">new</span> Handler() &#123;</div><div class="line">        <span class="meta">@Override</span></div><div class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">handleMessage</span><span class="params">(Message msg)</span> </span>&#123;</div><div class="line">        <span class="comment">// ... </span></div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>虽然看起来好像没什么问题，但是这段代码可能引起内存泄露。Android Lint 工具会给出以下警告：</p>
-<blockquote>
-<p>In Android, Handler classes should be static or leaks might occur, Messages enqueued on the application thread’s MessageQueue also retain their target Handler. If the Handler is an inner class, its outer class will be retained as well. To avoid leaking the outer class, declare the Handler as a static nested class with a WeakReference to its outer class</p>
-</blockquote>
-<p>但是什么东西泄漏了，内存泄漏怎么发生的我们还是不清楚。接下来我们慢慢分析泄漏的原因：</p>
-<ol>
-<li><p>当一个 Android 应用启动时，框架会分配到一个 Looper 实例给应用的主线程。这个 Looper 的主要工作就是处理一个接着一个的消息对象。在 Android 中，所有 Android 框架的事件（比如 Activity 的生命周期方法的调用和按钮的点击等）都是放到消息中，然后加入到 Looper 要处理的消息队列中，由 Looper 依次处理。主线程的 Looper 的生命周期和应用的一样长。</p>
-</li>
-<li><p>当在主线程中初始化一个 Handler 时，它就会关联到 Looper 的消息队列。发送到消息队列的消息本身就持有 Handler 的引用，只有这样 Looper 在处理这个条消息的时候才能调用 Handler#handleMessage(Message) 处理消息。</p>
-</li>
-<li><p>在 Java 中，非静态的内部类和匿名内部类都会隐式地持有其外部类的引用，而静态的内部类则不会。</p>
-</li>
-</ol>
-<p>上面的代码还是很难察觉哪里会导致内存泄漏，那么再看看下面这个例子：</p>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2015/09/03/android-handler-memory-leak/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://johnnyshieh.me/2015/08/24/how-hashmap-work/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Johnny Shieh">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Johnny Shieh">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2015/08/24/how-hashmap-work/" itemprop="url">[转] Java HashMap 的工作原理</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-08-24T00:00:00+08:00">
-                2015-08-24
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Java/" itemprop="url" rel="index">
-                    <span itemprop="name">Java</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2015/08/24/how-hashmap-work/" class="leancloud_visitors" data-flag-title="[转] Java HashMap 的工作原理">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数 </span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p><strong>本文转载自 <a href="http://www.importnew.com/" target="_blank" rel="external">ImportNew</a> - <a href="http://www.importnew.com/author/miracle1919" target="_blank" rel="external">miracle1919</a>, 翻译自 <a href="http://www.javacodegeeks.com/2014/03/how-hashmap-works-in-java.html" target="_blank" rel="external">javacodegeeks</a>。</strong></p>
-<p>面试的时候经常会遇见诸如：“Java 中的 HashMap 是怎么工作的”，“HashMap 的 get 和 put 内部的工作原理”这样的问题。本文将用一个简单的例子来解释下 HashMap 内部的工作原理。首先我们从一个例子开始，而不仅仅是从理论上，这样，有助于更好地理解，然后，我们来看下 get 和 put 到底是怎样工作的。</p>
-<p>我们来看个非常简单的例子。有一个“国家”（Country）类，我们将要用 Country 对象作为 key，它的首都的名字（String 类型）作为 value。下面的例子有助于我们理解 key-value 对在 HashMap 中是如何存储的。</p>
-<h2 id="Country-java"><a href="#Country-java" class="headerlink" title="Country.java"></a>Country.java</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Country</span> </span>&#123;</div><div class="line"></div><div class="line">    String name;</div><div class="line">    <span class="keyword">long</span> population;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Country</span><span class="params">(String name, <span class="keyword">long</span> population)</span> </span>&#123;</div><div class="line">        <span class="keyword">super</span>();</div><div class="line">        <span class="keyword">this</span>.name = name;</div><div class="line">        <span class="keyword">this</span>.population = population;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getName</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> name;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setName</span><span class="params">(String name)</span> </span>&#123;</div><div class="line">        <span class="keyword">this</span>.name = name;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">long</span> <span class="title">getPopulation</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> population;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setPopulation</span><span class="params">(<span class="keyword">long</span> population)</span> </span>&#123;</div><div class="line">        <span class="keyword">this</span>.population = population;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">// If length of name in country object is even then return 31(any random number) and if odd then return 95(any random number).</span></div><div class="line">    <span class="comment">// This is not a good practice to generate hashcode as below method but I am doing so to give better and easy understanding of hashmap.</span></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">hashCode</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">if</span>(<span class="keyword">this</span>.name.length() % <span class="number">2</span> == <span class="number">0</span>)</div><div class="line">            <span class="keyword">return</span> <span class="number">31</span>;</div><div class="line">        <span class="keyword">else</span> </div><div class="line">            <span class="keyword">return</span> <span class="number">95</span>;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">equals</span><span class="params">(Object obj)</span> </span>&#123;</div><div class="line">        <span class="keyword">if</span>(<span class="keyword">this</span> == obj) &#123;</div><div class="line">            <span class="keyword">return</span> <span class="keyword">true</span>;</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">if</span>(<span class="keyword">null</span> == obj || !(obj <span class="keyword">instanceof</span> Country)) &#123;</div><div class="line">            <span class="keyword">return</span> <span class="keyword">false</span>;</div><div class="line">        &#125;</div><div class="line">        Country other = (Country) obj;</div><div class="line">        <span class="keyword">if</span> (name.equalsIgnoreCase((other.name)))</div><div class="line">            <span class="keyword">return</span> <span class="keyword">true</span>;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">false</span>;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2015/08/24/how-hashmap-work/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right"></i></a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1119,7 +1124,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">19</span>
+                <span class="site-state-item-count">22</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -1141,7 +1146,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">17</span>
+                <span class="site-state-item-count">20</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>

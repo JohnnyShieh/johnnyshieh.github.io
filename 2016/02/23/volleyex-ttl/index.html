@@ -1,0 +1,971 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta http-equiv="Content-Language" content="zh-cn">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+  <meta name="google-site-verification" content="r1Es2KSXuS6zYdab4rZeEA6X-pEwRwyT4x89S7a4EHE">
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css">
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1">
+
+
+
+
+
+
+<meta name="description" content="一步一步扩展 Volley 系列文章的第二篇，分析 Volley 缓存逻辑，为 request 添加默认的生存时间">
+<meta name="keywords" content="android, volley, volleyex, cache, ttl, 缓存, 生存时间, Johnny, Shieh, Johnny Shieh, johnny shieh blog, ">
+<meta property="og:type" content="article">
+<meta property="og:title" content="一步一步扩展 Volley (二)，缓存生存时间 TTL">
+<meta property="og:url" content="http://johnnyshieh.me/2016/02/23/volleyex-ttl/index.html">
+<meta property="og:site_name" content="Johnny Shieh">
+<meta property="og:description" content="一步一步扩展 Volley 系列文章的第二篇，分析 Volley 缓存逻辑，为 request 添加默认的生存时间">
+<meta property="og:image" content="http://oph5rhcqp.bkt.clouddn.com/volley_cache_flow.png">
+<meta property="og:updated_time" content="2017-05-11T06:36:36.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="一步一步扩展 Volley (二)，缓存生存时间 TTL">
+<meta name="twitter:description" content="一步一步扩展 Volley 系列文章的第二篇，分析 Volley 缓存逻辑，为 request 添加默认的生存时间">
+<meta name="twitter:image" content="http://oph5rhcqp.bkt.clouddn.com/volley_cache_flow.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"right","display":"always","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://johnnyshieh.me/2016/02/23/volleyex-ttl/">
+
+
+
+
+
+  <title>一步一步扩展 Volley (二)，缓存生存时间 TTL | Johnny Shieh</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Johnny Shieh</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">人如果没有梦想，和咸鱼有什么分别</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-friends">
+          <a href="/friends" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-users"></i> <br>
+            
+            小伙伴
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://johnnyshieh.me/2016/02/23/volleyex-ttl/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Johnny Shieh">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Johnny Shieh">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">一步一步扩展 Volley (二)，缓存生存时间 TTL</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-02-23T14:29:50+08:00">
+                2016-02-23
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android/" itemprop="url" rel="index">
+                    <span itemprop="name">Android</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a class="cloud-tie-join-count" href="/2016/02/23/volleyex-ttl/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count join-count" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2016/02/23/volleyex-ttl/" class="leancloud_visitors" data-flag-title="一步一步扩展 Volley (二)，缓存生存时间 TTL">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>之前根据 Volley 的工作流程大致解析了它的框架，接下来继续分析 Volley 的缓存机制,下面我在解析其缓存机制的同时也讲述一下个人对缓存生存时间的扩展.</p>
+<h2 id="缓存调度器的处理流程"><a href="#缓存调度器的处理流程" class="headerlink" title="缓存调度器的处理流程"></a>缓存调度器的处理流程</h2><p>要明白 Volley 的缓存机制，关键在于分析缓存调度器处理请求的过程，下面是我画的流程图:</p>
+<p><img src="http://oph5rhcqp.bkt.clouddn.com/volley_cache_flow.png" alt=""></p>
+<p>这张流程图主要对应 CacheDispatcher 的 run 方法，首先根据 cachekey 查找缓存，如果没有缓存就把请求放到网络等待队列中，缓存调度器继续处理下一个请求；如果有缓存，但是缓存已经过期了，也将请求放到网络等待队列中并处理下一个请求，如果缓存没有过期，继续判断缓存是否需要刷新；如果不需要更新缓存，则直接传递解析后的缓存数据到主线程，如果需要更新缓存，则在传递解析后的缓存数据到主线程之后还会把请求添加到网络等待队列。</p>
+<p>下面再看下流程中的两个关键的方法的源码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * Data and metadata for an entry returned by the cache.</div><div class="line"> */</div><div class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">Entry</span> </span>&#123;</div><div class="line">    <span class="comment">/** The data returned from cache. */</span></div><div class="line">    <span class="keyword">public</span> <span class="keyword">byte</span>[] data;</div><div class="line"></div><div class="line">    <span class="comment">/** ETag for cache coherency. */</span></div><div class="line">    <span class="keyword">public</span> String etag;</div><div class="line"></div><div class="line">    <span class="comment">/** Date of this response as reported by the server. */</span></div><div class="line">    <span class="keyword">public</span> <span class="keyword">long</span> serverDate;</div><div class="line"></div><div class="line">    <span class="comment">/** The last modified date for the requested object. */</span></div><div class="line">    <span class="keyword">public</span> <span class="keyword">long</span> lastModified;</div><div class="line"></div><div class="line">    <span class="comment">/** TTL for this record. */</span></div><div class="line">    <span class="keyword">public</span> <span class="keyword">long</span> ttl;</div><div class="line"></div><div class="line">    <span class="comment">/** Soft TTL for this record. */</span></div><div class="line">    <span class="keyword">public</span> <span class="keyword">long</span> softTtl;</div><div class="line"></div><div class="line">    <span class="comment">/** Immutable response headers as received from server; must be non-null. */</span></div><div class="line">    <span class="keyword">public</span> Map&lt;String, String&gt; responseHeaders = Collections.emptyMap();</div><div class="line"></div><div class="line">    <span class="comment">/** True if the entry is expired. */</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isExpired</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">this</span>.ttl &lt; System.currentTimeMillis();</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">/** True if a refresh is needed from the original data source. */</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">refreshNeeded</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">this</span>.softTtl &lt; System.currentTimeMillis();</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>从上面的代码中可以看出 ttl 就是缓存的生存时间，如果当前时间大于这个时间，缓存就过期，需要重新从网络请求数据。而 softTtl 代表软生存时间，过了这个时间缓存没有完全过期，可以返回给主线程，但是需要从网络请求新的数据刷新缓存.</p>
+<a id="more"></a>
+<h2 id="Response-数据转换为缓存的逻辑"><a href="#Response-数据转换为缓存的逻辑" class="headerlink" title="Response 数据转换为缓存的逻辑"></a>Response 数据转换为缓存的逻辑</h2><p>网络调度器成功请求到服务器数据后，会调用<code>HttpHeaderParser</code>的静态方法<code>parseCacheHeaders</code>解析成缓存。大致的逻辑如下：</p>
+<p>a. 如果 Header 的 Cache-Control 字段中有<code>no-cache</code>或<code>no-store</code>字段，则返回 null</p>
+<p>b. 否则根据 Cache-Control 和 Expires 首部，计算 ttl 和 softTtl</p>
+<p>c. 根据 Date 首部，获得服务器响应时间</p>
+<p>d. 根据其他信息，生成缓存其他信息</p>
+<h2 id="缓存逻辑的扩展"><a href="#缓存逻辑的扩展" class="headerlink" title="缓存逻辑的扩展"></a>缓存逻辑的扩展</h2><p>上面解析 response 数据为缓存在请求的<code>shouldCache</code>为 false 的时候是可以不需要转换的，但是网络调度器现在的逻辑是先解析 response 数据并转换缓存，再判断<code>shouldCache</code>和缓存是否为空，若需要缓存且缓存不为空才会写入缓存。所以这个地方可以做个小小的优化.</p>
+<p>另外在使用 volley 的过程中，例如图片请求，如果服务器返回的 Header 的 Cache-Control 字段中有<code>no-cache</code>或<code>no-store</code>字段，或者没有 Expires 首部，就是出现缓存为空的或者 ttl 为 0 的情况。这样的话每次都要去重新请求图片，但是实际上这是不必要的，另外有些服务器返回的 Header 不规范也会出现这个问题。所以我觉得应该在这个时候使用默认的缓存生存时间，这样就可以避免这个问题，也方便客户端自己做一些缓存的控制。</p>
+<p>扩展方法是在<code>Request</code>类中加上 defaultTtl 和 defaultSoftTtl 两个属性，并改写解析成缓存的方法，下面是我改写后的<code>parseCacheHeaders</code>方法：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * Extracts a &#123;<span class="doctag">@link</span> Cache.Entry&#125; from a &#123;<span class="doctag">@link</span> NetworkResponse&#125;.</div><div class="line"> *</div><div class="line"> * <span class="doctag">@param</span> response The network response to parse headers from</div><div class="line"> *</div><div class="line"> * <span class="doctag">@param</span> defaultTtl The TTL of the cache, it is useful only when &#123;value &gt; 0&#125; and finalExpire = 0</div><div class="line"> * <span class="doctag">@param</span> defaultSoftTtl The Soft TTL of the cache, it is useful only when &#123;value &gt; 0&#125; and softExpire = 0</div><div class="line"> * <span class="doctag">@return</span> a cache entry for the given response, or null if the response is not cacheable.</div><div class="line"> */</div><div class="line"><span class="keyword">public</span> <span class="keyword">static</span> Cache.<span class="function">Entry <span class="title">parseCacheHeaders</span><span class="params">(NetworkResponse response, <span class="keyword">boolean</span> shouldCache, <span class="keyword">long</span> defaultTtl, <span class="keyword">long</span> defaultSoftTtl)</span> </span>&#123;</div><div class="line">    <span class="comment">// return null if shouldCache is false, whether response has Cache-Control or not.</span></div><div class="line">    <span class="keyword">if</span>(!shouldCache) &#123;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">null</span>;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">long</span> now = System.currentTimeMillis();</div><div class="line"></div><div class="line">    Map&lt;String, String&gt; headers = response.headers;</div><div class="line"></div><div class="line">    <span class="keyword">long</span> serverDate = <span class="number">0</span>;</div><div class="line">    <span class="keyword">long</span> lastModified = <span class="number">0</span>;</div><div class="line">    <span class="keyword">long</span> serverExpires = <span class="number">0</span>;</div><div class="line">    <span class="keyword">long</span> softExpire = <span class="number">0</span>;</div><div class="line">    <span class="keyword">long</span> finalExpire = <span class="number">0</span>;</div><div class="line">    <span class="keyword">long</span> maxAge = <span class="number">0</span>;</div><div class="line">    <span class="keyword">long</span> staleWhileRevalidate = <span class="number">0</span>;</div><div class="line">    <span class="keyword">boolean</span> hasCacheControl = <span class="keyword">false</span>;</div><div class="line">    <span class="keyword">boolean</span> mustRevalidate = <span class="keyword">false</span>;</div><div class="line"></div><div class="line">    String serverEtag = <span class="keyword">null</span>;</div><div class="line">    String headerValue;</div><div class="line"></div><div class="line">    headerValue = headers.get(<span class="string">"Date"</span>);</div><div class="line">    <span class="keyword">if</span> (headerValue != <span class="keyword">null</span>) &#123;</div><div class="line">        serverDate = parseDateAsEpoch(headerValue);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    headerValue = headers.get(<span class="string">"Cache-Control"</span>);</div><div class="line">    <span class="keyword">if</span> (headerValue != <span class="keyword">null</span>) &#123;</div><div class="line">        hasCacheControl = <span class="keyword">true</span>;</div><div class="line">        String[] tokens = headerValue.split(<span class="string">","</span>);</div><div class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; tokens.length; i++) &#123;</div><div class="line">            String token = tokens[i].trim();</div><div class="line">            <span class="keyword">if</span> (token.equals(<span class="string">"no-cache"</span>) || token.equals(<span class="string">"no-store"</span>)) &#123;</div><div class="line">                <span class="comment">// Use ttl as cache's expire time when Cache-Control is no-cache.</span></div><div class="line">                <span class="keyword">if</span>(defaultTtl &gt; <span class="number">0</span>) &#123;</div><div class="line">                    <span class="keyword">break</span>;</div><div class="line">                &#125;<span class="keyword">else</span> &#123;</div><div class="line">                    <span class="keyword">return</span> <span class="keyword">null</span>;</div><div class="line">                &#125;</div><div class="line">            &#125; <span class="keyword">else</span> <span class="keyword">if</span> (token.startsWith(<span class="string">"max-age="</span>)) &#123;</div><div class="line">                <span class="keyword">try</span> &#123;</div><div class="line">                    maxAge = Long.parseLong(token.substring(<span class="number">8</span>));</div><div class="line">                &#125; <span class="keyword">catch</span> (Exception e) &#123;</div><div class="line">                &#125;</div><div class="line">            &#125; <span class="keyword">else</span> <span class="keyword">if</span> (token.startsWith(<span class="string">"stale-while-revalidate="</span>)) &#123;</div><div class="line">                <span class="keyword">try</span> &#123;</div><div class="line">                    staleWhileRevalidate = Long.parseLong(token.substring(<span class="number">23</span>));</div><div class="line">                &#125; <span class="keyword">catch</span> (Exception e) &#123;</div><div class="line">                &#125;</div><div class="line">            &#125; <span class="keyword">else</span> <span class="keyword">if</span> (token.equals(<span class="string">"must-revalidate"</span>) || token.equals(<span class="string">"proxy-revalidate"</span>)) &#123;</div><div class="line">                mustRevalidate = <span class="keyword">true</span>;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    headerValue = headers.get(<span class="string">"Expires"</span>);</div><div class="line">    <span class="keyword">if</span> (headerValue != <span class="keyword">null</span>) &#123;</div><div class="line">        serverExpires = parseDateAsEpoch(headerValue);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    headerValue = headers.get(<span class="string">"Last-Modified"</span>);</div><div class="line">    <span class="keyword">if</span> (headerValue != <span class="keyword">null</span>) &#123;</div><div class="line">        lastModified = parseDateAsEpoch(headerValue);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    serverEtag = headers.get(<span class="string">"ETag"</span>);</div><div class="line"></div><div class="line">    <span class="comment">// Cache-Control takes precedence over an Expires header, even if both exist and Expires</span></div><div class="line">    <span class="comment">// is more restrictive.</span></div><div class="line">    <span class="keyword">if</span> (hasCacheControl) &#123;</div><div class="line">        softExpire = now + maxAge * <span class="number">1000</span>;</div><div class="line">        finalExpire = mustRevalidate</div><div class="line">            ? softExpire</div><div class="line">            : softExpire + staleWhileRevalidate * <span class="number">1000</span>;</div><div class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (serverDate &gt; <span class="number">0</span> &amp;&amp; serverExpires &gt;= serverDate) &#123;</div><div class="line">        <span class="comment">// Default semantic for Expire header in HTTP specification is softExpire.</span></div><div class="line">        softExpire = now + (serverExpires - serverDate);</div><div class="line">        finalExpire = softExpire;</div><div class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (defaultTtl &gt; <span class="number">0</span>) &#123;</div><div class="line">        <span class="comment">// There not exist expire header in HTTP specification, so use ttl param.</span></div><div class="line">        softExpire = defaultSoftTtl &gt; <span class="number">0</span> ? (now + defaultSoftTtl) : softExpire;</div><div class="line">        finalExpire = now + defaultTtl;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    Cache.Entry entry = <span class="keyword">new</span> Cache.Entry();</div><div class="line">    entry.data = response.data;</div><div class="line">    entry.etag = serverEtag;</div><div class="line">    entry.softTtl = softExpire;</div><div class="line">    entry.ttl = finalExpire;</div><div class="line">    entry.serverDate = serverDate;</div><div class="line">    entry.lastModified = lastModified;</div><div class="line">    entry.responseHeaders = headers;</div><div class="line"></div><div class="line">    <span class="keyword">return</span> entry;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>这篇文章就分析缓存的一些处理逻辑，下篇文章讲述一下使用<code>DiskLruCache</code>作为磁盘缓存.</p>
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/android/" rel="tag"># android</a>
+          
+            <a href="/tags/volley/" rel="tag"># volley</a>
+          
+            <a href="/tags/network/" rel="tag"># network</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/02/18/asynctaskloader-rejectedexecutionexception/" rel="next" title="Android 中 LoaderManager 用 restartLoader 频繁启动 AsyncTaskLoader 产生 RejectedExecutionException 的解决方案">
+                <i class="fa fa-chevron-left"></i> Android 中 LoaderManager 用 restartLoader 频繁启动 AsyncTaskLoader 产生 RejectedExecutionException 的解决方案
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="cloud-tie-wrapper" class="cloud-tie-wrapper"></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image" src="/uploads/avatar.png" alt="Johnny Shieh">
+          <p class="site-author-name" itemprop="name">Johnny Shieh</p>
+           
+              <p class="site-description motion-element" itemprop="description">我本微末，心向天空</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">22</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">6</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">20</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/JohnnyShieh" rel="external nofollow" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/johnnyshieh17" rel="external nofollow" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  Weibo
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="mailto:JohnnyShieh17@gmail.com" rel="external nofollow" target="_blank" title="Gmail">
+                  
+                    <i class="fa fa-fw fa-envelope"></i>
+                  
+                  Gmail
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="" rel="external nofollow" target="_blank" title="Wechat">
+                  
+                    <i class="fa fa-fw fa-wechat"></i>
+                  
+                  Wechat
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#缓存调度器的处理流程"><span class="nav-number">1.</span> <span class="nav-text">缓存调度器的处理流程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Response-数据转换为缓存的逻辑"><span class="nav-number">2.</span> <span class="nav-text">Response 数据转换为缓存的逻辑</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#缓存逻辑的扩展"><span class="nav-number">3.</span> <span class="nav-text">缓存逻辑的扩展</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy;  2015 - 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Johnny Shieh</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" rel="external nofollow" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" rel="external nofollow" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.1"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+    
+    <script>
+      var cloudTieConfig = {
+        url: document.location.href, 
+        sourceId: "",
+        productKey: "e11372e4458e492087d70c31cf1e0d8c",
+        target: "cloud-tie-wrapper"
+      };
+    </script>
+    <script src="https://img1.ws.126.net/f2e/tie/yun/sdk/loader.js"></script>
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("n55tIxEzsDxW0BEFhehOkP2K-gzGzoHsz", "TwYjARitxhv7iOhbg7k2a9xB");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

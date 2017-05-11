@@ -4,6 +4,76 @@
 
     
   <url>
+    <loc>http://johnnyshieh.me/2016/02/23/volleyex-ttl/</loc>
+    <lastmod>2017-05-11T06:36:36.000Z</lastmod>
+    <data>
+        <display>
+        <title>一步一步扩展 Volley (二)，缓存生存时间 TTL</title>
+        <pubTime>2016-02-23T06:29:50.000Z</pubTime>
+        
+        <tag>android</tag>
+         
+        <tag>volley</tag>
+         
+        <tag>network</tag>
+         
+         
+           
+             
+              <breadCrumb title="Android" url="http://johnnyshieh.me/categories/Android/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://johnnyshieh.me/2016/02/18/asynctaskloader-rejectedexecutionexception/</loc>
+    <lastmod>2017-05-11T06:29:23.000Z</lastmod>
+    <data>
+        <display>
+        <title>Android 中 LoaderManager 用 restartLoader 频繁启动 AsyncTaskLoader 产生 RejectedExecutionException 的解决方案</title>
+        <pubTime>2016-02-18T06:20:36.000Z</pubTime>
+        
+        <tag>android</tag>
+         
+        <tag>loadermanager</tag>
+         
+         
+           
+             
+              <breadCrumb title="Android" url="http://johnnyshieh.me/categories/Android/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://johnnyshieh.me/2016/01/13/volleyex-brief/</loc>
+    <lastmod>2017-05-11T06:19:17.000Z</lastmod>
+    <data>
+        <display>
+        <title>一步一步扩展 Volley (一)，Volley 框架解析</title>
+        <pubTime>2016-01-12T16:00:00.000Z</pubTime>
+        
+        <tag>android</tag>
+         
+        <tag>volley</tag>
+         
+        <tag>network</tag>
+         
+         
+           
+             
+              <breadCrumb title="Android" url="http://johnnyshieh.me/categories/Android/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://johnnyshieh.me/2015/12/26/ubuntu14.04-tutorial/</loc>
     <lastmod>2017-05-10T07:08:18.000Z</lastmod>
     <data>
