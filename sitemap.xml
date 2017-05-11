@@ -2,6 +2,90 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://johnnyshieh.me/2017/01/05/java-memory-model/</loc>
+    
+    <lastmod>2017-05-11T12:55:27.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://johnnyshieh.me/2017/04/15/detect-activity-fragment-lifecycle/</loc>
+    
+    <lastmod>2017-05-11T12:52:36.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://johnnyshieh.me/2017/03/30/web-evoke-app/</loc>
+    
+    <lastmod>2017-05-11T12:50:41.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://johnnyshieh.me/2017/03/15/rxjava-single-completable/</loc>
+    
+    <lastmod>2017-05-11T12:35:39.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://johnnyshieh.me/2017/03/10/rxbus-rxjava2/</loc>
+    
+    <lastmod>2017-05-11T12:31:55.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://johnnyshieh.me/2017/02/25/java-valatile/</loc>
+    
+    <lastmod>2017-05-11T12:28:31.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://johnnyshieh.me/2017/01/11/android-hardware-layer-animation/</loc>
+    
+    <lastmod>2017-05-11T12:23:11.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://johnnyshieh.me/2017/01/10/java-synchronized/</loc>
+    
+    <lastmod>2017-05-11T12:19:30.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://johnnyshieh.me/2016/12/31/summary-of-2016/</loc>
+    
+    <lastmod>2017-05-11T12:11:17.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://johnnyshieh.me/2016/12/22/android-coding-standards/</loc>
+    
+    <lastmod>2017-05-11T12:08:51.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://johnnyshieh.me/2016/12/07/serializable-vs-parcelable/</loc>
+    
+    <lastmod>2017-05-11T12:04:12.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://johnnyshieh.me/2016/11/18/android-memory-leak/</loc>
+    
+    <lastmod>2017-05-11T11:57:23.000Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://johnnyshieh.me/2016/10/19/android-arraymap-and-sparsearray/</loc>
     
     <lastmod>2017-05-11T10:04:45.000Z</lastmod>

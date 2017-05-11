@@ -285,7 +285,7 @@
   
 
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://johnnyshieh.me/2015/07/17/scrollview-detect-scroll-stop/">
+    <link itemprop="mainEntityOfPage" href="http://johnnyshieh.me/2016/09/21/android-annotation/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Johnny Shieh">
@@ -304,7 +304,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2015/07/17/scrollview-detect-scroll-stop/" itemprop="url">Android 中 ScrollView 监听滚动停止的方案</a></h1>
+                <a class="post-title-link" href="/2016/09/21/android-annotation/" itemprop="url">探索注解之 Android 中的注解</a></h1>
         
 
         <div class="post-meta">
@@ -316,8 +316,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-07-17T00:00:00+08:00">
-                2015-07-17
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-09-21T16:52:12+08:00">
+                2016-09-21
               </time>
             
 
@@ -356,7 +356,7 @@
 
           
           
-             <span id="/2015/07/17/scrollview-detect-scroll-stop/" class="leancloud_visitors" data-flag-title="Android 中 ScrollView 监听滚动停止的方案">
+             <span id="/2016/09/21/android-annotation/" class="leancloud_visitors" data-flag-title="探索注解之 Android 中的注解">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -385,13 +385,23 @@
 
       
         
-          <p>前几天工作上遇到一个需要监听 Scrollview 滚动停止的问题，然后开始谷歌解决方案，但是都不是很满意，最后在和同事的讨论中获得灵感得出了下面的解决方案，经实测有效，供大家参考一下。</p>
-<h2 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h2><p>思路是这样的：首先要确定监听的时机，因为 ScrollView 在滚动的过程中和绘制的时候需要 computeScroll，所以在 computeScroll 的时候监听; 然后用反射检测滚动是否停止； 最后由于工作的需求是在 Touch 的情况下都不算停止所以还要监听 touch event。</p>
-<p>其中有用到反射，对反射不是很了解的可以看我的这篇博客 <a href="http://johnnyshieh.me/2015/01/30/java-reflection/">Java 反射机制</a></p>
-<h2 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h2><p>关键代码如下：</p>
+          <p>Java 中有注解，Android 中也有注解，本文将介绍下 Android 的注解。这是探索注解系列文章的最后一篇：</p>
+<ul>
+<li><p><a href="http://johnnyshieh.me/2016/09/07/annotation-basic/">探索注解之注解的基本概念</a></p>
+</li>
+<li><p><a href="http://blog.csdn.net/lmj623565791/article/details/51931859" target="_blank" rel="external">探索注解之 APT 编译时处理注解, 解析 Butterknife 注解原理</a> (鸿神写编译时注解的文章，非常好，所以自己就不再重复写了)</p>
+</li>
+<li><p><a href="http://johnnyshieh.me/2016/09/21/android-annotation/">探索注解之 Android 中的注解</a></p>
+</li>
+</ul>
+<h2 id="引入注解库"><a href="#引入注解库" class="headerlink" title="引入注解库"></a>引入注解库</h2><p>Android 的注解库并没有包括在 framework 中，它被独立成一个单独的库。通常情况下，只需要编辑<code>build.gradle</code>文件就可引入：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">dependencies &#123;</div><div class="line">    compile &apos;com.android.support:support-annotations:22.2.0&apos;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>如果已经引入了<code>appcompat</code>库的话，就不需要额外引入<code>support-annotations</code>，因为<code>appcompat</code>包含了注解库。</p>
+<p>对于 Android 应用或者 Android Library 模块的话，上面的工作就可以引入注解库。如果想要在纯粹的 Java 模块中（即在 gradle 文件中<code>apply plugin: &#39;java&#39;</code>)引入注解库的话，还要显式地标明 SDK 的 repositories，因为注解库不在 jcenter 上（Android 的 gradle plugin 默认包含这个依赖，而 Java plugin 并没有）。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">repositories &#123;</div><div class="line">    jcenter()</div><div class="line">    maven &#123;url &apos;&lt;your-SDK-path&gt;/extras/android/m2repository&apos;&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2015/07/17/scrollview-detect-scroll-stop/#more" rel="contents">
+            <a class="btn" href="/2016/09/21/android-annotation/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -437,7 +447,7 @@
   
 
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://johnnyshieh.me/2015/06/25/four-way-to-query-from-contentresolver/">
+    <link itemprop="mainEntityOfPage" href="http://johnnyshieh.me/2016/09/07/annotation-basic/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Johnny Shieh">
@@ -456,7 +466,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2015/06/25/four-way-to-query-from-contentresolver/" itemprop="url">Android 中利用 ContentResolver 查询数据库的四种方式</a></h1>
+                <a class="post-title-link" href="/2016/09/07/annotation-basic/" itemprop="url">探索注解之注解的基本概念</a></h1>
         
 
         <div class="post-meta">
@@ -468,165 +478,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-06-25T00:00:00+08:00">
-                2015-06-25
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Android/" itemprop="url" rel="index">
-                    <span itemprop="name">Android</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2015/06/25/four-way-to-query-from-contentresolver/" class="leancloud_visitors" data-flag-title="Android 中利用 ContentResolver 查询数据库的四种方式">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数 </span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h2 id="直接使用-ContentResolver-的-query-方法在主线程中查询数据（非异步查询）"><a href="#直接使用-ContentResolver-的-query-方法在主线程中查询数据（非异步查询）" class="headerlink" title="直接使用 ContentResolver 的 query 方法在主线程中查询数据（非异步查询）"></a>直接使用 ContentResolver 的 query 方法在主线程中查询数据（非异步查询）</h2><p>由于是在主线程中执行查询操作，为了不阻塞主线程，尽量在数据量小的时候使用，而且要注意及时关闭 cursor</p>
-<p>代码示例</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">Cursor cursor = getContentResolver().query(ContactsContract.Data.CONTENT_URI, <span class="keyword">null</span>, <span class="keyword">null</span>, <span class="keyword">null</span>, <span class="keyword">null</span>);</div><div class="line"><span class="comment">// 获得 cursor 中数据 ...</span></div><div class="line">cursor.close();</div></pre></td></tr></table></figure>
-<h2 id="利用-Activity-的-managedQuery-方法在主线程中查询数据（非异步查询）"><a href="#利用-Activity-的-managedQuery-方法在主线程中查询数据（非异步查询）" class="headerlink" title="利用 Activity 的 managedQuery 方法在主线程中查询数据（非异步查询）"></a>利用 Activity 的 managedQuery 方法在主线程中查询数据（非异步查询）</h2><p>相对于上一种方式，我们不需要处理 cusor 的关闭，但是同样只适合在数据量小的时候。</p>
-<p>对于 Android 3.0 HONEYCOMB 以上的版本，Android 官方建议使用 LoaderManager 替代，这也是下一种查询方式。</p>
-<p>代码示例：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">Cursor cursor = managedQuery(ContactsContract.Data.CONTENT_URI, <span class="keyword">null</span>, <span class="keyword">null</span>, <span class="keyword">null</span>, <span class="keyword">null</span>);</div><div class="line"><span class="comment">// 获得 cursor 中数据 ...</span></div></pre></td></tr></table></figure>
-<h2 id="利用-LoaderManager-机制中的-CursorLoader-异步查询数据库（异步查询）"><a href="#利用-LoaderManager-机制中的-CursorLoader-异步查询数据库（异步查询）" class="headerlink" title="利用 LoaderManager 机制中的 CursorLoader 异步查询数据库（异步查询）"></a>利用 LoaderManager 机制中的 CursorLoader 异步查询数据库（异步查询）</h2><p>Android3.0 以上可以直接使用，3.0 以下需要使用 support 库.</p>
-<p>注：LoaderManager 开始一个 Loader 之后，如果没有调用 destroyLoader 方法，在 activity 的 onStart 时候会重新开始 Loader 中的任务</p>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2015/06/25/four-way-to-query-from-contentresolver/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://johnnyshieh.me/2015/01/30/java-reflection/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Johnny Shieh">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Johnny Shieh">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2015/01/30/java-reflection/" itemprop="url">Java 反射机制</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-01-30T00:00:00+08:00">
-                2015-01-30
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-09-07T16:51:51+08:00">
+                2016-09-07
               </time>
             
 
@@ -665,7 +518,7 @@
 
           
           
-             <span id="/2015/01/30/java-reflection/" class="leancloud_visitors" data-flag-title="Java 反射机制">
+             <span id="/2016/09/07/annotation-basic/" class="leancloud_visitors" data-flag-title="探索注解之注解的基本概念">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -694,27 +547,29 @@
 
       
         
-          <h2 id="什么是反射？"><a href="#什么是反射？" class="headerlink" title="什么是反射？"></a>什么是反射？</h2><p>Java 的反射机制可以使得程序在 Java 运行时能够检测、访问并且修改编译时完全未知的 classes，这个概念很容易和内省混淆。下面是 WiKi 上对这两个概念给出的定义：</p>
-<p><strong>反射</strong>（Reflection）：反射是指计算机程序在运行时可以访问、检测和修改它本身状态或行为的一种能力。<br><strong>内省</strong>（Introspection）：内省是指计算机程序在运行检查对象类型的一种能力，通常也可以称作<strong>运行时类型检查</strong>。</p>
-<p>从上面的定义可以看出，相对于内省，反射更进一步。例如，Java 具有反射特性，而 C++ 不具有反射特性只具有内省特性。</p>
-<h2 id="反射有什么用途？"><a href="#反射有什么用途？" class="headerlink" title="反射有什么用途？"></a>反射有什么用途？</h2><p>反射主要提供以下功能：</p>
-<ol>
-<li><p>在运行时检查对象的类型</p>
+          <p>自从 Java 5.0 版本引入<strong>注解</strong>后，它就成为 Java 平台中非常重要的一部分。在日常开发过程中时常可以看到 @Override，@Deprecated 这样的注解，在使用 Butterknife 减少 findViewById 这样的重复劳动时也经常用到 @BindView 注解。下面几篇文章将讲述注解的基本概念，注解处理器的使用以及 Android中 的注解：</p>
+<ul>
+<li><p><a href="http://johnnyshieh.me/2016/09/07/annotation-basic/">探索注解之注解的基本概念</a></p>
 </li>
-<li><p>在运行时新建类的实例</p>
+<li><p><a href="http://blog.csdn.net/lmj623565791/article/details/51931859" target="_blank" rel="external">探索注解之 APT 编译时处理注解</a> (鸿神写编译时注解的文章，非常好，所以自己就不再重复写了)</p>
 </li>
-<li><p>在运行时检测对象一个类的成员变量和方法</p>
+<li><p><a href="http://johnnyshieh.me/2016/09/21/android-annotation/">探索注解之 Android 中的注解</a></p>
 </li>
-<li><p>在运行时调用对象的任意方法</p>
-</li>
-<li><p>在运行时修改构造函数、成员变量和方法的访问权限</p>
-</li>
-<li><p>等等</p>
-</li>
-</ol>
+</ul>
+<h2 id="什么是注解？"><a href="#什么是注解？" class="headerlink" title="什么是注解？"></a>什么是注解？</h2><p><strong>注解（Annotations），就是元数据，一种描述程序代码的数据，并且对程序运行没有任何影响。</strong></p>
+<p>例如下面这段代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Override</span></div><div class="line"><span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span> </span>&#123;</div><div class="line">    <span class="keyword">return</span> <span class="string">"This is String Representation of current object"</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>在上面的代码中，我重写了 toString() 方法并使用了 @Override 注解。但是即便我不使用 @Override 注解标记代码，程序也能正常运行。那么这个注解有什么意义？@Override 告诉编译器这个方法是重写父类的方法，如果父类中没有该方法，编译器就会报错，提示没有重写父类中的方法。如果我不小心把 toString 写成 toStrings，而且也没有使用 @Override 注解的话，程序依然可以运行，但是跟之前期望就会大有不同。</p>
+<p>注解有下面几种作用：</p>
+<ul>
+<li><strong>为编译器提供信息</strong> – 注解可以被编译器用来检测错误或抑制警告</li>
+<li><strong>编译时和部署时处理</strong> – 一些工具可以根据注解信息生成代码，XML 文件等等，例如 APT（Annotation Processing Tool）</li>
+<li><strong>运行时处理</strong> – 有些注解可以在运行时通过反射获取</li>
+</ul>
+<p>在引入注解之前，开发人员通常使用标记 interfaces，注释或者 javadoc 定义元数据，没有统一的一种方式。注解定义了一种标准的描述元数据的方式，注解是一种应用于类、方法、参数、变量、构造器及包声明中的特殊修饰符。它是一种由 JSR-175 标准选择用来描述元数据的一种工具。</p>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2015/01/30/java-reflection/#more" rel="contents">
+            <a class="btn" href="/2016/09/07/annotation-basic/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -760,7 +615,7 @@
   
 
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://johnnyshieh.me/2015/01/16/how-to-use-android-studio/">
+    <link itemprop="mainEntityOfPage" href="http://johnnyshieh.me/2016/06/12/android-develop-tips-and-tricks/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Johnny Shieh">
@@ -779,7 +634,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2015/01/16/how-to-use-android-studio/" itemprop="url">如何优雅地使用 AndroidStudio</a></h1>
+                <a class="post-title-link" href="/2016/06/12/android-develop-tips-and-tricks/" itemprop="url">Android 开发过程中的坑和小技巧</a></h1>
         
 
         <div class="post-meta">
@@ -791,8 +646,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-01-16T00:00:00+08:00">
-                2015-01-16
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-06-12T16:34:25+08:00">
+                2016-06-12
               </time>
             
 
@@ -831,7 +686,7 @@
 
           
           
-             <span id="/2015/01/16/how-to-use-android-studio/" class="leancloud_visitors" data-flag-title="如何优雅地使用 AndroidStudio">
+             <span id="/2016/06/12/android-develop-tips-and-tricks/" class="leancloud_visitors" data-flag-title="Android 开发过程中的坑和小技巧">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -860,14 +715,18 @@
 
       
         
-          <p>在 Android Studio 1.0 正式版发布之前，我用的是 IDE 是 Intellij Idea 13（而 Android Studio 就是基于 IDEA 开发的），所以两者在基本使用上没什么大的区别。但是对于之前一直坚守在 Eclipse 阵营的同学们来说，一开始接触 Android Studio 的时候可能会很不习惯，所以在这里，我总结一下自己的优雅的使用方案，希望对大家有所帮助。</p>
-<h2 id="使用-Darcula-黑色极客主题"><a href="#使用-Darcula-黑色极客主题" class="headerlink" title="使用 Darcula 黑色极客主题"></a>使用 Darcula 黑色极客主题</h2><p>Android Studio 有一个非常具有极客范的主题，一眼看上去非常的高大上，而且长时间写代码也不会觉得刺眼（如果觉得太暗了可以适当调高下亮度）。具体如下：</p>
-<p>点菜单栏中 File &gt; Settings ，进入设置页面，在左侧的 IDE Setting 下面选中 Appearance，然后在右侧的 Theme 中选择 Darcula，如下图：</p>
-<p><img src="http://oph5rhcqp.bkt.clouddn.com/studio_theme.png" alt=""></p>
-<h2 id="修改默认字体"><a href="#修改默认字体" class="headerlink" title="修改默认字体"></a>修改默认字体</h2>
+          <h2 id="空指针问题"><a href="#空指针问题" class="headerlink" title="空指针问题"></a>空指针问题</h2><p>NullPointerException 绝对是开发人员遇到最多的问题，也是 Android 开发过程中一个大坑，总是在你意料不到的时候出现。要解决这个问题，关键地方不要吝啬 if 语句，需要在用到某一对象的时候多想想有没什么可能会导致对象没有初始化或者被指向为<code>null</code>，下面是一些比较有代表性的例子：</p>
+<ul>
+<li>Fragment的Handler 中调用 getActivity()，需要判空和判断 activity 是否销毁</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">MyHandler</span> <span class="keyword">extends</span> <span class="title">Handler</span> </span>&#123;</div><div class="line">    ...</div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">handleMessage</span><span class="params">(Message msg)</span> </span>&#123;</div><div class="line">        <span class="comment">// 需要判空</span></div><div class="line">        <span class="keyword">if</span>(<span class="keyword">null</span> != mFragment.getActivity() &amp;&amp; !mFragment.getActivity().isDestroyed()) &#123;</div><div class="line">            <span class="comment">// TODO</span></div><div class="line">        &#125;</div><div class="line">    &#125;    </div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<ul>
+<li>使用 Cursor 时没有判空，没有在 finally 代码块中关闭</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">Cursor cursor = <span class="keyword">null</span>;</div><div class="line"><span class="keyword">try</span> &#123;</div><div class="line">    cursor = contentResolver.query(uri, <span class="keyword">null</span>, selection, selectionArgs, <span class="keyword">null</span>);</div><div class="line">    <span class="comment">// cursor可能为空</span></div><div class="line">    <span class="keyword">if</span>(<span class="keyword">null</span> != cursor &amp;&amp; cursor.moveToFirst()) &#123;</div><div class="line">        <span class="comment">// TODO</span></div><div class="line">    &#125;</div><div class="line">&#125; <span class="keyword">catch</span> (Exception e) &#123;</div><div class="line">    e.printStackTrace();</div><div class="line">&#125; <span class="keyword">finally</span> &#123;</div><div class="line">    <span class="keyword">if</span> (<span class="keyword">null</span> != cursor) &#123;</div><div class="line">        cursor.close();</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2015/01/16/how-to-use-android-studio/#more" rel="contents">
+            <a class="btn" href="/2016/06/12/android-develop-tips-and-tricks/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -913,7 +772,7 @@
   
 
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://johnnyshieh.me/2015/01/09/linux-18-tar-command-examples/">
+    <link itemprop="mainEntityOfPage" href="http://johnnyshieh.me/2016/02/23/volleyex-ttl/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Johnny Shieh">
@@ -932,7 +791,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2015/01/09/linux-18-tar-command-examples/" itemprop="url">[译] Linux 中 18 个 tar 命令示例</a></h1>
+                <a class="post-title-link" href="/2016/02/23/volleyex-ttl/" itemprop="url">一步一步扩展 Volley (二)，缓存生存时间 TTL</a></h1>
         
 
         <div class="post-meta">
@@ -944,8 +803,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-01-09T00:00:00+08:00">
-                2015-01-09
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-02-23T14:29:50+08:00">
+                2016-02-23
               </time>
             
 
@@ -967,8 +826,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Linux/" itemprop="url" rel="index">
-                    <span itemprop="name">Linux</span>
+                  <a href="/categories/Android/" itemprop="url" rel="index">
+                    <span itemprop="name">Android</span>
                   </a>
                 </span>
 
@@ -984,7 +843,7 @@
 
           
           
-             <span id="/2015/01/09/linux-18-tar-command-examples/" class="leancloud_visitors" data-flag-title="[译] Linux 中 18 个 tar 命令示例">
+             <span id="/2016/02/23/volleyex-ttl/" class="leancloud_visitors" data-flag-title="一步一步扩展 Volley (二)，缓存生存时间 TTL">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -1013,18 +872,166 @@
 
       
         
-          <p>Linux 中 “tar” 是 tape archive（磁带归档）的缩写，起初经常被 Linux/Unix 系统管理员用来做磁带驱动器的备份。在 Linux 中 tar 命令用来将一些文件和目录变成高度压缩存档文件，这种文件一般是 tarball、tar、gzip 或者 bzip。人们通常用 tar 命令创建压缩存档文件以便在硬盘和机器之间移动复制。</p>
-<p>在这篇文章中我将讲述讨论不同的 tar 命令示例，包括怎么用（tar、tar.gz 和 tar.bz2）压缩算法创建存档文件、怎么解压存档文件、在存档文件中解压出单个文件、查看存档文件的目录、添加文件或目录到存档文件中、在归档文件中删除文件等等。</p>
-<p>这篇文章的主要目的是提供各种 tar 命令示例帮助大家理解 tar 存档的方法。</p>
-<h2 id="创建tar存档文件"><a href="#创建tar存档文件" class="headerlink" title="创建tar存档文件"></a>创建tar存档文件</h2><p>下面命令示例将在当前目录在为 <strong>/home/tecmint</strong> 目录创建名为 <strong>tecmint-14-09-12.tar</strong> 的 <strong>tar</strong> 存档文件。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># tar cvf tecmint-14-09-12.tar /home/tecmint/</span></div><div class="line"></div><div class="line">/home/tecmint/</div><div class="line">/home/tecmint/cleanfiles.sh</div><div class="line">/home/tecmint/openvpn-2.1.4.tar.gz</div><div class="line">/home/tecmint/tecmint-14-09-12.tar</div><div class="line">/home/tecmint/phpmyadmin-2.11.11.3-1.el5.rf.noarch.rpm</div><div class="line">/home/tecmint/rpmforge-release-0.5.2-2.el5.rf.i386.rpm</div><div class="line"></div><div class="line"><span class="comment">## If you want create tar file from multiple file</span></div><div class="line"><span class="comment"># tar cvf backup.tar johnnyshieh.png ubuntu_config.txt</span></div><div class="line"></div><div class="line">johnnyshieh.png</div><div class="line">ubuntu_config.txt</div></pre></td></tr></table></figure>
-<p>让我们来讨论下上面用到的几个参数的含义。</p>
-<p><strong>c</strong> ：创建新的 .tar 存档文件</p>
-<p><strong>v</strong> ：详细显示存档 .tar 文件的进度</p>
-<p><strong>f</strong> ：指定存档文件的文件名</p>
+          <p>之前根据 Volley 的工作流程大致解析了它的框架，接下来继续分析 Volley 的缓存机制,下面我在解析其缓存机制的同时也讲述一下个人对缓存生存时间的扩展.</p>
+<h2 id="缓存调度器的处理流程"><a href="#缓存调度器的处理流程" class="headerlink" title="缓存调度器的处理流程"></a>缓存调度器的处理流程</h2><p>要明白 Volley 的缓存机制，关键在于分析缓存调度器处理请求的过程，下面是我画的流程图:</p>
+<p><img src="http://oph5rhcqp.bkt.clouddn.com/volley_cache_flow.png" alt=""></p>
+<p>这张流程图主要对应 CacheDispatcher 的 run 方法，首先根据 cachekey 查找缓存，如果没有缓存就把请求放到网络等待队列中，缓存调度器继续处理下一个请求；如果有缓存，但是缓存已经过期了，也将请求放到网络等待队列中并处理下一个请求，如果缓存没有过期，继续判断缓存是否需要刷新；如果不需要更新缓存，则直接传递解析后的缓存数据到主线程，如果需要更新缓存，则在传递解析后的缓存数据到主线程之后还会把请求添加到网络等待队列。</p>
+<p>下面再看下流程中的两个关键的方法的源码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * Data and metadata for an entry returned by the cache.</div><div class="line"> */</div><div class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">Entry</span> </span>&#123;</div><div class="line">    <span class="comment">/** The data returned from cache. */</span></div><div class="line">    <span class="keyword">public</span> <span class="keyword">byte</span>[] data;</div><div class="line"></div><div class="line">    <span class="comment">/** ETag for cache coherency. */</span></div><div class="line">    <span class="keyword">public</span> String etag;</div><div class="line"></div><div class="line">    <span class="comment">/** Date of this response as reported by the server. */</span></div><div class="line">    <span class="keyword">public</span> <span class="keyword">long</span> serverDate;</div><div class="line"></div><div class="line">    <span class="comment">/** The last modified date for the requested object. */</span></div><div class="line">    <span class="keyword">public</span> <span class="keyword">long</span> lastModified;</div><div class="line"></div><div class="line">    <span class="comment">/** TTL for this record. */</span></div><div class="line">    <span class="keyword">public</span> <span class="keyword">long</span> ttl;</div><div class="line"></div><div class="line">    <span class="comment">/** Soft TTL for this record. */</span></div><div class="line">    <span class="keyword">public</span> <span class="keyword">long</span> softTtl;</div><div class="line"></div><div class="line">    <span class="comment">/** Immutable response headers as received from server; must be non-null. */</span></div><div class="line">    <span class="keyword">public</span> Map&lt;String, String&gt; responseHeaders = Collections.emptyMap();</div><div class="line"></div><div class="line">    <span class="comment">/** True if the entry is expired. */</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isExpired</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">this</span>.ttl &lt; System.currentTimeMillis();</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">/** True if a refresh is needed from the original data source. */</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">refreshNeeded</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">this</span>.softTtl &lt; System.currentTimeMillis();</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>从上面的代码中可以看出 ttl 就是缓存的生存时间，如果当前时间大于这个时间，缓存就过期，需要重新从网络请求数据。而 softTtl 代表软生存时间，过了这个时间缓存没有完全过期，可以返回给主线程，但是需要从网络请求新的数据刷新缓存.</p>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2015/01/09/linux-18-tar-command-examples/#more" rel="contents">
+            <a class="btn" href="/2016/02/23/volleyex-ttl/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://johnnyshieh.me/2016/02/18/asynctaskloader-rejectedexecutionexception/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Johnny Shieh">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Johnny Shieh">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/02/18/asynctaskloader-rejectedexecutionexception/" itemprop="url">Android 中 LoaderManager 用 restartLoader 频繁启动 AsyncTaskLoader 产生 RejectedExecutionException 的解决方案</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-02-18T14:20:36+08:00">
+                2016-02-18
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android/" itemprop="url" rel="index">
+                    <span itemprop="name">Android</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2016/02/18/asynctaskloader-rejectedexecutionexception/" class="leancloud_visitors" data-flag-title="Android 中 LoaderManager 用 restartLoader 频繁启动 AsyncTaskLoader 产生 RejectedExecutionException 的解决方案">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>在项目过程中遇到 AsyncTaskLoader 出现 RejectedExecutionException 报错应用退出的问题，问题是偶现的，后面发现根本原因是因为 AsyncTask 的 cancel(false) 方法并没有真正的取消掉任务。下面我写了一个会出现这个问题的 demo，看看这个问题是如何产生的。</p>
+<h2 id="问题分析"><a href="#问题分析" class="headerlink" title="问题分析"></a>问题分析</h2><p>demo 的关键代码如下：</p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2016/02/18/asynctaskloader-rejectedexecutionexception/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1065,7 +1072,7 @@
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/3/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><a class="page-number" href="/page/6/">6</a><a class="extend next" rel="next" href="/page/5/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/page/3/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><span class="space">&hellip;</span><a class="page-number" href="/page/8/">8</a><a class="extend next" rel="next" href="/page/5/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1108,7 +1115,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">28</span>
+                <span class="site-state-item-count">40</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -1119,7 +1126,7 @@
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">7</span>
+                <span class="site-state-item-count">8</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -1130,7 +1137,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">23</span>
+                <span class="site-state-item-count">28</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>

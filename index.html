@@ -285,7 +285,7 @@
   
 
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://johnnyshieh.me/2016/11/02/explore-threadlocal/">
+    <link itemprop="mainEntityOfPage" href="http://johnnyshieh.me/2017/04/15/detect-activity-fragment-lifecycle/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Johnny Shieh">
@@ -304,7 +304,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2016/11/02/explore-threadlocal/" itemprop="url">深入分析 ThreadLocal</a></h1>
+                <a class="post-title-link" href="/2017/04/15/detect-activity-fragment-lifecycle/" itemprop="url">Headless Fragment 监听 Activity 或 Fragment 生命周期</a></h1>
         
 
         <div class="post-meta">
@@ -316,8 +316,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-11-02T17:46:39+08:00">
-                2016-11-02
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-04-15T20:29:50+08:00">
+                2017-04-15
               </time>
             
 
@@ -356,7 +356,7 @@
 
           
           
-             <span id="/2016/11/02/explore-threadlocal/" class="leancloud_visitors" data-flag-title="深入分析 ThreadLocal">
+             <span id="/2017/04/15/detect-activity-fragment-lifecycle/" class="leancloud_visitors" data-flag-title="Headless Fragment 监听 Activity 或 Fragment 生命周期">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -385,25 +385,12 @@
 
       
         
-          <p>这篇文章主要分析 Android 中的 ThreadLocal 原理以及相关问题，也分析与其在 Java 中内部实现的区别，让大家理解 ThreadLocal 的使用场景与正确使用方法。</p>
-<h2 id="ThreadLocal-的定义"><a href="#ThreadLocal-的定义" class="headerlink" title="ThreadLocal 的定义"></a>ThreadLocal 的定义</h2><p>Android 源码中描述：</p>
-<pre><code>Implements a thread-local storage, that is, a variable for which each thread
-has its own value. All threads share the same {@code ThreadLocal} object,
-but each sees a different value when accessing it, and changes made by one
-thread do not affect the other threads. The implementation supports
-{@code null} values.
-
-实现了线程局部变量的存储。所有线程共享同一个 ThreadLocal 对象，但是每个线程只能访问和修改自己存储的变量，不会影响其他线程。此实现支持存储 null 变量。
-</code></pre><p>从上面的定义看出，关键的地方即：ThreadLocal 对象是多线程共享的，但每个线程持有自己的线程局部变量。ThreadLocal 不是用来解决共享对象问题的，而是提供线程局部变量，让线程之间不会互相干扰。</p>
-<p>下面看在 Android 中 Looper 的应用，每个线程只有一个 Looper 对象：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">static</span> <span class="keyword">final</span> ThreadLocal&lt;Looper&gt; sThreadLocal = <span class="keyword">new</span> ThreadLocal&lt;Looper&gt;();</div><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">prepare</span><span class="params">(<span class="keyword">boolean</span> quitAllowed)</span> </span>&#123;</div><div class="line">    <span class="keyword">if</span> (sThreadLocal.get() != <span class="keyword">null</span>) &#123;</div><div class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(<span class="string">"Only one Looper may be created per thread"</span>);</div><div class="line">    &#125;</div><div class="line">    sThreadLocal.set(<span class="keyword">new</span> Looper(quitAllowed));</div><div class="line">&#125;</div><div class="line"><span class="comment">/**</span></div><div class="line"> * Return the Looper object associated with the current thread.  Returns</div><div class="line"> * null if the calling thread is not associated with a Looper.</div><div class="line"> */</div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Looper <span class="title">myLooper</span><span class="params">()</span> </span>&#123;</div><div class="line">    <span class="keyword">return</span> sThreadLocal.get();</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>在了解 ThreadLocal 的作用后，也会产生一些疑问：</p>
-<p>线程局部变量是怎么存储的？</p>
-<p>是怎么做到线程间相互独立的？</p>
-<p>接下来在分析 Android 的 ThreadLocal 源码的过程中，理解其实现原理，并解决上面的疑问。</p>
+          <p>监听 Activity 或者 Fragment 的生命周期对于很多开发者来说是小菜一碟，重载<code>onResume</code>、<code>onPause</code>等方法就行了，的确很多时候这种方法就可以了。但是这种方法是侵入式的，需要修改 Activity 或者 Fragment 的实现，但有时我们不能修改它们的实现，例如第三方 SDK 需要监听宿主页面的生命周期，这时需要非侵入式的实现方法。</p>
+<p>对于 Activity 来说，可以注册 Application.ActivityLifecycleCallbacks 回调来监听其生命周期。但是对 Fragment 又应该怎么办呢？</p>
+<h2 id="Headless-Fragment-监听生命周期"><a href="#Headless-Fragment-监听生命周期" class="headerlink" title="Headless Fragment 监听生命周期"></a>Headless Fragment 监听生命周期</h2><p>Headless Fragment 是没有布局不可见的 Fragment。Fragment 是与相关的 FragmentManager 的组件的生命周期相关联的，例如 Activity 的 onPause 会引起其中 Fragment 的 onPause。因为 Headless Fragment 是不可见的，所以它可以用来监听 Activity 和 Fragment 的生命周期。</p>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2016/11/02/explore-threadlocal/#more" rel="contents">
+            <a class="btn" href="/2017/04/15/detect-activity-fragment-lifecycle/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -449,7 +436,7 @@ thread do not affect the other threads. The implementation supports
   
 
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://johnnyshieh.me/2016/10/19/android-arraymap-and-sparsearray/">
+    <link itemprop="mainEntityOfPage" href="http://johnnyshieh.me/2017/03/30/web-evoke-app/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Johnny Shieh">
@@ -468,7 +455,7 @@ thread do not affect the other threads. The implementation supports
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2016/10/19/android-arraymap-and-sparsearray/" itemprop="url">[译] Android 中使用 ArrayMap 和 SparseArray 替代 HashMap</a></h1>
+                <a class="post-title-link" href="/2017/03/30/web-evoke-app/" itemprop="url">Web 唤起 Android app 的实现及原理</a></h1>
         
 
         <div class="post-meta">
@@ -480,8 +467,8 @@ thread do not affect the other threads. The implementation supports
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-10-19T17:35:34+08:00">
-                2016-10-19
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-03-30T20:29:29+08:00">
+                2017-03-30
               </time>
             
 
@@ -503,8 +490,8 @@ thread do not affect the other threads. The implementation supports
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Android/" itemprop="url" rel="index">
-                    <span itemprop="name">Android</span>
+                  <a href="/categories/Andriod/" itemprop="url" rel="index">
+                    <span itemprop="name">Andriod</span>
                   </a>
                 </span>
 
@@ -520,7 +507,7 @@ thread do not affect the other threads. The implementation supports
 
           
           
-             <span id="/2016/10/19/android-arraymap-and-sparsearray/" class="leancloud_visitors" data-flag-title="[译] Android 中使用 ArrayMap 和 SparseArray 替代 HashMap">
+             <span id="/2017/03/30/web-evoke-app/" class="leancloud_visitors" data-flag-title="Web 唤起 Android app 的实现及原理">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -549,22 +536,13 @@ thread do not affect the other threads. The implementation supports
 
       
         
-          <p>这篇文章将讲述在 Android 开发中为什么以及什么时候用<code>ArrayMap</code>和<code>SparseArray</code>替代 HashMap。</p>
-<p>在需要存储 key -&gt; value 键值数据时，最先想到的就是<code>HashMap</code>。但是在使用 HashMap 时，Android Studio 会提示用 ArrayMap 替换 HashMap，下面就让我们探索 ArrayMap 的内部原理，以便知道什么时候用 ArrayMap 更好。</p>
-<h2 id="HashMap-vs-ArrayMap"><a href="#HashMap-vs-ArrayMap" class="headerlink" title="HashMap vs ArrayMap"></a>HashMap vs ArrayMap</h2><p>HashMap 所在包：<em>java.util.HashMap</em></p>
-<p>ArrayMap 所在包：<em>android.util.ArrayMap</em> 和 <em>android.support.v4.util.ArrayMap</em></p>
-<p>support.v4 包中的是为 android 低版本提供兼容的。</p>
-<p>HashMap 和 ArrayMap 都支持 key 为 null，都是线程不安全的。</p>
-<p>下面是 ArrayMap 源码中的文档说明：</p>
-<pre><code>ArrayMap is a generic key-&gt;value mapping data structure that is designed to be more memory efficient than a traditional HashMap. It keeps its mappings in an array data structure — an integer array of hash codes for each item, and an Object array of the key/value pairs. This allows it to avoid having to create an extra object for every entry put in to the map, and it also tries to control the growth of the size of these arrays more aggressively (since growing them only requires copying the entries in the array, not rebuilding a hash map).
-
-Note that this implementation is not intended to be appropriate for data structures that may contain large numbers of items. It is generally slower than a traditional HashMap, since lookups require a binary search and adds and removes require inserting and deleting entries in the array. For containers holding up to hundreds of items, the performance difference is not significant, less than 50%.
-</code></pre><p>中文大致为：</p>
-<p>ArrayMap 是一种泛型键值映射的数据结构，比传统的 HashMap 更节省内存。它通过数组来存储映射关系 – 一个 int 数组存储 key 的 hash code，一个 Object 数组存储 key/value 对。这种设计可以避免在插入元素到 map 时创建额外的对象，并且可以更方便地控制这些数组长度的增长（因为长度的增长只需要复制数组中的元素，而不用重新创建一个 hash map）。</p>
-<p>注意这种实现不适合大容量的数据结构，它会比传统的 HashMap 更慢，因为查询利用二分法查找，新增删除元素需要插入和删除数组中值。对于容量最多上百个的数据来说，性能的差别并不大，低于50%.</p>
+          <p>最近在项目中遇到 web 唤起 Android app 的需求，实现很简单，简单记录下实现方式与背后原理。</p>
+<h2 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h2><p>先不管唤起的原理，用一个简单的例子描述它的实现：</p>
+<p><img src="http://oph5rhcqp.bkt.clouddn.com/web-evoke-app.gif" alt=""></p>
+<p>首先需要在 AndroidManifest.xml 中定义 scheme，<strong>scheme 不能和 http、https、ftp、sms、mailto 等已使用的相同</strong>。</p>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2016/10/19/android-arraymap-and-sparsearray/#more" rel="contents">
+            <a class="btn" href="/2017/03/30/web-evoke-app/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -610,7 +588,7 @@ Note that this implementation is not intended to be appropriate for data structu
   
 
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://johnnyshieh.me/2016/10/13/java-singleton-pattern/">
+    <link itemprop="mainEntityOfPage" href="http://johnnyshieh.me/2017/03/15/rxjava-single-completable/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Johnny Shieh">
@@ -629,7 +607,7 @@ Note that this implementation is not intended to be appropriate for data structu
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2016/10/13/java-singleton-pattern/" itemprop="url">Java 设计模式之单例模式</a></h1>
+                <a class="post-title-link" href="/2017/03/15/rxjava-single-completable/" itemprop="url">[译] 理解 RxJava 中的 Single 和 Completable</a></h1>
         
 
         <div class="post-meta">
@@ -641,8 +619,8 @@ Note that this implementation is not intended to be appropriate for data structu
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-10-13T17:21:38+08:00">
-                2016-10-13
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-03-15T20:29:17+08:00">
+                2017-03-15
               </time>
             
 
@@ -664,8 +642,8 @@ Note that this implementation is not intended to be appropriate for data structu
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/设计模式/" itemprop="url" rel="index">
-                    <span itemprop="name">设计模式</span>
+                  <a href="/categories/Android/" itemprop="url" rel="index">
+                    <span itemprop="name">Android</span>
                   </a>
                 </span>
 
@@ -681,7 +659,7 @@ Note that this implementation is not intended to be appropriate for data structu
 
           
           
-             <span id="/2016/10/13/java-singleton-pattern/" class="leancloud_visitors" data-flag-title="Java 设计模式之单例模式">
+             <span id="/2017/03/15/rxjava-single-completable/" class="leancloud_visitors" data-flag-title="[译] 理解 RxJava 中的 Single 和 Completable">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -710,15 +688,20 @@ Note that this implementation is not intended to be appropriate for data structu
 
       
         
-          <p>单例模式应该是大家最熟悉的设计模式，但是单例模式有好几种实现方式，下面就分析各种实现方式的优缺点。</p>
-<h2 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h2><p>单例模式，即单例类只能有一个实例，并且对外提供一个全局访问入口。</p>
-<p>下面依次介绍几种实现方式，关键在于如何创建唯一的实例。</p>
-<h2 id="饿汉式"><a href="#饿汉式" class="headerlink" title="饿汉式"></a>饿汉式</h2><p>饿汉式，是指类装载时就已经创建了实例，也是最简单的实现方式。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Singleton</span> </span>&#123;</div><div class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> Singleton sInstance = <span class="keyword">new</span> Singleton();</div><div class="line">    <span class="function"><span class="keyword">private</span> <span class="title">Singleton</span><span class="params">()</span> </span>&#123;&#125;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Singleton <span class="title">getInstance</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> sInstance;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>饿汉式的实现方式，因其在类装载的时候就创建了实例，所以天生就是线程安全的。但是还有两个问题：1）如果构造方法中有耗时操作的话，会导致这个类的加载比较慢 2）饿汉式一开始就创建实例，但是并没有调用，会造成资源浪费。</p>
+          <p>在大多数 RxJava 示例代码和教程中出现最为频繁的一个类 —— <code>Observable</code>，它是产生响应式编程魔力的关键。它的用法很简单，只需要跟踪 3 个事件 —— <code>onNext</code>，<code>onError</code>和<code>onCompleted</code>就可以应用上百个操作符来实现自己的表达式。那么为什么你还需要了解其他东西？</p>
+<p>但是你仔细思考下，你真的需要每次都知道这 3 个事件吗？实际上，在大多数情况下并不需要。<a href="http://reactivex.io" target="_blank" rel="external">ReactiveX</a> 文档中讲述的基本都是关于连续的事件流，因此我们经常忘记通常我们关心的只是监听<strong>单一事件</strong>或者只监听 <strong>completed or failed 事件</strong>。</p>
+<p>在这种情况下我们应该考虑用 RxJava 的两个绝妙的设计 —— <code>Single&lt;T&gt;</code> 和 <code>Completable</code>，在分析两者之前，让我们先看看他们应用场景的示例。</p>
+<blockquote>
+<p>本文中所有代码都是基于 RxJava 2.x ，不是 1.x 版本。如果你还没升级 RxJava 到最新的 2.x 版本，强烈建议你马上升级。</p>
+</blockquote>
+<h2 id="Single"><a href="#Single" class="headerlink" title="Single"></a>Single</h2><p>在 Android 中使用 RxJava 最常见的场景就是网络请求，你可能使用 <a href="https://github.com/square/retrofit" target="_blank" rel="external">Retrofit</a> 作为项目的 Http client。假设你有一个 GET HTTP 请求返回一些数据，同时使用 <a href="https://github.com/square/retrofit/tree/master/retrofit-adapters/rxjava2" target="_blank" rel="external">RxJavaAdapter</a> 你大概会这么写：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">APIClient</span> </span>&#123;</div><div class="line">    </div><div class="line">    <span class="meta">@GET</span>(<span class="string">"my/api/path"</span>)</div><div class="line">    <span class="function">Observable&lt;MyData&gt; <span class="title">getMyData</span><span class="params">()</span></span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>上面的代码没什么问题，当调用它时：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">apiClient.getMyData()</div><div class="line">    .subscribe(<span class="keyword">new</span> Consumer&lt;MyData myData&gt;() &#123;</div><div class="line">        <span class="meta">@Override</span></div><div class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">accept</span><span class="params">(MyData myData)</span> <span class="keyword">throws</span> Exception </span>&#123;</div><div class="line">            <span class="comment">// handle data fetched successfully</span></div><div class="line">        &#125;</div><div class="line">    &#125;, <span class="keyword">new</span> Consumer&lt;Throwable&gt;() &#123;</div><div class="line">        <span class="meta">@Override</span></div><div class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">accept</span><span class="params">(Throwable throwable)</span> <span class="keyword">throws</span> Exception</span>&#123;</div><div class="line">            <span class="comment">// handle error event</span></div><div class="line">        &#125;</div><div class="line">    &#125;, <span class="keyword">new</span> Action() &#123;</div><div class="line">        <span class="meta">@Override</span></div><div class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>&#123;</div><div class="line">            <span class="comment">// handle on complete event</span></div><div class="line">        &#125;</div><div class="line">    &#125;);</div></pre></td></tr></table></figure>
+<p>仔细思考下，其实这个网络请求并不是一个连续事件流，你只会发起<strong>一次</strong> Get 请求返回数据并且只收到<strong>一个事件</strong>。我们都知道这种情况下 onComplete 会紧跟着 onNext 被调用，那为什么不把它们合二为一呢？</p>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2016/10/13/java-singleton-pattern/#more" rel="contents">
+            <a class="btn" href="/2017/03/15/rxjava-single-completable/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -764,7 +747,7 @@ Note that this implementation is not intended to be appropriate for data structu
   
 
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://johnnyshieh.me/2016/09/21/android-annotation/">
+    <link itemprop="mainEntityOfPage" href="http://johnnyshieh.me/2017/03/10/rxbus-rxjava2/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Johnny Shieh">
@@ -783,7 +766,7 @@ Note that this implementation is not intended to be appropriate for data structu
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2016/09/21/android-annotation/" itemprop="url">探索注解之 Android 中的注解</a></h1>
+                <a class="post-title-link" href="/2017/03/10/rxbus-rxjava2/" itemprop="url">RxJava 2 版本的 Rxbus</a></h1>
         
 
         <div class="post-meta">
@@ -795,8 +778,8 @@ Note that this implementation is not intended to be appropriate for data structu
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-09-21T16:52:12+08:00">
-                2016-09-21
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-03-10T20:28:58+08:00">
+                2017-03-10
               </time>
             
 
@@ -835,7 +818,7 @@ Note that this implementation is not intended to be appropriate for data structu
 
           
           
-             <span id="/2016/09/21/android-annotation/" class="leancloud_visitors" data-flag-title="探索注解之 Android 中的注解">
+             <span id="/2017/03/10/rxbus-rxjava2/" class="leancloud_visitors" data-flag-title="RxJava 2 版本的 Rxbus">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -864,23 +847,18 @@ Note that this implementation is not intended to be appropriate for data structu
 
       
         
-          <p>Java 中有注解，Android 中也有注解，本文将介绍下 Android 的注解。这是探索注解系列文章的最后一篇：</p>
+          <p>基于 RxJava 的 RxBus 作为一种事件总线，相信许多人都了解一些，Square 的 <a href="https://github.com/square/otto" target="_blank" rel="external">Otto</a> 也因此弃用，因为现在 RxJava 太火了，用它几行代码就可以写出事件总线。不过大家所熟悉的是基于 RxJava 1.x 版本的，2016 年十月底 RxJava 更新到 2.x 版本了，具体变化请看 <a href="https://github.com/ReactiveX/RxJava/wiki/What&#39;s-different-in-2.0" target="_blank" rel="external">What’s different in 2.0</a>，下面总结下适合不同场景的 RxJava 2 版本的 RxBus 写法。</p>
 <ul>
-<li><p><a href="http://johnnyshieh.me/2016/09/07/annotation-basic/">探索注解之注解的基本概念</a></p>
+<li><p>没有背压处理（Backpressure）的 Rxbus</p>
 </li>
-<li><p><a href="http://blog.csdn.net/lmj623565791/article/details/51931859" target="_blank" rel="external">探索注解之 APT 编译时处理注解, 解析 Butterknife 注解原理</a> (鸿神写编译时注解的文章，非常好，所以自己就不再重复写了)</p>
+<li><p>有背压处理的 RxBus</p>
 </li>
-<li><p><a href="http://johnnyshieh.me/2016/09/21/android-annotation/">探索注解之 Android 中的注解</a></p>
+<li><p>有异常处理的 Rxbus （订阅者处理事件出现异常也能继续收到事件）</p>
 </li>
 </ul>
-<h2 id="引入注解库"><a href="#引入注解库" class="headerlink" title="引入注解库"></a>引入注解库</h2><p>Android 的注解库并没有包括在 framework 中，它被独立成一个单独的库。通常情况下，只需要编辑<code>build.gradle</code>文件就可引入：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">dependencies &#123;</div><div class="line">    compile &apos;com.android.support:support-annotations:22.2.0&apos;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>如果已经引入了<code>appcompat</code>库的话，就不需要额外引入<code>support-annotations</code>，因为<code>appcompat</code>包含了注解库。</p>
-<p>对于 Android 应用或者 Android Library 模块的话，上面的工作就可以引入注解库。如果想要在纯粹的 Java 模块中（即在 gradle 文件中<code>apply plugin: &#39;java&#39;</code>)引入注解库的话，还要显式地标明 SDK 的 repositories，因为注解库不在 jcenter 上（Android 的 gradle plugin 默认包含这个依赖，而 Java plugin 并没有）。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">repositories &#123;</div><div class="line">    jcenter()</div><div class="line">    maven &#123;url &apos;&lt;your-SDK-path&gt;/extras/android/m2repository&apos;&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2016/09/21/android-annotation/#more" rel="contents">
+            <a class="btn" href="/2017/03/10/rxbus-rxjava2/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -926,7 +904,7 @@ Note that this implementation is not intended to be appropriate for data structu
   
 
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://johnnyshieh.me/2016/09/07/annotation-basic/">
+    <link itemprop="mainEntityOfPage" href="http://johnnyshieh.me/2017/02/25/java-valatile/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Johnny Shieh">
@@ -945,7 +923,7 @@ Note that this implementation is not intended to be appropriate for data structu
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2016/09/07/annotation-basic/" itemprop="url">探索注解之注解的基本概念</a></h1>
+                <a class="post-title-link" href="/2017/02/25/java-valatile/" itemprop="url">线程安全之 volatile 关键字</a></h1>
         
 
         <div class="post-meta">
@@ -957,8 +935,8 @@ Note that this implementation is not intended to be appropriate for data structu
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-09-07T16:51:51+08:00">
-                2016-09-07
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-02-25T20:23:49+08:00">
+                2017-02-25
               </time>
             
 
@@ -997,7 +975,7 @@ Note that this implementation is not intended to be appropriate for data structu
 
           
           
-             <span id="/2016/09/07/annotation-basic/" class="leancloud_visitors" data-flag-title="探索注解之注解的基本概念">
+             <span id="/2017/02/25/java-valatile/" class="leancloud_visitors" data-flag-title="线程安全之 volatile 关键字">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -1026,29 +1004,19 @@ Note that this implementation is not intended to be appropriate for data structu
 
       
         
-          <p>自从 Java 5.0 版本引入<strong>注解</strong>后，它就成为 Java 平台中非常重要的一部分。在日常开发过程中时常可以看到 @Override，@Deprecated 这样的注解，在使用 Butterknife 减少 findViewById 这样的重复劳动时也经常用到 @BindView 注解。下面几篇文章将讲述注解的基本概念，注解处理器的使用以及 Android中 的注解：</p>
-<ul>
-<li><p><a href="http://johnnyshieh.me/2016/09/07/annotation-basic/">探索注解之注解的基本概念</a></p>
+          <p>在阅读本文前，建议先看下面两篇文章：</p>
+<p><a href="http://johnnyshieh.me/2017/01/05/java-memory-model/">Java 内存模型</a></p>
+<p><a href="http://johnnyshieh.me/2017/01/10/java-synchronized/">线程安全之 synchronized 关键字</a></p>
+<p>Java 中 volatile 是轻量级的 synchronized，不会引起线程上下文的切换和调度。虽然 volatile 关键字只能修饰变量，但是要用好它并不容易，下面分析它的原理及注意事项。</p>
+<h2 id="volatile-关键字的两层语义"><a href="#volatile-关键字的两层语义" class="headerlink" title="volatile 关键字的两层语义"></a>volatile 关键字的两层语义</h2><ul>
+<li><p>保证变量对所有线程的可见性，即一个线程修改了某个值，新值对其他线程来说是立即可见的</p>
 </li>
-<li><p><a href="http://blog.csdn.net/lmj623565791/article/details/51931859" target="_blank" rel="external">探索注解之 APT 编译时处理注解</a> (鸿神写编译时注解的文章，非常好，所以自己就不再重复写了)</p>
-</li>
-<li><p><a href="http://johnnyshieh.me/2016/09/21/android-annotation/">探索注解之 Android 中的注解</a></p>
+<li><p>禁止指令重排序（Java 5 后才有的）</p>
 </li>
 </ul>
-<h2 id="什么是注解？"><a href="#什么是注解？" class="headerlink" title="什么是注解？"></a>什么是注解？</h2><p><strong>注解（Annotations），就是元数据，一种描述程序代码的数据，并且对程序运行没有任何影响。</strong></p>
-<p>例如下面这段代码：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Override</span></div><div class="line"><span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span> </span>&#123;</div><div class="line">    <span class="keyword">return</span> <span class="string">"This is String Representation of current object"</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>在上面的代码中，我重写了 toString() 方法并使用了 @Override 注解。但是即便我不使用 @Override 注解标记代码，程序也能正常运行。那么这个注解有什么意义？@Override 告诉编译器这个方法是重写父类的方法，如果父类中没有该方法，编译器就会报错，提示没有重写父类中的方法。如果我不小心把 toString 写成 toStrings，而且也没有使用 @Override 注解的话，程序依然可以运行，但是跟之前期望就会大有不同。</p>
-<p>注解有下面几种作用：</p>
-<ul>
-<li><strong>为编译器提供信息</strong> – 注解可以被编译器用来检测错误或抑制警告</li>
-<li><strong>编译时和部署时处理</strong> – 一些工具可以根据注解信息生成代码，XML 文件等等，例如 APT（Annotation Processing Tool）</li>
-<li><strong>运行时处理</strong> – 有些注解可以在运行时通过反射获取</li>
-</ul>
-<p>在引入注解之前，开发人员通常使用标记 interfaces，注释或者 javadoc 定义元数据，没有统一的一种方式。注解定义了一种标准的描述元数据的方式，注解是一种应用于类、方法、参数、变量、构造器及包声明中的特殊修饰符。它是一种由 JSR-175 标准选择用来描述元数据的一种工具。</p>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2016/09/07/annotation-basic/#more" rel="contents">
+            <a class="btn" href="/2017/02/25/java-valatile/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1089,7 +1057,7 @@ Note that this implementation is not intended to be appropriate for data structu
 
   
   <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right"></i></a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/8/">8</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1138,7 +1106,7 @@ Note that this implementation is not intended to be appropriate for data structu
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">28</span>
+                <span class="site-state-item-count">40</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -1149,7 +1117,7 @@ Note that this implementation is not intended to be appropriate for data structu
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">7</span>
+                <span class="site-state-item-count">8</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -1160,7 +1128,7 @@ Note that this implementation is not intended to be appropriate for data structu
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">23</span>
+                <span class="site-state-item-count">28</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>

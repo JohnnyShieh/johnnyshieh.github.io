@@ -4,6 +4,266 @@
 
     
   <url>
+    <loc>http://johnnyshieh.me/2017/01/05/java-memory-model/</loc>
+    <lastmod>2017-05-11T12:55:27.000Z</lastmod>
+    <data>
+        <display>
+        <title>Java 内存模型</title>
+        <pubTime>2017-01-05T12:11:43.000Z</pubTime>
+        
+        <tag>java</tag>
+         
+         
+           
+             
+              <breadCrumb title="Java" url="http://johnnyshieh.me/categories/Java/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://johnnyshieh.me/2017/04/15/detect-activity-fragment-lifecycle/</loc>
+    <lastmod>2017-05-11T12:52:36.000Z</lastmod>
+    <data>
+        <display>
+        <title>Headless Fragment 监听 Activity 或 Fragment 生命周期</title>
+        <pubTime>2017-04-15T12:29:50.000Z</pubTime>
+        
+        <tag>android</tag>
+         
+        <tag>android-ui</tag>
+         
+         
+           
+             
+              <breadCrumb title="Android" url="http://johnnyshieh.me/categories/Android/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://johnnyshieh.me/2017/03/30/web-evoke-app/</loc>
+    <lastmod>2017-05-11T12:50:41.000Z</lastmod>
+    <data>
+        <display>
+        <title>Web 唤起 Android app 的实现及原理</title>
+        <pubTime>2017-03-30T12:29:29.000Z</pubTime>
+        
+        <tag>android</tag>
+         
+         
+           
+             
+              <breadCrumb title="Andriod" url="http://johnnyshieh.me/categories/Andriod/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://johnnyshieh.me/2017/03/15/rxjava-single-completable/</loc>
+    <lastmod>2017-05-11T12:35:39.000Z</lastmod>
+    <data>
+        <display>
+        <title>[译] 理解 RxJava 中的 Single 和 Completable</title>
+        <pubTime>2017-03-15T12:29:17.000Z</pubTime>
+        
+        <tag>android</tag>
+         
+        <tag>rxjava</tag>
+         
+         
+           
+             
+              <breadCrumb title="Android" url="http://johnnyshieh.me/categories/Android/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://johnnyshieh.me/2017/03/10/rxbus-rxjava2/</loc>
+    <lastmod>2017-05-11T12:31:55.000Z</lastmod>
+    <data>
+        <display>
+        <title>RxJava 2 版本的 Rxbus</title>
+        <pubTime>2017-03-10T12:28:58.000Z</pubTime>
+        
+        <tag>android</tag>
+         
+        <tag>rxjava</tag>
+         
+         
+           
+             
+              <breadCrumb title="Android" url="http://johnnyshieh.me/categories/Android/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://johnnyshieh.me/2017/02/25/java-valatile/</loc>
+    <lastmod>2017-05-11T12:28:31.000Z</lastmod>
+    <data>
+        <display>
+        <title>线程安全之 volatile 关键字</title>
+        <pubTime>2017-02-25T12:23:49.000Z</pubTime>
+        
+        <tag>android</tag>
+         
+        <tag>java</tag>
+         
+        <tag>多线程</tag>
+         
+         
+           
+             
+              <breadCrumb title="Java" url="http://johnnyshieh.me/categories/Java/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://johnnyshieh.me/2017/01/11/android-hardware-layer-animation/</loc>
+    <lastmod>2017-05-11T12:23:11.000Z</lastmod>
+    <data>
+        <display>
+        <title>[译]通过 Hardware Layer 提升 Android 动画性能</title>
+        <pubTime>2017-01-11T12:19:55.000Z</pubTime>
+        
+        <tag>android</tag>
+         
+        <tag>android_ui</tag>
+         
+        <tag>动画</tag>
+         
+         
+           
+             
+              <breadCrumb title="Android" url="http://johnnyshieh.me/categories/Android/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://johnnyshieh.me/2017/01/10/java-synchronized/</loc>
+    <lastmod>2017-05-11T12:19:30.000Z</lastmod>
+    <data>
+        <display>
+        <title>线程安全之 synchronized 关键字</title>
+        <pubTime>2017-01-10T12:16:31.000Z</pubTime>
+        
+        <tag>java</tag>
+         
+        <tag>多线程</tag>
+         
+         
+           
+             
+              <breadCrumb title="Java" url="http://johnnyshieh.me/categories/Java/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://johnnyshieh.me/2016/12/31/summary-of-2016/</loc>
+    <lastmod>2017-05-11T12:11:17.000Z</lastmod>
+    <data>
+        <display>
+        <title>2016 年终总结</title>
+        <pubTime>2016-12-31T12:09:17.000Z</pubTime>
+        
+        <tag>年终总结</tag>
+         
+         
+           
+             
+              <breadCrumb title="随笔" url="http://johnnyshieh.me/categories/%E9%9A%8F%E7%AC%94/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://johnnyshieh.me/2016/12/22/android-coding-standards/</loc>
+    <lastmod>2017-05-11T12:08:51.000Z</lastmod>
+    <data>
+        <display>
+        <title>Android 命名规范与编码风格</title>
+        <pubTime>2016-12-22T12:03:04.000Z</pubTime>
+        
+        <tag>android</tag>
+         
+         
+           
+             
+              <breadCrumb title="Android" url="http://johnnyshieh.me/categories/Android/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://johnnyshieh.me/2016/12/07/serializable-vs-parcelable/</loc>
+    <lastmod>2017-05-11T12:04:12.000Z</lastmod>
+    <data>
+        <display>
+        <title>Parcelable vs Serializable</title>
+        <pubTime>2016-12-07T11:58:02.000Z</pubTime>
+        
+        <tag>android</tag>
+         
+        <tag>序列化</tag>
+         
+         
+           
+             
+              <breadCrumb title="Android" url="http://johnnyshieh.me/categories/Android/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://johnnyshieh.me/2016/11/18/android-memory-leak/</loc>
+    <lastmod>2017-05-11T11:57:23.000Z</lastmod>
+    <data>
+        <display>
+        <title>Android 性能优化之内存泄漏</title>
+        <pubTime>2016-11-18T11:44:09.000Z</pubTime>
+        
+        <tag>android</tag>
+         
+        <tag>性能优化</tag>
+         
+         
+           
+             
+              <breadCrumb title="Android" url="http://johnnyshieh.me/categories/Android/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://johnnyshieh.me/2016/10/19/android-arraymap-and-sparsearray/</loc>
     <lastmod>2017-05-11T10:04:45.000Z</lastmod>
     <data>

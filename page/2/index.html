@@ -285,7 +285,7 @@
   
 
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://johnnyshieh.me/2016/06/12/android-develop-tips-and-tricks/">
+    <link itemprop="mainEntityOfPage" href="http://johnnyshieh.me/2017/01/11/android-hardware-layer-animation/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Johnny Shieh">
@@ -304,7 +304,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2016/06/12/android-develop-tips-and-tricks/" itemprop="url">Android 开发过程中的坑和小技巧</a></h1>
+                <a class="post-title-link" href="/2017/01/11/android-hardware-layer-animation/" itemprop="url">[译]通过 Hardware Layer 提升 Android 动画性能</a></h1>
         
 
         <div class="post-meta">
@@ -316,8 +316,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-06-12T16:34:25+08:00">
-                2016-06-12
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-01-11T20:19:55+08:00">
+                2017-01-11
               </time>
             
 
@@ -356,7 +356,7 @@
 
           
           
-             <span id="/2016/06/12/android-develop-tips-and-tricks/" class="leancloud_visitors" data-flag-title="Android 开发过程中的坑和小技巧">
+             <span id="/2017/01/11/android-hardware-layer-animation/" class="leancloud_visitors" data-flag-title="[译]通过 Hardware Layer 提升 Android 动画性能">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -385,18 +385,14 @@
 
       
         
-          <h2 id="空指针问题"><a href="#空指针问题" class="headerlink" title="空指针问题"></a>空指针问题</h2><p>NullPointerException 绝对是开发人员遇到最多的问题，也是 Android 开发过程中一个大坑，总是在你意料不到的时候出现。要解决这个问题，关键地方不要吝啬 if 语句，需要在用到某一对象的时候多想想有没什么可能会导致对象没有初始化或者被指向为<code>null</code>，下面是一些比较有代表性的例子：</p>
-<ul>
-<li>Fragment的Handler 中调用 getActivity()，需要判空和判断 activity 是否销毁</li>
-</ul>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">MyHandler</span> <span class="keyword">extends</span> <span class="title">Handler</span> </span>&#123;</div><div class="line">    ...</div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">handleMessage</span><span class="params">(Message msg)</span> </span>&#123;</div><div class="line">        <span class="comment">// 需要判空</span></div><div class="line">        <span class="keyword">if</span>(<span class="keyword">null</span> != mFragment.getActivity() &amp;&amp; !mFragment.getActivity().isDestroyed()) &#123;</div><div class="line">            <span class="comment">// TODO</span></div><div class="line">        &#125;</div><div class="line">    &#125;    </div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<ul>
-<li>使用 Cursor 时没有判空，没有在 finally 代码块中关闭</li>
-</ul>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">Cursor cursor = <span class="keyword">null</span>;</div><div class="line"><span class="keyword">try</span> &#123;</div><div class="line">    cursor = contentResolver.query(uri, <span class="keyword">null</span>, selection, selectionArgs, <span class="keyword">null</span>);</div><div class="line">    <span class="comment">// cursor可能为空</span></div><div class="line">    <span class="keyword">if</span>(<span class="keyword">null</span> != cursor &amp;&amp; cursor.moveToFirst()) &#123;</div><div class="line">        <span class="comment">// TODO</span></div><div class="line">    &#125;</div><div class="line">&#125; <span class="keyword">catch</span> (Exception e) &#123;</div><div class="line">    e.printStackTrace();</div><div class="line">&#125; <span class="keyword">finally</span> &#123;</div><div class="line">    <span class="keyword">if</span> (<span class="keyword">null</span> != cursor) &#123;</div><div class="line">        cursor.close();</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+          <p>当有人问我关于动画性能表现不佳问题时，我首先会问他们是否使用 Hardware layer。</p>
+<p>在动画过程中你的视图可能在每一帧都需要进行重绘。如果使用 Hardware layer，可以避免重绘每一帧，因为 View 的渲染一旦进入离屏缓冲区就能够被复用。</p>
+<p>另外，Hardware Layer 缓存在 GPU 上，它能够使动画中的某些操作变得更顺畅。通过使用 Hardware Layer 能够迅速渲染简单的变换（如，移动，旋转，缩放，透明度）。因为许多动画都是多种变换的组合，所以使用 Hardware Layer 能够显著提高动画性能。</p>
+<h2 id="用法"><a href="#用法" class="headerlink" title="用法"></a>用法</h2><p>在使用 Hardware layer 之前，你的视图需要启用硬件加速，可以在 AndroidManifest 文件中的 application 或所在的 activity 加上<code>android:hardwareAccelerated=&quot;true&quot;</code>, 当 Target API &gt;= 14 时，硬件加速是默认启用的。</p>
+<p>View 的 layer API 非常简单：<code>View.setLayerType()</code>。你应该只是暂时设置 Hardware Layer，因为它们无法自动释放（稍后介绍）。基本使用步骤如下：</p>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2016/06/12/android-develop-tips-and-tricks/#more" rel="contents">
+            <a class="btn" href="/2017/01/11/android-hardware-layer-animation/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -442,7 +438,7 @@
   
 
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://johnnyshieh.me/2016/02/23/volleyex-ttl/">
+    <link itemprop="mainEntityOfPage" href="http://johnnyshieh.me/2017/01/10/java-synchronized/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Johnny Shieh">
@@ -461,7 +457,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2016/02/23/volleyex-ttl/" itemprop="url">一步一步扩展 Volley (二)，缓存生存时间 TTL</a></h1>
+                <a class="post-title-link" href="/2017/01/10/java-synchronized/" itemprop="url">线程安全之 synchronized 关键字</a></h1>
         
 
         <div class="post-meta">
@@ -473,8 +469,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-02-23T14:29:50+08:00">
-                2016-02-23
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-01-10T20:16:31+08:00">
+                2017-01-10
               </time>
             
 
@@ -496,8 +492,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Android/" itemprop="url" rel="index">
-                    <span itemprop="name">Android</span>
+                  <a href="/categories/Java/" itemprop="url" rel="index">
+                    <span itemprop="name">Java</span>
                   </a>
                 </span>
 
@@ -513,7 +509,7 @@
 
           
           
-             <span id="/2016/02/23/volleyex-ttl/" class="leancloud_visitors" data-flag-title="一步一步扩展 Volley (二)，缓存生存时间 TTL">
+             <span id="/2017/01/10/java-synchronized/" class="leancloud_visitors" data-flag-title="线程安全之 synchronized 关键字">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -542,16 +538,14 @@
 
       
         
-          <p>之前根据 Volley 的工作流程大致解析了它的框架，接下来继续分析 Volley 的缓存机制,下面我在解析其缓存机制的同时也讲述一下个人对缓存生存时间的扩展.</p>
-<h2 id="缓存调度器的处理流程"><a href="#缓存调度器的处理流程" class="headerlink" title="缓存调度器的处理流程"></a>缓存调度器的处理流程</h2><p>要明白 Volley 的缓存机制，关键在于分析缓存调度器处理请求的过程，下面是我画的流程图:</p>
-<p><img src="http://oph5rhcqp.bkt.clouddn.com/volley_cache_flow.png" alt=""></p>
-<p>这张流程图主要对应 CacheDispatcher 的 run 方法，首先根据 cachekey 查找缓存，如果没有缓存就把请求放到网络等待队列中，缓存调度器继续处理下一个请求；如果有缓存，但是缓存已经过期了，也将请求放到网络等待队列中并处理下一个请求，如果缓存没有过期，继续判断缓存是否需要刷新；如果不需要更新缓存，则直接传递解析后的缓存数据到主线程，如果需要更新缓存，则在传递解析后的缓存数据到主线程之后还会把请求添加到网络等待队列。</p>
-<p>下面再看下流程中的两个关键的方法的源码：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * Data and metadata for an entry returned by the cache.</div><div class="line"> */</div><div class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">Entry</span> </span>&#123;</div><div class="line">    <span class="comment">/** The data returned from cache. */</span></div><div class="line">    <span class="keyword">public</span> <span class="keyword">byte</span>[] data;</div><div class="line"></div><div class="line">    <span class="comment">/** ETag for cache coherency. */</span></div><div class="line">    <span class="keyword">public</span> String etag;</div><div class="line"></div><div class="line">    <span class="comment">/** Date of this response as reported by the server. */</span></div><div class="line">    <span class="keyword">public</span> <span class="keyword">long</span> serverDate;</div><div class="line"></div><div class="line">    <span class="comment">/** The last modified date for the requested object. */</span></div><div class="line">    <span class="keyword">public</span> <span class="keyword">long</span> lastModified;</div><div class="line"></div><div class="line">    <span class="comment">/** TTL for this record. */</span></div><div class="line">    <span class="keyword">public</span> <span class="keyword">long</span> ttl;</div><div class="line"></div><div class="line">    <span class="comment">/** Soft TTL for this record. */</span></div><div class="line">    <span class="keyword">public</span> <span class="keyword">long</span> softTtl;</div><div class="line"></div><div class="line">    <span class="comment">/** Immutable response headers as received from server; must be non-null. */</span></div><div class="line">    <span class="keyword">public</span> Map&lt;String, String&gt; responseHeaders = Collections.emptyMap();</div><div class="line"></div><div class="line">    <span class="comment">/** True if the entry is expired. */</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isExpired</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">this</span>.ttl &lt; System.currentTimeMillis();</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">/** True if a refresh is needed from the original data source. */</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">refreshNeeded</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">this</span>.softTtl &lt; System.currentTimeMillis();</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>从上面的代码中可以看出 ttl 就是缓存的生存时间，如果当前时间大于这个时间，缓存就过期，需要重新从网络请求数据。而 softTtl 代表软生存时间，过了这个时间缓存没有完全过期，可以返回给主线程，但是需要从网络请求新的数据刷新缓存.</p>
+          <p>一般在遇到线程安全的问题时候，大家都经常会使用 synchronized 关键字，来达到线程互斥访问的目的，但是这也间接造成它被程序员滥用的局面。下面分析 synchronized 关键字的原理、用法以及注意事项，帮助大家更好地使用它。</p>
+<h2 id="synchronized-的用法"><a href="#synchronized-的用法" class="headerlink" title="synchronized 的用法"></a>synchronized 的用法</h2><p>synchronized 关键字可以修饰代码块或者方法，是最基本的互斥同步手段，可以避免多个线程之间的竞争条件（race conditions）。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 修饰代码块</span></div><div class="line"><span class="keyword">synchronized</span> (ReferenceType) &#123;...&#125;</div><div class="line"></div><div class="line"><span class="comment">// 修饰方法（包括静态方法）</span></div><div class="line"><span class="keyword">synchronized</span> MethodDeclaration</div></pre></td></tr></table></figure>
+<h2 id="实现原理"><a href="#实现原理" class="headerlink" title="实现原理"></a>实现原理</h2><p>synchronized 关键字可以使得同一时刻只有一个线程能访问一个代码块或者方法，但是其内部原理究竟是如何呢。要理解其原理，首先要知道一点：<strong>所有对象都自动含有单一的锁与其对应</strong>（每个已加载的类对象也对应一个锁），这个锁也叫作互斥锁。用 synchronized 修饰即代表着加了某一个对象的锁，修饰代码块时明确指明是什么对象的锁，而在修饰方法时，如果修饰成员方法，指被调用该方法对象的锁，如果修饰静态方法，指该 Class 类型的锁。</p>
+<p>在线程执行到 synchronized 修饰的代码块或者方法时，会尝试获取一个对象的互斥锁，执行完后会释放这个锁。如果获取对象锁失败，当前线程就要阻塞等待，所以当一个线程持有一个对象的锁时，其他线程无法获得这个锁，从而达到互斥访问的目的。在执行 synchronized 方法或 synchronized 代码块时出现异常，JVM 会自动释放获取的锁。</p>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2016/02/23/volleyex-ttl/#more" rel="contents">
+            <a class="btn" href="/2017/01/10/java-synchronized/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -597,7 +591,7 @@
   
 
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://johnnyshieh.me/2016/02/18/asynctaskloader-rejectedexecutionexception/">
+    <link itemprop="mainEntityOfPage" href="http://johnnyshieh.me/2017/01/05/java-memory-model/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Johnny Shieh">
@@ -616,7 +610,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2016/02/18/asynctaskloader-rejectedexecutionexception/" itemprop="url">Android 中 LoaderManager 用 restartLoader 频繁启动 AsyncTaskLoader 产生 RejectedExecutionException 的解决方案</a></h1>
+                <a class="post-title-link" href="/2017/01/05/java-memory-model/" itemprop="url">Java 内存模型</a></h1>
         
 
         <div class="post-meta">
@@ -628,8 +622,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-02-18T14:20:36+08:00">
-                2016-02-18
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-01-05T20:11:43+08:00">
+                2017-01-05
               </time>
             
 
@@ -651,8 +645,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Android/" itemprop="url" rel="index">
-                    <span itemprop="name">Android</span>
+                  <a href="/categories/Java/" itemprop="url" rel="index">
+                    <span itemprop="name">Java</span>
                   </a>
                 </span>
 
@@ -668,7 +662,7 @@
 
           
           
-             <span id="/2016/02/18/asynctaskloader-rejectedexecutionexception/" class="leancloud_visitors" data-flag-title="Android 中 LoaderManager 用 restartLoader 频繁启动 AsyncTaskLoader 产生 RejectedExecutionException 的解决方案">
+             <span id="/2017/01/05/java-memory-model/" class="leancloud_visitors" data-flag-title="Java 内存模型">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -697,11 +691,13 @@
 
       
         
-          <p>在项目过程中遇到 AsyncTaskLoader 出现 RejectedExecutionException 报错应用退出的问题，问题是偶现的，后面发现根本原因是因为 AsyncTask 的 cancel(false) 方法并没有真正的取消掉任务。下面我写了一个会出现这个问题的 demo，看看这个问题是如何产生的。</p>
-<h2 id="问题分析"><a href="#问题分析" class="headerlink" title="问题分析"></a>问题分析</h2><p>demo 的关键代码如下：</p>
+          <p>为了写出正确工作的并发程序，我们非常有必要理解 Java 内存模型。Java 内存模型描述了不同线程如何以及何时可以看到被其他线程修改后的共享变量的值，以及如何对共享变量执行同步操作。下面从一些基本概念开始解析 Java 内存模型，让大家理解多线程通信时需要注意的一些事项。</p>
+<h2 id="内存模型"><a href="#内存模型" class="headerlink" title="内存模型"></a>内存模型</h2><p>由于计算机的内存与处理器的运算速度有几个数量级的差距，所以现代计算机系统都会加入一层或多层读写速度接近处理器运算速度的高速缓存作为中间缓冲：将运算需要的数据先复制到缓存中，让运算更快地进行，当运算结束后再从缓存同步会内存中，这样处理器就无须等待缓慢的内存读写。但是这样会引入缓存一致性问题，在多处理器系统中，每个处理器有独立的高速缓存，而它们又共享同一主内存，所以在修改同一内存区域时，不知道以哪个缓存数据为准。下图描述了处理器、高速缓存与主内存之间的交互关系：</p>
+<p><img src="http://oph5rhcqp.bkt.clouddn.com/computer_memory.png" alt=""></p>
+<p>在操作系统中，cpu 的最小执行单位是线程，所以在计算机系统中，内存模型是线程对内存或高速缓存读写过程的抽象。</p>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2016/02/18/asynctaskloader-rejectedexecutionexception/#more" rel="contents">
+            <a class="btn" href="/2017/01/05/java-memory-model/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -747,7 +743,7 @@
   
 
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://johnnyshieh.me/2016/01/13/volleyex-brief/">
+    <link itemprop="mainEntityOfPage" href="http://johnnyshieh.me/2016/12/31/summary-of-2016/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Johnny Shieh">
@@ -766,7 +762,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2016/01/13/volleyex-brief/" itemprop="url">一步一步扩展 Volley (一)，Volley 框架解析</a></h1>
+                <a class="post-title-link" href="/2016/12/31/summary-of-2016/" itemprop="url">2016 年终总结</a></h1>
         
 
         <div class="post-meta">
@@ -778,180 +774,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-01-13T00:00:00+08:00">
-                2016-01-13
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Android/" itemprop="url" rel="index">
-                    <span itemprop="name">Android</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2016/01/13/volleyex-brief/" class="leancloud_visitors" data-flag-title="一步一步扩展 Volley (一)，Volley 框架解析">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数 </span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>去年 11 月开始写一个扩展 Volley 的网络通信框架 ———— VolleyEx，虽然 Github 上已经有 <a href="https://github.com/DWorkS/VolleyPlus" target="_blank" rel="external">VolleyPlus</a> 等优秀的扩展框架，但我想借此研究异步加载网络请求的原理，学习下 Volley 的代码设计，所以还是自己重新写一个扩展框架。并且把我一步一步扩展 Volley 的过程用博客的形式记录下来，希望可以帮助大家更好地理解 Volley 及网络加载。在扩展 Volley 之前，需要先了解其大致框架，明白它的优势与不足，这也是这篇文章的主要内容。</p>
-<h2 id="Volley-简介"><a href="#Volley-简介" class="headerlink" title="Volley 简介"></a>Volley 简介</h2><p><img src="http://oph5rhcqp.bkt.clouddn.com/volley.png" alt=""></p>
-<p>Volley 是 2013 Google I/O Session 推出的一个网络通信框架，便于异步加载网络请求和图片请求，适用于<strong>数据量小</strong>和<strong>通信频繁</strong>的网络操作。但是对于数据量大的网络（例如文件下载），Volley 的表现就很糟糕了，这种情况推荐用 DownloadManager。</p>
-<p>根据 Android 官方培训课程中 <a href="http://developer.android.com/training/volley/index.html" target="_blank" rel="external">Volley 教程</a>的说明，Volle 有下面几个优点：</p>
-<ol>
-<li><p>自动调度网络请求</p>
-</li>
-<li><p>高并发网络连接</p>
-</li>
-<li><p>通过标准的 HTTP cache coherence 缓存磁盘，内存透明的响应</p>
-</li>
-<li><p>支持指定请求的优先级</p>
-</li>
-<li><p>框架容易定制，如重试和回退功能</p>
-</li>
-<li><p>清晰的加载流程使异步加载网络数据并正确地显示到UI更加简单</p>
-</li>
-<li><p>包含了调试与追踪工具</p>
-</li>
-</ol>
-<p>关于 Volley 的不足之处，在解析完其框架再来讨论。</p>
-<p>Volley 的官方项目地址： <a href="https://android.googlesource.com/platform/frameworks/volley/" target="_blank" rel="external">https://android.googlesource.com/platform/frameworks/volley/</a></p>
-<p>Volley 的 Github 地址（由国人做的映射）： <a href="https://github.com/mcxiaoke/android-volley" target="_blank" rel="external">https://github.com/mcxiaoke/android-volley</a></p>
-<p>这是 2013 Google I/O 大会上关于 Volley 的文档： <a href="http://oph5rhcqp.bkt.clouddn.com/Volley-Easy_Fast_Networking_for_Android.pdf" target="_blank" rel="external">Volley-Easy,Fast Networking for Android.pdf</a></p>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2016/01/13/volleyex-brief/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://johnnyshieh.me/2015/12/31/summary-of-2015/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Johnny Shieh">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Johnny Shieh">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2015/12/31/summary-of-2015/" itemprop="url">2015 年终总结</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-12-31T00:00:00+08:00">
-                2015-12-31
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-12-31T20:09:17+08:00">
+                2016-12-31
               </time>
             
 
@@ -990,7 +814,7 @@
 
           
           
-             <span id="/2015/12/31/summary-of-2015/" class="leancloud_visitors" data-flag-title="2015 年终总结">
+             <span id="/2016/12/31/summary-of-2016/" class="leancloud_visitors" data-flag-title="2016 年终总结">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -1019,11 +843,171 @@
 
       
         
-          <p>回想 2015 年发生的点点滴滴，感觉时间过的好快呀，1 月 1 日我才正式对外公开这个新的博客，今天就是 2015 年的最后一天了。现在回想这一年，各种各样的事情充满了脑海，觉得非常有必要趁现在还能记得清，把这些事情理顺出来并做个总结。方便以后倒回来看看当前的自己究竟都在折腾些什么，也可以当一个纪念吧，以后的每一年的最后一天也写一篇年终总结。</p>
-<p>2015 年的 1 月 1 日我在微博和 QQ 上公开了这个技术博客，这个博客是 2014 年的 7 月用 <a href="https://pages.github.com/" target="_blank" rel="external">Github Pages</a> 和 <a href="http://jekyll.bootcss.com/" target="_blank" rel="external">Jekyll</a> 搭建起来的，之后利用空闲时间修改样式，添加响应式布局。然后陆陆续续写了些博客，最终在 1 月 1 日正式对外公开。不过这个博客现在的访问量还很少，我之前的技术博客 <a href="http://xie2010.blog.163.com/" target="_blank" rel="external">Lucky Johnny’s blog</a> 到是基本上每天 90 左右的访问量，这让我觉得有点落差。我分析了博客的来源，基本是通过谷歌搜索访问的，百度根本搜索不到我的博客。其实这种新的网站访问量低也是正常的，希望通过自己的努力明年博客的访问量可以到之前博客的水平。</p>
+          <p>不知不觉 2016 又要过去了，去年开始计划每年的最后一天写一篇年终总结，所以在元旦来临之前总结下今年的经历，迎接新一年的到来。</p>
+<p>首先值得高兴的是，可以通过百度直接搜索到我的博客了，去年还是不能搜索到的。博客的样式也在闲余时间中修修改改，现在的样式自己比较满意。不过今年才写了 12 篇博客，上半年工作比较忙，工作中做的需求也没学到多少新鲜的知识，所以有几个月都没写博客。在新的一年要更好地管理时间，多自学新技术，提高博客输出产能。</p>
+<p>上半年写了一个基于 Volley 扩展的网络请求框架 VolleyEx ，学习了网络请求和图片加载的相关内容，但后面看到了 Retrofit 的设计，架构非常优美，所以记录自己扩展 Volley 框架的文章就写了2篇就停止了。后面在几个月的空闲时间中写了干货集中营的移动 App，主要是为了学习 RxJava、Retrofit、Dagger2、Glide 等流行的开源框架，这个项目 – Gank 在 Github 上的 Star 数有两百多，是我目前的第一个开源项目，有这么多人赞同很开心。</p>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2015/12/31/summary-of-2015/#more" rel="contents">
+            <a class="btn" href="/2016/12/31/summary-of-2016/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://johnnyshieh.me/2016/12/22/android-coding-standards/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Johnny Shieh">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Johnny Shieh">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/12/22/android-coding-standards/" itemprop="url">Android 命名规范与编码风格</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-12-22T20:03:04+08:00">
+                2016-12-22
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android/" itemprop="url" rel="index">
+                    <span itemprop="name">Android</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2016/12/22/android-coding-standards/" class="leancloud_visitors" data-flag-title="Android 命名规范与编码风格">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>在团队开发项目中，统一的命名规范与编码风格非常重要，只有这样才像一个优秀团队开发的产品。而且这样方便阅读其他人的代码，便于后期维护。我觉得 Android 源码的可读性很好，风格统一，而在实际项目中经常看到混乱的风格，缩进有的是<code>tab</code>有的是<code>space</code>，命名有的是中文拼音有的是英文，看上去非常的乱。相信大家都喜欢简洁整齐的代码，这就需要团队成员稍微牺牲下个性，遵守统一的规范，自己读起来也赏心悦目。下面我根据自己的一些编码规范和网上的一些资料整理出一套 Android 命名规范，至于编码风格是根据 Google 的提供的 Android code style 略微修改而成，直接在 Android Studio 导入即可， 所以下面主要是介绍命名规范内容。</p>
+<h2 id="Android-命名规范"><a href="#Android-命名规范" class="headerlink" title="Android 命名规范"></a>Android 命名规范</h2><p>下面的命名规范，有些是我个人习惯，有不喜欢的地方可以复制后修改即可，做到简单易记就好，便于团队成员遵守。</p>
+<h3 id="基本命名方式"><a href="#基本命名方式" class="headerlink" title="基本命名方式"></a>基本命名方式</h3><ol>
+<li><p>大驼峰命名法（UpperCamelCase）：所有单词的第一个字母大写</p>
+</li>
+<li><p>小驼峰命名法（lowerCamelCase）：除首单词外，其余所有单词的第一个字母大写</p>
+</li>
+<li><p>下划线命名法（case1_case2）：单词与单词之间用下划线间隔，所有单词小写</p>
+</li>
+</ol>
+<p>一般建议用来命名的单词简单明了，不要用中文拼音，找个词典翻译下还能提高自己英文水平。有些单词可以写成一些约定俗成的缩写，也可以根据团队成员间的约定进行缩写命名。</p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2016/12/22/android-coding-standards/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1064,7 +1048,7 @@
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/8/">8</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1107,7 +1091,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">28</span>
+                <span class="site-state-item-count">40</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -1118,7 +1102,7 @@
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">7</span>
+                <span class="site-state-item-count">8</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -1129,7 +1113,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">23</span>
+                <span class="site-state-item-count">28</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
