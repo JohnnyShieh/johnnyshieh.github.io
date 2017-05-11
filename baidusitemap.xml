@@ -4,6 +4,26 @@
 
     
   <url>
+    <loc>http://johnnyshieh.me/2017/03/30/web-evoke-app/</loc>
+    <lastmod>2017-05-11T13:35:26.000Z</lastmod>
+    <data>
+        <display>
+        <title>Web 唤起 Android app 的实现及原理</title>
+        <pubTime>2017-03-30T12:29:29.000Z</pubTime>
+        
+        <tag>android</tag>
+         
+         
+           
+             
+              <breadCrumb title="Android" url="http://johnnyshieh.me/categories/Android/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://johnnyshieh.me/2017/01/05/java-memory-model/</loc>
     <lastmod>2017-05-11T12:55:27.000Z</lastmod>
     <data>
@@ -39,26 +59,6 @@
            
              
               <breadCrumb title="Android" url="http://johnnyshieh.me/categories/Android/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://johnnyshieh.me/2017/03/30/web-evoke-app/</loc>
-    <lastmod>2017-05-11T12:50:41.000Z</lastmod>
-    <data>
-        <display>
-        <title>Web 唤起 Android app 的实现及原理</title>
-        <pubTime>2017-03-30T12:29:29.000Z</pubTime>
-        
-        <tag>android</tag>
-         
-         
-           
-             
-              <breadCrumb title="Andriod" url="http://johnnyshieh.me/categories/Andriod/"/>
           
         </display>
     </data>
