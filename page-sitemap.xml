@@ -7,15 +7,15 @@
     </url>
     
     <url>
-        <loc>http://johnnyshieh.me/footprints/</loc>
-        <lastmod>2017-05-09T12:27:53.000Z</lastmod>
+        <loc>http://johnnyshieh.me/about/</loc>
+        <lastmod>2017-05-12T08:00:15.000Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.8</priority>
     </url>
     
     <url>
-        <loc>http://johnnyshieh.me/about/</loc>
-        <lastmod>2017-05-09T12:25:13.000Z</lastmod>
+        <loc>http://johnnyshieh.me/footprints/</loc>
+        <lastmod>2017-05-09T12:27:53.000Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.8</priority>
     </url>
