@@ -187,7 +187,7 @@
       </a>
     </div>
       
-        <p class="site-subtitle">人如果没有梦想，和咸鱼有什么分别</p>
+        <p class="site-subtitle">人如果没有梦想，跟咸鱼有什么分别</p>
       
   </div>
 
@@ -295,7 +295,7 @@
   
 
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://johnnyshieh.me/2015/08/24/how-hashmap-work/">
+    <link itemprop="mainEntityOfPage" href="http://johnnyshieh.me/posts/how-hashmap-work/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Johnny Shieh">
@@ -314,7 +314,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2015/08/24/how-hashmap-work/" itemprop="url">[转] Java HashMap 的工作原理</a></h1>
+                <a class="post-title-link" href="/posts/how-hashmap-work/" itemprop="url">[转] Java HashMap 的工作原理</a></h1>
         
 
         <div class="post-meta">
@@ -349,7 +349,7 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Java/" itemprop="url" rel="index">
+                  <a href="/categories/java/" itemprop="url" rel="index">
                     <span itemprop="name">Java</span>
                   </a>
                 </span>
@@ -366,7 +366,7 @@
 
           
           
-             <span id="/2015/08/24/how-hashmap-work/" class="leancloud_visitors" data-flag-title="[转] Java HashMap 的工作原理">
+             <span id="/posts/how-hashmap-work/" class="leancloud_visitors" data-flag-title="[转] Java HashMap 的工作原理">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -401,7 +401,7 @@
 <h2 id="Country-java"><a href="#Country-java" class="headerlink" title="Country.java"></a>Country.java</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Country</span> </span>&#123;</div><div class="line"></div><div class="line">    String name;</div><div class="line">    <span class="keyword">long</span> population;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Country</span><span class="params">(String name, <span class="keyword">long</span> population)</span> </span>&#123;</div><div class="line">        <span class="keyword">super</span>();</div><div class="line">        <span class="keyword">this</span>.name = name;</div><div class="line">        <span class="keyword">this</span>.population = population;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getName</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> name;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setName</span><span class="params">(String name)</span> </span>&#123;</div><div class="line">        <span class="keyword">this</span>.name = name;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">long</span> <span class="title">getPopulation</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> population;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setPopulation</span><span class="params">(<span class="keyword">long</span> population)</span> </span>&#123;</div><div class="line">        <span class="keyword">this</span>.population = population;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">// If length of name in country object is even then return 31(any random number) and if odd then return 95(any random number).</span></div><div class="line">    <span class="comment">// This is not a good practice to generate hashcode as below method but I am doing so to give better and easy understanding of hashmap.</span></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">hashCode</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">if</span>(<span class="keyword">this</span>.name.length() % <span class="number">2</span> == <span class="number">0</span>)</div><div class="line">            <span class="keyword">return</span> <span class="number">31</span>;</div><div class="line">        <span class="keyword">else</span> </div><div class="line">            <span class="keyword">return</span> <span class="number">95</span>;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">equals</span><span class="params">(Object obj)</span> </span>&#123;</div><div class="line">        <span class="keyword">if</span>(<span class="keyword">this</span> == obj) &#123;</div><div class="line">            <span class="keyword">return</span> <span class="keyword">true</span>;</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">if</span>(<span class="keyword">null</span> == obj || !(obj <span class="keyword">instanceof</span> Country)) &#123;</div><div class="line">            <span class="keyword">return</span> <span class="keyword">false</span>;</div><div class="line">        &#125;</div><div class="line">        Country other = (Country) obj;</div><div class="line">        <span class="keyword">if</span> (name.equalsIgnoreCase((other.name)))</div><div class="line">            <span class="keyword">return</span> <span class="keyword">true</span>;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">false</span>;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2015/08/24/how-hashmap-work/#more" rel="contents">
+            <a class="btn" href="/posts/how-hashmap-work/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -447,7 +447,7 @@
   
 
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://johnnyshieh.me/2015/08/02/python-remove-utf8-bom/">
+    <link itemprop="mainEntityOfPage" href="http://johnnyshieh.me/posts/python-remove-utf8-bom/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Johnny Shieh">
@@ -466,7 +466,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2015/08/02/python-remove-utf8-bom/" itemprop="url">UTF-8 编码去除 BOM 头的 python 脚本</a></h1>
+                <a class="post-title-link" href="/posts/python-remove-utf8-bom/" itemprop="url">UTF-8 编码去除 BOM 头的 python 脚本</a></h1>
         
 
         <div class="post-meta">
@@ -501,7 +501,7 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Python/" itemprop="url" rel="index">
+                  <a href="/categories/python/" itemprop="url" rel="index">
                     <span itemprop="name">Python</span>
                   </a>
                 </span>
@@ -518,7 +518,7 @@
 
           
           
-             <span id="/2015/08/02/python-remove-utf8-bom/" class="leancloud_visitors" data-flag-title="UTF-8 编码去除 BOM 头的 python 脚本">
+             <span id="/posts/python-remove-utf8-bom/" class="leancloud_visitors" data-flag-title="UTF-8 编码去除 BOM 头的 python 脚本">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -555,7 +555,7 @@
 <p>所以 UTF-8 + BOM 其实就是在文件的开头加上了 0xEF 0xBB 0xBF 这三个字节,而这个三个字节是一串隐藏字符。</p>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2015/08/02/python-remove-utf8-bom/#more" rel="contents">
+            <a class="btn" href="/posts/python-remove-utf8-bom/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -601,7 +601,7 @@
   
 
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://johnnyshieh.me/2015/07/17/scrollview-detect-scroll-stop/">
+    <link itemprop="mainEntityOfPage" href="http://johnnyshieh.me/posts/scrollview-detect-scroll-stop/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Johnny Shieh">
@@ -620,7 +620,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2015/07/17/scrollview-detect-scroll-stop/" itemprop="url">Android 中 ScrollView 监听滚动停止的方案</a></h1>
+                <a class="post-title-link" href="/posts/scrollview-detect-scroll-stop/" itemprop="url">Android 中 ScrollView 监听滚动停止的方案</a></h1>
         
 
         <div class="post-meta">
@@ -655,7 +655,7 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Android/" itemprop="url" rel="index">
+                  <a href="/categories/android/" itemprop="url" rel="index">
                     <span itemprop="name">Android</span>
                   </a>
                 </span>
@@ -672,7 +672,7 @@
 
           
           
-             <span id="/2015/07/17/scrollview-detect-scroll-stop/" class="leancloud_visitors" data-flag-title="Android 中 ScrollView 监听滚动停止的方案">
+             <span id="/posts/scrollview-detect-scroll-stop/" class="leancloud_visitors" data-flag-title="Android 中 ScrollView 监听滚动停止的方案">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -707,7 +707,7 @@
 <h2 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h2><p>关键代码如下：</p>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2015/07/17/scrollview-detect-scroll-stop/#more" rel="contents">
+            <a class="btn" href="/posts/scrollview-detect-scroll-stop/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -753,7 +753,7 @@
   
 
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://johnnyshieh.me/2015/06/25/four-way-to-query-from-contentresolver/">
+    <link itemprop="mainEntityOfPage" href="http://johnnyshieh.me/posts/four-way-to-query-from-contentresolver/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Johnny Shieh">
@@ -772,7 +772,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2015/06/25/four-way-to-query-from-contentresolver/" itemprop="url">Android 中利用 ContentResolver 查询数据库的四种方式</a></h1>
+                <a class="post-title-link" href="/posts/four-way-to-query-from-contentresolver/" itemprop="url">Android 中利用 ContentResolver 查询数据库的四种方式</a></h1>
         
 
         <div class="post-meta">
@@ -807,7 +807,7 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Android/" itemprop="url" rel="index">
+                  <a href="/categories/android/" itemprop="url" rel="index">
                     <span itemprop="name">Android</span>
                   </a>
                 </span>
@@ -824,7 +824,7 @@
 
           
           
-             <span id="/2015/06/25/four-way-to-query-from-contentresolver/" class="leancloud_visitors" data-flag-title="Android 中利用 ContentResolver 查询数据库的四种方式">
+             <span id="/posts/four-way-to-query-from-contentresolver/" class="leancloud_visitors" data-flag-title="Android 中利用 ContentResolver 查询数据库的四种方式">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -864,7 +864,7 @@
 <p>注：LoaderManager 开始一个 Loader 之后，如果没有调用 destroyLoader 方法，在 activity 的 onStart 时候会重新开始 Loader 中的任务</p>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2015/06/25/four-way-to-query-from-contentresolver/#more" rel="contents">
+            <a class="btn" href="/posts/four-way-to-query-from-contentresolver/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -910,7 +910,7 @@
   
 
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://johnnyshieh.me/2015/01/30/java-reflection/">
+    <link itemprop="mainEntityOfPage" href="http://johnnyshieh.me/posts/java-reflection/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Johnny Shieh">
@@ -929,7 +929,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2015/01/30/java-reflection/" itemprop="url">Java 反射机制</a></h1>
+                <a class="post-title-link" href="/posts/java-reflection/" itemprop="url">Java 反射机制</a></h1>
         
 
         <div class="post-meta">
@@ -964,7 +964,7 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Java/" itemprop="url" rel="index">
+                  <a href="/categories/java/" itemprop="url" rel="index">
                     <span itemprop="name">Java</span>
                   </a>
                 </span>
@@ -981,7 +981,7 @@
 
           
           
-             <span id="/2015/01/30/java-reflection/" class="leancloud_visitors" data-flag-title="Java 反射机制">
+             <span id="/posts/java-reflection/" class="leancloud_visitors" data-flag-title="Java 反射机制">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -1030,7 +1030,7 @@
 </ol>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2015/01/30/java-reflection/#more" rel="contents">
+            <a class="btn" href="/posts/java-reflection/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>

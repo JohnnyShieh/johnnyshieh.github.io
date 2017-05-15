@@ -1,0 +1,1005 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta http-equiv="Content-Language" content="zh-cn">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+  <meta name="google-site-verification" content="r1Es2KSXuS6zYdab4rZeEA6X-pEwRwyT4x89S7a4EHE">
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css">
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1">
+
+
+
+  
+    <link rel="apple-touch-icon-precomposed" sizes="57x57" href="/apple-touch-icon-57x57.png">
+  
+    <link rel="apple-touch-icon-precomposed" sizes="120x120" href="/apple-touch-icon-120x120.png">
+  
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="/apple-touch-icon-152x152.png">
+  
+
+
+
+
+
+
+<meta name="description" content="Android开发中容易遇到的问题, 以及相对应的解决方案">
+<meta name="keywords" content="android, develop, tips, tricks, 坑， 技巧, Johnny, Shieh, Johnny Shieh, johnny shieh blog, ">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android 开发过程中的坑和小技巧">
+<meta property="og:url" content="http://johnnyshieh.me/posts/android-develop-tips-and-tricks/index.html">
+<meta property="og:site_name" content="Johnny Shieh">
+<meta property="og:description" content="Android开发中容易遇到的问题, 以及相对应的解决方案">
+<meta property="og:updated_time" content="2017-05-11T08:51:12.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Android 开发过程中的坑和小技巧">
+<meta name="twitter:description" content="Android开发中容易遇到的问题, 以及相对应的解决方案">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"right","display":"always","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://johnnyshieh.me/posts/android-develop-tips-and-tricks/">
+
+
+
+
+
+  <title>Android 开发过程中的坑和小技巧 | Johnny Shieh</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Johnny Shieh</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">人如果没有梦想，跟咸鱼有什么分别</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-friends">
+          <a href="/friends" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-users"></i> <br>
+            
+            小伙伴
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://johnnyshieh.me/posts/android-develop-tips-and-tricks/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Johnny Shieh">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Johnny Shieh">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Android 开发过程中的坑和小技巧</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-06-12T16:34:25+08:00">
+                2016-06-12
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/android/" itemprop="url" rel="index">
+                    <span itemprop="name">Android</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a class="cloud-tie-join-count" href="/posts/android-develop-tips-and-tricks/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count join-count" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/posts/android-develop-tips-and-tricks/" class="leancloud_visitors" data-flag-title="Android 开发过程中的坑和小技巧">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="空指针问题"><a href="#空指针问题" class="headerlink" title="空指针问题"></a>空指针问题</h2><p>NullPointerException 绝对是开发人员遇到最多的问题，也是 Android 开发过程中一个大坑，总是在你意料不到的时候出现。要解决这个问题，关键地方不要吝啬 if 语句，需要在用到某一对象的时候多想想有没什么可能会导致对象没有初始化或者被指向为<code>null</code>，下面是一些比较有代表性的例子：</p>
+<ul>
+<li>Fragment的Handler 中调用 getActivity()，需要判空和判断 activity 是否销毁</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">MyHandler</span> <span class="keyword">extends</span> <span class="title">Handler</span> </span>&#123;</div><div class="line">    ...</div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">handleMessage</span><span class="params">(Message msg)</span> </span>&#123;</div><div class="line">        <span class="comment">// 需要判空</span></div><div class="line">        <span class="keyword">if</span>(<span class="keyword">null</span> != mFragment.getActivity() &amp;&amp; !mFragment.getActivity().isDestroyed()) &#123;</div><div class="line">            <span class="comment">// TODO</span></div><div class="line">        &#125;</div><div class="line">    &#125;    </div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<ul>
+<li>使用 Cursor 时没有判空，没有在 finally 代码块中关闭</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">Cursor cursor = <span class="keyword">null</span>;</div><div class="line"><span class="keyword">try</span> &#123;</div><div class="line">    cursor = contentResolver.query(uri, <span class="keyword">null</span>, selection, selectionArgs, <span class="keyword">null</span>);</div><div class="line">    <span class="comment">// cursor可能为空</span></div><div class="line">    <span class="keyword">if</span>(<span class="keyword">null</span> != cursor &amp;&amp; cursor.moveToFirst()) &#123;</div><div class="line">        <span class="comment">// TODO</span></div><div class="line">    &#125;</div><div class="line">&#125; <span class="keyword">catch</span> (Exception e) &#123;</div><div class="line">    e.printStackTrace();</div><div class="line">&#125; <span class="keyword">finally</span> &#123;</div><div class="line">    <span class="keyword">if</span> (<span class="keyword">null</span> != cursor) &#123;</div><div class="line">        cursor.close();</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<a id="more"></a>
+<h2 id="内存泄漏问题"><a href="#内存泄漏问题" class="headerlink" title="内存泄漏问题"></a>内存泄漏问题</h2><p>内存泄漏是开发中特别需要注意的一个问题，程序中很多莫名其妙的 OutOfMemoryError 都是由此引起的。虽然现在有 MAT 和 <a href="https://github.com/square/leakcanary" target="_blank" rel="external">leakcanary</a> 方便分析内存泄漏的工具，但是我们在编程时就先避免的话无疑会好很多。</p>
+<p>我觉得内存泄漏可以大致分为这几类：(1)某个对象的引用的生命周期大于对象本身的生命周期，导致该对象无法被回收，简称引用未释放 (2)资源对象没有关闭或者销毁</p>
+<h3 id="引用未释放"><a href="#引用未释放" class="headerlink" title="引用未释放"></a>引用未释放</h3><h4 id="Context-泄漏"><a href="#Context-泄漏" class="headerlink" title="Context 泄漏"></a>Context 泄漏</h4><p>Context 泄漏是 Android 程序中非常容易出现的问题，我列出两种隐晦的 Context 泄漏情况：(1) 静态变量持有 context 的引用未释放 (2) 匿名内部类隐式地持有 context 引用。</p>
+<ul>
+<li>静态变量持有 context 的引用未释放</li>
+</ul>
+<p>例如把一个 TextView 背景图片的 Drawable 对象设为静态变量，在设置 Drawable 为背景图片时 drawable 会调用 setCallback 方法而持有 TextView 的引用，TextView 又持有 Context 的引用，所以就会导致 Context 泄漏。可以看 Android 官方文档的详细例子：<a href="http://android-developers.blogspot.com/2009/01/avoiding-memory-leaks.html" target="_blank" rel="external">avoiding-memory-leaks</a></p>
+<p>但是在 Android 3.0(API 11) 之后，Drawable 的 setCallback 方法改为弱引用的方式<code>mCallback = new WeakReference&lt;Callback&gt;(cb);</code>，所以在 3.0 以后不会因为这个问题产生内存泄漏，但是我们还是需要注意静态变量的使用。</p>
+<ul>
+<li>匿名内部类隐式地持有 context 引用</li>
+</ul>
+<p>在 Android 中经常使用 Handler 处理异步消息，一般比较懒的做法是直接使用匿名内部类，但是这样的话 Handler 会隐式地持有外部类即 Activity 的引用，而 Handler 的生命周期可能会比 Activity 更长，就会导致 context 泄漏。更多关于 Handler 内部类导致泄漏的问题，可以看 <a href="http://johnnyshieh.me/2015/09/03/android-handler-memory-leak/">Android 中由 Handler 和内部类引起的内存泄漏</a>。对于 Handler，推荐使用下面的写法：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SampleActivity</span> <span class="keyword">extends</span> <span class="title">Activity</span> </span>&#123;</div><div class="line">    <span class="comment">/**</span></div><div class="line">     * Instances of static inner classes do not hold an implicit</div><div class="line">     * reference to their outer class.</div><div class="line">     */</div><div class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">MyHandler</span> <span class="keyword">extends</span> <span class="title">Handler</span> </span>&#123;</div><div class="line">        <span class="keyword">private</span> <span class="keyword">final</span> WeakReference&lt;SampleActivity&gt; mActivity;</div><div class="line"></div><div class="line">        <span class="function"><span class="keyword">public</span> <span class="title">MyHandler</span><span class="params">(SampleActivity activity)</span> </span>&#123;</div><div class="line">            mActivity = <span class="keyword">new</span> WeakReference&lt;SampleActivity&gt;(activity);</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        <span class="meta">@Override</span></div><div class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">handleMessage</span><span class="params">(Message msg)</span> </span>&#123;</div><div class="line">            SampleActivity activity = mActivity.get();</div><div class="line">            <span class="keyword">if</span> (<span class="keyword">null</span> != activity) &#123;</div><div class="line">                <span class="comment">// ...</span></div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">private</span> <span class="keyword">final</span> MyHandler mHandler = <span class="keyword">new</span> MyHandler(<span class="keyword">this</span>);</div><div class="line">    </div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onDestroy</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">super</span>.onDestroy();</div><div class="line">        <span class="comment">// 避免因为 delay 消息导致的内存泄漏</span></div><div class="line">        mHandler.removeCallbacksAndMessages(<span class="keyword">null</span>);</div><div class="line">    &#125;   </div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>避免 Context 泄漏(即 Activity 内存泄漏)须谨记：</p>
+<ol>
+<li>不要让生命周期长于 Activity 的对象持有 Activity 的强引用</li>
+<li>尽量使用 Application 的 Context 而不是 Activity 的 Context</li>
+<li>尽量不要在 Activity 中使用非静态内部类，因为非静态内部类会隐式持有外部类实例的引用</li>
+</ol>
+<h4 id="注册没及时取消"><a href="#注册没及时取消" class="headerlink" title="注册没及时取消"></a>注册没及时取消</h4><h4 id="static-关键字误用"><a href="#static-关键字误用" class="headerlink" title="static 关键字误用"></a>static 关键字误用</h4><h3 id="资源未关闭"><a href="#资源未关闭" class="headerlink" title="资源未关闭"></a>资源未关闭</h3><h4 id="WebView-对象调用-destroy-方法释放内存"><a href="#WebView-对象调用-destroy-方法释放内存" class="headerlink" title="WebView 对象调用 destroy() 方法释放内存"></a>WebView 对象调用 destroy() 方法释放内存</h4><h4 id="Cursor-或-File-没有关闭"><a href="#Cursor-或-File-没有关闭" class="headerlink" title="Cursor 或 File 没有关闭"></a>Cursor 或 File 没有关闭</h4><h4 id="Bitmap-没有及时-recycle"><a href="#Bitmap-没有及时-recycle" class="headerlink" title="Bitmap 没有及时 recycle"></a>Bitmap 没有及时 recycle</h4><h2 id="性能问题"><a href="#性能问题" class="headerlink" title="性能问题"></a>性能问题</h2><h3 id="忽视循环体效率"><a href="#忽视循环体效率" class="headerlink" title="忽视循环体效率"></a>忽视循环体效率</h3><p>尽量不要在循环中包含内存分配操作，把 try-catch 放到循环体外面。（编程规范中建议不要在循环内调用同步方法和使用 try-catch 块）</p>
+<h3 id="避免创建不必要的对象"><a href="#避免创建不必要的对象" class="headerlink" title="避免创建不必要的对象"></a>避免创建不必要的对象</h3><p>在拼接字符串的时候，不要直接用加号连接符，这会创建多余的对象效率也不高，应该优先考虑用 StringBuffer 或者 StringBuilder 来拼接。</p>
+<h3 id="选择-static-而不是-virtual"><a href="#选择-static-而不是-virtual" class="headerlink" title="选择 static 而不是 virtual"></a>选择 static 而不是 virtual</h3><p>如果你不需要访问一个对象的值，请保证这个方法是 static 类型的，这样方法调用将快 15% - 20%。这是一个好的习惯，因为你可以从方法声明中得知调用无法改变这个对象的状态。</p>
+<h3 id="使用-LocalBroadcastManager-代替普通的-BroadcastReceiver，效率和安全性都更高"><a href="#使用-LocalBroadcastManager-代替普通的-BroadcastReceiver，效率和安全性都更高" class="headerlink" title="使用 LocalBroadcastManager 代替普通的 BroadcastReceiver，效率和安全性都更高"></a>使用 LocalBroadcastManager 代替普通的 BroadcastReceiver，效率和安全性都更高</h3><p>关于 LocalBroadcastManager 的实现原理，推荐看 <a href="http://www.trinea.cn/android/localbroadcastmanager-impl/" target="_blank" rel="external">LocalBroadcastManager 的实现原理，还是 Binder？</a>。</p>
+<h3 id="for-循环的使用"><a href="#for-循环的使用" class="headerlink" title="for 循环的使用"></a>for 循环的使用</h3><p>传统的 fori 循环不要把获得数组长度的代码写在循环当中：<code>for(int i = 0; i &lt; array.size(); i ++)</code>，JDK 1.5 后使用 for-each 循环遍历实现 Iterable 接口的集合和数组更方便，不过对于 ArrayList 使用传统的循环效率更高。</p>
+<h3 id="尽量多使用自带库函数，减少开发成本而且还有汇编级别的优化"><a href="#尽量多使用自带库函数，减少开发成本而且还有汇编级别的优化" class="headerlink" title="尽量多使用自带库函数，减少开发成本而且还有汇编级别的优化"></a>尽量多使用自带库函数，减少开发成本而且还有汇编级别的优化</h3><h3 id="使用-标签重用布局文件，使用-标签减少布局层级，用-ViewStub-按需载入布局"><a href="#使用-标签重用布局文件，使用-标签减少布局层级，用-ViewStub-按需载入布局" class="headerlink" title="使用  标签重用布局文件，使用  标签减少布局层级，用 ViewStub 按需载入布局"></a>使用 <include> 标签重用布局文件，使用 <merge> 标签减少布局层级，用 ViewStub 按需载入布局</merge></include></h3><h3 id="尽量用-IntDef-代替-Enum"><a href="#尽量用-IntDef-代替-Enum" class="headerlink" title="尽量用 IntDef 代替 Enum"></a>尽量用 IntDef 代替 Enum</h3><p>Enum 的内存消耗通常是 static constants 的 2 倍。</p>
+<h3 id="避免-Bitmaps-的浪费，缩小到你需要的分辨率-小于设备分辨率"><a href="#避免-Bitmaps-的浪费，缩小到你需要的分辨率-小于设备分辨率" class="headerlink" title="避免 Bitmaps 的浪费，缩小到你需要的分辨率(小于设备分辨率)"></a>避免 Bitmaps 的浪费，缩小到你需要的分辨率(小于设备分辨率)</h3><h3 id="使用-Android-Framework-优化过的容器类，例如-SpareArray-SpareBooleanArray-与-LongSpareArray。"><a href="#使用-Android-Framework-优化过的容器类，例如-SpareArray-SpareBooleanArray-与-LongSpareArray。" class="headerlink" title="使用 Android Framework 优化过的容器类，例如 SpareArray, SpareBooleanArray 与 LongSpareArray。"></a>使用 Android Framework 优化过的容器类，例如 SpareArray, SpareBooleanArray 与 LongSpareArray。</h3><h3 id="应用有多个进程时，新启动一个进程时不会重新创建-Application，但是会重新调用-Application-onCreate-，所以要注意在-onCreate-中重复你编写初始化的代码"><a href="#应用有多个进程时，新启动一个进程时不会重新创建-Application，但是会重新调用-Application-onCreate-，所以要注意在-onCreate-中重复你编写初始化的代码" class="headerlink" title="应用有多个进程时，新启动一个进程时不会重新创建 Application，但是会重新调用 Application.onCreate()，所以要注意在 onCreate() 中重复你编写初始化的代码"></a>应用有多个进程时，新启动一个进程时不会重新创建 Application，但是会重新调用 Application.onCreate()，所以要注意在 onCreate() 中重复你编写初始化的代码</h3><h3 id="尽量避免给-window-和-Activity-同时设置背景，这样会造成过渡绘制。"><a href="#尽量避免给-window-和-Activity-同时设置背景，这样会造成过渡绘制。" class="headerlink" title="尽量避免给 window 和 Activity 同时设置背景，这样会造成过渡绘制。"></a>尽量避免给 window 和 Activity 同时设置背景，这样会造成过渡绘制。</h3><h2 id="避免不必要的异常"><a href="#避免不必要的异常" class="headerlink" title="避免不必要的异常"></a>避免不必要的异常</h2><h3 id="不要使用-AsyncTask-处理异步任务，推荐使用-Loader"><a href="#不要使用-AsyncTask-处理异步任务，推荐使用-Loader" class="headerlink" title="不要使用 AsyncTask 处理异步任务，推荐使用 Loader"></a>不要使用 AsyncTask 处理异步任务，推荐使用 Loader</h3><p>AysncTask 可以用简短的代码实现异步操作，但是有很多需要注意的问题，可以看 <a href="http://droidyue.com/blog/2014/11/08/bad-smell-of-asynctask-in-android/" target="_blank" rel="external">Android 中糟糕的 AsyncTask</a> 进一步了解。</p>
+<h3 id="在-Android-library-project-中不能使用-switch-case-访问资源ID"><a href="#在-Android-library-project-中不能使用-switch-case-访问资源ID" class="headerlink" title="在 Android library project 中不能使用 switch-case 访问资源ID"></a>在 Android library project 中不能使用 switch-case 访问资源ID</h3><p>因为在 library project 中生成的 R.java 资源 ID 不是常量，可以改写成 if-else 语句。</p>
+<h3 id="不要在-Activity-没有完全显示时显示-Dialog-或-PopupWindow：Problems-creating-a-Popup-Window-in-Android-Activity"><a href="#不要在-Activity-没有完全显示时显示-Dialog-或-PopupWindow：Problems-creating-a-Popup-Window-in-Android-Activity" class="headerlink" title="不要在 Activity 没有完全显示时显示 Dialog 或 PopupWindow：Problems creating a Popup Window in Android Activity"></a>不要在 Activity 没有完全显示时显示 Dialog 或 PopupWindow：<a href="http://stackoverflow.com/questions/4187673/problems-creating-a-popup-window-in-android-activity" target="_blank" rel="external">Problems creating a Popup Window in Android Activity</a></h3><h3 id="多进程间通过-SharedPreferences-共享数据时不稳定，具体可以查阅《Android-开发艺术探索》。"><a href="#多进程间通过-SharedPreferences-共享数据时不稳定，具体可以查阅《Android-开发艺术探索》。" class="headerlink" title="多进程间通过 SharedPreferences 共享数据时不稳定，具体可以查阅《Android 开发艺术探索》。"></a>多进程间通过 SharedPreferences 共享数据时不稳定，具体可以查阅《Android 开发艺术探索》。</h3><h3 id="不要通过-Bundle-传递大块数据，否则会有-TransactionTooLargeException-异常：Passing-large-data-to-second-Activity"><a href="#不要通过-Bundle-传递大块数据，否则会有-TransactionTooLargeException-异常：Passing-large-data-to-second-Activity" class="headerlink" title="不要通过 Bundle 传递大块数据，否则会有 TransactionTooLargeException 异常：Passing large data to second Activity"></a>不要通过 Bundle 传递大块数据，否则会有 TransactionTooLargeException 异常：<a href="http://stackoverflow.com/questions/12819617/issue-passing-large-data-to-second-activity" target="_blank" rel="external">Passing large data to second Activity</a></h3><h2 id="数据库问题"><a href="#数据库问题" class="headerlink" title="数据库问题"></a>数据库问题</h2><h3 id="数据库-onUpgrade-过程中添加重复字段的问题"><a href="#数据库-onUpgrade-过程中添加重复字段的问题" class="headerlink" title="数据库 onUpgrade 过程中添加重复字段的问题"></a>数据库 onUpgrade 过程中添加重复字段的问题</h3><p>假设在数据库版本号为 3 时新增了表 A，在版本 6 时在表 A 中新增一个字段 type，那么从数据库版本为 1 升级到 6 时会出现 type 字段已经存在的错误，这时应该判断下在版本 3 新增表 A 后就不需要新增字段了。</p>
+<h2 id="动画问题"><a href="#动画问题" class="headerlink" title="动画问题"></a>动画问题</h2><h3 id="android-view-animation-Animation-有可能不会调用-AnimationListener的onAnimtionEnd"><a href="#android-view-animation-Animation-有可能不会调用-AnimationListener的onAnimtionEnd" class="headerlink" title="android.view.animation.Animation 有可能不会调用 AnimationListener的onAnimtionEnd"></a>android.view.animation.Animation 有可能不会调用 AnimationListener的onAnimtionEnd</h3><p>Animation 的工作流程是<code>View.draw()—&gt;View.drawAnimation()—&gt;Animation.getTransformation()</code>，但是 View 在 onDetachedFromWindow 会执行<code>mCurrentAnimation = null;</code>，这时如果动画未完成就会就此中断，接下来的动画操作和 listener 回调都不会执行。要解决这个问题有两个方法：(1) 添加 OnAttachStateChangeListener，在 onViewDetachedFromWindow 中执行 onAnimtionEnd 的逻辑 (2) 使用 Animator 替代 Animation</p>
+<h3 id="在-android-view-animation-Animation-AnimationListener-的-onAnimationStart-onAnimationEnd-onAnimationRepeat-中不要-addView-或-removeView"><a href="#在-android-view-animation-Animation-AnimationListener-的-onAnimationStart-onAnimationEnd-onAnimationRepeat-中不要-addView-或-removeView" class="headerlink" title="在 android.view.animation.Animation.AnimationListener 的 onAnimationStart, onAnimationEnd, onAnimationRepeat 中不要 addView 或 removeView"></a>在 android.view.animation.Animation.AnimationListener 的 onAnimationStart, onAnimationEnd, onAnimationRepeat 中不要 addView 或 removeView</h3><p>这样可能会引起<code>java.lang.NullPointerException: Attempt to read from field ‘int android.view.View.mViewFlags’ on a null object reference</code>，因为这个三个动画的回调方法都是在 View.draw() 中执行的，而在 draw 函数中不要 addView 或 removeView。在 addView 的方法说明中有强调<code>do not invoke this method from {@link #draw(android.graphics.Canvas)},{@link #onDraw(android.graphics.Canvas)},{@link #dispatchDraw(android.graphics.Canvas)} or any related method.</code></p>
+<h2 id="多线程问题"><a href="#多线程问题" class="headerlink" title="多线程问题"></a>多线程问题</h2><h3 id="不要在非-UI-线程更新-View-数据显示，特别是从网络拉取回来的数据应该注意所在线程"><a href="#不要在非-UI-线程更新-View-数据显示，特别是从网络拉取回来的数据应该注意所在线程" class="headerlink" title="不要在非 UI 线程更新 View 数据显示，特别是从网络拉取回来的数据应该注意所在线程　"></a>不要在非 UI 线程更新 View 数据显示，特别是从网络拉取回来的数据应该注意所在线程　</h3><h2 id="View-问题"><a href="#View-问题" class="headerlink" title="View 问题"></a>View 问题</h2><h3 id="ListView-的-header，footer，item-设置-Visibility-为-Gone-无效"><a href="#ListView-的-header，footer，item-设置-Visibility-为-Gone-无效" class="headerlink" title="ListView 的 header，footer，item 设置 Visibility 为 Gone 无效"></a>ListView 的 header，footer，item 设置 Visibility 为 Gone 无效</h3><p>因为 ListView 对 child view 执行 measure 前，没有判断 Visibility 为 Gone 的情况。解决方法是在 header 外面包一层 parent view (如 FrameLayout),再设置 parent view 里面的 child view 为 Gone。</p>
+<h3 id="View-的-post，postDelayed-方法在-DetachedFromWindow-即不在当前的-View-树中-的时候无效"><a href="#View-的-post，postDelayed-方法在-DetachedFromWindow-即不在当前的-View-树中-的时候无效" class="headerlink" title="View 的 post，postDelayed 方法在 DetachedFromWindow (即不在当前的 View 树中)的时候无效"></a>View 的 post，postDelayed 方法在 DetachedFromWindow (即不在当前的 View 树中)的时候无效</h3><p>比较简单的修改方法是用 Handler.post()</p>
+<h3 id="使用-setEnabled-false-后没有效果"><a href="#使用-setEnabled-false-后没有效果" class="headerlink" title="使用 setEnabled(false) 后没有效果"></a>使用 setEnabled(false) 后没有效果</h3><p>ListView 的 child view 调用 setEnabled(false) 后仍然会响应 onItemClick，parent view 调用 setEnabled(false) 后 Touch 事件还会传递到 child view。对于这两种问题可以用<code>view.setEnabled(false); view.setClickable(true);</code>解决，具体问题解析可以看 <a href="http://johnnyshieh.me/2014/07/30/android-setenable-false-not-work/">Android View setEnabled false 没有效果的解决方法</a>。</p>
+<p>最后分享一个记录 Android 的各种坑的平台 <a href="https://code.google.com/p/android/issues/list" target="_blank" rel="external">https://code.google.com/p/android/issues/list</a>，需要翻越墙壁，是 Android 自己提供的，很多开发者会把踩到的坑提交上去。大家在开发过程中遇到一些坑的时候可以这个平台看看有没天涯沦落人，也可以根据 Star，Priority 查看感兴趣的坑。</p>
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/android/" rel="tag"># android</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/posts/volleyex-ttl/" rel="next" title="一步一步扩展 Volley (二)，缓存生存时间 TTL">
+                <i class="fa fa-chevron-left"></i> 一步一步扩展 Volley (二)，缓存生存时间 TTL
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/posts/annotation-basic/" rel="prev" title="探索注解之注解的基本概念">
+                探索注解之注解的基本概念 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="cloud-tie-wrapper" class="cloud-tie-wrapper"></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image" src="/uploads/avatar.png" alt="Johnny Shieh">
+          <p class="site-author-name" itemprop="name">Johnny Shieh</p>
+           
+              <p class="site-description motion-element" itemprop="description">我本微末，心向天空</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">40</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">7</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">28</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/JohnnyShieh" rel="external nofollow" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/johnnyshieh17" rel="external nofollow" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  Weibo
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="mailto:JohnnyShieh17@gmail.com" rel="external nofollow" target="_blank" title="Gmail">
+                  
+                    <i class="fa fa-fw fa-envelope"></i>
+                  
+                  Gmail
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="" rel="external nofollow" target="_blank" title="Wechat">
+                  
+                    <i class="fa fa-fw fa-wechat"></i>
+                  
+                  Wechat
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#空指针问题"><span class="nav-number">1.</span> <span class="nav-text">空指针问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#内存泄漏问题"><span class="nav-number">2.</span> <span class="nav-text">内存泄漏问题</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#引用未释放"><span class="nav-number">2.1.</span> <span class="nav-text">引用未释放</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Context-泄漏"><span class="nav-number">2.1.1.</span> <span class="nav-text">Context 泄漏</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#注册没及时取消"><span class="nav-number">2.1.2.</span> <span class="nav-text">注册没及时取消</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#static-关键字误用"><span class="nav-number">2.1.3.</span> <span class="nav-text">static 关键字误用</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#资源未关闭"><span class="nav-number">2.2.</span> <span class="nav-text">资源未关闭</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#WebView-对象调用-destroy-方法释放内存"><span class="nav-number">2.2.1.</span> <span class="nav-text">WebView 对象调用 destroy() 方法释放内存</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Cursor-或-File-没有关闭"><span class="nav-number">2.2.2.</span> <span class="nav-text">Cursor 或 File 没有关闭</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Bitmap-没有及时-recycle"><span class="nav-number">2.2.3.</span> <span class="nav-text">Bitmap 没有及时 recycle</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#性能问题"><span class="nav-number">3.</span> <span class="nav-text">性能问题</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#忽视循环体效率"><span class="nav-number">3.1.</span> <span class="nav-text">忽视循环体效率</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#避免创建不必要的对象"><span class="nav-number">3.2.</span> <span class="nav-text">避免创建不必要的对象</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#选择-static-而不是-virtual"><span class="nav-number">3.3.</span> <span class="nav-text">选择 static 而不是 virtual</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用-LocalBroadcastManager-代替普通的-BroadcastReceiver，效率和安全性都更高"><span class="nav-number">3.4.</span> <span class="nav-text">使用 LocalBroadcastManager 代替普通的 BroadcastReceiver，效率和安全性都更高</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#for-循环的使用"><span class="nav-number">3.5.</span> <span class="nav-text">for 循环的使用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#尽量多使用自带库函数，减少开发成本而且还有汇编级别的优化"><span class="nav-number">3.6.</span> <span class="nav-text">尽量多使用自带库函数，减少开发成本而且还有汇编级别的优化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用-标签重用布局文件，使用-标签减少布局层级，用-ViewStub-按需载入布局"><span class="nav-number">3.7.</span> <span class="nav-text">使用  标签重用布局文件，使用  标签减少布局层级，用 ViewStub 按需载入布局</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#尽量用-IntDef-代替-Enum"><span class="nav-number">3.8.</span> <span class="nav-text">尽量用 IntDef 代替 Enum</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#避免-Bitmaps-的浪费，缩小到你需要的分辨率-小于设备分辨率"><span class="nav-number">3.9.</span> <span class="nav-text">避免 Bitmaps 的浪费，缩小到你需要的分辨率(小于设备分辨率)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用-Android-Framework-优化过的容器类，例如-SpareArray-SpareBooleanArray-与-LongSpareArray。"><span class="nav-number">3.10.</span> <span class="nav-text">使用 Android Framework 优化过的容器类，例如 SpareArray, SpareBooleanArray 与 LongSpareArray。</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#应用有多个进程时，新启动一个进程时不会重新创建-Application，但是会重新调用-Application-onCreate-，所以要注意在-onCreate-中重复你编写初始化的代码"><span class="nav-number">3.11.</span> <span class="nav-text">应用有多个进程时，新启动一个进程时不会重新创建 Application，但是会重新调用 Application.onCreate()，所以要注意在 onCreate() 中重复你编写初始化的代码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#尽量避免给-window-和-Activity-同时设置背景，这样会造成过渡绘制。"><span class="nav-number">3.12.</span> <span class="nav-text">尽量避免给 window 和 Activity 同时设置背景，这样会造成过渡绘制。</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#避免不必要的异常"><span class="nav-number">4.</span> <span class="nav-text">避免不必要的异常</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#不要使用-AsyncTask-处理异步任务，推荐使用-Loader"><span class="nav-number">4.1.</span> <span class="nav-text">不要使用 AsyncTask 处理异步任务，推荐使用 Loader</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#在-Android-library-project-中不能使用-switch-case-访问资源ID"><span class="nav-number">4.2.</span> <span class="nav-text">在 Android library project 中不能使用 switch-case 访问资源ID</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#不要在-Activity-没有完全显示时显示-Dialog-或-PopupWindow：Problems-creating-a-Popup-Window-in-Android-Activity"><span class="nav-number">4.3.</span> <span class="nav-text">不要在 Activity 没有完全显示时显示 Dialog 或 PopupWindow：Problems creating a Popup Window in Android Activity</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#多进程间通过-SharedPreferences-共享数据时不稳定，具体可以查阅《Android-开发艺术探索》。"><span class="nav-number">4.4.</span> <span class="nav-text">多进程间通过 SharedPreferences 共享数据时不稳定，具体可以查阅《Android 开发艺术探索》。</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#不要通过-Bundle-传递大块数据，否则会有-TransactionTooLargeException-异常：Passing-large-data-to-second-Activity"><span class="nav-number">4.5.</span> <span class="nav-text">不要通过 Bundle 传递大块数据，否则会有 TransactionTooLargeException 异常：Passing large data to second Activity</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#数据库问题"><span class="nav-number">5.</span> <span class="nav-text">数据库问题</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#数据库-onUpgrade-过程中添加重复字段的问题"><span class="nav-number">5.1.</span> <span class="nav-text">数据库 onUpgrade 过程中添加重复字段的问题</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#动画问题"><span class="nav-number">6.</span> <span class="nav-text">动画问题</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#android-view-animation-Animation-有可能不会调用-AnimationListener的onAnimtionEnd"><span class="nav-number">6.1.</span> <span class="nav-text">android.view.animation.Animation 有可能不会调用 AnimationListener的onAnimtionEnd</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#在-android-view-animation-Animation-AnimationListener-的-onAnimationStart-onAnimationEnd-onAnimationRepeat-中不要-addView-或-removeView"><span class="nav-number">6.2.</span> <span class="nav-text">在 android.view.animation.Animation.AnimationListener 的 onAnimationStart, onAnimationEnd, onAnimationRepeat 中不要 addView 或 removeView</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#多线程问题"><span class="nav-number">7.</span> <span class="nav-text">多线程问题</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#不要在非-UI-线程更新-View-数据显示，特别是从网络拉取回来的数据应该注意所在线程"><span class="nav-number">7.1.</span> <span class="nav-text">不要在非 UI 线程更新 View 数据显示，特别是从网络拉取回来的数据应该注意所在线程　</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#View-问题"><span class="nav-number">8.</span> <span class="nav-text">View 问题</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#ListView-的-header，footer，item-设置-Visibility-为-Gone-无效"><span class="nav-number">8.1.</span> <span class="nav-text">ListView 的 header，footer，item 设置 Visibility 为 Gone 无效</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#View-的-post，postDelayed-方法在-DetachedFromWindow-即不在当前的-View-树中-的时候无效"><span class="nav-number">8.2.</span> <span class="nav-text">View 的 post，postDelayed 方法在 DetachedFromWindow (即不在当前的 View 树中)的时候无效</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用-setEnabled-false-后没有效果"><span class="nav-number">8.3.</span> <span class="nav-text">使用 setEnabled(false) 后没有效果</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy;  2015 - 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Johnny Shieh</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" rel="external nofollow" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" rel="external nofollow" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.1"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+    
+    <script>
+      var cloudTieConfig = {
+        url: document.location.href, 
+        sourceId: "",
+        productKey: "e11372e4458e492087d70c31cf1e0d8c",
+        target: "cloud-tie-wrapper"
+      };
+    </script>
+    <script src="https://img1.ws.126.net/f2e/tie/yun/sdk/loader.js"></script>
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("n55tIxEzsDxW0BEFhehOkP2K-gzGzoHsz", "TwYjARitxhv7iOhbg7k2a9xB");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  
+
+  
+
+</body>
+</html>
