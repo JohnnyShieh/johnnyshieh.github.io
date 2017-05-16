@@ -2,10 +2,8 @@
 
 
 
-  
 
-
-<html class="theme-next pisces use-motion" lang="zh-Hans">
+<html class="theme-next pisces" lang="zh-Hans">
 <head>
   <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -127,7 +125,7 @@
     scheme: 'Pisces',
     sidebar: {"position":"right","display":"always","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
     fancybox: true,
-    motion: true,
+    motion: false,
     duoshuo: {
       userId: '0',
       author: '博主'
@@ -420,7 +418,7 @@
 <p>序列化 ID 在 Eclipse 下提供了两种生成策略，一个是固定的 1L，一个是随机生成一个不重复的 long 类型数据（实际上是使用 JDK 工具生成），在这里有一个建议，如果没有特殊需求，就是用默认的 1L 就可以，这样可以确保代码一致时反序列化成功。</p>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/posts/serializable-vs-parcelable/#more" rel="contents">
+            <a class="btn" href="/posts/serializable-vs-parcelable/" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -575,7 +573,7 @@
 <p>接下来还有一个疑问：未使用的对象被谁引用会让 GC 无法回收呢？</p>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/posts/android-memory-leak/#more" rel="contents">
+            <a class="btn" href="/posts/android-memory-leak/" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -739,7 +737,7 @@ thread do not affect the other threads. The implementation supports
 <p>接下来在分析 Android 的 ThreadLocal 源码的过程中，理解其实现原理，并解决上面的疑问。</p>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/posts/explore-threadlocal/#more" rel="contents">
+            <a class="btn" href="/posts/explore-threadlocal/" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -900,7 +898,7 @@ Note that this implementation is not intended to be appropriate for data structu
 <p>注意这种实现不适合大容量的数据结构，它会比传统的 HashMap 更慢，因为查询利用二分法查找，新增删除元素需要插入和删除数组中值。对于容量最多上百个的数据来说，性能的差别并不大，低于50%.</p>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/posts/android-arraymap-and-sparsearray/#more" rel="contents">
+            <a class="btn" href="/posts/android-arraymap-and-sparsearray/" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1054,7 +1052,7 @@ Note that this implementation is not intended to be appropriate for data structu
 <p>饿汉式的实现方式，因其在类装载的时候就创建了实例，所以天生就是线程安全的。但是还有两个问题：1）如果构造方法中有耗时操作的话，会导致这个类的加载比较慢 2）饿汉式一开始就创建实例，但是并没有调用，会造成资源浪费。</p>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/posts/java-singleton-pattern/#more" rel="contents">
+            <a class="btn" href="/posts/java-singleton-pattern/" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>

@@ -2,10 +2,8 @@
 
 
 
-  
 
-
-<html class="theme-next pisces use-motion" lang="zh-Hans">
+<html class="theme-next pisces" lang="zh-Hans">
 <head>
   <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -127,7 +125,7 @@
     scheme: 'Pisces',
     sidebar: {"position":"right","display":"always","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
     fancybox: true,
-    motion: true,
+    motion: false,
     duoshuo: {
       userId: '0',
       author: '博主'
@@ -415,7 +413,7 @@
 <h2 id="Country-java"><a href="#Country-java" class="headerlink" title="Country.java"></a>Country.java</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Country</span> </span>&#123;</div><div class="line"></div><div class="line">    String name;</div><div class="line">    <span class="keyword">long</span> population;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Country</span><span class="params">(String name, <span class="keyword">long</span> population)</span> </span>&#123;</div><div class="line">        <span class="keyword">super</span>();</div><div class="line">        <span class="keyword">this</span>.name = name;</div><div class="line">        <span class="keyword">this</span>.population = population;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getName</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> name;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setName</span><span class="params">(String name)</span> </span>&#123;</div><div class="line">        <span class="keyword">this</span>.name = name;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">long</span> <span class="title">getPopulation</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> population;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setPopulation</span><span class="params">(<span class="keyword">long</span> population)</span> </span>&#123;</div><div class="line">        <span class="keyword">this</span>.population = population;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">// If length of name in country object is even then return 31(any random number) and if odd then return 95(any random number).</span></div><div class="line">    <span class="comment">// This is not a good practice to generate hashcode as below method but I am doing so to give better and easy understanding of hashmap.</span></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">hashCode</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">if</span>(<span class="keyword">this</span>.name.length() % <span class="number">2</span> == <span class="number">0</span>)</div><div class="line">            <span class="keyword">return</span> <span class="number">31</span>;</div><div class="line">        <span class="keyword">else</span> </div><div class="line">            <span class="keyword">return</span> <span class="number">95</span>;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">equals</span><span class="params">(Object obj)</span> </span>&#123;</div><div class="line">        <span class="keyword">if</span>(<span class="keyword">this</span> == obj) &#123;</div><div class="line">            <span class="keyword">return</span> <span class="keyword">true</span>;</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">if</span>(<span class="keyword">null</span> == obj || !(obj <span class="keyword">instanceof</span> Country)) &#123;</div><div class="line">            <span class="keyword">return</span> <span class="keyword">false</span>;</div><div class="line">        &#125;</div><div class="line">        Country other = (Country) obj;</div><div class="line">        <span class="keyword">if</span> (name.equalsIgnoreCase((other.name)))</div><div class="line">            <span class="keyword">return</span> <span class="keyword">true</span>;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">false</span>;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/posts/how-hashmap-work/#more" rel="contents">
+            <a class="btn" href="/posts/how-hashmap-work/" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -569,7 +567,7 @@
 <p>所以 UTF-8 + BOM 其实就是在文件的开头加上了 0xEF 0xBB 0xBF 这三个字节,而这个三个字节是一串隐藏字符。</p>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/posts/python-remove-utf8-bom/#more" rel="contents">
+            <a class="btn" href="/posts/python-remove-utf8-bom/" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -721,7 +719,7 @@
 <h2 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h2><p>关键代码如下：</p>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/posts/scrollview-detect-scroll-stop/#more" rel="contents">
+            <a class="btn" href="/posts/scrollview-detect-scroll-stop/" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -878,7 +876,7 @@
 <p>注：LoaderManager 开始一个 Loader 之后，如果没有调用 destroyLoader 方法，在 activity 的 onStart 时候会重新开始 Loader 中的任务</p>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/posts/four-way-to-query-from-contentresolver/#more" rel="contents">
+            <a class="btn" href="/posts/four-way-to-query-from-contentresolver/" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1044,7 +1042,7 @@
 </ol>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/posts/java-reflection/#more" rel="contents">
+            <a class="btn" href="/posts/java-reflection/" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>

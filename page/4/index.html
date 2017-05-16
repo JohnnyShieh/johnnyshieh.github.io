@@ -2,10 +2,8 @@
 
 
 
-  
 
-
-<html class="theme-next pisces use-motion" lang="zh-Hans">
+<html class="theme-next pisces" lang="zh-Hans">
 <head>
   <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -127,7 +125,7 @@
     scheme: 'Pisces',
     sidebar: {"position":"right","display":"always","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
     fancybox: true,
-    motion: true,
+    motion: false,
     duoshuo: {
       userId: '0',
       author: '博主'
@@ -425,7 +423,7 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">repositories &#123;</div><div class="line">    jcenter()</div><div class="line">    maven &#123;url &apos;&lt;your-SDK-path&gt;/extras/android/m2repository&apos;&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/posts/android-annotation/#more" rel="contents">
+            <a class="btn" href="/posts/android-annotation/" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -593,7 +591,7 @@
 <p>在引入注解之前，开发人员通常使用标记 interfaces，注释或者 javadoc 定义元数据，没有统一的一种方式。注解定义了一种标准的描述元数据的方式，注解是一种应用于类、方法、参数、变量、构造器及包声明中的特殊修饰符。它是一种由 JSR-175 标准选择用来描述元数据的一种工具。</p>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/posts/annotation-basic/#more" rel="contents">
+            <a class="btn" href="/posts/annotation-basic/" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -750,7 +748,7 @@
 <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">Cursor cursor = <span class="keyword">null</span>;</div><div class="line"><span class="keyword">try</span> &#123;</div><div class="line">    cursor = contentResolver.query(uri, <span class="keyword">null</span>, selection, selectionArgs, <span class="keyword">null</span>);</div><div class="line">    <span class="comment">// cursor可能为空</span></div><div class="line">    <span class="keyword">if</span>(<span class="keyword">null</span> != cursor &amp;&amp; cursor.moveToFirst()) &#123;</div><div class="line">        <span class="comment">// TODO</span></div><div class="line">    &#125;</div><div class="line">&#125; <span class="keyword">catch</span> (Exception e) &#123;</div><div class="line">    e.printStackTrace();</div><div class="line">&#125; <span class="keyword">finally</span> &#123;</div><div class="line">    <span class="keyword">if</span> (<span class="keyword">null</span> != cursor) &#123;</div><div class="line">        cursor.close();</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/posts/android-develop-tips-and-tricks/#more" rel="contents">
+            <a class="btn" href="/posts/android-develop-tips-and-tricks/" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -905,7 +903,7 @@
 <p>从上面的代码中可以看出 ttl 就是缓存的生存时间，如果当前时间大于这个时间，缓存就过期，需要重新从网络请求数据。而 softTtl 代表软生存时间，过了这个时间缓存没有完全过期，可以返回给主线程，但是需要从网络请求新的数据刷新缓存.</p>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/posts/volleyex-ttl/#more" rel="contents">
+            <a class="btn" href="/posts/volleyex-ttl/" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1055,7 +1053,7 @@
 <h2 id="问题分析"><a href="#问题分析" class="headerlink" title="问题分析"></a>问题分析</h2><p>demo 的关键代码如下：</p>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/posts/asynctaskloader-rejectedexecutionexception/#more" rel="contents">
+            <a class="btn" href="/posts/asynctaskloader-rejectedexecutionexception/" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
