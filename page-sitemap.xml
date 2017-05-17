@@ -7,6 +7,13 @@
     </url>
     
     <url>
+        <loc>http://johnnyshieh.me//404.html</loc>
+        <lastmod>2017-05-17T07:30:36.000Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    
+    <url>
         <loc>http://johnnyshieh.me/about/</loc>
         <lastmod>2017-05-12T08:00:15.000Z</lastmod>
         <changefreq>weekly</changefreq>
@@ -37,13 +44,6 @@
     <url>
         <loc>http://johnnyshieh.me/categories/</loc>
         <lastmod>2017-05-05T11:35:33.000Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
-    </url>
-    
-    <url>
-        <loc>http://johnnyshieh.me/404.html</loc>
-        <lastmod>2017-05-05T06:24:22.000Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.8</priority>
     </url>
