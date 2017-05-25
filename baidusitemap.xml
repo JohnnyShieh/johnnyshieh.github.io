@@ -5,7 +5,7 @@
     
   <url>
     <loc>http://johnnyshieh.me/posts/dagger-basic/</loc>
-    <lastmod>2017-05-24T07:54:10.000Z</lastmod>
+    <lastmod>2017-05-25T08:46:49.000Z</lastmod>
     <data>
         <display>
         <title>Dagger 2 完全解析（一），Dagger 2 的基本使用与原理</title>
@@ -22,6 +22,21 @@
              
               <breadCrumb title="Android" url="http://johnnyshieh.me/categories/android/"/>
           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://johnnyshieh.me/posts/dagger-advance/</loc>
+    <lastmod>2017-05-25T02:37:31.000Z</lastmod>
+    <data>
+        <display>
+        <title>dagger-advance</title>
+        <pubTime>2017-05-25T02:37:31.000Z</pubTime>
+        
+         
+           
         </display>
     </data>
     </url>
