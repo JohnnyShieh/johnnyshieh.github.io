@@ -118,7 +118,7 @@
 <meta property="og:image" content="http://oph5rhcqp.bkt.clouddn.com/dependency_injection.png">
 <meta property="og:image" content="http://oph5rhcqp.bkt.clouddn.com/dagger_component.png">
 <meta property="og:image" content="http://oph5rhcqp.bkt.clouddn.com/dagger_kernel.png">
-<meta property="og:updated_time" content="2017-05-25T09:08:25.000Z">
+<meta property="og:updated_time" content="2017-05-26T04:00:52.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Dagger 2 完全解析（一），Dagger 2 的基本使用与原理">
 <meta name="twitter:description" content="Dagger 2 完全解析系列文章第一篇，介绍什么是依赖注入、Dagger 2 的基本使用">
@@ -424,9 +424,10 @@
       
         <p>Dagger 2 完全解析系列：</p>
 <p><a href="http://johnnyshieh.me/posts/dagger-basic/">Dagger 2 完全解析（一），Dagger 2 的基本使用与原理</a></p>
-<p><a href="">Dagger 2 完全解析（二），进阶使用 Qualifier、Scope、Lazy 等（敬请期待）</a></p>
-<p><a href="">Dagger 2 完全解析（二），Android app 中使用 Dagger 2（敬请期待）</a></p>
-<p><a href="">Dagger 2 完全解析（二），dagger.android 简化写法的使用（敬请期待）</a></p>
+<p><a href="http://johnnyshieh.me/posts/dagger-advance/">Dagger 2 完全解析（二），进阶使用 Lazy、Qualifier、Scope 等</a></p>
+<p><a href="">Dagger 2 完全解析（三），Component 的组织关系与 SubComponent（敬请期待）</a></p>
+<p><a href="">Dagger 2 完全解析（四），Android 中使用 Dagger 2（敬请期待）</a></p>
+<p><a href="">Dagger 2 完全解析（五），dagger.android 简化写法的使用（敬请期待）</a></p>
 <blockquote>
 <p>本系列文章是基于 Google Dagger 2.11-rc2 版本</p>
 </blockquote>
@@ -499,7 +500,7 @@
 </li>
 </ul>
 <p>这时，就可以用<code>@Provides</code>标注的方法来提供依赖实例，方法的返回值就是依赖的对象实例，<code>@Provides</code>方法必须在<code>Module</code>中，Module 即用<code>@Module</code>标注的类。所以 Module 是提供依赖的对象实例的另一种方式。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Module</span></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">CarModule</span> </span>&#123;</div><div class="line">    <span class="meta">@Provides</span></div><div class="line">    <span class="function"><span class="keyword">static</span> Car <span class="title">provideCar</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">new</span> Car();</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Module</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CarModule</span> </span>&#123;</div><div class="line">    <span class="meta">@Provides</span></div><div class="line">    <span class="function"><span class="keyword">static</span> Car <span class="title">provideCar</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">new</span> Car();</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>约定俗成的是<code>@Provides</code>方法一般以<code>provide</code>为前缀，Moudle 类以<code>Module</code>为后缀，一个 Module 类中可以有多个<code>@Provides</code>方法。</p>
 <p>接下来，需要把可以提供依赖实例的 Module 告诉 Component：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Component</span>(modules = CarModule.class)</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">ManComponent</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">void</span> <span class="title">injectMan</span><span class="params">(Man man)</span></span>;  <span class="comment">// 注入 man 所需要的依赖</span></div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
@@ -514,7 +515,7 @@
 <ol>
 <li><p>需要注入依赖的目标类，需要注入的实例属性由<code>@Inject</code>标注。</p>
 </li>
-<li><p>提供依赖对象实例的工厂，用<code>@Inject</code>标注构造函数或定义<code>Module</code>这两种方式都能提供依赖实例，Dagger 2 的注解处理器会在编译时生成相应的工厂类。</p>
+<li><p>提供依赖对象实例的工厂，用<code>@Inject</code>标注构造函数或定义<code>Module</code>这两种方式都能提供依赖实例，Dagger 2 的注解处理器会在编译时生成相应的工厂类。<strong><code>Module</code>的优先级比<code>@Inject</code>标注构造函数的高，意味着 Dagger 2 会先从 Module 寻找依赖实例。</strong></p>
 </li>
 <li><p>把依赖实例工厂创建的实例注入到目标类中的 Component。</p>
 </li>
@@ -525,7 +526,7 @@
 </li>
 <li><p><code>@Provides</code> 只能标注方法，必须在 Module 中。</p>
 </li>
-<li><p><code>@Module</code> 用来标注 Module 类。</p>
+<li><p><code>@Module</code> 用来标注 Module 类</p>
 </li>
 <li><p><code>@Component</code> 只能标注接口或抽象类，声明的注入接口的参数类型必须和目标类一致。</p>
 </li>
@@ -591,6 +592,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/posts/dagger-advance/" rel="prev" title="Dagger 2 完全解析（二），进阶使用 Lazy、Qualifier、Scope 等">
+                Dagger 2 完全解析（二），进阶使用 Lazy、Qualifier、Scope 等 <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -662,7 +667,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">41</span>
+                <span class="site-state-item-count">42</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>

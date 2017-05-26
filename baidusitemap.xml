@@ -4,8 +4,32 @@
 
     
   <url>
+    <loc>http://johnnyshieh.me/posts/dagger-advance/</loc>
+    <lastmod>2017-05-26T05:15:13.000Z</lastmod>
+    <data>
+        <display>
+        <title>Dagger 2 完全解析（二），进阶使用 Lazy、Qualifier、Scope 等</title>
+        <pubTime>2017-05-25T02:37:31.000Z</pubTime>
+        
+        <tag>android</tag>
+         
+        <tag>java</tag>
+         
+        <tag>dagger</tag>
+         
+         
+           
+             
+              <breadCrumb title="Android" url="http://johnnyshieh.me/categories/android/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://johnnyshieh.me/posts/dagger-basic/</loc>
-    <lastmod>2017-05-25T09:08:25.000Z</lastmod>
+    <lastmod>2017-05-26T04:00:52.000Z</lastmod>
     <data>
         <display>
         <title>Dagger 2 完全解析（一），Dagger 2 的基本使用与原理</title>
