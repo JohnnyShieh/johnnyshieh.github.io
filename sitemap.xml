@@ -2,9 +2,16 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://johnnyshieh.me/posts/dagger-advance/</loc>
+    
+    <lastmod>2017-06-01T02:41:34.000Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://johnnyshieh.me/posts/dagger-subcomponent/</loc>
     
-    <lastmod>2017-06-01T02:27:00.000Z</lastmod>
+    <lastmod>2017-06-01T02:41:32.000Z</lastmod>
     
   </url>
   
@@ -12,13 +19,6 @@
     <loc>http://johnnyshieh.me/posts/dagger-basic/</loc>
     
     <lastmod>2017-06-01T02:26:42.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://johnnyshieh.me/posts/dagger-advance/</loc>
-    
-    <lastmod>2017-05-31T02:28:03.000Z</lastmod>
     
   </url>
   
