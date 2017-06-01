@@ -307,6 +307,164 @@
   
 
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://johnnyshieh.me/posts/android-system-widget/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Johnny Shieh">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Johnny Shieh">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/posts/android-system-widget/" itemprop="url">获得 Android 系统 Widget 控件的方法</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2014-07-23T00:00:00+08:00">
+                2014-07-23
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/android/" itemprop="url" rel="index">
+                    <span itemprop="name">Android</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/posts/android-system-widget/" class="leancloud_visitors" data-flag-title="获得 Android 系统 Widget 控件的方法">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>最近在工作中需要改变 Android 系统的一些控件的属性，一开始不知从何下手，经过一段时间的 google 得到了答案，如果我们知道 Widget 的 ID，那么就可以得到它了。</p>
+<h2 id="获得-System-Widget-ID"><a href="#获得-System-Widget-ID" class="headerlink" title="获得 System Widget ID"></a>获得 System Widget ID</h2><p>应用程序自身创建的 View 的 ID 的结构是：R.id.XXX</p>
+<p>而由系统自身创建的 View 的 ID 的结构是：com.android.internal.R.id.XXX</p>
+<p>可以通过 Android 的 Hierarchyviewer Tools 来获得 System Widget 的 ID</p>
+<p>例如，ActionBar相关ID如下：</p>
+<pre><code>action_bar_container -- ActionBar 的 parent view 的 ID
+action_bar_title     -- ActionBar 的 title 的 ID (它是一个 TextView)
+action_bar_subtitle  -- ActionBar 的 subtitle 的 ID
+</code></pre><h2 id="通过-findViewById-获得-View"><a href="#通过-findViewById-获得-View" class="headerlink" title="通过 findViewById 获得 View"></a>通过 findViewById 获得 View</h2><p>首先，需要获得当前页的 root View – <code>getActivity().getWindow().getDecorView()</code></p>
+<p>然后，findViewById , ( that is it ).</p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/posts/android-system-widget/" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://johnnyshieh.me/posts/android-listview-edittext-search/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -655,7 +813,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">42</span>
+                <span class="site-state-item-count">43</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
