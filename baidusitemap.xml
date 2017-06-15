@@ -4,12 +4,12 @@
 
     
   <url>
-    <loc>http://johnnyshieh.me/posts/dagger-use-in-android/</loc>
-    <lastmod>2017-06-09T09:25:19.000Z</lastmod>
+    <loc>http://johnnyshieh.me/posts/dagger-advance/</loc>
+    <lastmod>2017-06-15T08:53:40.000Z</lastmod>
     <data>
         <display>
-        <title>Dagger 2 完全解析（四），Android 中使用 Dagger 2</title>
-        <pubTime>2017-06-08T11:31:38.000Z</pubTime>
+        <title>Dagger 2 完全解析（二），进阶使用 Lazy、Qualifier、Scope 等</title>
+        <pubTime>2017-05-25T02:37:31.000Z</pubTime>
         
         <tag>android</tag>
          
@@ -28,12 +28,12 @@
 
     
   <url>
-    <loc>http://johnnyshieh.me/posts/dagger-advance/</loc>
-    <lastmod>2017-06-09T09:06:09.000Z</lastmod>
+    <loc>http://johnnyshieh.me/posts/dagger-use-in-android/</loc>
+    <lastmod>2017-06-09T09:25:19.000Z</lastmod>
     <data>
         <display>
-        <title>Dagger 2 完全解析（二），进阶使用 Lazy、Qualifier、Scope 等</title>
-        <pubTime>2017-05-25T02:37:31.000Z</pubTime>
+        <title>Dagger 2 完全解析（四），Android 中使用 Dagger 2</title>
+        <pubTime>2017-06-08T11:31:38.000Z</pubTime>
         
         <tag>android</tag>
          
