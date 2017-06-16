@@ -116,7 +116,7 @@
 <meta property="og:description" content="Dagger 2 完全解析系列文章第四篇，介绍 Android 中如何使用 Dagger 2">
 <meta property="og:image" content="http://oph5rhcqp.bkt.clouddn.com/todo_dependency.png">
 <meta property="og:image" content="http://oph5rhcqp.bkt.clouddn.com/todo_dagger.png">
-<meta property="og:updated_time" content="2017-06-16T03:13:06.000Z">
+<meta property="og:updated_time" content="2017-06-16T03:22:33.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Dagger 2 完全解析（四），Android 中使用 Dagger 2">
 <meta name="twitter:description" content="Dagger 2 完全解析系列文章第四篇，介绍 Android 中如何使用 Dagger 2">
@@ -431,6 +431,7 @@
 </blockquote>
 <p>在理解了 Dagger 2 完全解析系列的前三篇文章后，可能还是会对在 Android 实际项目中如何使用 Dagger 2 有些疑问，本文以 GoogleSamples 的 <a href="https://github.com/googlesamples/android-architecture/tree/todo-mvp" target="_blank" rel="external">android-architecture（mvp 分支）</a> 为例，逐步说明如何在 ToDo 项目中使用 Dagger 2。</p>
 <p>本文中代码示例的地址：<a href="https://github.com/JohnnyShieh/ToDo/tree/mvp" target="_blank" rel="external">https://github.com/JohnnyShieh/ToDo/tree/mvp</a></p>
+<p>使用 Dagger 2 后的代码地址：<a href="https://github.com/JohnnyShieh/ToDo/tree/mvp-dagger2" target="_blank" rel="external">https://github.com/JohnnyShieh/ToDo/tree/mvp-dagger2</a></p>
 <h2 id="Android-中使用-Dagger-2"><a href="#Android-中使用-Dagger-2" class="headerlink" title="Android 中使用 Dagger 2"></a>Android 中使用 Dagger 2</h2><p>为了具有代表性，我选择 android-architecture 中的 todo-mvp 作为例子，MVP 架构大家都比较熟悉。现在假设我们的 Android 项目为 <a href="https://github.com/JohnnyShieh/ToDo/tree/mvp" target="_blank" rel="external">ToDo</a>，那么如何引入 Dagger 2 实现依赖注入？</p>
 <a id="more"></a>
 <h3 id="绘制依赖关系图"><a href="#绘制依赖关系图" class="headerlink" title="绘制依赖关系图"></a>绘制依赖关系图</h3><p>在使用 Dagger 2 之前，需要理清项目的中依赖关系，这样方便设计 Component，建议大家引入 Dagger 2 之前也绘制下大致的依赖关系图。ToDo 项目中的依赖关系如下图：</p>
