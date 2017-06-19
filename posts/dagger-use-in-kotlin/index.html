@@ -107,17 +107,17 @@
 
 
 
-<meta name="description" content="Java 中注解的基本概念, 以及是如何工作的">
-<meta name="keywords" content="探索注解, 注解, Annotation, 基本概念, Johnny, Shieh, Johnny Shieh, johnny shieh blog, ">
+<meta name="description" content="Dagger 2 完全解析系列文章第五篇，介绍 Kotlin 语言中如何使用 Dagger 2">
+<meta name="keywords" content="google, dagger, dagger 2, android, kotlin, Johnny, Shieh, Johnny Shieh, johnny shieh blog, ">
 <meta property="og:type" content="article">
-<meta property="og:title" content="探索注解之注解的基本概念">
-<meta property="og:url" content="http://johnnyshieh.me/posts/annotation-basic/index.html">
+<meta property="og:title" content="Dagger 2 完全解析（五），Kotlin 中使用 Dagger 2">
+<meta property="og:url" content="http://johnnyshieh.me/posts/dagger-use-in-kotlin/index.html">
 <meta property="og:site_name" content="Johnny Shieh">
-<meta property="og:description" content="Java 中注解的基本概念, 以及是如何工作的">
-<meta property="og:updated_time" content="2017-05-11T09:23:54.000Z">
+<meta property="og:description" content="Dagger 2 完全解析系列文章第五篇，介绍 Kotlin 语言中如何使用 Dagger 2">
+<meta property="og:updated_time" content="2017-06-19T10:30:50.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="探索注解之注解的基本概念">
-<meta name="twitter:description" content="Java 中注解的基本概念, 以及是如何工作的">
+<meta name="twitter:title" content="Dagger 2 完全解析（五），Kotlin 中使用 Dagger 2">
+<meta name="twitter:description" content="Dagger 2 完全解析系列文章第五篇，介绍 Kotlin 语言中如何使用 Dagger 2">
 
 
 
@@ -145,13 +145,13 @@
 
 
 
-  <link rel="canonical" href="http://johnnyshieh.me/posts/annotation-basic/">
+  <link rel="canonical" href="http://johnnyshieh.me/posts/dagger-use-in-kotlin/">
 
 
 
 
 
-  <title>探索注解之注解的基本概念 | Johnny Shieh</title>
+  <title>Dagger 2 完全解析（五），Kotlin 中使用 Dagger 2 | Johnny Shieh</title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -310,7 +310,7 @@
   
 
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://johnnyshieh.me/posts/annotation-basic/">
+    <link itemprop="mainEntityOfPage" href="http://johnnyshieh.me/posts/dagger-use-in-kotlin/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Johnny Shieh">
@@ -327,7 +327,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">探索注解之注解的基本概念</h1>
+          <h1 class="post-title" itemprop="name headline">Dagger 2 完全解析（五），Kotlin 中使用 Dagger 2</h1>
         
 
         <div class="post-meta">
@@ -339,8 +339,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-09-07T16:51:51+08:00">
-                2016-09-07
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-06-19T17:17:04+08:00">
+                2017-06-19
               </time>
             
 
@@ -362,8 +362,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/java/" itemprop="url" rel="index">
-                    <span itemprop="name">Java</span>
+                  <a href="/categories/android/" itemprop="url" rel="index">
+                    <span itemprop="name">Android</span>
                   </a>
                 </span>
 
@@ -380,7 +380,7 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a class="cloud-tie-join-count" href="/posts/annotation-basic/#comments" itemprop="discussionUrl">
+                <a class="cloud-tie-join-count" href="/posts/dagger-use-in-kotlin/#comments" itemprop="discussionUrl">
                   <span class="post-comments-count join-count" itemprop="commentCount"></span>
                 </a>
               </span>
@@ -389,7 +389,7 @@
 
           
           
-             <span id="/posts/annotation-basic/" class="leancloud_visitors" data-flag-title="探索注解之注解的基本概念">
+             <span id="/posts/dagger-use-in-kotlin/" class="leancloud_visitors" data-flag-title="Dagger 2 完全解析（五），Kotlin 中使用 Dagger 2">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -417,98 +417,39 @@
       
 
       
-        <p>自从 Java 5.0 版本引入<strong>注解</strong>后，它就成为 Java 平台中非常重要的一部分。在日常开发过程中时常可以看到 @Override，@Deprecated 这样的注解，在使用 Butterknife 减少 findViewById 这样的重复劳动时也经常用到 @BindView 注解。下面几篇文章将讲述注解的基本概念，注解处理器的使用以及 Android中 的注解：</p>
-<ul>
-<li><p><a href="http://johnnyshieh.me/2016/09/07/annotation-basic/">探索注解之注解的基本概念</a></p>
-</li>
-<li><p><a href="http://blog.csdn.net/lmj623565791/article/details/51931859" target="_blank" rel="external">探索注解之 APT 编译时处理注解</a> (鸿神写编译时注解的文章，非常好，所以自己就不再重复写了)</p>
-</li>
-<li><p><a href="http://johnnyshieh.me/2016/09/21/android-annotation/">探索注解之 Android 中的注解</a></p>
-</li>
-</ul>
-<h2 id="什么是注解？"><a href="#什么是注解？" class="headerlink" title="什么是注解？"></a>什么是注解？</h2><p><strong>注解（Annotations），就是元数据，一种描述程序代码的数据，并且对程序运行没有任何影响。</strong></p>
-<p>例如下面这段代码：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Override</span></div><div class="line"><span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span> </span>&#123;</div><div class="line">    <span class="keyword">return</span> <span class="string">"This is String Representation of current object"</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>在上面的代码中，我重写了 toString() 方法并使用了 @Override 注解。但是即便我不使用 @Override 注解标记代码，程序也能正常运行。那么这个注解有什么意义？@Override 告诉编译器这个方法是重写父类的方法，如果父类中没有该方法，编译器就会报错，提示没有重写父类中的方法。如果我不小心把 toString 写成 toStrings，而且也没有使用 @Override 注解的话，程序依然可以运行，但是跟之前期望就会大有不同。</p>
-<p>注解有下面几种作用：</p>
-<ul>
-<li><strong>为编译器提供信息</strong> – 注解可以被编译器用来检测错误或抑制警告</li>
-<li><strong>编译时和部署时处理</strong> – 一些工具可以根据注解信息生成代码，XML 文件等等，例如 APT（Annotation Processing Tool）</li>
-<li><strong>运行时处理</strong> – 有些注解可以在运行时通过反射获取</li>
-</ul>
-<p>在引入注解之前，开发人员通常使用标记 interfaces，注释或者 javadoc 定义元数据，没有统一的一种方式。注解定义了一种标准的描述元数据的方式，注解是一种应用于类、方法、参数、变量、构造器及包声明中的特殊修饰符。它是一种由 JSR-175 标准选择用来描述元数据的一种工具。</p>
+        <p>Dagger 2 完全解析系列：</p>
+<p><a href="http://johnnyshieh.me/posts/dagger-basic/">Dagger 2 完全解析（一），Dagger 2 的基本使用与原理</a></p>
+<p><a href="http://johnnyshieh.me/posts/dagger-advance/">Dagger 2 完全解析（二），进阶使用 Lazy、Qualifier、Scope 等</a></p>
+<p><a href="http://johnnyshieh.me/posts/dagger-subcomponent/">Dagger 2 完全解析（三），Component 的组织关系与 SubComponent</a></p>
+<p><a href="http://johnnyshieh.me/posts/dagger-use-in-android/">Dagger 2 完全解析（四），Android 中使用 Dagger 2</a></p>
+<p><a href="http://johnnyshieh.me/posts/dagger-use-in-kotlin/">Dagger 2 完全解析（五），Kotlin 中使用 Dagger 2</a></p>
+<blockquote>
+<p>本系列文章是基于 Google Dagger 2.11-rc2 版本</p>
+</blockquote>
+<p>Google I/O 2017 大会上宣布 Kotlin 成为 Android 开发一级语言，kotlin 语言作为 Google 的亲儿子，前途一片光明，而且 Kotlin 加入了很多现代语言特性。最近把我之前写的一个开源项目重构为 Kotlin 版本 – <a href="https://github.com/JohnnyShieh/Gank/tree/kotlin" target="_blank" rel="external">Kotlin 版本的 Gank app</a>，以此来学习 kotlin 语言。其中在 Kotlin 语言中使用 Dagger 2 的写法与 Java 中有些变化，所以写下这篇文章记录下如何在 Kotlin 语言中使用 Dagger 2。</p>
+<blockquote>
+<p>本文中的 Kotlin 版本为 1.1.2-5</p>
+</blockquote>
+<h2 id="Dagger-2-依赖"><a href="#Dagger-2-依赖" class="headerlink" title="Dagger 2 依赖"></a>Dagger 2 依赖</h2><p>引入方式与之前有所区别，Dagger 2 根据注解在编译时生成静态代码，所以需要注解处理器，而 Kotlin 中注解处理工具为 <a href="http://kotlinlang.org/docs/reference/kapt.html" target="_blank" rel="external">Kotlin Annotatino processing tool</a>（kapt）。</p>
 <a id="more"></a>
-<h2 id="Java-内置注解"><a href="#Java-内置注解" class="headerlink" title="Java 内置注解"></a>Java 内置注解</h2><p>在了解注解的定义后，先看看我们熟悉的 Java 内置的注解：</p>
-<p><strong>@Deprecated</strong> – 意味着标记的元素这已经弃用了，如果使用了 @Deprecated 标记的元素编译器会提示警告。Java 推荐在 Javadoc 中提供弃用的原因并提供替代的方案.</p>
-<p>Date 的 pare 方法<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line">* Returns the millisecond value of the date and time parsed from the</div><div class="line">* specified &#123;<span class="doctag">@code</span> String&#125;. Many date/time formats are recognized, including IETF</div><div class="line">* standard syntax, i.e. Tue, 22 Jun 1999 12:16:00 GMT-0500</div><div class="line">*</div><div class="line">* <span class="doctag">@param</span> string</div><div class="line">*            the String to parse.</div><div class="line">* <span class="doctag">@return</span> the millisecond value parsed from the String.</div><div class="line">*</div><div class="line">* <span class="doctag">@deprecated</span> Use &#123;<span class="doctag">@link</span> DateFormat&#125; instead.</div><div class="line">*/</div><div class="line"><span class="meta">@Deprecated</span></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">long</span> <span class="title">parse</span><span class="params">(String string)</span></span></div></pre></td></tr></table></figure></p>
-<p><strong>@Override</strong> – 标记该方法是重写父类的，当父类的该方法移除或修改时，编译器会提供错误信息。</p>
-<p><strong>@SuppressWarnings</strong> – 告诉编译器忽略某些特定的警告。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@SuppressWarnings</span>(&#123;<span class="string">"unchecked"</span>, <span class="string">"deprecation"</span>&#125;)</div></pre></td></tr></table></figure>
-<p><strong>@SafeVarargs</strong> – 忽略”堆污染”警告，Java 7 引入的</p>
-<p><strong>@FunctionalInterface</strong> – Java 8 引入的，用来表示接口是函数式接口</p>
-<h2 id="元注解"><a href="#元注解" class="headerlink" title="元注解"></a>元注解</h2><p>在上面 Java 自带注解或者自定义注解时，会发现应用于注解本身的注解，这就是元注解。这些元注解都定义在<code>java.lang.annotation</code>包中。</p>
-<p><strong>@Retention</strong> – 定义了注解的生命周期</p>
-<ul>
-<li><p>RetentionPolicy.SOURCE - 只能在源文件中保留，被编译器丢弃</p>
-</li>
-<li><p>RetentionPolicy.CLASS - 可以在 .Class 文件中保留，被 JVM 丢弃，这也是默认值</p>
-</li>
-<li><p>RetentionPolicy.RUNTIME - 可以在运行时保留</p>
-</li>
+<p>build.gradle</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">apply plugin: <span class="string">'com.android.application'</span></div><div class="line">apply plugin: <span class="string">'kotlin-android'</span></div><div class="line">apply plugin: <span class="string">'kotlin-kapt'</span> // 使用 kapt 注解处理工具</div><div class="line"></div><div class="line">...</div><div class="line"></div><div class="line">dependencies &#123;</div><div class="line">    compile <span class="string">"com.google.dagger:dagger:<span class="variable">$dagger_version</span>"</span></div><div class="line">    kapt <span class="string">"com.google.dagger:dagger-compiler:<span class="variable">$dagger_version</span>"</span>    // kapt 代替 annotationProcessor</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="Inject-注解"><a href="#Inject-注解" class="headerlink" title="Inject 注解"></a>Inject 注解</h2><ul>
+<li>标记目标类构造函数，以此为 Component 提供依赖实例</li>
 </ul>
-<p><strong>@Documented</strong> – 可以使用 javadoc 或类似工具文档化</p>
-<p><strong>@Target</strong> –  指定注解可修饰的元素范围，即可以标记在哪里（方法上、类上等等），如果不使用 @Target 注解，可以修饰任何元素。下面是取值列表：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 标注 constructor 构造方法</span></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Car</span> @<span class="title">Inject</span> <span class="title">constructor</span>() </span>&#123; .. &#125;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Car</span> </span>&#123;</div><div class="line">    <span class="meta">@Inject</span> constructor(name: String)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <ul>
-<li><p>ElementType.ANNOTATION_TYPE - 描述其他注解</p>
-</li>
-<li><p>ElementType.CONSTRUCTOR - 描述构造器</p>
-</li>
-<li><p>ElementType.FIELD - 描述类属性（包括 enum 常量）</p>
-</li>
-<li><p>ElementType.LOCAL_VARIABLE - 描述局部变量</p>
-</li>
-<li><p>ElementType.METHOD - 描述方法</p>
-</li>
-<li><p>ElementType.PACKAGE - 描述包</p>
-</li>
-<li><p>ElementType.PARAMETER - 描述参数</p>
-</li>
-<li><p>ElementType.TYPE - 描述类、接口（包括注解）、枚举 enum</p>
-</li>
+<li>标注成员属性，确定需要注入的依赖</li>
 </ul>
-<p><strong>@Inherited</strong> – 表明被标注的注解可被子类继承</p>
-<p><strong>@Repeatable</strong> – Java 8 引入，表明被标记的注解可以在一个声明或类型中使用多次</p>
-<h2 id="自定义注解"><a href="#自定义注解" class="headerlink" title="自定义注解"></a>自定义注解</h2><p>自定义注解有点类似写接口，只是<code>interface</code>关键字需要前缀<code>@</code>。我们可以声明一个描述类属性的注解，下面是具体例子：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Documented</span></div><div class="line"><span class="meta">@Target</span>(ElementType.FIELD)</div><div class="line"><span class="meta">@Retention</span>(RetentionPolicy.RUNTIME)</div><div class="line"><span class="keyword">public</span> <span class="meta">@interface</span> Column &#123;</div><div class="line">    <span class="function">String <span class="title">name</span><span class="params">()</span></span>;       <span class="comment">// 定义 name 属性</span></div><div class="line">    <span class="function">String <span class="title">type</span><span class="params">()</span></span>;       <span class="comment">// 定义 type 属性</span></div><div class="line">    <span class="function"><span class="keyword">boolean</span> <span class="title">isPrimaryKey</span><span class="params">()</span> <span class="keyword">default</span> <span class="keyword">false</span></span>;   <span class="comment">// 定义 isPrimaryKey 属性，默认值为 false。</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>上面定义了 @Column 注解，有三个成员变量，成员变量的声明类似无参方法的声明，定义注解的规则如下：</p>
-<ul>
-<li><p>注解可以用元注解标记，指定可应用的元素类型，或确定生命周期等</p>
-</li>
-<li><p>注解的属性用类似无参方法的声明，不能带有任何参数</p>
-</li>
-<li><p>注解的属性类型只能是基本数据类型、String、Enum、注解以及相应的数组</p>
-</li>
-<li><p>注解的属性可以有默认值，非基本数据类型的值不能为<code>null</code></p>
-</li>
-<li><p>如果只有一个属性，建议命名为 “value”，使用时就无需标明属性名</p>
-</li>
-</ul>
-<h2 id="Java-注解解析（运行时）"><a href="#Java-注解解析（运行时）" class="headerlink" title="Java 注解解析（运行时）"></a>Java 注解解析（运行时）</h2><p>上面我们已经定义了 @Column 注解，下面是注解使用的例子：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="keyword">final</span> <span class="class"><span class="keyword">class</span> <span class="title">Bookmarks</span> </span>&#123;</div><div class="line">    </div><div class="line">    <span class="function"><span class="keyword">private</span> <span class="title">Bookmarks</span><span class="params">()</span> </span>&#123;&#125;</div><div class="line">    </div><div class="line">    <span class="meta">@Column</span>(name = <span class="string">"_id"</span>, type = <span class="string">"INTEGER"</span>, isPrimaryKey = <span class="keyword">true</span>)</div><div class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> String ID = <span class="string">"_id"</span>;</div><div class="line">    </div><div class="line">    <span class="meta">@Column</span>(name = <span class="string">"title"</span>, type = <span class="string">"TEXT"</span>)</div><div class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> String TITLE = <span class="string">"title"</span>;</div><div class="line">    </div><div class="line">    <span class="meta">@Column</span>(name = <span class="string">"url"</span>, type = <span class="string">"TEXT"</span>)</div><div class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> String URL = <span class="string">"url"</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>之前说过注解不会影响代码的运行，因此必须配合相应的注解处理工具，否则注解跟注释没什么分别。根据 @Retention 指定的值不同，有不同的处理方式。声明为 RetentionPolicy.CLASS 时，可以用 javac 内置的 APT（Annotation Processing Tool）在编译时扫描处理注解，而声明为 RetentionPolicy.RUNTIME 时，可以用反射 API 的 AnnotatedElement 接口解析注解。</p>
-<p>下面的代码示例是用反射解析上面 Bookmarks 类中的注解：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">parseColumnAnnotation</span><span class="params">()</span> </span>&#123;</div><div class="line">    Field[] fields = Bookmarks.class.getDeclaredFields();</div><div class="line">    <span class="keyword">for</span> (Field field : fields) &#123;</div><div class="line">        Column column = field.getAnnotation(Column.class);</div><div class="line">        System.out.println(<span class="string">"column name = "</span> + column.name() + <span class="string">" type = "</span> + column.type() + <span class="string">" isPrimaryKey = "</span> + column.isPrimaryKey());</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>运行结果如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">column name = _id type = INTEGER isPrimaryKey = true</div><div class="line">column name = title type = TEXT isPrimaryKey = false</div><div class="line">column name = url type = TEXT isPrimaryKey = false</div></pre></td></tr></table></figure>
-<p><strong>参考文章：</strong></p>
-<ul>
-<li><p><a href="https://www.javacodegeeks.com/2012/11/java-annotations-tutorial-with-custom-annotation.html" target="_blank" rel="external">Java Annotations Tutorial with Custom Annotation</a></p>
-</li>
-<li><p><a href="http://docs.oracle.com/javase/tutorial/java/annotations/index.html" target="_blank" rel="external">Oracle Annotation Tutorials</a></p>
-</li>
-<li><p><a href="http://idlebrains.org/tutorials/java-tutorials/how-annotations-work-java/" target="_blank" rel="external">How Annotations Work in Java</a></p>
-</li>
-</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 标注 setter</span></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Man</span> </span>&#123;</div><div class="line">    var car: Car? = <span class="keyword">null</span></div><div class="line">        <span class="meta">@Inject</span> set</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>直接标注属性<code>@Inject var car: Car? = null</code>，编译时会报错</p>
+<h2 id="Module-和-Component"><a href="#Module-和-Component" class="headerlink" title="Module 和 Component"></a>Module 和 Component</h2><p>Module 和 Component 的写法和 Java 一样，只是 Kotlin 语法不一样</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Module</span></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">CarModule</span> </span>&#123;</div><div class="line">    <span class="meta">@Provides</span></div><div class="line">    <span class="function">fun <span class="title">provideCar</span><span class="params">()</span> </span>= Car()</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="meta">@Component</span>(modules = arrayOf(CarModule::<span class="class"><span class="keyword">class</span>))</span></div><div class="line"><span class="title">interface</span> <span class="title">ManComponent</span> &#123;</div><div class="line">    <span class="function">fun <span class="title">inject</span><span class="params">(man: Man)</span></span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="Scope-作用域"><a href="#Scope-作用域" class="headerlink" title="Scope 作用域"></a>Scope 作用域</h2><p>自定义的作用域的语法也变了，下面是常见的两个自定义 Scope：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 主要是注解的声明语法不同</span></div><div class="line"><span class="meta">@Scope</span></div><div class="line"><span class="meta">@Retention</span>(AnnotationRetention.RUNTIME)</div><div class="line"><span class="meta">@MustBeDocumented</span></div><div class="line">annotation <span class="class"><span class="keyword">class</span> <span class="title">ActivityScope</span></span></div><div class="line"></div><div class="line">@<span class="title">Scope</span></div><div class="line">@<span class="title">Retention</span>(<span class="title">AnnotationRetention</span>.<span class="title">RUNTIME</span>)</div><div class="line">@<span class="title">MustBeDocumented</span></div><div class="line"><span class="title">annotation</span> <span class="title">class</span> <span class="title">FragmentScope</span></div></pre></td></tr></table></figure>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>kapt 编译时生成的代码和之前一样，Component 的使用方式没有改变，需要注意就是 Inject 标注成员属性时，需要标注 setter。</p>
+<p>如果想看更具体的代码，可以前往我开源的 Gank - kotlin 项目：<a href="https://github.com/JohnnyShieh/Gank/tree/kotlin" target="_blank" rel="external">https://github.com/JohnnyShieh/Gank/tree/kotlin</a></p>
+<p>到这里，Dagger 2 完全解析系列就结束了，有什么疑问欢迎在下面留言。</p>
       
     </div>
 
@@ -539,9 +480,11 @@
           
             <a href="/tags/android/" rel="tag"># android</a>
           
-            <a href="/tags/注解/" rel="tag"># 注解</a>
+            <a href="/tags/dagger/" rel="tag"># dagger</a>
           
             <a href="/tags/java/" rel="tag"># java</a>
+          
+            <a href="/tags/kotlin/" rel="tag"># kotlin</a>
           
         </div>
       
@@ -554,8 +497,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/posts/android-develop-tips-and-tricks/" rel="next" title="Android 开发过程中的坑和小技巧">
-                <i class="fa fa-chevron-left"></i> Android 开发过程中的坑和小技巧
+              <a href="/posts/dagger-use-in-android/" rel="next" title="Dagger 2 完全解析（四），Android 中使用 Dagger 2">
+                <i class="fa fa-chevron-left"></i> Dagger 2 完全解析（四），Android 中使用 Dagger 2
               </a>
             
           </div>
@@ -563,10 +506,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/posts/android-annotation/" rel="prev" title="探索注解之 Android 中的注解">
-                探索注解之 Android 中的注解 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -733,7 +672,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#什么是注解？"><span class="nav-number">1.</span> <span class="nav-text">什么是注解？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Java-内置注解"><span class="nav-number">2.</span> <span class="nav-text">Java 内置注解</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#元注解"><span class="nav-number">3.</span> <span class="nav-text">元注解</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#自定义注解"><span class="nav-number">4.</span> <span class="nav-text">自定义注解</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Java-注解解析（运行时）"><span class="nav-number">5.</span> <span class="nav-text">Java 注解解析（运行时）</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Dagger-2-依赖"><span class="nav-number">1.</span> <span class="nav-text">Dagger 2 依赖</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Inject-注解"><span class="nav-number">2.</span> <span class="nav-text">Inject 注解</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Module-和-Component"><span class="nav-number">3.</span> <span class="nav-text">Module 和 Component</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Scope-作用域"><span class="nav-number">4.</span> <span class="nav-text">Scope 作用域</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">5.</span> <span class="nav-text">总结</span></a></li></ol></div>
             
 
           </div>

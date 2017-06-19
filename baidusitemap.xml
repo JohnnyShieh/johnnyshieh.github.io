@@ -4,42 +4,20 @@
 
     
   <url>
-    <loc>http://johnnyshieh.me/posts/dagger-use-in-android/</loc>
-    <lastmod>2017-06-16T03:22:33.000Z</lastmod>
+    <loc>http://johnnyshieh.me/posts/dagger-use-in-kotlin/</loc>
+    <lastmod>2017-06-19T10:30:50.000Z</lastmod>
     <data>
         <display>
-        <title>Dagger 2 完全解析（四），Android 中使用 Dagger 2</title>
-        <pubTime>2017-06-08T11:31:38.000Z</pubTime>
+        <title>Dagger 2 完全解析（五），Kotlin 中使用 Dagger 2</title>
+        <pubTime>2017-06-19T09:17:04.000Z</pubTime>
         
         <tag>android</tag>
          
-        <tag>java</tag>
-         
         <tag>dagger</tag>
-         
-         
-           
-             
-              <breadCrumb title="Android" url="http://johnnyshieh.me/categories/android/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://johnnyshieh.me/posts/dagger-advance/</loc>
-    <lastmod>2017-06-15T08:53:40.000Z</lastmod>
-    <data>
-        <display>
-        <title>Dagger 2 完全解析（二），进阶使用 Lazy、Qualifier、Scope 等</title>
-        <pubTime>2017-05-25T02:37:31.000Z</pubTime>
-        
-        <tag>android</tag>
          
         <tag>java</tag>
          
-        <tag>dagger</tag>
+        <tag>kotlin</tag>
          
          
            
@@ -53,7 +31,7 @@
     
   <url>
     <loc>http://johnnyshieh.me/posts/dagger-subcomponent/</loc>
-    <lastmod>2017-06-09T09:05:57.000Z</lastmod>
+    <lastmod>2017-06-19T10:30:10.000Z</lastmod>
     <data>
         <display>
         <title>Dagger 2 完全解析（三），Component 的组织关系与 SubComponent</title>
@@ -61,9 +39,57 @@
         
         <tag>android</tag>
          
+        <tag>dagger</tag>
+         
         <tag>java</tag>
          
+         
+           
+             
+              <breadCrumb title="Android" url="http://johnnyshieh.me/categories/android/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://johnnyshieh.me/posts/dagger-advance/</loc>
+    <lastmod>2017-06-19T10:30:00.000Z</lastmod>
+    <data>
+        <display>
+        <title>Dagger 2 完全解析（二），进阶使用 Lazy、Qualifier、Scope 等</title>
+        <pubTime>2017-05-25T02:37:31.000Z</pubTime>
+        
+        <tag>android</tag>
+         
         <tag>dagger</tag>
+         
+        <tag>java</tag>
+         
+         
+           
+             
+              <breadCrumb title="Android" url="http://johnnyshieh.me/categories/android/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://johnnyshieh.me/posts/dagger-use-in-android/</loc>
+    <lastmod>2017-06-19T10:29:49.000Z</lastmod>
+    <data>
+        <display>
+        <title>Dagger 2 完全解析（四），Android 中使用 Dagger 2</title>
+        <pubTime>2017-06-08T11:31:38.000Z</pubTime>
+        
+        <tag>android</tag>
+         
+        <tag>dagger</tag>
+         
+        <tag>java</tag>
          
          
            
@@ -77,7 +103,7 @@
     
   <url>
     <loc>http://johnnyshieh.me/posts/dagger-basic/</loc>
-    <lastmod>2017-06-09T09:05:50.000Z</lastmod>
+    <lastmod>2017-06-19T10:29:42.000Z</lastmod>
     <data>
         <display>
         <title>Dagger 2 完全解析（一），Dagger 2 的基本使用与原理</title>
@@ -85,9 +111,9 @@
         
         <tag>android</tag>
          
-        <tag>java</tag>
-         
         <tag>dagger</tag>
+         
+        <tag>java</tag>
          
          
            
