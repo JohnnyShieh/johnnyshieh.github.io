@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://johnnyshieh.me/about/index.html</loc>
+    
+    <lastmod>2017-06-19T11:23:34.000Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://johnnyshieh.me/posts/dagger-use-in-kotlin/</loc>
     
     <lastmod>2017-06-19T10:30:50.000Z</lastmod>
@@ -47,13 +54,6 @@
     <loc>http://johnnyshieh.me//404.html</loc>
     
     <lastmod>2017-05-17T07:30:36.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://johnnyshieh.me/about/index.html</loc>
-    
-    <lastmod>2017-05-12T08:00:15.000Z</lastmod>
     
   </url>
   
