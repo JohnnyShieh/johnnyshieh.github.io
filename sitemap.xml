@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://johnnyshieh.me/posts/java-singleton-pattern/</loc>
+    
+    <lastmod>2017-06-21T03:36:05.000Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://johnnyshieh.me/about/index.html</loc>
     
     <lastmod>2017-06-19T11:23:34.000Z</lastmod>
@@ -152,13 +159,6 @@
     <loc>http://johnnyshieh.me/posts/explore-threadlocal/</loc>
     
     <lastmod>2017-05-11T10:00:16.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://johnnyshieh.me/posts/java-singleton-pattern/</loc>
-    
-    <lastmod>2017-05-11T09:34:41.000Z</lastmod>
     
   </url>
   

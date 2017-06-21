@@ -3,6 +3,28 @@
 
 
     
+  <url>
+    <loc>http://johnnyshieh.me/posts/java-singleton-pattern/</loc>
+    <lastmod>2017-06-21T03:36:05.000Z</lastmod>
+    <data>
+        <display>
+        <title>Java 设计模式之单例模式</title>
+        <pubTime>2016-10-13T09:21:38.000Z</pubTime>
+        
+        <tag>java</tag>
+         
+        <tag>设计模式</tag>
+         
+         
+           
+             
+              <breadCrumb title="设计模式" url="http://johnnyshieh.me/categories/designpattern/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
     
   <url>
     <loc>http://johnnyshieh.me/posts/dagger-use-in-kotlin/</loc>
@@ -14,9 +36,9 @@
         
         <tag>android</tag>
          
-        <tag>dagger</tag>
-         
         <tag>java</tag>
+         
+        <tag>dagger</tag>
          
         <tag>kotlin</tag>
          
@@ -40,9 +62,9 @@
         
         <tag>android</tag>
          
-        <tag>dagger</tag>
-         
         <tag>java</tag>
+         
+        <tag>dagger</tag>
          
          
            
@@ -64,9 +86,9 @@
         
         <tag>android</tag>
          
-        <tag>dagger</tag>
-         
         <tag>java</tag>
+         
+        <tag>dagger</tag>
          
          
            
@@ -88,9 +110,9 @@
         
         <tag>android</tag>
          
-        <tag>dagger</tag>
-         
         <tag>java</tag>
+         
+        <tag>dagger</tag>
          
          
            
@@ -112,9 +134,9 @@
         
         <tag>android</tag>
          
-        <tag>dagger</tag>
-         
         <tag>java</tag>
+         
+        <tag>dagger</tag>
          
          
            
@@ -424,28 +446,6 @@
            
              
               <breadCrumb title="Android" url="http://johnnyshieh.me/categories/android/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://johnnyshieh.me/posts/java-singleton-pattern/</loc>
-    <lastmod>2017-05-11T09:34:41.000Z</lastmod>
-    <data>
-        <display>
-        <title>Java 设计模式之单例模式</title>
-        <pubTime>2016-10-13T09:21:38.000Z</pubTime>
-        
-        <tag>java</tag>
-         
-        <tag>设计模式</tag>
-         
-         
-           
-             
-              <breadCrumb title="设计模式" url="http://johnnyshieh.me/categories/designpattern/"/>
           
         </display>
     </data>
