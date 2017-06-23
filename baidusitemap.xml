@@ -5,10 +5,10 @@
     
   <url>
     <loc>http://johnnyshieh.me/posts/kotlin-property-lazy-init-not-null/</loc>
-    <lastmod>2017-06-22T11:19:48.000Z</lastmod>
+    <lastmod>2017-06-23T02:51:57.000Z</lastmod>
     <data>
         <display>
-        <title>Kotlin 中延迟初始化的非空属性，使用 notNull 委托避免使用不必要的 !! 操作符</title>
+        <title>Kotlin 中延迟初始化的非空属性，如何避免使用不必要的 !! 操作符</title>
         <pubTime>2017-06-22T08:52:50.000Z</pubTime>
         
         <tag>android</tag>
