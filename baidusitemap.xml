@@ -3,10 +3,35 @@
 
 
     
+  <url>
+    <loc>http://johnnyshieh.me/posts/dagger-use-in-kotlin/</loc>
+    <lastmod>2017-06-27T03:50:55.000Z</lastmod>
+    <data>
+        <display>
+        <title>Dagger 2 完全解析（五），Kotlin 中使用 Dagger 2</title>
+        <pubTime>2017-06-19T09:17:04.000Z</pubTime>
+        
+        <tag>android</tag>
+         
+        <tag>java</tag>
+         
+        <tag>dagger</tag>
+         
+        <tag>kotlin</tag>
+         
+         
+           
+             
+              <breadCrumb title="Android" url="http://johnnyshieh.me/categories/android/"/>
+          
+        </display>
+    </data>
+    </url>
+
     
   <url>
     <loc>http://johnnyshieh.me/posts/kotlin-property-lazy-init-not-null/</loc>
-    <lastmod>2017-06-23T02:51:57.000Z</lastmod>
+    <lastmod>2017-06-27T03:50:51.000Z</lastmod>
     <data>
         <display>
         <title>Kotlin 中延迟初始化的非空属性，如何避免使用不必要的 !! 操作符</title>
@@ -25,6 +50,7 @@
     </data>
     </url>
 
+    
     
   <url>
     <loc>http://johnnyshieh.me/posts/java-singleton-pattern/</loc>
@@ -48,32 +74,6 @@
     </url>
 
     
-    
-  <url>
-    <loc>http://johnnyshieh.me/posts/dagger-use-in-kotlin/</loc>
-    <lastmod>2017-06-19T10:30:50.000Z</lastmod>
-    <data>
-        <display>
-        <title>Dagger 2 完全解析（五），Kotlin 中使用 Dagger 2</title>
-        <pubTime>2017-06-19T09:17:04.000Z</pubTime>
-        
-        <tag>android</tag>
-         
-        <tag>java</tag>
-         
-        <tag>dagger</tag>
-         
-        <tag>kotlin</tag>
-         
-         
-           
-             
-              <breadCrumb title="Android" url="http://johnnyshieh.me/categories/android/"/>
-          
-        </display>
-    </data>
-    </url>
-
     
   <url>
     <loc>http://johnnyshieh.me/posts/dagger-subcomponent/</loc>

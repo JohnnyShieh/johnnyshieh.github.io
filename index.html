@@ -420,9 +420,9 @@
           <p>最近在写 Kotlin 版本的 <a href="https://github.com/JohnnyShieh/Gank/tree/kotlin" target="_blank" rel="external">Gank</a> 客户端（干货集中营 app）时，发现一个非常烦人的事情：有的成员属性不能在构造函数中初始化，会在稍后某的地方完成初始化，可以确定是非空，但是因为不能在构造时初始化只能定义为可能为空的类型（T？），然后在后面调用时都要加上<code>!!</code>操作符。下面本文将逐步分析这种场景的解决方案，最终提供一种优雅的方式。</p>
 <p>这里先给出最终解决方式（为了部分喜欢直奔主题的开发者）：</p>
 <ul>
-<li><p>notNull 委托属性</p>
+<li><p><strong>notNull</strong> 委托属性</p>
 </li>
-<li><p>lateinit 修饰符</p>
+<li><p><strong>lateinit</strong> 修饰符</p>
 </li>
 </ul>
 <p>注：本文的第一种解决方法来源于《Kotlin For Android Developers》，学习 Kotlin 的朋友有兴趣可以看看。</p>

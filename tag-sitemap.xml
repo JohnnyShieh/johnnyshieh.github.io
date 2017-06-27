@@ -177,20 +177,6 @@
     </url>
 
     <url>
-        <loc>http://johnnyshieh.me/tags/dagger/</loc>
-        <lastmod>2017-06-19T10:30:50.000Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
-        <loc>http://johnnyshieh.me/tags/java/</loc>
-        <lastmod>2017-06-21T03:36:05.000Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
         <loc>http://johnnyshieh.me/tags/designpattern/</loc>
         <lastmod>2017-06-21T03:36:05.000Z</lastmod>
         <changefreq>weekly</changefreq>
@@ -199,14 +185,28 @@
 
     <url>
         <loc>http://johnnyshieh.me/tags/android/</loc>
-        <lastmod>2017-06-23T02:51:57.000Z</lastmod>
+        <lastmod>2017-06-27T03:50:55.000Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>http://johnnyshieh.me/tags/java/</loc>
+        <lastmod>2017-06-27T03:50:55.000Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>http://johnnyshieh.me/tags/dagger/</loc>
+        <lastmod>2017-06-27T03:50:55.000Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>
 
     <url>
         <loc>http://johnnyshieh.me/tags/kotlin/</loc>
-        <lastmod>2017-06-23T02:51:57.000Z</lastmod>
+        <lastmod>2017-06-27T03:50:55.000Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>
