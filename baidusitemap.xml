@@ -4,6 +4,28 @@
 
     
   <url>
+    <loc>http://johnnyshieh.me/posts/java-proxy-pattern/</loc>
+    <lastmod>2017-06-29T11:29:40.000Z</lastmod>
+    <data>
+        <display>
+        <title>Java 设计模式之代理模式</title>
+        <pubTime>2017-06-29T08:57:30.000Z</pubTime>
+        
+        <tag>java</tag>
+         
+        <tag>设计模式</tag>
+         
+         
+           
+             
+              <breadCrumb title="设计模式" url="http://johnnyshieh.me/categories/designpattern/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://johnnyshieh.me/posts/dagger-use-in-kotlin/</loc>
     <lastmod>2017-06-27T03:50:55.000Z</lastmod>
     <data>
