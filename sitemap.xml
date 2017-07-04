@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://johnnyshieh.me/books/index.html</loc>
+    
+    <lastmod>2017-07-04T13:43:39.000Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://johnnyshieh.me/friends/index.html</loc>
     
     <lastmod>2017-06-30T02:13:30.000Z</lastmod>
@@ -33,13 +40,6 @@
     <loc>http://johnnyshieh.me/posts/kotlin-property-lazy-init-not-null/</loc>
     
     <lastmod>2017-06-27T03:50:51.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://johnnyshieh.me/books/index.html</loc>
-    
-    <lastmod>2017-06-26T00:55:39.000Z</lastmod>
     
   </url>
   
