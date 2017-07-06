@@ -114,7 +114,7 @@
 <meta property="og:url" content="http://johnnyshieh.me/posts/java-singleton-pattern/index.html">
 <meta property="og:site_name" content="Johnny Shieh">
 <meta property="og:description" content="解析单例模式的几种实现方式">
-<meta property="og:updated_time" content="2017-06-21T03:36:05.000Z">
+<meta property="og:updated_time" content="2017-07-06T08:43:22.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Java 设计模式之单例模式">
 <meta name="twitter:description" content="解析单例模式的几种实现方式">
@@ -481,7 +481,7 @@
 <h2 id="双重检查锁定"><a href="#双重检查锁定" class="headerlink" title="双重检查锁定"></a>双重检查锁定</h2><p>双重检查锁定，是只在创建实例的代码块加锁，但是仅适用于 Java 5.0 以上。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Singleton</span> </span>&#123;</div><div class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">volatile</span> Singleton sInstance;</div><div class="line">    <span class="function"><span class="keyword">private</span> <span class="title">Singleton</span><span class="params">()</span> </span>&#123;&#125;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Singleton <span class="title">getInstance</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">if</span>(<span class="keyword">null</span> == sInstance) &#123;                 <span class="comment">//第一次检查</span></div><div class="line">            <span class="keyword">synchronized</span>(Singleton.class) &#123;</div><div class="line">                <span class="keyword">if</span>(<span class="keyword">null</span> == sInstance) &#123;         <span class="comment">//第二次检查</span></div><div class="line">                    sInstance = <span class="keyword">new</span> Singleton();</div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">return</span> sInstance;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>双重检查锁定中同步代码块，保证同一时间只有一个线程可以进入，而第二个线程进入的时候检查不为空后就不会再创建实例了。</p>
-<p>其中如果没有<code>volatile</code>修饰静态变量的话，代码可能会出现问题。由于 Java 编译器和 JIT 的优化的原因，指令的顺序可能被重排。这样就可能会出现这样的情况：线程 A。在没有构造完成后就赋值给 sInstance，这样线程 B 调用时判断不为空，这时使用未构造完成的实例会出现问题。<code>volatile</code>是轻量级的 synchronized，保证了<code>可见性</code>，即一个线程修改了变量后，另一个线程能读到修改后的变量。而且在 Java 5.0 之后还可以保证<code>顺序性&quot;</code>，它还可以禁止指令重排序优化，可以保证线程 B 读之前线程 A 已经构造完成实例。所以双重检查锁定只有在 Java 5 之后才有效，更多 volatile 关键字解析请看 <a href="http://johnnyshieh.me/2017/02/25/java-volatile/">线程安全之 volatile 关键字</a>。</p>
+<p>其中如果没有<code>volatile</code>修饰静态变量的话，代码可能会出现问题。由于 Java 编译器和 JIT 的优化的原因，指令的顺序可能被重排。这样就可能会出现这样的情况：线程 A。在没有构造完成后就赋值给 sInstance，这样线程 B 调用时判断不为空，这时使用未构造完成的实例会出现问题。<code>volatile</code>是轻量级的 synchronized，保证了<code>可见性</code>，即一个线程修改了变量后，另一个线程能读到修改后的变量。而且在 Java 5.0 之后还可以保证<code>顺序性&quot;</code>，它还可以禁止指令重排序优化，可以保证线程 B 读之前线程 A 已经构造完成实例。所以双重检查锁定只有在 Java 5 之后才有效，更多 volatile 关键字解析请看 <a href="http://johnnyshieh.me/posts/java-volatile/">线程安全之 volatile 关键字</a>。</p>
 <h2 id="静态内部类（推荐实现方式）"><a href="#静态内部类（推荐实现方式）" class="headerlink" title="静态内部类（推荐实现方式）"></a>静态内部类（推荐实现方式）</h2><p>延迟加载还可以通过静态内部类来实现，静态内部类只有在第一次使用的时候才会被装载。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Singleton</span> </span>&#123;</div><div class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">Holder</span> </span>&#123;</div><div class="line">        <span class="keyword">private</span> <span class="keyword">static</span> Singleton sInstance = <span class="keyword">new</span> Singleton();</div><div class="line">    &#125;</div><div class="line">    <span class="function"><span class="keyword">private</span> <span class="title">Singleton</span><span class="params">()</span> </span>&#123;&#125;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="title">getInstace</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> Holder.sInstance;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>类的静态初始化在类被装载的时候触发，而创建实例化的过程由JVM保证线程安全。所以这种方式是简单实用的，推荐大家使用。</p>
@@ -628,7 +628,7 @@
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">9</span>
+                <span class="site-state-item-count">10</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -639,7 +639,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">31</span>
+                <span class="site-state-item-count">33</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>

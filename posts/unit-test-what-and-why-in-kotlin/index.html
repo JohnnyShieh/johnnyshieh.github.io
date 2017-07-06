@@ -114,7 +114,7 @@
 <meta property="og:url" content="http://johnnyshieh.me/posts/unit-test-what-and-why-in-kotlin/index.html">
 <meta property="og:site_name" content="Johnny Shieh">
 <meta property="og:description" content="介绍了单元测试的基本概念，为什么需要写单元测试">
-<meta property="og:updated_time" content="2017-07-06T06:54:58.000Z">
+<meta property="og:updated_time" content="2017-07-06T07:01:13.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Kotlin 写 Android 单元测试（一），单元测试是什么以及为什么需要">
 <meta name="twitter:description" content="介绍了单元测试的基本概念，为什么需要写单元测试">
@@ -505,8 +505,8 @@
 <p>但是在 Github 上看国外大神的代码时，经常看到他们都会写测试代码，会怀疑单元测试真的有用？真正让我改变看法是不经意间看到<code>小创作</code>的一篇文章 <a href="http://chriszou.com/2016/04/16/android-unit-testing-about-why.html" target="_blank" rel="external">Android单元测试（二）：再来谈谈为什么</a>，于是开始尝试写单元测试代码，慢慢感受到单元测试的魅力，也开始由路转粉了。下面从自己的感受来说说，为什么需要写单元测试？</p>
 <h3 id="写正式代码时会不自觉地分离接口和实现，代码设计更加良好"><a href="#写正式代码时会不自觉地分离接口和实现，代码设计更加良好" class="headerlink" title="写正式代码时会不自觉地分离接口和实现，代码设计更加良好"></a>写正式代码时会不自觉地分离接口和实现，代码设计更加良好</h3><p>如果在项目一开始就写单元测试代码，甚至采用测试驱动开发，写出的代码质量会更高。在日常开发中，很多类会引用其他类，例如一个依赖于数据库的类，为了测试它，测试人员通常编写代码去操作数据库。这是不对的，因为单元测试不应超出待测试的类边界。前面有提到这时需要的是验证数据库的某个方法是否被调用，这时需要创建一个数据库连接的接口，然后实现这个接口的 mock 对象，去测试 mock 对象的某个方法是否被调用。这时已经不自觉地使用面向接口设计，分离数据库的接口和实现，扩展性更好。</p>
 <p>另外在某一个方法的实现前，先去写它对应的单元测试代码，需要注意该方法的输入和输出，不去想实现细节。也会考虑该方法的一些异常，各种情况的预期结果是什么。这样会对这个方法的本质有更清晰的认识，边界情况也考虑的更加全面，然后再去写正式代码时，我发现更加容易，质量也更高。</p>
-<h3 id="节约开发过程中-debug-时间"><a href="#节约开发过程中-debug-时间" class="headerlink" title="节约开发过程中 debug 时间"></a>节约开发过程中 debug 时间</h3><p>在没有写测试代码之前，开发过程中需要完成一个流程中所有模块，然后等 app 运行起来后看看有没 Crash 或者手动进入各个界面测试有没有异常，效率很低，而且往往一开始 Crash 的问题都是一些写代码时疏忽导致的低级错误。相信大多数开发者都跟我一样，或多或少总是会不小心犯一些低级错误。然后改一点后再运行一遍 app，这样反复进行。</p>
-<p>而开始写单元测试代码后，写完一部分代码就执行下测试代码，不用等其他模块也完成，可以先只定义好接口。这样在完成一个小模块的代码，可以通过单元测试及时发现错误，而且单元测试的方式比运行 app 测试的方式速度更快，也更容易发现问题。</p>
+<h3 id="节约开发过程中-debug-时间"><a href="#节约开发过程中-debug-时间" class="headerlink" title="节约开发过程中 debug 时间"></a>节约开发过程中 debug 时间</h3><p>在没有写测试代码之前，开发过程中需要完成一个流程中所有模块，然后等 app 运行起来后看看有没 Crash 或者手动进入各个界面测试有没有异常，效率很低，而且往往一开始 Crash 的问题都是一些写代码时疏忽导致的低级错误。相信大多数开发者都跟我一样，或多或少总是会不小心犯一些低级错误。然后改一点后再运行一遍 app，这样反复进行。这种痛相信很多开发者都经历过，测试效率真是太低了。</p>
+<p>而开始写单元测试代码后，写完一部分代码就执行下测试代码，不用等其他模块也完成，其他模块可以先只定义好接口。这样在完成一个小模块的代码，可以通过单元测试及时发现错误，而且单元测试的方式比运行 app 测试的方式速度更快，也更容易发现问题。</p>
 <h3 id="保证代码工作正确，加强自信心"><a href="#保证代码工作正确，加强自信心" class="headerlink" title="保证代码工作正确，加强自信心"></a>保证代码工作正确，加强自信心</h3><p>很多时候，写完代码后自己也多大信心，不知道运行起来是否正常，一些特殊情况是否会崩溃，特别修改已有代码，不知道会不会有其他影响。有单元测试后，就不用那么担心，单元测试通过可以一定程度保证代码工作正确，对后续发版本提供信心，不用那么担心啦。人有自信很重要，自信的人通常更帅^_^。</p>
 <h3 id="便于后期重构或变更时，确保其他模块工作正确"><a href="#便于后期重构或变更时，确保其他模块工作正确" class="headerlink" title="便于后期重构或变更时，确保其他模块工作正确"></a>便于后期重构或变更时，确保其他模块工作正确</h3><p>在项目开发完成后，后期维护或重构的时间通常比较长，这时单元测试的价值也更为凸显。在修改一个地方的代码时，可能会对其他的代码造成影响，但是我们开发者很难知道。经常会出现一种情况，修改一个 bug，会产生另外一个 bug。</p>
 <p>单元测试可以保证修改代码后其他模块依然工作正确，一旦变更导致错误发生，借助单元测试可以快速定位错误。这样在变更代码可以确保不影响其他模块，降低重构成本。</p>
@@ -657,7 +657,7 @@
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">9</span>
+                <span class="site-state-item-count">10</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -668,7 +668,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">31</span>
+                <span class="site-state-item-count">33</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>

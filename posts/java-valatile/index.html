@@ -114,7 +114,7 @@
 <meta property="og:url" content="http://johnnyshieh.me/posts/java-valatile/index.html">
 <meta property="og:site_name" content="Johnny Shieh">
 <meta property="og:description" content="线程安全之 volatile 关键字">
-<meta property="og:updated_time" content="2017-05-11T12:28:31.000Z">
+<meta property="og:updated_time" content="2017-07-06T08:39:45.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="线程安全之 volatile 关键字">
 <meta name="twitter:description" content="线程安全之 volatile 关键字">
@@ -466,8 +466,8 @@
 
       
         <p>在阅读本文前，建议先看下面两篇文章：</p>
-<p><a href="http://johnnyshieh.me/2017/01/05/java-memory-model/">Java 内存模型</a></p>
-<p><a href="http://johnnyshieh.me/2017/01/10/java-synchronized/">线程安全之 synchronized 关键字</a></p>
+<p><a href="http://johnnyshieh.me/posts/java-memory-model/">Java 内存模型</a></p>
+<p><a href="http://johnnyshieh.me/posts/java-synchronized/">线程安全之 synchronized 关键字</a></p>
 <p>Java 中 volatile 是轻量级的 synchronized，不会引起线程上下文的切换和调度。虽然 volatile 关键字只能修饰变量，但是要用好它并不容易，下面分析它的原理及注意事项。</p>
 <h2 id="volatile-关键字的两层语义"><a href="#volatile-关键字的两层语义" class="headerlink" title="volatile 关键字的两层语义"></a>volatile 关键字的两层语义</h2><ul>
 <li><p>保证变量对所有线程的可见性，即一个线程修改了某个值，新值对其他线程来说是立即可见的</p>
@@ -476,7 +476,7 @@
 </li>
 </ul>
 <a id="more"></a>
-<h2 id="volatile-的可见性保证"><a href="#volatile-的可见性保证" class="headerlink" title="volatile 的可见性保证"></a>volatile 的可见性保证</h2><p>要明白可见性语义，需要先了解 Java 内存模型的概念，具体可看 <a href="http://johnnyshieh.me/2017/01/05/java-memory-model/">Java 内存模型</a>，简单的说就是一个公共变量在每个线程都有线程私有的副本，所以正常情况下，一个线程修改了某个变量的值，只是修改其副本，其他线程不能得知该值的修改。</p>
+<h2 id="volatile-的可见性保证"><a href="#volatile-的可见性保证" class="headerlink" title="volatile 的可见性保证"></a>volatile 的可见性保证</h2><p>要明白可见性语义，需要先了解 Java 内存模型的概念，具体可看 <a href="http://johnnyshieh.me/posts/java-memory-model/">Java 内存模型</a>，简单的说就是一个公共变量在每个线程都有线程私有的副本，所以正常情况下，一个线程修改了某个变量的值，只是修改其副本，其他线程不能得知该值的修改。</p>
 <p>先看下面这段代码：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">boolean</span> count = <span class="number">0</span>;  <span class="comment">// 线程共享变量</span></div><div class="line"></div><div class="line"><span class="comment">// 线程1</span></div><div class="line">count = <span class="number">1</span>;</div><div class="line"></div><div class="line"><span class="comment">// 线程2</span></div><div class="line">System.out.println(count);</div></pre></td></tr></table></figure>
 <p>线程1 先执行<code>count = 1;</code>，然后线程2 中读取<code>count</code>的值时可能为 0 也可能为 1。因为线程2 无法知道线程1对<code>count</code>变量的修改，但是也不确定的是也不知道该修改什么时候同步到共享内存，不知道何时把共享内存的值更新到线程2 的工作内存中。</p>
@@ -660,7 +660,7 @@
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">9</span>
+                <span class="site-state-item-count">10</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -671,7 +671,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">31</span>
+                <span class="site-state-item-count">33</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>

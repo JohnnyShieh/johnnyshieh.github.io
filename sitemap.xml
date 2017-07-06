@@ -2,9 +2,79 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://johnnyshieh.me//404.html</loc>
+    
+    <lastmod>2017-07-06T08:47:24.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://johnnyshieh.me/posts/scrollview-detect-scroll-stop/</loc>
+    
+    <lastmod>2017-07-06T08:43:49.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://johnnyshieh.me/posts/java-singleton-pattern/</loc>
+    
+    <lastmod>2017-07-06T08:43:22.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://johnnyshieh.me/posts/annotation-basic/</loc>
+    
+    <lastmod>2017-07-06T08:42:37.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://johnnyshieh.me/posts/android-system-widget/</loc>
+    
+    <lastmod>2017-07-06T08:42:19.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://johnnyshieh.me/posts/android-memory-leak/</loc>
+    
+    <lastmod>2017-07-06T08:41:55.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://johnnyshieh.me/posts/android-develop-tips-and-tricks/</loc>
+    
+    <lastmod>2017-07-06T08:41:46.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://johnnyshieh.me/posts/android-arraymap-and-sparsearray/</loc>
+    
+    <lastmod>2017-07-06T08:41:19.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://johnnyshieh.me/posts/android-annotation/</loc>
+    
+    <lastmod>2017-07-06T08:41:08.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://johnnyshieh.me/posts/java-valatile/</loc>
+    
+    <lastmod>2017-07-06T08:39:45.000Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://johnnyshieh.me/posts/unit-test-what-and-why-in-kotlin/</loc>
     
-    <lastmod>2017-07-06T06:54:58.000Z</lastmod>
+    <lastmod>2017-07-06T07:01:13.000Z</lastmod>
     
   </url>
   
@@ -51,13 +121,6 @@
   </url>
   
   <url>
-    <loc>http://johnnyshieh.me/posts/java-singleton-pattern/</loc>
-    
-    <lastmod>2017-06-21T03:36:05.000Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>http://johnnyshieh.me/posts/dagger-subcomponent/</loc>
     
     <lastmod>2017-06-19T10:30:10.000Z</lastmod>
@@ -82,13 +145,6 @@
     <loc>http://johnnyshieh.me/posts/dagger-basic/</loc>
     
     <lastmod>2017-06-19T10:29:42.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://johnnyshieh.me//404.html</loc>
-    
-    <lastmod>2017-05-17T07:30:36.000Z</lastmod>
     
   </url>
   
@@ -128,13 +184,6 @@
   </url>
   
   <url>
-    <loc>http://johnnyshieh.me/posts/java-valatile/</loc>
-    
-    <lastmod>2017-05-11T12:28:31.000Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>http://johnnyshieh.me/posts/android-hardware-layer-animation/</loc>
     
     <lastmod>2017-05-11T12:23:11.000Z</lastmod>
@@ -170,44 +219,9 @@
   </url>
   
   <url>
-    <loc>http://johnnyshieh.me/posts/android-memory-leak/</loc>
-    
-    <lastmod>2017-05-11T11:57:23.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://johnnyshieh.me/posts/android-arraymap-and-sparsearray/</loc>
-    
-    <lastmod>2017-05-11T10:04:45.000Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>http://johnnyshieh.me/posts/explore-threadlocal/</loc>
     
     <lastmod>2017-05-11T10:00:16.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://johnnyshieh.me/posts/android-annotation/</loc>
-    
-    <lastmod>2017-05-11T09:24:04.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://johnnyshieh.me/posts/annotation-basic/</loc>
-    
-    <lastmod>2017-05-11T09:23:54.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://johnnyshieh.me/posts/android-develop-tips-and-tricks/</loc>
-    
-    <lastmod>2017-05-11T08:51:12.000Z</lastmod>
     
   </url>
   
@@ -261,13 +275,6 @@
   </url>
   
   <url>
-    <loc>http://johnnyshieh.me/posts/scrollview-detect-scroll-stop/</loc>
-    
-    <lastmod>2017-05-10T07:05:24.000Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>http://johnnyshieh.me/posts/python-remove-utf8-bom/</loc>
     
     <lastmod>2017-05-10T07:04:42.000Z</lastmod>
@@ -306,13 +313,6 @@
     <loc>http://johnnyshieh.me/posts/four-way-to-query-from-contentresolver/</loc>
     
     <lastmod>2017-05-10T06:59:57.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://johnnyshieh.me/posts/android-system-widget/</loc>
-    
-    <lastmod>2017-05-10T06:58:38.000Z</lastmod>
     
   </url>
   

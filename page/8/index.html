@@ -457,7 +457,7 @@
         
           <p>前几天工作上遇到一个需要监听 Scrollview 滚动停止的问题，然后开始谷歌解决方案，但是都不是很满意，最后在和同事的讨论中获得灵感得出了下面的解决方案，经实测有效，供大家参考一下。</p>
 <h2 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h2><p>思路是这样的：首先要确定监听的时机，因为 ScrollView 在滚动的过程中和绘制的时候需要 computeScroll，所以在 computeScroll 的时候监听; 然后用反射检测滚动是否停止； 最后由于工作的需求是在 Touch 的情况下都不算停止所以还要监听 touch event。</p>
-<p>其中有用到反射，对反射不是很了解的可以看我的这篇博客 <a href="http://johnnyshieh.me/2015/01/30/java-reflection/">Java 反射机制</a></p>
+<p>其中有用到反射，对反射不是很了解的可以看我的这篇博客 <a href="http://johnnyshieh.me/posts/java-reflection/">Java 反射机制</a></p>
 <h2 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h2><p>关键代码如下：</p>
           <!--noindex-->
           <div class="post-button text-center">
@@ -1189,7 +1189,7 @@
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">9</span>
+                <span class="site-state-item-count">10</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -1200,7 +1200,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">31</span>
+                <span class="site-state-item-count">33</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
