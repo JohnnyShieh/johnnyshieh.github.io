@@ -355,6 +355,169 @@
   
 
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://johnnyshieh.me/posts/android-add-foreground-selector/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Johnny Shieh">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Johnny Shieh">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/posts/android-add-foreground-selector/" itemprop="url">[译] Android 为 View、ViewGroup 添加前景色</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2014-11-06T00:00:00+08:00">
+                2014-11-06
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/android/" itemprop="url" rel="index">
+                    <span itemprop="name">Android</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/posts/android-add-foreground-selector/" class="leancloud_visitors" data-flag-title="[译] Android 为 View、ViewGroup 添加前景色">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>很多人都知道 Android 的卡片式点击效果，这个 selector 是画在前景上的而不是背景上的，虽然我们一般都是用背景色。这个点击效果实现方式也并不难，下面就给出几种情况下的方法。</p>
+<p>下图是 Google Play 应用中按压效果的一个截图：</p>
+<p><img src="http://oph5rhcqp.bkt.clouddn.com/screenshot_googleplay.png" alt=""></p>
+<h2 id="若为-FrameLayout"><a href="#若为-FrameLayout" class="headerlink" title="若为 FrameLayout"></a>若为 FrameLayout</h2><p>添加前景色会非常简单，因为 FrameLayout 本身就有这样一个方法叫 setForeground。实际上，只需要通过在 XML 中<code>android:foreground</code>或代码中动态传一个 selector 作为参数，然后调用 setForeground 就可以了。</p>
+<h2 id="若不为-FrameLayout"><a href="#若不为-FrameLayout" class="headerlink" title="若不为 FrameLayout"></a>若不为 FrameLayout</h2><p>别担心，这也不会很难。我们只要设置给 selector 设置合适的状态（pressed, focused …），然后设置边界并且在视图画好自己后再画它。这样，selector 就会覆盖在视图之上。</p>
+<ul>
+<li>Changing the State</li>
+</ul>
+<p>在 View 这个类，每次视图改变自己的 drawable state 时都会调用的方法：drawableStateChanged</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Override</span></div><div class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">drawableStateChanged</span> <span class="params">()</span> </span>&#123;</div><div class="line">    <span class="keyword">super</span>.drawableStateChanged();</div><div class="line"></div><div class="line">    mForegroundSelector.setState(getDrawableState());</div><div class="line"></div><div class="line">    <span class="comment">//redraw</span></div><div class="line">    invalidate();</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<ul>
+<li>Updating the Drawable Bounds</li>
+</ul>
+<p>每次视图改变大小时都会调用的方法：onSizeChanged</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Override</span></div><div class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onSizeChanged</span> <span class="params">(<span class="keyword">int</span> width, <span class="keyword">int</span> height, <span class="keyword">int</span> oldwidth, <span class="keyword">int</span> oldheight)</span> </span>&#123;</div><div class="line">    <span class="keyword">super</span>.onSizeChanged(width, height, oldwidth, oldheight);</div><div class="line"></div><div class="line">    mForegroundSelector.setBounds(<span class="number">0</span>, <span class="number">0</span>, width, height);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/posts/android-add-foreground-selector/" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://johnnyshieh.me/posts/android-editext-contextmenu/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -979,164 +1142,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://johnnyshieh.me/posts/android-system-widget/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Johnny Shieh">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Johnny Shieh">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/posts/android-system-widget/" itemprop="url">获得 Android 系统 Widget 控件的方法</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2014-07-23T00:00:00+08:00">
-                2014-07-23
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/android/" itemprop="url" rel="index">
-                    <span itemprop="name">Android</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/posts/android-system-widget/" class="leancloud_visitors" data-flag-title="获得 Android 系统 Widget 控件的方法">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数 </span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>最近在工作中需要改变 Android 系统的一些控件的属性，一开始不知从何下手，经过一段时间的 google 得到了答案，如果我们知道 Widget 的 ID，那么就可以得到它了。</p>
-<h2 id="获得-System-Widget-ID"><a href="#获得-System-Widget-ID" class="headerlink" title="获得 System Widget ID"></a>获得 System Widget ID</h2><p>应用程序自身创建的 View 的 ID 的结构是：R.id.XXX</p>
-<p>而由系统自身创建的 View 的 ID 的结构是：com.android.internal.R.id.XXX</p>
-<p>可以通过 Android 的 Hierarchyviewer Tools 来获得 System Widget 的 ID</p>
-<p>例如，ActionBar相关ID如下：</p>
-<pre><code>action_bar_container -- ActionBar 的 parent view 的 ID
-action_bar_title     -- ActionBar 的 title 的 ID (它是一个 TextView)
-action_bar_subtitle  -- ActionBar 的 subtitle 的 ID
-</code></pre><h2 id="通过-findViewById-获得-View"><a href="#通过-findViewById-获得-View" class="headerlink" title="通过 findViewById 获得 View"></a>通过 findViewById 获得 View</h2><p>首先，需要获得当前页的 root View – <code>getActivity().getWindow().getDecorView()</code></p>
-<p>然后，findViewById , ( that is it ).</p>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/posts/android-system-widget/" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -1184,7 +1189,7 @@ action_bar_subtitle  -- ActionBar 的 subtitle 的 ID
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">47</span>
+                <span class="site-state-item-count">48</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -1195,7 +1200,7 @@ action_bar_subtitle  -- ActionBar 的 subtitle 的 ID
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">8</span>
+                <span class="site-state-item-count">9</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -1206,7 +1211,7 @@ action_bar_subtitle  -- ActionBar 的 subtitle 的 ID
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">30</span>
+                <span class="site-state-item-count">31</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -1264,12 +1269,15 @@ action_bar_subtitle  -- ActionBar 的 subtitle 的 ID
         
         
 
-        
-
+        <!--
+-->
 
       </section>
 
       
+
+      
+
 
       
 

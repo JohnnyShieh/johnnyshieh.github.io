@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://johnnyshieh.me/posts/unit-test-what-and-why-in-kotlin/</loc>
+    
+    <lastmod>2017-07-06T06:54:58.000Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://johnnyshieh.me/books/index.html</loc>
     
     <lastmod>2017-07-04T13:43:39.000Z</lastmod>
