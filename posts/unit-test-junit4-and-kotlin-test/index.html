@@ -1,0 +1,1093 @@
+<!doctype html>
+
+
+
+
+<html class="theme-next pisces" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta http-equiv="Content-Language" content="zh-cn">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+  <meta name="google-site-verification" content="r1Es2KSXuS6zYdab4rZeEA6X-pEwRwyT4x89S7a4EHE">
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+  <link href="http://oph5rhcqp.bkt.clouddn.com/lib/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="http://oph5rhcqp.bkt.clouddn.com/fonts/font.css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+  
+
+<link href="http://oph5rhcqp.bkt.clouddn.com/lib/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="http://oph5rhcqp.bkt.clouddn.com/css/main.css?v=5.1.1" rel="stylesheet" type="text/css">
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1">
+
+
+
+  
+    <link rel="apple-touch-icon-precomposed" sizes="57x57" href="/apple-touch-icon-57x57.png">
+  
+    <link rel="apple-touch-icon-precomposed" sizes="120x120" href="/apple-touch-icon-120x120.png">
+  
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="/apple-touch-icon-152x152.png">
+  
+
+
+
+
+
+
+<meta name="description" content="介绍 JUnit 4 的一些基本用法以及 kotlin.test 库的简化写法">
+<meta name="keywords" content="单元测试, kotlin, unit test, android, JUnit, kotlin.test, Johnny, Shieh, Johnny Shieh, johnny shieh blog, ">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Kotlin 写 Android 单元测试（二），JUnit 4 测试框架和 kotlin.test 库的使用">
+<meta property="og:url" content="http://johnnyshieh.me/posts/unit-test-junit4-and-kotlin-test/index.html">
+<meta property="og:site_name" content="Johnny Shieh">
+<meta property="og:description" content="介绍 JUnit 4 的一些基本用法以及 kotlin.test 库的简化写法">
+<meta property="og:image" content="http://oph5rhcqp.bkt.clouddn.com/unit_test_run.png">
+<meta property="og:image" content="http://oph5rhcqp.bkt.clouddn.com/unit_test_result.png">
+<meta property="og:updated_time" content="2017-07-12T11:55:50.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Kotlin 写 Android 单元测试（二），JUnit 4 测试框架和 kotlin.test 库的使用">
+<meta name="twitter:description" content="介绍 JUnit 4 的一些基本用法以及 kotlin.test 库的简化写法">
+<meta name="twitter:image" content="http://oph5rhcqp.bkt.clouddn.com/unit_test_run.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"right","display":"always","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: false,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: 'MXXOTCZPXC',
+      apiKey: 'b20faa24d6ee8a15262068ef5673fa82',
+      indexName: 'blog',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"搜索文章","hits_empty":"找不到与您搜索的 ${query} 相符的文章，请尝试其他关键字","hits_stats":"找到 ${hits} 条搜索结果，用时 ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://johnnyshieh.me/posts/unit-test-junit4-and-kotlin-test/">
+
+
+
+
+
+  <title>Kotlin 写 Android 单元测试（二），JUnit 4 测试框架和 kotlin.test 库的使用 | Johnny Shieh</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?43cea51223ad3b7bc740196aab48d664";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Johnny Shieh</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">人如果没有梦想，跟咸鱼有什么分别</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-books">
+          <a href="/books" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br>
+            
+            读书
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-friends">
+          <a href="/friends" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-users"></i> <br>
+            
+            小伙伴
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  
+  <div class="algolia-popup popup search-popup">
+    <div class="algolia-search">
+      <div class="algolia-search-input-icon">
+        <i class="fa fa-search"></i>
+      </div>
+      <div class="algolia-search-input" id="algolia-search-input"></div>
+    </div>
+
+    <div class="algolia-results">
+      <div id="algolia-stats"></div>
+      <div id="algolia-hits"></div>
+      <div id="algolia-pagination" class="algolia-pagination"></div>
+    </div>
+
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+  </div>
+
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://johnnyshieh.me/posts/unit-test-junit4-and-kotlin-test/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Johnny Shieh">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Johnny Shieh">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Kotlin 写 Android 单元测试（二），JUnit 4 测试框架和 kotlin.test 库的使用</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-12T17:19:23+08:00">
+                2017-07-12
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/unit-test/" itemprop="url" rel="index">
+                    <span itemprop="name">单元测试</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a class="cloud-tie-join-count" href="/posts/unit-test-junit4-and-kotlin-test/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count join-count" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/posts/unit-test-junit4-and-kotlin-test/" class="leancloud_visitors" data-flag-title="Kotlin 写 Android 单元测试（二），JUnit 4 测试框架和 kotlin.test 库的使用">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>上篇文章介绍了单元测试的概念和为什么要使用单元测试，提到当方法的输出结果是<strong>直接的返回结果</strong>时，可以用 <a href="http://junit.org/junit4/" target="_blank" rel="external">Junit 4</a> 测试框架来测试，这也是 Java 中最基础的测试框架。下面来介绍 JUnit 4 测试框架中的基本概念，以及 Kotlin 中提供的 kotlin.test 库的使用。</p>
+<h2 id="JUnit-4-框架"><a href="#JUnit-4-框架" class="headerlink" title="JUnit 4 框架"></a>JUnit 4 框架</h2><h3 id="gradle-引入"><a href="#gradle-引入" class="headerlink" title="gradle 引入"></a>gradle 引入</h3><p>目前 JUnit 4 的最稳定的版本为 4.12，JUnit 5 还没有正式发布。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">dependencies &#123;</div><div class="line">  <span class="built_in">test</span>Compile <span class="string">'junit:junit:4.12'</span></div><div class="line">&#125;</div><div class="line"></div><div class="line">android &#123;</div><div class="line">    <span class="built_in">source</span>Sets &#123;</div><div class="line">        test.java.srcDirs += <span class="string">'src/test/kotlin'</span>  // 如果不是默认（src/<span class="built_in">test</span>/java）的话，加上测试代码的路径</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>一般运行 Android 项目的测试命令为：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">./gradle <span class="built_in">test</span>DebugUnitTest</div></pre></td></tr></table></figure>
+<h3 id="验证方法结果"><a href="#验证方法结果" class="headerlink" title="验证方法结果"></a>验证方法结果</h3><p>JUnit 4 可以很方便地测试方法直接的返回结果，先看下面这段代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Calculator</span> </span>&#123;</div><div class="line">    <span class="function">fun <span class="title">divide</span><span class="params">(a: Int, b: Int)</span>: Double </span>&#123;</div><div class="line">        <span class="keyword">if</span> (b == <span class="number">0</span>) <span class="keyword">throw</span> IllegalArgumentException(<span class="string">"division by zero!"</span>)</div><div class="line">        <span class="keyword">return</span> (a.toDouble() / b)</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>其对应的单元测试代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">CalculatorTest</span> </span>&#123;</div><div class="line">    <span class="meta">@Test</span></div><div class="line">    <span class="function">fun <span class="title">testDivide</span><span class="params">()</span> </span>&#123;</div><div class="line">        val calculator = Calculator()</div><div class="line">        val result = calculator.divide(<span class="number">2</span>, <span class="number">1</span>)</div><div class="line">        Assert.assertEquals(<span class="number">2.0</span>, result, <span class="number">0.0001</span>)</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>上面单元测试的代码中，首先用<code>@Test</code>注解标记<code>testDivide</code>方法，表明该方法是测试方法，测试框架在运行单元测试时会调用该测试方法，测试方法不能有参数。接下来第 6 行代码<code>Assert.assertEquals(2.0, result, 0.0001)</code>，判断返回结果是否等于 2.0，计算机表示浮点型数据都有一定的偏差，所以哪怕理论上他们是相等的，但是用计算机表示出来则可能不是，所以这里运行传入一个偏差值 0.0001，只要两者在这个偏差值范围内则测试通过。</p>
+<p>JUnit 4 中验证返回结果的方法还有：</p>
+<p><code>assertEquals(expected, actual)</code>，验证 expected 的值是否和 actual 一样，如果传入是对象的话，那么会使用 equals 方法判断。</p>
+<p><code>assertArrayEquals(expected, actual)</code>，验证 actual 数组是否和 expected 一样。</p>
+<p><code>assertFalse(actual)</code>，验证 actual 的值为 false。</p>
+<p><code>assertNotNull(actual)</code>，验证 actual 的值不是 null。</p>
+<p><code>assertNull(actual)</code>，验证 actual 的值是 null。</p>
+<p><code>assertTrue(actual)</code>，验证 actual 的值是 true。</p>
+<p><code>assertThat(actual, matcher)</code>，验证 actual 是否符合 matcher 中的条件。</p>
+<p>注意，上面的 assertXX 方法都有一个重载方法，额外加一个 String 类型的参数在前面，表示测试不通过时，将这个字符串作为失败显示的信息。</p>
+<p>比如：Assert.assertEquals(“failure - divide method has wrong result”, 2.0, result, 0.0001)，这样当 result 不为 2.0 时，测试失败后会显示 <code>failure - divide method has wrong result</code>，增加测试代码的可读性，方便定位测试失败的原因。</p>
+<p>更多关于验证结果的用法，可以看 JUnit 4 的官方文档 <a href="https://github.com/junit-team/junit4/wiki/Assertions-CN" target="_blank" rel="external">Assertions</a>。</p>
+<p>前面提到都是验证方法的直接返回结果，但是假如方法在某种情况下会抛出异常，应该怎么测试呢？</p>
+<p><strong>验证 Exception</strong></p>
+<p>例如 Calculator 的 divide 方法中第二个参数为 0，会抛出 IllegalArgumentException 异常，所以更健壮的测试代码应该如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">CalculatorTest</span> </span>&#123;</div><div class="line">    <span class="meta">@Test</span>(expected = IllegalArgumentException::<span class="class"><span class="keyword">class</span>)</span></div><div class="line">    <span class="title">fun</span> <span class="title">testDivide</span>() &#123;</div><div class="line">        val calculator = Calculator()</div><div class="line">        val result = calculator.divide(<span class="number">2</span>, <span class="number">1</span>)</div><div class="line">        Assert.assertEquals(<span class="number">2.0</span>, result, <span class="number">0.0001</span>)</div><div class="line"></div><div class="line">        <span class="comment">// test divide zero</span></div><div class="line">        calculator.divide(<span class="number">2</span>, <span class="number">0</span>)</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>只需要在<code>@Test</code>注解加上<code>expected</code>参数，表明期望出现的异常，如上面代码中，如果去掉<code>calculator.divide(2, 0)</code>这行，就会因为没有产生期望的 IllegalArgumentException 而导致测试不通过。</p>
+<p>不过这种验证异常的方法还是有所限制的，不能验证异常中的 message，也无法验证出现异常中其他属性的值，不过 JUnit 4 提供了另外一种方式可以验证异常，可以解决这些问题，后面的文章会提到。</p>
+<h3 id="初始化和收尾工作"><a href="#初始化和收尾工作" class="headerlink" title="初始化和收尾工作"></a>初始化和收尾工作</h3><p>前面讲到，首先需要<code>@Test</code>注解标记测试方法，让 JUnit 4 框架知道这是一个测试方法，然后介绍 JUnit 4 中验证方法直接返回结果的一些方法。但是在上一篇介绍单元测试的文章中，单元测试分为 4 步：初始化 -&gt; 调用要测试方法 -&gt; 验证结果 -&gt; 收尾工作，其中第四步收尾工作可能没有。</p>
+<p>在编写单元测试的代码过程中，经常会发现几个测试方法都会有相同的创建实例的初始化工作，假设 Calculator 还有一个 add 方法，那么对应的测试代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">CalculatorTest</span> </span>&#123;</div><div class="line">    <span class="meta">@Test</span>(expected = IllegalArgumentException::<span class="class"><span class="keyword">class</span>)</span></div><div class="line">    <span class="title">fun</span> <span class="title">testDivide</span>() &#123;</div><div class="line">        val calculator = Calculator()</div><div class="line">        val result = calculator.divide(<span class="number">2</span>, <span class="number">1</span>)</div><div class="line">        Assert.assertEquals(<span class="number">2.0</span>, result, <span class="number">0.0001</span>)</div><div class="line"></div><div class="line">        calculator.divide(<span class="number">2</span>, <span class="number">0</span>)</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Test</span></div><div class="line">    <span class="function">fun <span class="title">testAdd</span><span class="params">()</span> </span>&#123;</div><div class="line">        val calculator = Calculator()</div><div class="line">        val result = calculator.add(<span class="number">1</span>, <span class="number">5</span>)</div><div class="line">        Assert.assertEquals(<span class="number">6</span>, result)</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>现在<code>testDivide</code>和<code>testAdd</code>都有同样的初始化工作，在我们写测试代码时也经常遇到这种情况，有没有什么方法把相同的初始化工作抽象出来呢，避免重复的代码，JUnit 4 提供了 <code>@Before</code>和<code>@After</code>注解可以很好地定义初始化和收尾工作：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">CalculatorTest</span> </span>&#123;</div><div class="line"></div><div class="line">    lateinit var calculator: Calculator</div><div class="line"></div><div class="line">    <span class="meta">@Before</span></div><div class="line">    <span class="function">fun <span class="title">setup</span><span class="params">()</span> </span>&#123;</div><div class="line">        calculator = Calculator()</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@After</span></div><div class="line">    <span class="function">fun <span class="title">cleanup</span><span class="params">()</span> </span>&#123;</div><div class="line">        ...</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Test</span>(expected = IllegalArgumentException::<span class="class"><span class="keyword">class</span>)</span></div><div class="line">    <span class="title">fun</span> <span class="title">testDivide</span>() &#123;</div><div class="line">        val result = calculator.divide(<span class="number">2</span>, <span class="number">1</span>)</div><div class="line">        Assert.assertEquals(<span class="number">2.0</span>, result, <span class="number">0.0001</span>)</div><div class="line">        calculator.divide(<span class="number">2</span>, <span class="number">0</span>)</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Test</span></div><div class="line">    <span class="function">fun <span class="title">testAdd</span><span class="params">()</span> </span>&#123;</div><div class="line">        val result = calculator.add(<span class="number">1</span>, <span class="number">5</span>)</div><div class="line">        Assert.assertEquals(<span class="number">6</span>, result)</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>上面的测试代码中，<code>testDivide</code>和<code>testAdd</code>测试方法运行之前会先运行<code>setup</code>方法，测试方法执行后会运行<code>cleanup</code>方法。其实上面例子中<code>setup</code>方法不需要每个测试方法之前都运行一次，只需要执行一遍就可以。JUnit 4 针对这种情况提供<code>@BeforeClass</code>和<code>@AfterClass</code>注解，<code>@BeforeClass</code>标记的方法会在该类的测试方法运行前运行一遍，只会执行一次，然后在所有测试方法运行完后会运行一次<code>@AfterClass</code>标记的方法。</p>
+<p>不过<code>@BeforeClass</code>和<code>@AfterClass</code>注解，标记的方法应该为静态方法。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">CalculatorTest</span> </span>&#123;</div><div class="line"></div><div class="line">    companion object &#123;</div><div class="line">        lateinit var calculator: Calculator</div><div class="line"></div><div class="line">        <span class="meta">@BeforeClass</span></div><div class="line">        <span class="meta">@JvmStatic</span></div><div class="line">        <span class="function">fun <span class="title">setup</span><span class="params">()</span> </span>&#123;</div><div class="line">            calculator = Calculator()</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        <span class="meta">@AfterClass</span></div><div class="line">        <span class="meta">@JvmStatic</span></div><div class="line">        <span class="function">fun <span class="title">cleanup</span><span class="params">()</span> </span>&#123;</div><div class="line">            ...</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    ...</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="JUnit-的其他一些方法"><a href="#JUnit-的其他一些方法" class="headerlink" title="JUnit 的其他一些方法"></a>JUnit 的其他一些方法</h3><p><strong>忽略某些测试方法</strong></p>
+<p>有时因为一些原因，例如正式代码还没有实现，想让 JUnit 暂时不允许某些测试方法，这时就可以使用<code>@Ignore</code>注解，例如：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">CalculatorTest</span> </span>&#123;</div><div class="line"></div><div class="line">    lateinit var calculator: Calculator</div><div class="line"></div><div class="line">    <span class="meta">@Test</span></div><div class="line">    <span class="meta">@Ignore</span>(<span class="string">"not implemented yet"</span>)</div><div class="line">    <span class="function">fun <span class="title">testSubtract</span><span class="params">()</span> </span>&#123;&#125;</div><div class="line"></div><div class="line">    ...</div></pre></td></tr></table></figure>
+<p><strong>fail 方法</strong></p>
+<p>有时候可能需要故意让测试方法运行失败，例如在 catch 到某些异常时，这时可以使用<code>fail</code>方法：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">Assert.fail()</div><div class="line"></div><div class="line">Assert.fail(message)</div></pre></td></tr></table></figure>
+<h2 id="kotlin-test-库"><a href="#kotlin-test-库" class="headerlink" title="kotlin.test 库"></a>kotlin.test 库</h2><p>前面介绍的都是 JUnit 4 测试框架的一些基本用法，但是 Kotlin 语言还提供了一个 kotlin.test 库，它定义了一些全局函数，可以在编写测试代码不用导入<code>org.junit.Assert</code>，还可以使用高阶函数作为验证语句的参数，简单地说就是简化测试代码的使用并加入了 kotlin 语言的特性。</p>
+<p>kotlin.test 库提供一些全局函数，如 assertEquals、expect，更多详细内容请看 <a href="http://kotlinlang.org/api/latest/kotlin.test/kotlin.test/index.html" target="_blank" rel="external">Package kotlin.test</a>。</p>
+<h3 id="gradle-引入-1"><a href="#gradle-引入-1" class="headerlink" title="gradle 引入"></a>gradle 引入</h3><p>使用了 kotlin.test 库，build.gradle 需要稍微修改下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">dependencies &#123;</div><div class="line">  <span class="built_in">test</span>Compile <span class="string">'junit:junit:4.12'</span></div><div class="line">  <span class="built_in">test</span>Compile <span class="string">"org.jetbrains.kotlin:kotlin-test-junit:<span class="variable">$kotlin_version</span>"</span></div><div class="line">&#125;</div><div class="line"></div><div class="line">android &#123;</div><div class="line">    <span class="built_in">source</span>Sets &#123;</div><div class="line">        test.java.srcDirs += <span class="string">'src/test/kotlin'</span>  // 如果不是默认（src/<span class="built_in">test</span>/java）的话，加上测试代码的路径</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="具体使用"><a href="#具体使用" class="headerlink" title="具体使用"></a>具体使用</h3><p>下面我只是给出上面的测试代码使用 kotlin.test 库后的修改，具体 kotlin.test 库的使用请看官方文档：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> org.junit.AfterClass</div><div class="line"><span class="keyword">import</span> org.junit.BeforeClass</div><div class="line"><span class="keyword">import</span> org.junit.Test</div><div class="line"><span class="keyword">import</span> kotlin.test.assertEquals</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">CalculatorTest</span> </span>&#123;</div><div class="line"></div><div class="line">    companion object &#123;</div><div class="line">        lateinit var calculator: Calculator</div><div class="line"></div><div class="line">        <span class="meta">@BeforeClass</span></div><div class="line">        <span class="meta">@JvmStatic</span></div><div class="line">        <span class="function">fun <span class="title">setup</span><span class="params">()</span> </span>&#123;</div><div class="line">            calculator = Calculator()</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Test</span></div><div class="line">    <span class="function">fun <span class="title">testAdd</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="comment">// 使用 assertEquals</span></div><div class="line">        val result = calculator.add(<span class="number">1</span>, <span class="number">5</span>)</div><div class="line">        assertEquals(<span class="number">6</span>, result)</div><div class="line"></div><div class="line">        <span class="comment">// 使用 expect</span></div><div class="line">        expect(<span class="number">6</span>, &#123; calculator.add(<span class="number">1</span>, <span class="number">5</span>) &#125;)</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="运行单元测试"><a href="#运行单元测试" class="headerlink" title="运行单元测试"></a>运行单元测试</h3><p>一般写好测试代码后，AndroidStudio 中在测试方法和测试类的左侧就会出现一个图标，点击会出现三个选项，如下图所示：</p>
+<p><img src="http://oph5rhcqp.bkt.clouddn.com/unit_test_run.png" alt=""></p>
+<p>运行后就会出现下面的视图：</p>
+<p><img src="http://oph5rhcqp.bkt.clouddn.com/unit_test_result.png" alt=""></p>
+<p>还可以通过命令行的方式运行所有单元测试代码：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">gradlew <span class="built_in">test</span>DebugUnitTest  // debug 版本</div><div class="line">gradlew <span class="built_in">test</span>ReleaseUnitTest    // release 版本</div></pre></td></tr></table></figure>
+<p>运行后会生成一个测试报告，在 project_root/app/build/reports/tests/testDebugUnitTest/index.html 路径下可以看到，测试失败时，可以在测试报告中查看详细信息。</p>
+<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>上面介绍了 JUnit 4 测试框架的基本用法以及 kotlin.test 库的使用，但是要在 Android 项目使用 Kotlin 语言写测试代码还有其他问题。首先，JUnit 框架只能验证有直接返回结果的方法，当返回结果是其他方法的调用时怎么验证呢，其次，这些测试代码都没有设计到 Android 的代码，如何测试跟 Android 有关的代码呢，又如何测试 app 的 UI 界面呢，这些问题会在后续的文章的一一解决。下一篇文章介绍如何使用 Mockito 框架验证没有直接返回结果时的测试代码，以及在 Kotlin 中 Mockito 框架出现的问题及解决方案。</p>
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/kotlin/" rel="tag"># kotlin</a>
+          
+            <a href="/tags/unit-test/" rel="tag"># 单元测试</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/posts/unit-test-what-and-why-in-kotlin/" rel="next" title="Kotlin 写 Android 单元测试（一），单元测试是什么以及为什么需要">
+                <i class="fa fa-chevron-left"></i> Kotlin 写 Android 单元测试（一），单元测试是什么以及为什么需要
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="cloud-tie-wrapper" class="cloud-tie-wrapper"></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image" src="/uploads/avatar.png" alt="Johnny Shieh">
+          <p class="site-author-name" itemprop="name">Johnny Shieh</p>
+           
+              <p class="site-description motion-element" itemprop="description">我本微末，心向天空</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">49</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">10</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">33</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/JohnnyShieh" rel="external nofollow" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/johnnyshieh17" rel="external nofollow" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  Weibo
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="mailto:JohnnyShieh17@gmail.com" rel="external nofollow" target="_blank" title="Gmail">
+                  
+                    <i class="fa fa-fw fa-envelope"></i>
+                  
+                  Gmail
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.jianshu.com/u/763027594c0b" rel="external nofollow" target="_blank" title="简书">
+                  
+                    <i class="fa fa-fw fa-book"></i>
+                  
+                  简书
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        <!--
+-->
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#JUnit-4-框架"><span class="nav-number">1.</span> <span class="nav-text">JUnit 4 框架</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#gradle-引入"><span class="nav-number">1.1.</span> <span class="nav-text">gradle 引入</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#验证方法结果"><span class="nav-number">1.2.</span> <span class="nav-text">验证方法结果</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#初始化和收尾工作"><span class="nav-number">1.3.</span> <span class="nav-text">初始化和收尾工作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#JUnit-的其他一些方法"><span class="nav-number">1.4.</span> <span class="nav-text">JUnit 的其他一些方法</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#kotlin-test-库"><span class="nav-number">2.</span> <span class="nav-text">kotlin.test 库</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#gradle-引入-1"><span class="nav-number">2.1.</span> <span class="nav-text">gradle 引入</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#具体使用"><span class="nav-number">2.2.</span> <span class="nav-text">具体使用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#运行单元测试"><span class="nav-number">2.3.</span> <span class="nav-text">运行单元测试</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#小结"><span class="nav-number">3.</span> <span class="nav-text">小结</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy;  2015 - 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Johnny Shieh</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" rel="external nofollow" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" rel="external nofollow" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="http://oph5rhcqp.bkt.clouddn.com/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.1"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+    
+    <script>
+      var cloudTieConfig = {
+        url: document.location.href, 
+        sourceId: "",
+        productKey: "e11372e4458e492087d70c31cf1e0d8c",
+        target: "cloud-tie-wrapper"
+      };
+    </script>
+    <script src="https://img1.ws.126.net/f2e/tie/yun/sdk/loader.js"></script>
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/algolia-instant-search/instantsearch.min.css">
+
+  
+  
+  <script src="/lib/algolia-instant-search/instantsearch.min.js"></script>
+  
+
+  <script src="/js/src/algolia-search.js?v=5.1.1"></script>
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("n55tIxEzsDxW0BEFhehOkP2K-gzGzoHsz", "TwYjARitxhv7iOhbg7k2a9xB");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

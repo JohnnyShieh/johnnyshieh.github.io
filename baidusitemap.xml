@@ -3,6 +3,50 @@
 
 
     
+  <url>
+    <loc>http://johnnyshieh.me/posts/unit-test-junit4-and-kotlin-test/</loc>
+    <lastmod>2017-07-12T11:55:50.000Z</lastmod>
+    <data>
+        <display>
+        <title>Kotlin 写 Android 单元测试（二），JUnit 4 测试框架和 kotlin.test 库的使用</title>
+        <pubTime>2017-07-12T09:19:23.000Z</pubTime>
+        
+        <tag>kotlin</tag>
+         
+        <tag>单元测试</tag>
+         
+         
+           
+             
+              <breadCrumb title="单元测试" url="http://johnnyshieh.me/categories/unit-test/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://johnnyshieh.me/posts/unit-test-what-and-why-in-kotlin/</loc>
+    <lastmod>2017-07-08T12:16:43.000Z</lastmod>
+    <data>
+        <display>
+        <title>Kotlin 写 Android 单元测试（一），单元测试是什么以及为什么需要</title>
+        <pubTime>2017-07-05T08:31:29.000Z</pubTime>
+        
+        <tag>kotlin</tag>
+         
+        <tag>单元测试</tag>
+         
+         
+           
+             
+              <breadCrumb title="单元测试" url="http://johnnyshieh.me/categories/unit-test/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
     
   <url>
     <loc>http://johnnyshieh.me/posts/scrollview-detect-scroll-stop/</loc>
@@ -204,28 +248,6 @@
     </url>
 
     
-  <url>
-    <loc>http://johnnyshieh.me/posts/unit-test-what-and-why-in-kotlin/</loc>
-    <lastmod>2017-07-06T07:01:13.000Z</lastmod>
-    <data>
-        <display>
-        <title>Kotlin 写 Android 单元测试（一），单元测试是什么以及为什么需要</title>
-        <pubTime>2017-07-05T08:31:29.000Z</pubTime>
-        
-        <tag>kotlin</tag>
-         
-        <tag>单元测试</tag>
-         
-         
-           
-             
-              <breadCrumb title="单元测试" url="http://johnnyshieh.me/categories/unit-test/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
     
     
     
@@ -261,9 +283,9 @@
         
         <tag>android</tag>
          
-        <tag>dagger</tag>
-         
         <tag>java</tag>
+         
+        <tag>dagger</tag>
          
         <tag>kotlin</tag>
          
@@ -309,9 +331,9 @@
         
         <tag>android</tag>
          
-        <tag>dagger</tag>
-         
         <tag>java</tag>
+         
+        <tag>dagger</tag>
          
          
            
@@ -333,9 +355,9 @@
         
         <tag>android</tag>
          
-        <tag>dagger</tag>
-         
         <tag>java</tag>
+         
+        <tag>dagger</tag>
          
          
            
@@ -357,9 +379,9 @@
         
         <tag>android</tag>
          
-        <tag>dagger</tag>
-         
         <tag>java</tag>
+         
+        <tag>dagger</tag>
          
          
            
@@ -381,9 +403,9 @@
         
         <tag>android</tag>
          
-        <tag>dagger</tag>
-         
         <tag>java</tag>
+         
+        <tag>dagger</tag>
          
          
            

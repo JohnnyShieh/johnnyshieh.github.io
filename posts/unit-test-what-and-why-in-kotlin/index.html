@@ -114,7 +114,7 @@
 <meta property="og:url" content="http://johnnyshieh.me/posts/unit-test-what-and-why-in-kotlin/index.html">
 <meta property="og:site_name" content="Johnny Shieh">
 <meta property="og:description" content="介绍了单元测试的基本概念，为什么需要写单元测试">
-<meta property="og:updated_time" content="2017-07-06T07:01:13.000Z">
+<meta property="og:updated_time" content="2017-07-08T12:16:43.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Kotlin 写 Android 单元测试（一），单元测试是什么以及为什么需要">
 <meta name="twitter:description" content="介绍了单元测试的基本概念，为什么需要写单元测试">
@@ -496,7 +496,7 @@
 <p><code>save</code>方法没有返回值，那么它的输出是什么，可能很多人会说就是<code>result 写入到文件 file</code>，但是那是<code>saveToFile</code>方法的输出，而<code>save</code>方法的输出是调用了<code>mStorage.saveToFile()</code>方法并且参数是<code>result</code>。单元测试只是测试方法单元，并不是测试一个流程。</p>
 <p>所以方法的输出分为两种：</p>
 <ol>
-<li><p><strong>直接的返回结果</strong>，这种情况可以用 <a href="http://junit.org/junit4/" target="_blank" rel="external">Junit</a> 测试框架的<code>assert</code>语句测试。</p>
+<li><p><strong>直接的返回结果</strong>，这种情况可以用 <a href="http://junit.org/junit4/" target="_blank" rel="external">Junit 4</a> 测试框架的<code>assert</code>语句测试。</p>
 </li>
 <li><p><strong>间接的方法调用</strong>，这种情况验证方法是否调用，需要利用 mock 的测试框架，例如 <a href="http://site.mockito.org" target="_blank" rel="external">Mockito</a>，后续会有介绍。</p>
 </li>
@@ -576,6 +576,10 @@
 
           <div class="post-nav-prev post-nav-item">
             
+              <a href="/posts/unit-test-junit4-and-kotlin-test/" rel="prev" title="Kotlin 写 Android 单元测试（二），JUnit 4 测试框架和 kotlin.test 库的使用">
+                Kotlin 写 Android 单元测试（二），JUnit 4 测试框架和 kotlin.test 库的使用 <i class="fa fa-chevron-right"></i>
+              </a>
+            
           </div>
         </div>
       
@@ -646,7 +650,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">48</span>
+                <span class="site-state-item-count">49</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
