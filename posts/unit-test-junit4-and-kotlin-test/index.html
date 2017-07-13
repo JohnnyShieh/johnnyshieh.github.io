@@ -116,7 +116,7 @@
 <meta property="og:description" content="介绍 JUnit 4 的一些基本用法以及 kotlin.test 库的简化写法">
 <meta property="og:image" content="http://oph5rhcqp.bkt.clouddn.com/unit_test_run.png">
 <meta property="og:image" content="http://oph5rhcqp.bkt.clouddn.com/unit_test_result.png">
-<meta property="og:updated_time" content="2017-07-12T11:55:50.000Z">
+<meta property="og:updated_time" content="2017-07-13T02:24:13.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Kotlin 写 Android 单元测试（二），JUnit 4 测试框架和 kotlin.test 库的使用">
 <meta name="twitter:description" content="介绍 JUnit 4 的一些基本用法以及 kotlin.test 库的简化写法">
@@ -473,6 +473,7 @@
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">dependencies &#123;</div><div class="line">  <span class="built_in">test</span>Compile <span class="string">'junit:junit:4.12'</span></div><div class="line">&#125;</div><div class="line"></div><div class="line">android &#123;</div><div class="line">    <span class="built_in">source</span>Sets &#123;</div><div class="line">        test.java.srcDirs += <span class="string">'src/test/kotlin'</span>  // 如果不是默认（src/<span class="built_in">test</span>/java）的话，加上测试代码的路径</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>一般运行 Android 项目的测试命令为：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">./gradle <span class="built_in">test</span>DebugUnitTest</div></pre></td></tr></table></figure>
+<a id="more"></a>
 <h3 id="验证方法结果"><a href="#验证方法结果" class="headerlink" title="验证方法结果"></a>验证方法结果</h3><p>JUnit 4 可以很方便地测试方法直接的返回结果，先看下面这段代码：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Calculator</span> </span>&#123;</div><div class="line">    <span class="function">fun <span class="title">divide</span><span class="params">(a: Int, b: Int)</span>: Double </span>&#123;</div><div class="line">        <span class="keyword">if</span> (b == <span class="number">0</span>) <span class="keyword">throw</span> IllegalArgumentException(<span class="string">"division by zero!"</span>)</div><div class="line">        <span class="keyword">return</span> (a.toDouble() / b)</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>其对应的单元测试代码如下：</p>
@@ -726,7 +727,16 @@
         
         
 
-        <!--
+        <!--<div style="margin: 20px 0 20px 0; height: 1px; background: #eee"></div> 
+<div id="hot-series">
+    <ul class="sidebar-nav" style="margin-bottom: 0;">
+        <li>热门系列</li>
+    </ul>
+    <ul class="series-posts" style="padding-left: 10px; list-style: none; text-align: left;">
+        <li><span><a href="http://johnnyshieh.me/tags/dagger/">Dagger 完全解析</a></span>（5）</li>
+        <li><span><a href="http://johnnyshieh.me/categories/unit-test/">Kotlin 写 Android 单元测试</a>（2）</span></li>
+    </ul>
+</div>
 -->
 
       </section>
@@ -751,8 +761,17 @@
 
       
 
+      <div style="margin: 20px 0 20px 0; height: 1px; background: #eee"></div> 
+<div id="hot-series">
+    <ul class="sidebar-nav" style="margin-bottom: 0">
+        <li>热门系列</li>
+    </ul>
+    <ul class="series-posts" style="padding-left: 10px; list-style: none; text-align: left">
+        <li><span><a href="http://johnnyshieh.me/tags/dagger/">Dagger 完全解析</a></span>（5）</li>
+        <li><span><a href="http://johnnyshieh.me/categories/unit-test/">Kotlin 写 Android 单元测试</a>（2）</span></li>
+    </ul>
+</div>
 
-      
 
     </div>
   </aside>
