@@ -355,6 +355,181 @@
   
 
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://johnnyshieh.me/posts/android-annotation/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Johnny Shieh">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Johnny Shieh">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/posts/android-annotation/" itemprop="url">探索注解之 Android 中的注解</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-09-21T16:52:12+08:00">
+                2016-09-21
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/android/" itemprop="url" rel="index">
+                    <span itemprop="name">Android</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+              <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-comment-o"></i>
+              </span>
+              
+                <a href="/posts/android-annotation/#SOHUCS" itemprop="discussionUrl">
+                  <span id="sourceId::posts/android-annotation/" class="cy_cmt_count" data-xid="posts/android-annotation/" itemprop="commentsCount"></span>
+                </a>
+              
+            
+          
+
+          
+          
+             <span id="/posts/android-annotation/" class="leancloud_visitors" data-flag-title="探索注解之 Android 中的注解">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </span></div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>Java 中有注解，Android 中也有注解，本文将介绍下 Android 的注解。这是探索注解系列文章的最后一篇：</p>
+<ul>
+<li><p><a href="http://johnnyshieh.me/posts/annotation-basic/">探索注解之注解的基本概念</a></p>
+</li>
+<li><p><a href="http://blog.csdn.net/lmj623565791/article/details/51931859" target="_blank" rel="external">探索注解之 APT 编译时处理注解, 解析 Butterknife 注解原理</a> (鸿神写编译时注解的文章，非常好，所以自己就不再重复写了)</p>
+</li>
+<li><p><a href="http://johnnyshieh.me/posts/android-annotation/">探索注解之 Android 中的注解</a></p>
+</li>
+</ul>
+<h2 id="引入注解库"><a href="#引入注解库" class="headerlink" title="引入注解库"></a>引入注解库</h2><p>Android 的注解库并没有包括在 framework 中，它被独立成一个单独的库。通常情况下，只需要编辑<code>build.gradle</code>文件就可引入：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">dependencies &#123;</div><div class="line">    compile &apos;com.android.support:support-annotations:22.2.0&apos;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>如果已经引入了<code>appcompat</code>库的话，就不需要额外引入<code>support-annotations</code>，因为<code>appcompat</code>包含了注解库。</p>
+<p>对于 Android 应用或者 Android Library 模块的话，上面的工作就可以引入注解库。如果想要在纯粹的 Java 模块中（即在 gradle 文件中<code>apply plugin: &#39;java&#39;</code>)引入注解库的话，还要显式地标明 SDK 的 repositories，因为注解库不在 jcenter 上（Android 的 gradle plugin 默认包含这个依赖，而 Java plugin 并没有）。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">repositories &#123;</div><div class="line">    jcenter()</div><div class="line">    maven &#123;url &apos;&lt;your-SDK-path&gt;/extras/android/m2repository&apos;&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/posts/android-annotation/" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://johnnyshieh.me/posts/annotation-basic/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1028,191 +1203,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://johnnyshieh.me/posts/volleyex-brief/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Johnny Shieh">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Johnny Shieh">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/posts/volleyex-brief/" itemprop="url">一步一步扩展 Volley (一)，Volley 框架解析</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-01-13T00:00:00+08:00">
-                2016-01-13
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/android/" itemprop="url" rel="index">
-                    <span itemprop="name">Android</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-              <span class="post-meta-divider">|</span>
-              <span class="post-meta-item-icon">
-                <i class="fa fa-comment-o"></i>
-              </span>
-              
-                <a href="/posts/volleyex-brief/#SOHUCS" itemprop="discussionUrl">
-                  <span id="sourceId::posts/volleyex-brief/" class="cy_cmt_count" data-xid="posts/volleyex-brief/" itemprop="commentsCount"></span>
-                </a>
-              
-            
-          
-
-          
-          
-             <span id="/posts/volleyex-brief/" class="leancloud_visitors" data-flag-title="一步一步扩展 Volley (一)，Volley 框架解析">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数 </span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </span></div>
-      </header>
-    
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>去年 11 月开始写一个扩展 Volley 的网络通信框架 ———— VolleyEx，虽然 Github 上已经有 <a href="https://github.com/DWorkS/VolleyPlus" target="_blank" rel="external">VolleyPlus</a> 等优秀的扩展框架，但我想借此研究异步加载网络请求的原理，学习下 Volley 的代码设计，所以还是自己重新写一个扩展框架。并且把我一步一步扩展 Volley 的过程用博客的形式记录下来，希望可以帮助大家更好地理解 Volley 及网络加载。在扩展 Volley 之前，需要先了解其大致框架，明白它的优势与不足，这也是这篇文章的主要内容。</p>
-<h2 id="Volley-简介"><a href="#Volley-简介" class="headerlink" title="Volley 简介"></a>Volley 简介</h2><p><img src="http://oph5rhcqp.bkt.clouddn.com/volley.png" alt=""></p>
-<p>Volley 是 2013 Google I/O Session 推出的一个网络通信框架，便于异步加载网络请求和图片请求，适用于<strong>数据量小</strong>和<strong>通信频繁</strong>的网络操作。但是对于数据量大的网络（例如文件下载），Volley 的表现就很糟糕了，这种情况推荐用 DownloadManager。</p>
-<p>根据 Android 官方培训课程中 <a href="http://developer.android.com/training/volley/index.html" target="_blank" rel="external">Volley 教程</a>的说明，Volle 有下面几个优点：</p>
-<ol>
-<li><p>自动调度网络请求</p>
-</li>
-<li><p>高并发网络连接</p>
-</li>
-<li><p>通过标准的 HTTP cache coherence 缓存磁盘，内存透明的响应</p>
-</li>
-<li><p>支持指定请求的优先级</p>
-</li>
-<li><p>框架容易定制，如重试和回退功能</p>
-</li>
-<li><p>清晰的加载流程使异步加载网络数据并正确地显示到UI更加简单</p>
-</li>
-<li><p>包含了调试与追踪工具</p>
-</li>
-</ol>
-<p>关于 Volley 的不足之处，在解析完其框架再来讨论。</p>
-<p>Volley 的官方项目地址： <a href="https://android.googlesource.com/platform/frameworks/volley/" target="_blank" rel="external">https://android.googlesource.com/platform/frameworks/volley/</a></p>
-<p>Volley 的 Github 地址（由国人做的映射）： <a href="https://github.com/mcxiaoke/android-volley" target="_blank" rel="external">https://github.com/mcxiaoke/android-volley</a></p>
-<p>这是 2013 Google I/O 大会上关于 Volley 的文档： <a href="http://oph5rhcqp.bkt.clouddn.com/Volley-Easy_Fast_Networking_for_Android.pdf" target="_blank" rel="external">Volley-Easy,Fast Networking for Android.pdf</a></p>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/posts/volleyex-brief/" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -1260,7 +1250,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">49</span>
+                <span class="site-state-item-count">50</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
