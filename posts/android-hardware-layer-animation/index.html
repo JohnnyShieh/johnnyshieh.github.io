@@ -38,7 +38,7 @@
   
     
   
-  <link href="http://oph5rhcqp.bkt.clouddn.com/lib/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+  <link href="http://images.johnnyshieh.me/lib/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
 
 
 
@@ -64,7 +64,7 @@
   
     
     
-    <link href="http://oph5rhcqp.bkt.clouddn.com/fonts/font.css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+    <link href="http://images.johnnyshieh.me/fonts/font.css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
   
 
 
@@ -74,9 +74,9 @@
 
   
 
-<link href="http://oph5rhcqp.bkt.clouddn.com/lib/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+<link href="http://images.johnnyshieh.me/lib/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
 
-<link href="http://oph5rhcqp.bkt.clouddn.com/css/main.css?v=5.1.1" rel="stylesheet" type="text/css">
+<link href="http://images.johnnyshieh.me/css/main.css?v=5.1.1" rel="stylesheet" type="text/css">
 
 
 
@@ -114,12 +114,12 @@
 <meta property="og:url" content="http://johnnyshieh.me/posts/android-hardware-layer-animation/index.html">
 <meta property="og:site_name" content="Johnny Shieh">
 <meta property="og:description" content="如何通过 Hardware Layer 提升 Android 动画性能">
-<meta property="og:image" content="http://oph5rhcqp.bkt.clouddn.com/hardwarelayer_sample.png">
-<meta property="og:updated_time" content="2017-05-11T12:23:11.000Z">
+<meta property="og:image" content="http://images.johnnyshieh.me/hardwarelayer_sample.png">
+<meta property="og:updated_time" content="2017-08-02T03:11:31.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="[译]通过 Hardware Layer 提升 Android 动画性能">
 <meta name="twitter:description" content="如何通过 Hardware Layer 提升 Android 动画性能">
-<meta name="twitter:image" content="http://oph5rhcqp.bkt.clouddn.com/hardwarelayer_sample.png">
+<meta name="twitter:image" content="http://images.johnnyshieh.me/hardwarelayer_sample.png">
 
 
 
@@ -502,7 +502,7 @@
 <p>所有这一切表明：这里没有硬性规则。Android 渲染系统是复杂的，并且常常令我感到惊讶。如同所有性能问题一样，测试才是关键。“GPU呈现模式分析”和“显示硬件层更新”等开发者选项非常适合确定 Layer 正在帮助还是正在损害你的性能。</p>
 <h2 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h2><p>原文作者写了个简单的 app，示范 Hardware Layer 的基本用法。<a href="https://github.com/dlew/android-hw-layers-sample" target="_blank" rel="external">源码在这里</a></p>
 <p>这是运行在 Galaxy Nexus（一款又老又慢的设备）的结果，通过开启开发者选项中的“GPU呈现模式分析”：</p>
-<p><img src="http://oph5rhcqp.bkt.clouddn.com/hardwarelayer_sample.png" alt=""></p>
+<p><img src="http://images.johnnyshieh.me/hardwarelayer_sample.png" alt=""></p>
 <p>在不使用 Hardware Layer 的情况下，这个简单的动画烂透了。它不断地越过绿线，这就意味着它看起来很糟糕。相比之下，使用 Hardware Layer 的版本一直保持在绿线之下，这非常棒！</p>
 <p>第三个例子展示了，在使用 Hardware Layer 的情况下，动画运行时存在缓存失效的风险。由于错误的 Hardware Layer 用法，许多性能收益被干掉了。</p>
 <p>（这里有一些奇怪，如果它正处在 invalidating，应该至少与不使用 Hardware Layer 一样迟钝。我不能理解透彻，但是，很显然，即使它们在每一步都必须进行重绘，优化的 Hardware Layer 还是发挥了一些提升性能的作用。所以，最好正确的使用它们。）</p>
@@ -888,7 +888,7 @@
   <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
 
   
-  <script type="text/javascript" src="http://oph5rhcqp.bkt.clouddn.com/lib/fastclick.min.js?v=1.0.6"></script>
+  <script type="text/javascript" src="http://images.johnnyshieh.me/lib/fastclick.min.js?v=1.0.6"></script>
 
   
   <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>

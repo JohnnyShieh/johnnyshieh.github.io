@@ -38,7 +38,7 @@
   
     
   
-  <link href="http://oph5rhcqp.bkt.clouddn.com/lib/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+  <link href="http://images.johnnyshieh.me/lib/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
 
 
 
@@ -64,7 +64,7 @@
   
     
     
-    <link href="http://oph5rhcqp.bkt.clouddn.com/fonts/font.css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+    <link href="http://images.johnnyshieh.me/fonts/font.css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
   
 
 
@@ -74,9 +74,9 @@
 
   
 
-<link href="http://oph5rhcqp.bkt.clouddn.com/lib/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+<link href="http://images.johnnyshieh.me/lib/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
 
-<link href="http://oph5rhcqp.bkt.clouddn.com/css/main.css?v=5.1.1" rel="stylesheet" type="text/css">
+<link href="http://images.johnnyshieh.me/css/main.css?v=5.1.1" rel="stylesheet" type="text/css">
 
 
 
@@ -114,12 +114,12 @@
 <meta property="og:url" content="http://johnnyshieh.me/posts/android-layoutinflater-analysis/index.html">
 <meta property="og:site_name" content="Johnny Shieh">
 <meta property="og:description" content="从源码一步一步解析 LayoutInflater 内部逻辑">
-<meta property="og:image" content="http://oph5rhcqp.bkt.clouddn.com/layoutinflater_demo.jpg">
-<meta property="og:updated_time" content="2017-05-10T06:52:35.000Z">
+<meta property="og:image" content="http://images.johnnyshieh.me/layoutinflater_demo.jpg">
+<meta property="og:updated_time" content="2017-08-02T03:11:51.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Android LayoutInflater 深层解析">
 <meta name="twitter:description" content="从源码一步一步解析 LayoutInflater 内部逻辑">
-<meta name="twitter:image" content="http://oph5rhcqp.bkt.clouddn.com/layoutinflater_demo.jpg">
+<meta name="twitter:image" content="http://images.johnnyshieh.me/layoutinflater_demo.jpg">
 
 
 
@@ -483,7 +483,7 @@
 <p><strong>代码 :</strong></p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Override</span></div><div class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">(Bundle savedInstanceState)</span> </span>&#123;</div><div class="line">    <span class="keyword">super</span>.onCreate(savedInstanceState);</div><div class="line">    setContentView(R.layout.activity_main);</div><div class="line"></div><div class="line">    FrameLayout frameLayout1 = (FrameLayout) findViewById(R.id.container1);</div><div class="line">    FrameLayout frameLayout2 = (FrameLayout) findViewById(R.id.container2);</div><div class="line">    FrameLayout frameLayout3 = (FrameLayout) findViewById(R.id.container3);</div><div class="line"></div><div class="line">    LayoutInflater layoutInflater = LayoutInflater.from(<span class="keyword">this</span>);</div><div class="line"></div><div class="line">    layoutInflater.inflate(R.layout.text, frameLayout1, <span class="keyword">true</span>);<span class="comment">// here return frameLayout1, not the root of text layout.</span></div><div class="line">    TextView textView1 = (TextView) frameLayout1.findViewById(android.R.id.text1);</div><div class="line">    textView1.setText(<span class="string">"The layout width of textView1 is "</span> + getViewLayoutWidth(textView1));</div><div class="line"></div><div class="line">    TextView textView2 = (TextView) layoutInflater.inflate(R.layout.text, frameLayout2, <span class="keyword">false</span>);</div><div class="line">    frameLayout2.addView(textView2);</div><div class="line">    textView2.setText(<span class="string">"The layout width of textView2 is "</span> + getViewLayoutWidth(textView2));</div><div class="line"></div><div class="line">    TextView textView3 = (TextView) layoutInflater.inflate(R.layout.text, <span class="keyword">null</span>);</div><div class="line">    frameLayout3.addView(textView3);</div><div class="line">    textView3.setText(<span class="string">"The layout width of textView3 is "</span> + getViewLayoutWidth(textView3));</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">private</span> String <span class="title">getViewLayoutWidth</span><span class="params">(View view)</span> </span>&#123;</div><div class="line">    <span class="keyword">if</span> (<span class="keyword">null</span> == view || <span class="keyword">null</span> == view.getLayoutParams()) &#123;</div><div class="line">        <span class="keyword">return</span> <span class="string">""</span>;</div><div class="line">    &#125;</div><div class="line">    ViewGroup.LayoutParams layoutParams = view.getLayoutParams();</div><div class="line">    <span class="keyword">if</span> (layoutParams.width == ViewGroup.LayoutParams.MATCH_PARENT) &#123;</div><div class="line">        <span class="keyword">return</span> <span class="string">"MATCH_PARENT"</span>;</div><div class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (layoutParams.width == ViewGroup.LayoutParams.WRAP_CONTENT) &#123;</div><div class="line">        <span class="keyword">return</span> <span class="string">"WRAP_CONTENT"</span>;</div><div class="line">    &#125; <span class="keyword">else</span> &#123;</div><div class="line">        <span class="keyword">return</span> String.valueOf(layoutParams.width);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>运行结果如下：</p>
-<p><img src="http://oph5rhcqp.bkt.clouddn.com/layoutinflater_demo.jpg" alt=""></p>
+<p><img src="http://images.johnnyshieh.me/layoutinflater_demo.jpg" alt=""></p>
 <p>根据方法的说明和测试结果可以知道： </p>
 <p>(1) 在指定了不为 null 的 <strong>root</strong> 参数时，若 <strong>attachToRoot</strong> 参数为 true，<strong>root</strong> 会作为已加载布局的 parent，而且方法返回的也是 <strong>root</strong> 而不是已加载布局的根视图; 若 <strong>attachToRoot</strong> 参数为 false，<strong>root</strong> 参数只是用来给已加载布局的根视图创建相应的 LayoutParams，方法返回的还是已加载布局的根视图。</p>
 <p>(2) 在 <strong>root</strong> 参数为 null 时，已加载布局的根视图的 layout 属性会失效，如上面的 demo 中 textView3 的宽度不是 600px 而是 match_parent。相信有些开发也会遇到<strong>同样的问题</strong>，怎么根视图的 layout 属性无效了呢，而其他的非 layout 属性（如 padding）还是生效，看起来有点莫名其秒，而且非根视图的 layout 属性还是有效的。</p>
@@ -870,7 +870,7 @@
   <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
 
   
-  <script type="text/javascript" src="http://oph5rhcqp.bkt.clouddn.com/lib/fastclick.min.js?v=1.0.6"></script>
+  <script type="text/javascript" src="http://images.johnnyshieh.me/lib/fastclick.min.js?v=1.0.6"></script>
 
   
   <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>

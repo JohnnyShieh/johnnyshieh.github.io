@@ -38,7 +38,7 @@
   
     
   
-  <link href="http://oph5rhcqp.bkt.clouddn.com/lib/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+  <link href="http://images.johnnyshieh.me/lib/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
 
 
 
@@ -64,7 +64,7 @@
   
     
     
-    <link href="http://oph5rhcqp.bkt.clouddn.com/fonts/font.css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+    <link href="http://images.johnnyshieh.me/fonts/font.css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
   
 
 
@@ -74,9 +74,9 @@
 
   
 
-<link href="http://oph5rhcqp.bkt.clouddn.com/lib/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+<link href="http://images.johnnyshieh.me/lib/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
 
-<link href="http://oph5rhcqp.bkt.clouddn.com/css/main.css?v=5.1.1" rel="stylesheet" type="text/css">
+<link href="http://images.johnnyshieh.me/css/main.css?v=5.1.1" rel="stylesheet" type="text/css">
 
 
 
@@ -994,7 +994,7 @@
         
           <p>之前根据 Volley 的工作流程大致解析了它的框架，接下来继续分析 Volley 的缓存机制,下面我在解析其缓存机制的同时也讲述一下个人对缓存生存时间的扩展.</p>
 <h2 id="缓存调度器的处理流程"><a href="#缓存调度器的处理流程" class="headerlink" title="缓存调度器的处理流程"></a>缓存调度器的处理流程</h2><p>要明白 Volley 的缓存机制，关键在于分析缓存调度器处理请求的过程，下面是我画的流程图:</p>
-<p><img src="http://oph5rhcqp.bkt.clouddn.com/volley_cache_flow.png" alt=""></p>
+<p><img src="http://images.johnnyshieh.me/volley_cache_flow.png" alt=""></p>
 <p>这张流程图主要对应 CacheDispatcher 的 run 方法，首先根据 cachekey 查找缓存，如果没有缓存就把请求放到网络等待队列中，缓存调度器继续处理下一个请求；如果有缓存，但是缓存已经过期了，也将请求放到网络等待队列中并处理下一个请求，如果缓存没有过期，继续判断缓存是否需要刷新；如果不需要更新缓存，则直接传递解析后的缓存数据到主线程，如果需要更新缓存，则在传递解析后的缓存数据到主线程之后还会把请求添加到网络等待队列。</p>
 <p>下面再看下流程中的两个关键的方法的源码：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * Data and metadata for an entry returned by the cache.</div><div class="line"> */</div><div class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">Entry</span> </span>&#123;</div><div class="line">    <span class="comment">/** The data returned from cache. */</span></div><div class="line">    <span class="keyword">public</span> <span class="keyword">byte</span>[] data;</div><div class="line"></div><div class="line">    <span class="comment">/** ETag for cache coherency. */</span></div><div class="line">    <span class="keyword">public</span> String etag;</div><div class="line"></div><div class="line">    <span class="comment">/** Date of this response as reported by the server. */</span></div><div class="line">    <span class="keyword">public</span> <span class="keyword">long</span> serverDate;</div><div class="line"></div><div class="line">    <span class="comment">/** The last modified date for the requested object. */</span></div><div class="line">    <span class="keyword">public</span> <span class="keyword">long</span> lastModified;</div><div class="line"></div><div class="line">    <span class="comment">/** TTL for this record. */</span></div><div class="line">    <span class="keyword">public</span> <span class="keyword">long</span> ttl;</div><div class="line"></div><div class="line">    <span class="comment">/** Soft TTL for this record. */</span></div><div class="line">    <span class="keyword">public</span> <span class="keyword">long</span> softTtl;</div><div class="line"></div><div class="line">    <span class="comment">/** Immutable response headers as received from server; must be non-null. */</span></div><div class="line">    <span class="keyword">public</span> Map&lt;String, String&gt; responseHeaders = Collections.emptyMap();</div><div class="line"></div><div class="line">    <span class="comment">/** True if the entry is expired. */</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isExpired</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">this</span>.ttl &lt; System.currentTimeMillis();</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">/** True if a refresh is needed from the original data source. */</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">refreshNeeded</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">this</span>.softTtl &lt; System.currentTimeMillis();</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
@@ -1452,7 +1452,7 @@
   <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
 
   
-  <script type="text/javascript" src="http://oph5rhcqp.bkt.clouddn.com/lib/fastclick.min.js?v=1.0.6"></script>
+  <script type="text/javascript" src="http://images.johnnyshieh.me/lib/fastclick.min.js?v=1.0.6"></script>
 
   
   <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>

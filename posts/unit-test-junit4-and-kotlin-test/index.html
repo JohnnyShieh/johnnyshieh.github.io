@@ -38,7 +38,7 @@
   
     
   
-  <link href="http://oph5rhcqp.bkt.clouddn.com/lib/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+  <link href="http://images.johnnyshieh.me/lib/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
 
 
 
@@ -64,7 +64,7 @@
   
     
     
-    <link href="http://oph5rhcqp.bkt.clouddn.com/fonts/font.css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+    <link href="http://images.johnnyshieh.me/fonts/font.css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
   
 
 
@@ -74,9 +74,9 @@
 
   
 
-<link href="http://oph5rhcqp.bkt.clouddn.com/lib/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+<link href="http://images.johnnyshieh.me/lib/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
 
-<link href="http://oph5rhcqp.bkt.clouddn.com/css/main.css?v=5.1.1" rel="stylesheet" type="text/css">
+<link href="http://images.johnnyshieh.me/css/main.css?v=5.1.1" rel="stylesheet" type="text/css">
 
 
 
@@ -114,13 +114,13 @@
 <meta property="og:url" content="http://johnnyshieh.me/posts/unit-test-junit4-and-kotlin-test/index.html">
 <meta property="og:site_name" content="Johnny Shieh">
 <meta property="og:description" content="介绍 JUnit 4 的一些基本用法以及 kotlin.test 库的简化写法">
-<meta property="og:image" content="http://oph5rhcqp.bkt.clouddn.com/unit_test_run.png">
-<meta property="og:image" content="http://oph5rhcqp.bkt.clouddn.com/unit_test_result.png">
-<meta property="og:updated_time" content="2017-07-13T02:24:13.000Z">
+<meta property="og:image" content="http://images.johnnyshieh.me/unit_test_run.png">
+<meta property="og:image" content="http://images.johnnyshieh.me/unit_test_result.png">
+<meta property="og:updated_time" content="2017-08-02T03:13:18.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Kotlin 写 Android 单元测试（二），JUnit 4 测试框架和 kotlin.test 库的使用">
 <meta name="twitter:description" content="介绍 JUnit 4 的一些基本用法以及 kotlin.test 库的简化写法">
-<meta name="twitter:image" content="http://oph5rhcqp.bkt.clouddn.com/unit_test_run.png">
+<meta name="twitter:image" content="http://images.johnnyshieh.me/unit_test_run.png">
 
 
 
@@ -518,9 +518,9 @@
 <h3 id="具体使用"><a href="#具体使用" class="headerlink" title="具体使用"></a>具体使用</h3><p>下面我只是给出上面的测试代码使用 kotlin.test 库后的修改，具体 kotlin.test 库的使用请看官方文档：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> org.junit.AfterClass</div><div class="line"><span class="keyword">import</span> org.junit.BeforeClass</div><div class="line"><span class="keyword">import</span> org.junit.Test</div><div class="line"><span class="keyword">import</span> kotlin.test.assertEquals</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">CalculatorTest</span> </span>&#123;</div><div class="line"></div><div class="line">    companion object &#123;</div><div class="line">        lateinit var calculator: Calculator</div><div class="line"></div><div class="line">        <span class="meta">@BeforeClass</span></div><div class="line">        <span class="meta">@JvmStatic</span></div><div class="line">        <span class="function">fun <span class="title">setup</span><span class="params">()</span> </span>&#123;</div><div class="line">            calculator = Calculator()</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Test</span></div><div class="line">    <span class="function">fun <span class="title">testAdd</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="comment">// 使用 assertEquals</span></div><div class="line">        val result = calculator.add(<span class="number">1</span>, <span class="number">5</span>)</div><div class="line">        assertEquals(<span class="number">6</span>, result)</div><div class="line"></div><div class="line">        <span class="comment">// 使用 expect</span></div><div class="line">        expect(<span class="number">6</span>, &#123; calculator.add(<span class="number">1</span>, <span class="number">5</span>) &#125;)</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <h3 id="运行单元测试"><a href="#运行单元测试" class="headerlink" title="运行单元测试"></a>运行单元测试</h3><p>一般写好测试代码后，AndroidStudio 中在测试方法和测试类的左侧就会出现一个图标，点击会出现三个选项，如下图所示：</p>
-<p><img src="http://oph5rhcqp.bkt.clouddn.com/unit_test_run.png" alt=""></p>
+<p><img src="http://images.johnnyshieh.me/unit_test_run.png" alt=""></p>
 <p>运行后就会出现下面的视图：</p>
-<p><img src="http://oph5rhcqp.bkt.clouddn.com/unit_test_result.png" alt=""></p>
+<p><img src="http://images.johnnyshieh.me/unit_test_result.png" alt=""></p>
 <p>还可以通过命令行的方式运行所有单元测试代码：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">gradlew <span class="built_in">test</span>DebugUnitTest  // debug 版本</div><div class="line">gradlew <span class="built_in">test</span>ReleaseUnitTest    // release 版本</div></pre></td></tr></table></figure>
 <p>运行后会生成一个测试报告，在 project_root/app/build/reports/tests/testDebugUnitTest/index.html 路径下可以看到，测试失败时，可以在测试报告中查看详细信息。</p>
@@ -893,7 +893,7 @@
   <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
 
   
-  <script type="text/javascript" src="http://oph5rhcqp.bkt.clouddn.com/lib/fastclick.min.js?v=1.0.6"></script>
+  <script type="text/javascript" src="http://images.johnnyshieh.me/lib/fastclick.min.js?v=1.0.6"></script>
 
   
   <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>

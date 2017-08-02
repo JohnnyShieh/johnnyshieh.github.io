@@ -38,7 +38,7 @@
   
     
   
-  <link href="http://oph5rhcqp.bkt.clouddn.com/lib/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+  <link href="http://images.johnnyshieh.me/lib/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
 
 
 
@@ -64,7 +64,7 @@
   
     
     
-    <link href="http://oph5rhcqp.bkt.clouddn.com/fonts/font.css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+    <link href="http://images.johnnyshieh.me/fonts/font.css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
   
 
 
@@ -74,9 +74,9 @@
 
   
 
-<link href="http://oph5rhcqp.bkt.clouddn.com/lib/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+<link href="http://images.johnnyshieh.me/lib/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
 
-<link href="http://oph5rhcqp.bkt.clouddn.com/css/main.css?v=5.1.1" rel="stylesheet" type="text/css">
+<link href="http://images.johnnyshieh.me/css/main.css?v=5.1.1" rel="stylesheet" type="text/css">
 
 
 
@@ -115,11 +115,11 @@
 <meta property="og:site_name" content="Johnny Shieh">
 <meta property="og:description" content="从泄露的根本原因、检测方法、解决方案几个方面讨论 Android 性能优化的内存泄漏问题">
 <meta property="og:image" content="http://www.programcreek.com/wp-content/uploads/2013/10/where-is-memory-leak-650x400.jpeg">
-<meta property="og:image" content="http://oph5rhcqp.bkt.clouddn.com/memory_mode_generation.png">
-<meta property="og:image" content="http://oph5rhcqp.bkt.clouddn.com/android_memory_gc_mode.png">
-<meta property="og:image" content="http://oph5rhcqp.bkt.clouddn.com/gc_threshold.png">
-<meta property="og:image" content="http://oph5rhcqp.bkt.clouddn.com/meminfo.png">
-<meta property="og:updated_time" content="2017-07-06T08:41:55.000Z">
+<meta property="og:image" content="http://images.johnnyshieh.me/memory_mode_generation.png">
+<meta property="og:image" content="http://images.johnnyshieh.me/android_memory_gc_mode.png">
+<meta property="og:image" content="http://images.johnnyshieh.me/gc_threshold.png">
+<meta property="og:image" content="http://images.johnnyshieh.me/meminfo.png">
+<meta property="og:updated_time" content="2017-08-02T03:12:21.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Android 性能优化之内存泄漏">
 <meta name="twitter:description" content="从泄露的根本原因、检测方法、解决方案几个方面讨论 Android 性能优化的内存泄漏问题">
@@ -510,9 +510,9 @@
 <p>每一个进程的 Dalvik heap 都反映了使用内存的占用范围。这就是通常逻辑意义上提到的 Dalvik Heap Size，它可以随着需要进行增长，但是增长行为会有一个系统为它设定的上限。</p>
 <p>逻辑上讲的 Heap Size 和实际物理意义上使用的内存大小是不对等的，Proportional Set Size (PSS) 记录了应用程序自身占用以及和其他进程进行共享的内存。</p>
 <p>Android 系统并不会对 Heap 中空闲内存区域做碎片整理。系统仅仅会在新的内存分配之前判断 Heap 的尾端剩余空间是否足够，如果空间不够会触发 gc 操作，从而腾出更多空闲的内存空间。在 Android 的高级系统版本里面针对 Heap 空间有一个 Generational Heap Memory 的模型，最近分配的对象会存放在 Young Generation 区域，当这个对象在这个区域停留的时间达到一定程度，它会被移动到 Old Generation，最后累积一定时间再移动到 Permanent Generation 区域。系统会根据内存中不同的内存数据类型分别执行不同的 gc 操作。例如，刚分配到 Young Generation 区域的对象通常更容易被销毁回收，同时在 Young Generation 区域的 gc 操作速度会比 Old Generation 区域的 gc 操作速度更快。如下图所示：</p>
-<p><img src="http://oph5rhcqp.bkt.clouddn.com/memory_mode_generation.png" alt=""> <img src="http://oph5rhcqp.bkt.clouddn.com/android_memory_gc_mode.png" alt=""></p>
+<p><img src="http://images.johnnyshieh.me/memory_mode_generation.png" alt=""> <img src="http://images.johnnyshieh.me/android_memory_gc_mode.png" alt=""></p>
 <p>每一个 Generation 的内存区域都有固定的大小，随着新的对象陆续被分配到此区域，当这些对象总的大小快达到这一级别内存区域的阀值时，会触发 GC 的操作，以便腾出空间来存放其他新的对象。如下图所示：</p>
-<p><img src="http://oph5rhcqp.bkt.clouddn.com/gc_threshold.png" alt=""></p>
+<p><img src="http://images.johnnyshieh.me/gc_threshold.png" alt=""></p>
 <p>通常情况下，GC 发生的时候，所有的线程都是会被暂停的。执行 GC 所占用的时间和它发生在哪一个 Generation 也有关系，Young Generation 中的每次 GC 操作时间是最短的，Old Generation 其次，Permanent Generation 最长。执行时间的长短也和当前 Generation 中的对象数量有关，遍历树结构查找 20000 个对象比起遍历 50 个对象自然是要慢很多的。</p>
 <p>为什么通常情况下，GC 发生的时候，所有的线程都会被暂停？</p>
 <p>因为每次 GC 的时候，需要先找到可作为 GC Roots 的对象，然后以此搜索引用链，这个过程需要在一致性的内存快照中进行。这个“一致性”表示在整个过程中不能出现对象引用关系不断变化的情况，所以需要暂停所有的执行线程。</p>
@@ -532,7 +532,7 @@
 <h2 id="检测与定位内存泄漏"><a href="#检测与定位内存泄漏" class="headerlink" title="检测与定位内存泄漏"></a>检测与定位内存泄漏</h2><p><strong>(1) adb 命令</strong></p>
 <p>可以用 adb 命令查看内存的详细信息</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">adb shell dumpsys meminfo &#123;package_name&#125;</div></pre></td></tr></table></figure>
-<p><img src="http://oph5rhcqp.bkt.clouddn.com/meminfo.png" alt=""></p>
+<p><img src="http://images.johnnyshieh.me/meminfo.png" alt=""></p>
 <p>退出应用后，过几秒（或者更长时间）运行命令如果 <em>Views</em>、<em>ViewRootImp</em>、<em>Activities</em> 的数量不为空就表示有内存泄露。这时需要把把内存快照导出来</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">adb shell am dumpheap &#123;process_name&#125; /data/local/tmp/&#123;package_name&#125;.hprof</div><div class="line">adb pull /data/local/tmp/&#123;package_name&#125;.hprof ./</div><div class="line">hprof-conv &#123;package_name&#125;.hprof &#123;package_name&#125;-conv.hprof</div></pre></td></tr></table></figure>
 <p><code>{process_name}</code>在没有使用<code>android:process</code>情况下默认为包名。</p>
@@ -966,7 +966,7 @@
   <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
 
   
-  <script type="text/javascript" src="http://oph5rhcqp.bkt.clouddn.com/lib/fastclick.min.js?v=1.0.6"></script>
+  <script type="text/javascript" src="http://images.johnnyshieh.me/lib/fastclick.min.js?v=1.0.6"></script>
 
   
   <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
