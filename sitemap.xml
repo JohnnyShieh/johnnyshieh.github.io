@@ -2,6 +2,27 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://johnnyshieh.me/about/index.html</loc>
+    
+    <lastmod>2017-08-03T04:30:36.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://johnnyshieh.me/books/index.html</loc>
+    
+    <lastmod>2017-08-03T04:27:09.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://johnnyshieh.me/posts/dagger-subcomponent/</loc>
+    
+    <lastmod>2017-08-03T03:58:07.000Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://johnnyshieh.me/posts/dagger-advance/</loc>
     
     <lastmod>2017-08-02T03:15:36.000Z</lastmod>
@@ -72,13 +93,6 @@
   </url>
   
   <url>
-    <loc>http://johnnyshieh.me/posts/dagger-subcomponent/</loc>
-    
-    <lastmod>2017-08-02T03:12:37.000Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>http://johnnyshieh.me/posts/dagger-basic/</loc>
     
     <lastmod>2017-08-02T03:12:29.000Z</lastmod>
@@ -117,13 +131,6 @@
     <loc>http://johnnyshieh.me/footprints/index.html</loc>
     
     <lastmod>2017-07-31T12:10:24.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://johnnyshieh.me/books/index.html</loc>
-    
-    <lastmod>2017-07-31T12:08:40.000Z</lastmod>
     
   </url>
   
@@ -208,13 +215,6 @@
     <loc>http://johnnyshieh.me/friends/index.html</loc>
     
     <lastmod>2017-06-30T02:13:30.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://johnnyshieh.me/about/index.html</loc>
-    
-    <lastmod>2017-06-30T01:59:47.000Z</lastmod>
     
   </url>
   

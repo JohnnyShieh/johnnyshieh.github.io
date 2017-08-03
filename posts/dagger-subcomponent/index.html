@@ -116,7 +116,7 @@
 <meta property="og:description" content="Dagger 2 完全解析系列文章第二篇，在真实项目中使用 Dagger 2 需要注意的 Component 的组织关系">
 <meta property="og:image" content="http://images.johnnyshieh.me/dagger_dependency.png">
 <meta property="og:image" content="http://images.johnnyshieh.me/dagger_inherit.png">
-<meta property="og:updated_time" content="2017-08-02T03:12:37.000Z">
+<meta property="og:updated_time" content="2017-08-03T03:58:07.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Dagger 2 完全解析（三），Component 的组织关系与 SubComponent">
 <meta name="twitter:description" content="Dagger 2 完全解析系列文章第二篇，在真实项目中使用 Dagger 2 需要注意的 Component 的组织关系">
@@ -504,7 +504,7 @@
 <p>注：因为 FriendComponent 和 ManComponent 是依赖关系，如果其中一个声明了作用域的话，另外一个也必须声明，而且它们的 Scope 不能相同，ManComponent 的生命周期 &gt;= FriendComponent 的。FriendComponent 的 Scope 不能是 @Singleton，因为 Dagger 2 中 @Singleton 的 Component 不能依赖其他的 Component。</p>
 <p>编译时生成的代码中 DaggerFriendComponent 的 <code>Provider&lt;Car&gt;</code>实现中会用到<code>manComponent.car()</code>来提供 car 实例，如果 ManComponent 没有向外提供 car 实例的接口的话，DaggerFriendComponent 就会注入失败。</p>
 <p>依赖注入：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">ManComponent manComponent = DaggerManComponent().builder()</div><div class="line">    .build();</div><div class="line"></div><div class="line">FriendComponent friendComponent = DaggerFriendComponent().builder()</div><div class="line">    .manComponent(manComponent)</div><div class="line">    .build();</div><div class="line">friendComponent.inject(friend);</div></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">ManComponent manComponent = DaggerManComponent.builder()</div><div class="line">    .build();</div><div class="line"></div><div class="line">FriendComponent friendComponent = DaggerFriendComponent.builder()</div><div class="line">    .manComponent(manComponent)</div><div class="line">    .build();</div><div class="line">friendComponent.inject(friend);</div></pre></td></tr></table></figure>
 <p>依赖关系就跟生活中的朋友关系相当，注意事项如下：</p>
 <ol>
 <li><p>被依赖的 Component 需要把暴露的依赖实例用显式的接口声明，如上面的<code>Car car()</code>，我们只能使用朋友愿意分享的东西。</p>
@@ -521,7 +521,7 @@
 <p><code>@SubComponent</code>的写法与<code>@Component</code>一样，只能标注接口或抽象类，与依赖关系一样，SubComponent 与 parent Component 的 Scope 不能相同，只是 SubComponent 表明它是继承扩展某 Component 的。怎么表明一个 SubComponent 是属于哪个 parent Component 的呢？只需要在 parent Component 依赖的 Module 中的<code>subcomponents</code>加上 SubComponent 的 class，然后就可以在 parent Component 中请求 SubComponent.Builder。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Module</span>(subcomponents = SonComponent.class)</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CarModule</span> </span>&#123;</div><div class="line">    <span class="meta">@Provides</span></div><div class="line">    <span class="meta">@ManScope</span></div><div class="line">    <span class="function"><span class="keyword">static</span> Car <span class="title">provideCar</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">new</span> Car();</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="meta">@ManScope</span></div><div class="line"><span class="meta">@Component</span>(modules = CarModule.class)</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">ManComponent</span> </span>&#123;</div><div class="line">    <span class="function"><span class="keyword">void</span> <span class="title">injectMan</span><span class="params">(Man man)</span></span>;</div><div class="line"></div><div class="line">    SonComponent.<span class="function">Builder <span class="title">sonComponent</span><span class="params">()</span></span>;    <span class="comment">// 用来创建 Subcomponent</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>SubComponent 编译时不会生成 DaggerXXComponent，需要通过 parent Component 的获取 SubComponent.Builder 方法获取 SubComponent 实例。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">ManComponent manComponent = DaggerManComponent().builder()</div><div class="line">    .build();</div><div class="line"></div><div class="line">SonComponent sonComponent = DaggerFriendComponent().builder()</div><div class="line">    .sonComponent()</div><div class="line">    .build();</div><div class="line">sonComponent.inject(son);</div></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">ManComponent manComponent = DaggerManComponent.builder()</div><div class="line">    .build();</div><div class="line"></div><div class="line">SonComponent sonComponent = manComponent.sonComponent()</div><div class="line">    .build();</div><div class="line">sonComponent.inject(son);</div></pre></td></tr></table></figure>
 <p>继承关系和依赖关系最大的区别就是：继承关系中不用显式地提供依赖实例的接口，SubComponent 继承 parent Component 的所有依赖。</p>
 <h3 id="依赖关系-vs-继承关系"><a href="#依赖关系-vs-继承关系" class="headerlink" title="依赖关系 vs 继承关系"></a>依赖关系 vs 继承关系</h3><p>相同点：</p>
 <ul>
@@ -723,7 +723,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">33</span>
+                <span class="site-state-item-count">34</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>

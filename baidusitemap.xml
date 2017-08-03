@@ -3,6 +3,32 @@
 
 
     
+    
+    
+  <url>
+    <loc>http://johnnyshieh.me/posts/dagger-subcomponent/</loc>
+    <lastmod>2017-08-03T03:58:07.000Z</lastmod>
+    <data>
+        <display>
+        <title>Dagger 2 完全解析（三），Component 的组织关系与 SubComponent</title>
+        <pubTime>2017-05-31T02:26:58.000Z</pubTime>
+        
+        <tag>android</tag>
+         
+        <tag>java</tag>
+         
+        <tag>dagger</tag>
+         
+         
+           
+             
+              <breadCrumb title="Android" url="http://johnnyshieh.me/categories/android/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
   <url>
     <loc>http://johnnyshieh.me/posts/dagger-advance/</loc>
     <lastmod>2017-08-02T03:15:36.000Z</lastmod>
@@ -226,30 +252,6 @@
 
     
   <url>
-    <loc>http://johnnyshieh.me/posts/dagger-subcomponent/</loc>
-    <lastmod>2017-08-02T03:12:37.000Z</lastmod>
-    <data>
-        <display>
-        <title>Dagger 2 完全解析（三），Component 的组织关系与 SubComponent</title>
-        <pubTime>2017-05-31T02:26:58.000Z</pubTime>
-        
-        <tag>android</tag>
-         
-        <tag>java</tag>
-         
-        <tag>dagger</tag>
-         
-         
-           
-             
-              <breadCrumb title="Android" url="http://johnnyshieh.me/categories/android/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
     <loc>http://johnnyshieh.me/posts/dagger-basic/</loc>
     <lastmod>2017-08-02T03:12:29.000Z</lastmod>
     <data>
@@ -362,7 +364,6 @@
     </data>
     </url>
 
-    
     
     
   <url>
@@ -587,7 +588,6 @@
     </data>
     </url>
 
-    
     
     
   <url>
