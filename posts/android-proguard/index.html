@@ -1,0 +1,1219 @@
+<!doctype html>
+
+
+
+
+<html class="theme-next pisces" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta http-equiv="Content-Language" content="zh-cn">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+  <meta name="google-site-verification" content="r1Es2KSXuS6zYdab4rZeEA6X-pEwRwyT4x89S7a4EHE">
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+  <link href="http://images.johnnyshieh.me/lib/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="http://images.johnnyshieh.me/fonts/font.css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+  
+
+<link href="http://images.johnnyshieh.me/lib/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="http://images.johnnyshieh.me/css/main.css?v=5.1.1" rel="stylesheet" type="text/css">
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1">
+
+
+
+  
+    <link rel="apple-touch-icon-precomposed" sizes="57x57" href="/apple-touch-icon-57x57.png">
+  
+    <link rel="apple-touch-icon-precomposed" sizes="120x120" href="/apple-touch-icon-120x120.png">
+  
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="/apple-touch-icon-152x152.png">
+  
+
+
+
+
+
+
+<meta name="description" content="Android 开发中为了代码安全一般都会使用 ProGuard 进行代码混淆，它可以把类名、属性名和方法名变为毫无意义的 a, b, c 等，但是有些代码是不需要混淆的，这时需要配置 proguard-rules.pro 文件。这是许多开发者对代码混淆的认识，但是 ProGuard 更深入的内容呢，如何配置混淆规则呢，下面我就分享下 Android 中 ProGuard 那些事。  先敲敲黑板，">
+<meta name="keywords" content="Android, ProGuard, obfuscator, 混淆, Johnny, Shieh, Johnny Shieh, johnny shieh blog, ">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android ProGuard 代码混淆那些事儿">
+<meta property="og:url" content="http://johnnyshieh.me/posts/android-proguard/index.html">
+<meta property="og:site_name" content="Johnny Shieh">
+<meta property="og:description" content="Android 开发中为了代码安全一般都会使用 ProGuard 进行代码混淆，它可以把类名、属性名和方法名变为毫无意义的 a, b, c 等，但是有些代码是不需要混淆的，这时需要配置 proguard-rules.pro 文件。这是许多开发者对代码混淆的认识，但是 ProGuard 更深入的内容呢，如何配置混淆规则呢，下面我就分享下 Android 中 ProGuard 那些事。  先敲敲黑板，">
+<meta property="og:updated_time" content="2017-08-07T03:40:55.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Android ProGuard 代码混淆那些事儿">
+<meta name="twitter:description" content="Android 开发中为了代码安全一般都会使用 ProGuard 进行代码混淆，它可以把类名、属性名和方法名变为毫无意义的 a, b, c 等，但是有些代码是不需要混淆的，这时需要配置 proguard-rules.pro 文件。这是许多开发者对代码混淆的认识，但是 ProGuard 更深入的内容呢，如何配置混淆规则呢，下面我就分享下 Android 中 ProGuard 那些事。  先敲敲黑板，">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"right","display":"always","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: false,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: 'MXXOTCZPXC',
+      apiKey: 'b20faa24d6ee8a15262068ef5673fa82',
+      indexName: 'blog',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"搜索文章","hits_empty":"找不到与您搜索的 ${query} 相符的文章，请尝试其他关键字","hits_stats":"找到 ${hits} 条搜索结果，用时 ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://johnnyshieh.me/posts/android-proguard/">
+
+
+
+
+
+  <title>Android ProGuard 代码混淆那些事儿 | Johnny Shieh</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?43cea51223ad3b7bc740196aab48d664";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Johnny Shieh</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">人如果没有梦想，跟咸鱼有什么分别</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-books">
+          <a href="/books" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br>
+            
+            读书
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-friends">
+          <a href="/friends" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-users"></i> <br>
+            
+            小伙伴
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  
+  <div class="algolia-popup popup search-popup">
+    <div class="algolia-search">
+      <div class="algolia-search-input-icon">
+        <i class="fa fa-search"></i>
+      </div>
+      <div class="algolia-search-input" id="algolia-search-input"></div>
+    </div>
+
+    <div class="algolia-results">
+      <div id="algolia-stats"></div>
+      <div id="algolia-hits"></div>
+      <div id="algolia-pagination" class="algolia-pagination"></div>
+    </div>
+
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+  </div>
+
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://johnnyshieh.me/posts/android-proguard/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Johnny Shieh">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Johnny Shieh">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Android ProGuard 代码混淆那些事儿</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-02T16:52:50+08:00">
+                2017-08-02
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/android/" itemprop="url" rel="index">
+                    <span itemprop="name">Android</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+              <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-comment-o"></i>
+              </span>
+              
+                <a href="/posts/android-proguard/#SOHUCS" itemprop="discussionUrl">
+                  <span id="changyan_count_unit" class="post-comments-count hc-comment-count" data-xid="posts/android-proguard/" itemprop="commentsCount"></span>
+                </a>
+              
+            
+          
+
+          
+          
+             <span id="/posts/android-proguard/" class="leancloud_visitors" data-flag-title="Android ProGuard 代码混淆那些事儿">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </span></div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>Android 开发中为了代码安全一般都会使用 ProGuard 进行代码混淆，它可以把类名、属性名和方法名变为毫无意义的 a, b, c 等，但是有些代码是不需要混淆的，这时需要配置 <code>proguard-rules.pro</code> 文件。这是许多开发者对代码混淆的认识，但是 ProGuard 更深入的内容呢，如何配置混淆规则呢，下面我就分享下 Android 中 ProGuard 那些事。</p>
+<blockquote>
+<p>先敲敲黑板，划下重点：本文内容重点在第三节 – 自定义要保留的代码</p>
+</blockquote>
+<h2 id="ProGuard-简介"><a href="#ProGuard-简介" class="headerlink" title="ProGuard 简介"></a>ProGuard 简介</h2><p>ProGuard 官网地址：<a href="https://www.guardsquare.com/en/proguard" target="_blank" rel="external">https://www.guardsquare.com/en/proguard</a></p>
+<blockquote>
+<p><strong>ProGuard</strong> is a Java class file shrinker, optimizer, obfuscator, and preverifier. The shrinking step detects and removes unused classes, fields, methods and attributes. The optimization step analyzes and optimizes the bytecode of the methods. The obfuscation step renames the remaining classes, fields, and methods using short meaningless names. These first steps make the code base smaller, more efficient, and harder to reverse-engineer. The final preverification step adds preverification information to the classes, which is required for Java Micro Edition and for Java 6 and higher.</p>
+</blockquote>
+<p>ProGuard 的功能有四个：压缩、优化、混淆以及预校验。压缩环节会检测病移除无用的类、字段、方法和属性。优化环节会分析并优化方法的字节码。混淆环节会用无意义的短变量去重命名其余的类、字段以及方法。这些环节可以使得代码更精简，更高效，也跟难被逆向工程。预校验是针对 J2ME 和 Java 6 以上的，在 Android 开发中不需要。</p>
+<a id="more"></a>
+<h2 id="Android-Studio-中使用-ProGuard"><a href="#Android-Studio-中使用-ProGuard" class="headerlink" title="Android Studio 中使用 ProGuard"></a>Android Studio 中使用 ProGuard</h2><blockquote>
+<p>本节内容引用自 Android 官网：<a href="https://developer.android.com/studio/build/shrink-code.html" target="_blank" rel="external">https://developer.android.com/studio/build/shrink-code.html</a></p>
+</blockquote>
+<h3 id="启用-ProGuard"><a href="#启用-ProGuard" class="headerlink" title="启用 ProGuard"></a>启用 ProGuard</h3><p>要在 Android Studio 中使用 ProGuard，请在 <code>build.gradle</code> 文件内相应的构建类型中添加 <code>minifyEnabled true</code>。</p>
+<p>例如，下面在 release 版本构建时启用代码压缩：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">android &#123;</div><div class="line">    buildTypes &#123;</div><div class="line">        release &#123;</div><div class="line">            minifyEnabled <span class="literal">true</span></div><div class="line">            proguardFiles getDefaultProguardFile(<span class="string">'proguard-android.txt'</span>),</div><div class="line">                    <span class="string">'proguard-rules.pro'</span></div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    ...</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>注：Android Studio 会在使用 Instant Run 时停用 ProGuard。如果您需要为增量式构建压缩代码，请尝试试用 Gradle 压缩器。</p>
+<p>每次启用 ProGuard 构建时，都会在 <code>&lt;module-name&gt;</code>/build/outputs/mapping/release/  下输出下列文件：</p>
+<ul>
+<li><p>dump.txt – 说明 APK 中所有类文件的内部结构。</p>
+</li>
+<li><p>mapping.txt – 提供原始与混淆过的类、方法和字段名称之间的转换。</p>
+</li>
+<li><p>seeds.txt – 列出未进行混淆的类和成员。</p>
+</li>
+<li><p>usage.txt – 列出从 APK 移除的代码。</p>
+</li>
+</ul>
+<h3 id="配置-ProGuard-规则"><a href="#配置-ProGuard-规则" class="headerlink" title="配置 ProGuard 规则"></a>配置 ProGuard 规则</h3><p>上面的例子中除了 minifyEnabled 属性外，还有用于定义 ProGuard 规则的 proguardFiles 属性：</p>
+<ul>
+<li><code>getDefaultProguardFile(&#39;proguard-android.txt&#39;)</code> 方法会从 Android SDK 目录下的 <code>tools/proguard/</code> 文件夹获取默认的 ProGuard 设置，默认只会使用压缩和混淆两个功能。</li>
+</ul>
+<p>提示：想要进一步使用字节码优化功能，请使用位于同一位置的 proguard-android-optimize.txt 文件。它包含相同的 ProGuard 规则，但还包括其他在字节码一级（方法内和方法间）执行分析的优化，以进一步减小 APK 大小和提高运行速度。</p>
+<p>注意：从 Android Gradle 插件 2.2 开始，使用的是 Gradle 插件中内置的配置文件，可以在 <code>&lt;root_project&gt;</code>/build/intermediates/proguard-files/ 下看到，Android SDK 目录下的配置 ProGuard 配置文件不再维护了，也会被 Gradle 2.2 以上的插件忽略。</p>
+<ul>
+<li><code>proguard-rules.pro</code> 文件用于添加自定义的 ProGuard 规则，例如自定义保留一些不需要移除或混淆的代码。默认情况下，该文件位于模块根目录（build.gradle 文件旁）。</li>
+</ul>
+<p>要添加更多各构建变体专用的 ProGuard 规则，请在相应的 <code>productFlavor</code> 代码块中再添加一个 proguardFiles 属性。例如，以下 Gradle 文件会向 flavor2 产品定制添加 flavor2-rules.pro。现在 flavor2 使用所有三个 ProGuard 规则，因为还应用了来自 release 代码块的规则。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">android &#123;</div><div class="line">    ...</div><div class="line">    buildTypes &#123;</div><div class="line">        release &#123;</div><div class="line">            minifyEnabled <span class="literal">true</span></div><div class="line">            proguardFiles getDefaultProguardFile(<span class="string">'proguard-android.txt'</span>),</div><div class="line">                   <span class="string">'proguard-rules.pro'</span></div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    productFlavors &#123;</div><div class="line">        flavor1 &#123;</div><div class="line">        &#125;</div><div class="line">        flavor2 &#123;</div><div class="line">            proguardFile <span class="string">'flavor2-rules.pro'</span></div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="转换混淆过的堆栈跟踪信息"><a href="#转换混淆过的堆栈跟踪信息" class="headerlink" title="转换混淆过的堆栈跟踪信息"></a>转换混淆过的堆栈跟踪信息</h3><p>在经过 ProGuard 混淆后，方法的名称都经过了混淆处理，堆栈跟踪信息的可读性变得很差。要将其转化成可读的堆栈信息，请使用 retrace 脚本（在 Windows 上为 retrace.bat；在 Mac/Linux 上为 retrace.sh）。它位于 <code>&lt;sdk-root&gt;</code>/tools/proguard/ 目录中。该脚本利用 mapping.txt 文件和您的堆叠追踪生成新的可读堆叠追踪。使用 retrace 工具的语法如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">retrace.bat|retrace.sh [-verbose] mapping.txt [&lt;stacktrace_file&gt;]</div><div class="line"></div><div class="line">// example</div><div class="line">retrace.sh -verbose mapping.txt obfuscated_trace.txt</div></pre></td></tr></table></figure>
+<p>如果不指定堆栈跟踪文件，retrace 工具会从标准输入读取。</p>
+<h3 id="在-Instant-Run-中启动代码压缩"><a href="#在-Instant-Run-中启动代码压缩" class="headerlink" title="在 Instant Run 中启动代码压缩"></a>在 Instant Run 中启动代码压缩</h3><p>如果代码压缩在增量构建应用时非常重要，可以尝试使用 Anroid Gradle 插件内置的试用代码压缩器。也可以使用过与 ProGuard 相同的配置文件来配置 Android 插件压缩器。但是，<strong>Android 插件压缩器不会对您的代码进行混淆处理或优化</strong>，它只会删除未使用的代码。</p>
+<p>要启用 Android 插件压缩器，只需在 “debug” 构建类型中将 useProguard 设置为 false（并保留 minifyEnabled 设置 true）：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">android &#123;</div><div class="line">    buildTypes &#123;</div><div class="line">        debug &#123;</div><div class="line">            minifyEnabled <span class="literal">true</span></div><div class="line">            useProguard <span class="literal">false</span></div><div class="line">            proguardFiles getDefaultProguardFile(<span class="string">'proguard-android.txt'</span>),</div><div class="line">                    <span class="string">'proguard-rules.pro'</span></div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    ...</div></pre></td></tr></table></figure>
+<h2 id="自定义要保留的代码"><a href="#自定义要保留的代码" class="headerlink" title="自定义要保留的代码"></a>自定义要保留的代码</h2><p>一般情况下，默认的 ProGuard 配置文件（proguard-android.txt）是不够，这样会移除所有未使用的代码，并且会混淆几乎所有（除了默认配置中保留的除外）的代码。但是有些情况下，我们是不想移除或混淆部分代码，例如：</p>
+<ul>
+<li><p>Activity, Service, Receiver 等在 AndroidManifest.xml 文件中注册的类</p>
+</li>
+<li><p>JNI 中的 native 方法</p>
+</li>
+<li><p>反射使用的类，属性，方法</p>
+</li>
+</ul>
+<p>要保留不想被移除或混淆的代码，有两种方法：</p>
+<p>一是在 <code>proguard-rules.pro</code> 文件中添加规则；</p>
+<p>二是向需要保留的代码添加 <a href="https://developer.android.com/reference/android/support/annotation/Keep.html" target="_blank" rel="external"><code>keep</code></a> 注解，需要引入 support-annotation 包。在类上添加 @Keep 可原样保留整个类。在方法或字段上添加它可完整保留方法 / 字段（及其名称）以及类名称。</p>
+<p>一般都会使用第一种方法，因为规则都在这个文件中，方便查找和修改，不过 ProGuard 规则的语法一开始看可能难以理解，下面先看默认的 proguard-android.txt 中是如何写的。</p>
+<h3 id="默认的-ProGuard-规则"><a href="#默认的-ProGuard-规则" class="headerlink" title="默认的 ProGuard 规则"></a>默认的 ProGuard 规则</h3><p>下面我列出的 <code>&lt;root_project&gt;</code>/build/intermediates/proguard-files/ 中的 proguard-android.txt-2.3.3，后面 2.3.3 是因为我这里的 Gradle 插件的版本为 2.3.3。前面有提过，Gradle 插件 2.2 以后，使用的是插件内置的 ProGuard 规则。</p>
+<p>下面文件中 <code>#</code> 开头的是源文件的注释，<code>//</code> 开头的是我添加的说明：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># This is a configuration file for ProGuard.</span></div><div class="line"><span class="comment"># http://proguard.sourceforge.net/index.html#manual/usage.html</span></div><div class="line"><span class="comment">#</span></div><div class="line"><span class="comment"># Starting with version 2.2 of the Android plugin for Gradle, this file is distributed together with</span></div><div class="line"><span class="comment"># the plugin and unpacked at build-time. The files in $ANDROID_HOME are no longer maintained and</span></div><div class="line"><span class="comment"># will be ignored by new version of the Android plugin for Gradle.</span></div><div class="line">// 上面三行注释可以看出 Gradle 2.2 之后使用的是内置的规则文件</div><div class="line"></div><div class="line">-dontusemixedcaseclassnames     // 混淆时不使用大小写混写的类名</div><div class="line">-dontskipnonpubliclibraryclasses    // 不跳过 libraray 中的非 public 类</div><div class="line">-verbose    // 打印处理过程的信息</div><div class="line"></div><div class="line"><span class="comment"># Optimization is turned off by default. Dex does not like code run</span></div><div class="line"><span class="comment"># through the ProGuard optimize and preverify steps (and performs some</span></div><div class="line"><span class="comment"># of these optimizations on its own).</span></div><div class="line">-dontoptimize   // 关闭优化功能，因为优化可能会造成一些潜在的风险，无法保证在所有版本的 Dalvik 都正常运行</div><div class="line">-dontpreverify  // 关闭预校验功能，Android 平台上不需要，所以默认是关闭的</div><div class="line"><span class="comment"># Note that if you want to enable optimization, you cannot just</span></div><div class="line"><span class="comment"># include optimization flags in your own project configuration file;</span></div><div class="line"><span class="comment"># instead you will need to point to the</span></div><div class="line"><span class="comment"># "proguard-android-optimize.txt" file instead of this one from your</span></div><div class="line"><span class="comment"># project.properties file.</span></div><div class="line"></div><div class="line"><span class="comment"># Preserve some attributes that may be required for reflection.</span></div><div class="line">-keepattributes *Annotation*,Signature,InnerClasses,EnclosingMethod     // 保留注解属性、泛型、内部类、封闭方法，后面都是三个属性都是为了反射正常运行</div><div class="line"></div><div class="line">-keep public class com.google.vending.licensing.ILicensingService</div><div class="line">-keep public class com.android.vending.licensing.ILicensingService</div><div class="line">-keep public class com.google.android.vending.licensing.ILicensingService</div><div class="line">-dontnote com.android.vending.licensing.ILicensingService</div><div class="line">-dontnote com.google.vending.licensing.ILicensingService</div><div class="line">-dontnote com.google.android.vending.licensing.ILicensingService</div><div class="line"></div><div class="line"><span class="comment"># For native methods, see http://proguard.sourceforge.net/manual/examples.html#native</span></div><div class="line">-keepclasseswithmembernames class * &#123;</div><div class="line">    native &lt;methods&gt;;</div><div class="line">&#125;</div><div class="line">// 不混淆 native 方法名和包含 native 方法的类名，如果 native 方法未使用，还是会被移除</div><div class="line"></div><div class="line"><span class="comment"># Keep setters in Views so that animations can still work.</span></div><div class="line">-keepclassmembers public class * extends android.view.View &#123;</div><div class="line">    void <span class="built_in">set</span>*(***);</div><div class="line">    *** get*();</div><div class="line">&#125;</div><div class="line">// 保留继承自 View 的 <span class="built_in">set</span>Xx() 和 getXx() 方法，因为属性动画会用到相应的 setter 和 getter</div><div class="line"></div><div class="line"><span class="comment"># We want to keep methods in Activity that could be used in the XML attribute onClick.</span></div><div class="line">-keepclassmembers class * extends android.app.Activity &#123;</div><div class="line">    public void *(android.view.View);</div><div class="line">&#125;</div><div class="line">// 保留 Activity 中参数是 View 的方法，因为在 XML 中配置 android:onClick=<span class="string">"buttonClick"</span> 属性时，点击该按钮时就会调用 Activity 中的 buttonClick(View view) 方法</div><div class="line"></div><div class="line"><span class="comment"># For enumeration classes, see http://proguard.sourceforge.net/manual/examples.html#enumerations</span></div><div class="line">-keepclassmembers enum * &#123;</div><div class="line">    public static **[] values();</div><div class="line">    public static ** valueOf(java.lang.String);</div><div class="line">&#125;</div><div class="line">// 保留 enum 中的静态 values() 和 valueOf 方法，因为这些静态方法可能会在运行时通过内省调用</div><div class="line"></div><div class="line">-keepclassmembers class * implements android.os.Parcelable &#123;</div><div class="line">    public static final ** CREATOR;</div><div class="line">&#125;</div><div class="line">// 保留 Parcelable 子类中的 CREATOR 字段</div><div class="line"></div><div class="line">-keepclassmembers class **.R$* &#123;</div><div class="line">    public static &lt;fields&gt;;</div><div class="line">&#125;</div><div class="line">// 保留 R 文件中的所有静态字段，这些静态字段是用来记录资源 ID 的</div><div class="line"></div><div class="line"><span class="comment"># Preserve annotated Javascript interface methods.</span></div><div class="line">-keepclassmembers class * &#123;</div><div class="line">    @android.webkit.JavascriptInterface &lt;methods&gt;;</div><div class="line">&#125;</div><div class="line">// 保留 JavascriptInterface 注解标记的方法，不然 js 调用时就会找不到方法</div><div class="line"></div><div class="line"><span class="comment"># The support libraries contains references to newer platform versions.</span></div><div class="line"><span class="comment"># Don't warn about those in case this app is linking against an older</span></div><div class="line"><span class="comment"># platform version. We know about them, and they are safe.</span></div><div class="line">-dontnote android.support.**</div><div class="line">-dontwarn android.support.**</div><div class="line">// 不对 android.support 包下的代码警告，因为 support 包中一些代码是高版本才能使用，但是在低版本中有兼容性判断，是安全，所以在低版本打包时也不要警告</div><div class="line"></div><div class="line"><span class="comment"># Understand the @Keep support annotation.</span></div><div class="line">-keep class android.support.annotation.Keep     // 保留 Keep 注解</div><div class="line"></div><div class="line">// 接下来的规则都是保留 Keep 注解标记的类型</div><div class="line">-keep @android.support.annotation.Keep class * &#123;*;&#125;   // 标记类时，保留类及其所有成员</div><div class="line"></div><div class="line">-keepclasseswithmembers class * &#123;</div><div class="line">    @android.support.annotation.Keep &lt;methods&gt;;</div><div class="line">&#125;</div><div class="line">// 标记方法时，保留标注的方法和包含它的类名</div><div class="line"></div><div class="line">-keepclasseswithmembers class * &#123;</div><div class="line">    @android.support.annotation.Keep &lt;fields&gt;;</div><div class="line">&#125;</div><div class="line">// 标记字段时，保留标记的字段和包含它的类名</div><div class="line"></div><div class="line">-keepclasseswithmembers class * &#123;</div><div class="line">    @android.support.annotation.Keep &lt;init&gt;(...);</div><div class="line">&#125;</div><div class="line">// 标记构造函数时，保留标记的构造函数和包含它的类名</div></pre></td></tr></table></figure>
+<p>以上就是默认的 proguard-android.txt 中的所有规则，包含了常见的一些情况，但是在日常开发过程中，我们还是需要再自定义一些规则。不过 ProGuard 语法还是有些难以理解，例如上面的 <code>keepclasseswithmembers</code> 和 <code>keepclasseswithmembernames</code> 有什么区别呢？<code>keepclassmembers</code> 和 <code>keepclasseswithmembers</code> 又有什么区别呢？</p>
+<h3 id="ProGuard-语法"><a href="#ProGuard-语法" class="headerlink" title="ProGuard 语法"></a>ProGuard 语法</h3><p>ProGuard 语法的官方文档：<a href="https://www.guardsquare.com/en/proguard/manual/usage" target="_blank" rel="external">https://www.guardsquare.com/en/proguard/manual/usage</a></p>
+<p>ProGuard 语法中的基本符号：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 代表行注释符</span></div><div class="line">- 表示一条规则的开始</div></pre></td></tr></table></figure>
+<p>一些常见选项：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">-dontnote   // 不打印潜在的错误或疏漏的注释</div><div class="line">-dontwarn   // 不针对未处理的引用或其他重要问题发出警告</div><div class="line">-ignorewarning  // 忽略产生的警告继续往下运行</div><div class="line">-dontskipnonpubliclibraryclassmembers // 不跳过非公开库的类成员</div></pre></td></tr></table></figure>
+<p>ProGuard 规则中最常用的是 Keep 选项，所以下面主要讲 Keep 选项的语法，ProGuard 中有 6 组 Keep 选项，以表格的方式显示如下：</p>
+<table>
+<thead>
+<tr>
+<th>Keep 选项</th>
+<th>描述</th>
+<th>压缩</th>
+<th>混淆</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>-keep</td>
+<td>保留类和类中的成员，防止被移除或混淆</td>
+<td>×</td>
+<td>×</td>
+</tr>
+<tr>
+<td>-keepnames</td>
+<td>不混淆类和类中的成员</td>
+<td>√</td>
+<td>×</td>
+</tr>
+<tr>
+<td>-keepclassmembers</td>
+<td>保留类中的成员，防止被移除或混淆</td>
+<td>×</td>
+<td>×</td>
+</tr>
+<tr>
+<td>-keepclasseswithmembers</td>
+<td>保留类中成员及包含它的类，防止被移除或混淆</td>
+<td>×</td>
+<td>×</td>
+</tr>
+<tr>
+<td>-keepclassmembernames</td>
+<td>不混淆类中的成员</td>
+<td>√</td>
+<td>×</td>
+</tr>
+<tr>
+<td>-keepclasseswithmembernames</td>
+<td>不混淆类中的成员及包含它的类</td>
+<td>√</td>
+<td>×</td>
+</tr>
+</tbody>
+</table>
+<p>这六组选项看起来很容易搞混，其实只要掌握其中的关键差别就好区分了：（一）带 <code>names</code> 后缀的表示只是防止被混淆，还是可被移除，而没有 <code>names</code> 后缀则表示防止被混淆或移除；（二）<code>classmembers</code> 表示只对类中成员生效，而 <code>classeswithmembers</code> 表示不仅对类中成员生效，还对包含它的类生效；（三）<code>keep</code> 表示对类和类中匹配的成员生效，而 <code>keepclasseswithmembers</code> 表示对匹配的类成员及包含它的类生效，例如 <code>-keep class * { native &lt;methods&gt;; }</code> 表示保留所有的类和类中的 native 方法，<code>-keepclasseswithmembers class * { native &lt;methods&gt;; }</code> 表示保留所有的 native 方法及包含 native 方法的类。</p>
+<p>Keep 选项后面的匹配条件中，经常需要用到通配符，例如上面默认 proguard-android.txt 规则中的 <code>void set*(***);</code>，下面看看这些通配符的含义：<br><br>| 通配符     | 描述 |<br>| ——— | — |<br>| <code>&lt;init&gt;</code>    | 匹配所有构造函数 |<br>| <code>&lt;fields&gt;</code>  | 匹配所有字段    |<br>| <code>&lt;methods&gt;</code> | 匹配所有方法，不包括构造函数    |<br>| ?         | 匹配任意单个字符 |<br>| %         | 匹配任意原始数据类型，例如 boolean、int，但是不包括 void |<br>| *         | 匹配任意长度字符，但是不包括包名分隔符（ . )，例如 <code>android.support.*</code> 不匹配 android.support.annotation.Keep |<br>| **        | 匹配任意长度字符，包括包名分隔符（ . )，例如 <code>android.support.**</code> 匹配 support 包下的所有类 |<br>| ***       | 匹配任意类型，包括原始数据类型、数组 |<br>| …       | 匹配任意数量的任意参数类型 |</p>
+<p>注意：<code>?</code>，<code>*</code> 和 <code>**</code> 都是不匹配原始数据类型和数组的，例如 <code>void set*(**)</code> 匹配 “void setObject(java.lang.Object obj)”，但是不匹配 “void setInt()” 和 “void setObject(java.lang.Object[] objs)”。</p>
+<p>注意：”-keep class * extends android.view.View” 表示保留 View 的子类，方法和字段还是会被混淆的，而 “-keep class * extends android.view.View { *; }” 才表示保留所有 View 的子类及其成员。</p>
+<p>在了解 Keep 选项和通配符后，在回头看默认的 proguard-android.txt 文件就轻松多了。</p>
+<h3 id="常用的自定义-ProGuard-规则"><a href="#常用的自定义-ProGuard-规则" class="headerlink" title="常用的自定义 ProGuard 规则"></a>常用的自定义 ProGuard 规则</h3><p>除了默认的 proguard-android.txt 文件的规则外，一般还需要在 <code>proguard-rules.pro</code> 中添加一些自定义的规则，下面是我总结的一些常用的自定义规则。</p>
+<p><strong>保留源代码行号</strong></p>
+<p>方便查看堆栈信息时对应源代码的位置。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># Keep source file name and the line numbers of methods</span></div><div class="line">-keepattributes SourceFile,LineNumberTable</div><div class="line">-renamesourcefileattribute SourceFile</div></pre></td></tr></table></figure>
+<p><strong>Android 应用中常用规则</strong></p>
+<p>Android 开发中，一般需要保留 AndroidManifest.xml 定义的四大组件，自定义 View 的构造函数，参照自官网的 <a href="https://www.guardsquare.com/en/proguard/manual/examples#androidapplication" target="_blank" rel="external">Android application sample</a>。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 一般可以加上这两个规则，不跳过非公开库的类成员，保留方法上的异常属性</span></div><div class="line">-dontskipnonpubliclibraryclassmembers</div><div class="line">-keepattributes Exceptions</div><div class="line"></div><div class="line"><span class="comment"># Keep android classes in AndroidManifest.xml</span></div><div class="line">-keep public class * extends android.app.Activity </div><div class="line">-keep public class * extends android.app.Application </div><div class="line">-keep public class * extends android.app.Service </div><div class="line">-keep public class * extends android.content.BroadcastReceiver </div><div class="line">-keep public class * extends android.content.ContentProvider</div><div class="line"></div><div class="line">-keep public class * extends android.view.View &#123; </div><div class="line">      public &lt;init&gt;(android.content.Context); </div><div class="line">      public &lt;init&gt;(android.content.Context, android.util.AttributeSet); </div><div class="line">      public &lt;init&gt;(android.content.Context, android.util.AttributeSet, int); </div><div class="line">      public void <span class="built_in">set</span>*(...); </div><div class="line">&#125;</div><div class="line"></div><div class="line">-keepclasseswithmembers class * &#123; </div><div class="line">    public &lt;init&gt;(android.content.Context, android.util.AttributeSet); </div><div class="line">&#125; </div><div class="line"></div><div class="line">-keepclasseswithmembers class * &#123; </div><div class="line">    public &lt;init&gt;(android.content.Context, android.util.AttributeSet, int); </div><div class="line">&#125; </div><div class="line"></div><div class="line">-keepclassmembers class * extends android.content.Context &#123; </div><div class="line">    public void *(android.view.View); </div><div class="line">    public void *(android.view.MenuItem); </div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><strong>混淆包名</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">-repackageclasses <span class="string">''</span> </div><div class="line">-allowaccessmodification</div></pre></td></tr></table></figure>
+<p><strong>不混淆 Serializable 相关内容</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">-keepnames class * implements java.io.Serializable</div><div class="line">-keepclassmembers class * implements java.io.Serializable &#123; </div><div class="line">    static final long serialVersionUID; </div><div class="line">    private static final java.io.ObjectStreamField[] serialPersistentFields; </div><div class="line">    !static !transient &lt;fields&gt;; </div><div class="line">    !private &lt;fields&gt;; </div><div class="line">    !private &lt;methods&gt;; </div><div class="line">    private void writeObject(java.io.ObjectOutputStream); </div><div class="line">    private void <span class="built_in">read</span>Object(java.io.ObjectInputStream); </div><div class="line">    java.lang.Object writeReplace(); </div><div class="line">    java.lang.Object <span class="built_in">read</span>Resolve(); </div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><strong>保留实体类</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">-keep class com.xxx.entity.** &#123;</div><div class="line">    void <span class="built_in">set</span>*(***); </div><div class="line">    void <span class="built_in">set</span>*(int, ***); </div><div class="line">    boolean is*(); </div><div class="line">    boolean is*(int); </div><div class="line">    *** get*(); </div><div class="line">    *** get*(int); </div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>项目中用的一些开源库，只需要根据它们的建议添加相应的规则就可以了，这里就不再重复了。</p>
+<p>这篇文章的内容就到这里了，感谢你耐心看到最后，希望对大家有所帮助，对于 ProGuard 还有疑问的欢迎在下面留言。</p>
+      
+    </div>
+
+    
+    <section data-mpa-template-id="95" class="mpa-template" data-mpa-color="#ffffff">
+      <section style="margin-top: 20px;display: -webkit-box;display: flex;-webkit-box-pack: center;justify-content: center;-webkit-box-align: center;align-items: center" data-mid="t22">
+        <section style="text-align: center;line-height: 30px" data-mid="">
+          <section style="display: inline-block;float: left;width: 95px;height: 2px;background: -webkit-linear-gradient(right, #141414, #f0f0f0);background: linear-gradient(to left, #141414, #f0f0f0);-webkit-transform: translate(0px, 12px);-ms-transform: translate(0px, 12px);transform: translate(0px, 12px)" data-mid="" data-contenteditable="false">
+          </section>
+          <section style="float: left;width: 4px;height: 4px;border-radius: 50%;padding: 3px;background-color: #b1b1b1;text-align: center;-webkit-transform: translate(0px, 8px);-ms-transform: translate(0px, 8px);transform: translate(0px, 8px)" data-mid="" data-contenteditable="false">
+            <section style="width: 5px;height: 5px;border-radius: 50%;background-color: #141414" data-mid="">
+            </section>
+          </section>
+          <section style="float: left;min-width: 50px;padding: 0 10px 0 10px;font-size: 16px;color: #4f4f4f;text-align: center;line-height: 30px" data-mid="">END</section>
+          <section style="float: left;padding: 3px;width: 4px;height: 4px;border-radius: 50%;background-color: #b1b1b1;text-align: center;-webkit-transform: translate(0px, 9px);-ms-transform: translate(0px, 9px);transform: translate(0px, 9px)" data-mid="" data-contenteditable="false">
+            <section style="width: 5px;height: 5px;border-radius: 50%;background-color: #141414" data-mid="">
+            </section>
+          </section>
+          <section style="display: inline-block;float: left;width: 95px;height: 2px;background: -webkit-linear-gradient(left, #141414, #f0f0f0);background: linear-gradient(to right, #141414, #f0f0f0);-webkit-transform: translate(-1px, 14px);-ms-transform: translate(-1px, 14px);transform: translate(-1px, 14px)" data-mid="" data-contenteditable="false">
+          </section>
+        </section>
+      </section>
+    </section>
+    
+
+    <div>
+      
+        
+<div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
+    <img id="wechat_subscriber_qcode" src="/uploads/wechat_qcode.jpg" alt="Johnny Shieh wechat" style="width: 200px; max-width: 100%">
+    <div>我的公众号，不只有技术，还有咖啡和彩蛋！</div>
+</div>
+
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/android/" rel="tag"># android</a>
+          
+            <a href="/tags/proguard/" rel="tag"># proguard</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/posts/unit-test-junit4-and-kotlin-test/" rel="next" title="Kotlin 写 Android 单元测试（二），JUnit 4 测试框架和 kotlin.test 库的使用">
+                <i class="fa fa-chevron-left"></i> Kotlin 写 Android 单元测试（二），JUnit 4 测试框架和 kotlin.test 库的使用
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="SOHUCS" sid="posts/android-proguard/"></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image" src="/uploads/avatar.png" alt="Johnny Shieh">
+          <p class="site-author-name" itemprop="name">Johnny Shieh</p>
+           
+              <p class="site-description motion-element" itemprop="description">我本微末，心向天空</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">51</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">10</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">34</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/JohnnyShieh" rel="external nofollow" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/johnnyshieh17" rel="external nofollow" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  Weibo
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="mailto:JohnnyShieh17@gmail.com" rel="external nofollow" target="_blank" title="Gmail">
+                  
+                    <i class="fa fa-fw fa-envelope"></i>
+                  
+                  Gmail
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.jianshu.com/u/763027594c0b" rel="external nofollow" target="_blank" title="简书">
+                  
+                    <i class="fa fa-fw fa-book"></i>
+                  
+                  简书
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        <!--<div style="margin: 20px 0 20px 0; height: 1px; background: #eee"></div> 
+<div id="hot-series">
+    <ul class="sidebar-nav" style="margin-bottom: 0;">
+        <li>热门系列</li>
+    </ul>
+    <ul class="series-posts" style="font-size: 14px; padding-left: 10px; list-style: none; text-align: left;">
+        <li><span><a href="http://johnnyshieh.me/tags/dagger/">Dagger 完全解析</a></span>（5）</li>
+        <li><span><a href="http://johnnyshieh.me/categories/unit-test/">Kotlin 写 Android 单元测试</a>（2）</span></li>
+    </ul>
+</div>
+-->
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#ProGuard-简介"><span class="nav-number">1.</span> <span class="nav-text">ProGuard 简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Android-Studio-中使用-ProGuard"><span class="nav-number">2.</span> <span class="nav-text">Android Studio 中使用 ProGuard</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#启用-ProGuard"><span class="nav-number">2.1.</span> <span class="nav-text">启用 ProGuard</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#配置-ProGuard-规则"><span class="nav-number">2.2.</span> <span class="nav-text">配置 ProGuard 规则</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#转换混淆过的堆栈跟踪信息"><span class="nav-number">2.3.</span> <span class="nav-text">转换混淆过的堆栈跟踪信息</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#在-Instant-Run-中启动代码压缩"><span class="nav-number">2.4.</span> <span class="nav-text">在 Instant Run 中启动代码压缩</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#自定义要保留的代码"><span class="nav-number">3.</span> <span class="nav-text">自定义要保留的代码</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#默认的-ProGuard-规则"><span class="nav-number">3.1.</span> <span class="nav-text">默认的 ProGuard 规则</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ProGuard-语法"><span class="nav-number">3.2.</span> <span class="nav-text">ProGuard 语法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#常用的自定义-ProGuard-规则"><span class="nav-number">3.3.</span> <span class="nav-text">常用的自定义 ProGuard 规则</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+      <div style="margin: 20px 0 20px 0; height: 1px; background: #eee"></div> 
+<div id="hot-series">
+    <ul class="sidebar-nav" style="margin-bottom: 0">
+        <li>热门系列</li>
+    </ul>
+    <ul class="series-posts" style="font-size: 14px; padding-left: 10px; list-style: none; text-align: left">
+        <li><span><a href="http://johnnyshieh.me/tags/dagger/">Dagger 完全解析</a></span>（5）</li>
+        <li><span><a href="http://johnnyshieh.me/categories/unit-test/">Kotlin 写 Android 单元测试</a>（2）</span></li>
+    </ul>
+</div>
+
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy;  2015 - 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Johnny Shieh</span>
+</div>
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="http://images.johnnyshieh.me/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.1"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+  
+    <script type="text/javascript">
+    (function(){
+      var appid = 'cyt8KwhJ1';
+      var conf = 'prod_651756cd8d701505ffbb60e416929831';
+      var width = window.innerWidth || document.documentElement.clientWidth;
+      if (width < 960) {
+      window.document.write('<script id="changyan_mobile_js" charset="utf-8" type="text/javascript" src="https://changyan.sohu.com/upload/mobile/wap-js/changyan_mobile.js?client_id=' + appid + '&conf=' + conf + '"><\/script>'); } else { var loadJs=function(d,a){var c=document.getElementsByTagName("head")[0]||document.head||document.documentElement;var b=document.createElement("script");b.setAttribute("type","text/javascript");b.setAttribute("charset","UTF-8");b.setAttribute("src",d);if(typeof a==="function"){if(window.attachEvent){b.onreadystatechange=function(){var e=b.readyState;if(e==="loaded"||e==="complete"){b.onreadystatechange=null;a()}}}else{b.onload=a}}c.appendChild(b)};loadJs("https://changyan.sohu.com/upload/changyan.js",function(){
+        window.changyan.api.config({appid:appid,conf:conf})});
+      }
+    })();
+    </script>
+    <script type="text/javascript" src="https://assets.changyan.sohu.com/upload/plugins/plugins.count.js"></script>
+
+
+
+  
+
+
+
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/algolia-instant-search/instantsearch.min.css">
+
+  
+  
+  <script src="/lib/algolia-instant-search/instantsearch.min.js"></script>
+  
+
+  <script src="/js/src/algolia-search.js?v=5.1.1"></script>
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("n55tIxEzsDxW0BEFhehOkP2K-gzGzoHsz", "TwYjARitxhv7iOhbg7k2a9xB");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

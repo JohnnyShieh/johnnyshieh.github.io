@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://johnnyshieh.me/posts/android-proguard/</loc>
+    
+    <lastmod>2017-08-07T03:40:55.000Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://johnnyshieh.me/about/index.html</loc>
     
     <lastmod>2017-08-03T04:30:36.000Z</lastmod>
