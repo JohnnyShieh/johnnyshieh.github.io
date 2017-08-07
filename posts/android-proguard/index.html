@@ -114,7 +114,7 @@
 <meta property="og:url" content="http://johnnyshieh.me/posts/android-proguard/index.html">
 <meta property="og:site_name" content="Johnny Shieh">
 <meta property="og:description" content="Android 开发中为了代码安全一般都会使用 ProGuard 进行代码混淆，它可以把类名、属性名和方法名变为毫无意义的 a, b, c 等，但是有些代码是不需要混淆的，这时需要配置 proguard-rules.pro 文件。这是许多开发者对代码混淆的认识，但是 ProGuard 更深入的内容呢，如何配置混淆规则呢，下面我就分享下 Android 中 ProGuard 那些事。  先敲敲黑板，">
-<meta property="og:updated_time" content="2017-08-07T03:40:55.000Z">
+<meta property="og:updated_time" content="2017-08-07T04:02:27.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Android ProGuard 代码混淆那些事儿">
 <meta name="twitter:description" content="Android 开发中为了代码安全一般都会使用 ProGuard 进行代码混淆，它可以把类名、属性名和方法名变为毫无意义的 a, b, c 等，但是有些代码是不需要混淆的，这时需要配置 proguard-rules.pro 文件。这是许多开发者对代码混淆的认识，但是 ProGuard 更深入的内容呢，如何配置混淆规则呢，下面我就分享下 Android 中 ProGuard 那些事。  先敲敲黑板，">
@@ -583,7 +583,53 @@
 </tbody>
 </table>
 <p>这六组选项看起来很容易搞混，其实只要掌握其中的关键差别就好区分了：（一）带 <code>names</code> 后缀的表示只是防止被混淆，还是可被移除，而没有 <code>names</code> 后缀则表示防止被混淆或移除；（二）<code>classmembers</code> 表示只对类中成员生效，而 <code>classeswithmembers</code> 表示不仅对类中成员生效，还对包含它的类生效；（三）<code>keep</code> 表示对类和类中匹配的成员生效，而 <code>keepclasseswithmembers</code> 表示对匹配的类成员及包含它的类生效，例如 <code>-keep class * { native &lt;methods&gt;; }</code> 表示保留所有的类和类中的 native 方法，<code>-keepclasseswithmembers class * { native &lt;methods&gt;; }</code> 表示保留所有的 native 方法及包含 native 方法的类。</p>
-<p>Keep 选项后面的匹配条件中，经常需要用到通配符，例如上面默认 proguard-android.txt 规则中的 <code>void set*(***);</code>，下面看看这些通配符的含义：<br><br>| 通配符     | 描述 |<br>| ——— | — |<br>| <code>&lt;init&gt;</code>    | 匹配所有构造函数 |<br>| <code>&lt;fields&gt;</code>  | 匹配所有字段    |<br>| <code>&lt;methods&gt;</code> | 匹配所有方法，不包括构造函数    |<br>| ?         | 匹配任意单个字符 |<br>| %         | 匹配任意原始数据类型，例如 boolean、int，但是不包括 void |<br>| *         | 匹配任意长度字符，但是不包括包名分隔符（ . )，例如 <code>android.support.*</code> 不匹配 android.support.annotation.Keep |<br>| **        | 匹配任意长度字符，包括包名分隔符（ . )，例如 <code>android.support.**</code> 匹配 support 包下的所有类 |<br>| ***       | 匹配任意类型，包括原始数据类型、数组 |<br>| …       | 匹配任意数量的任意参数类型 |</p>
+<p>Keep 选项后面的匹配条件中，经常需要用到通配符，例如上面默认 proguard-android.txt 规则中的 <code>void set*(***);</code>，下面看看这些通配符的含义：</p>
+<table>
+<thead>
+<tr>
+<th>通配符</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>&lt;init&gt;</code></td>
+<td>匹配所有构造函数</td>
+</tr>
+<tr>
+<td><code>&lt;fields&gt;</code></td>
+<td>匹配所有字段</td>
+</tr>
+<tr>
+<td><code>&lt;methods&gt;</code></td>
+<td>匹配所有方法，不包括构造函数</td>
+</tr>
+<tr>
+<td>?</td>
+<td>匹配任意单个字符</td>
+</tr>
+<tr>
+<td>%</td>
+<td>匹配任意原始数据类型，例如 boolean、int，但是不包括 void</td>
+</tr>
+<tr>
+<td>*</td>
+<td>匹配任意长度字符，但是不包括包名分隔符（ . )，例如 <code>android.support.*</code> 不匹配 android.support.annotation.Keep</td>
+</tr>
+<tr>
+<td>**</td>
+<td>匹配任意长度字符，包括包名分隔符（ . )，例如 <code>android.support.**</code> 匹配 support 包下的所有类</td>
+</tr>
+<tr>
+<td>***</td>
+<td>匹配任意类型，包括原始数据类型、数组</td>
+</tr>
+<tr>
+<td>...</td>
+<td>匹配任意数量的任意参数类型</td>
+</tr>
+</tbody>
+</table>
 <p>注意：<code>?</code>，<code>*</code> 和 <code>**</code> 都是不匹配原始数据类型和数组的，例如 <code>void set*(**)</code> 匹配 “void setObject(java.lang.Object obj)”，但是不匹配 “void setInt()” 和 “void setObject(java.lang.Object[] objs)”。</p>
 <p>注意：”-keep class * extends android.view.View” 表示保留 View 的子类，方法和字段还是会被混淆的，而 “-keep class * extends android.view.View { *; }” 才表示保留所有 View 的子类及其成员。</p>
 <p>在了解 Keep 选项和通配符后，在回头看默认的 proguard-android.txt 文件就轻松多了。</p>
