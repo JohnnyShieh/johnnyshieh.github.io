@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://johnnyshieh.me/posts/kotlin-singleton-pattern/</loc>
+    
+    <lastmod>2017-08-18T11:46:15.000Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://johnnyshieh.me/about/index.html</loc>
     
     <lastmod>2017-08-09T08:28:48.000Z</lastmod>

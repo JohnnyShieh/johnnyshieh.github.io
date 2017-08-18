@@ -3,6 +3,28 @@
 
 
     
+  <url>
+    <loc>http://johnnyshieh.me/posts/kotlin-singleton-pattern/</loc>
+    <lastmod>2017-08-18T11:46:15.000Z</lastmod>
+    <data>
+        <display>
+        <title>Kotlin 设计模式之单例模式</title>
+        <pubTime>2017-08-18T09:21:38.000Z</pubTime>
+        
+        <tag>kotlin</tag>
+         
+        <tag>设计模式</tag>
+         
+         
+           
+             
+              <breadCrumb title="设计模式" url="http://johnnyshieh.me/categories/designpattern/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
     
   <url>
     <loc>http://johnnyshieh.me/posts/rxbus-rxjava2/</loc>
@@ -59,9 +81,9 @@
         
         <tag>android</tag>
          
-        <tag>java</tag>
-         
         <tag>dagger</tag>
+         
+        <tag>java</tag>
          
          
            
@@ -83,9 +105,9 @@
         
         <tag>android</tag>
          
-        <tag>java</tag>
-         
         <tag>dagger</tag>
+         
+        <tag>java</tag>
          
          
            
@@ -281,9 +303,9 @@
         
         <tag>android</tag>
          
-        <tag>java</tag>
-         
         <tag>dagger</tag>
+         
+        <tag>java</tag>
          
          
            
@@ -305,9 +327,9 @@
         
         <tag>android</tag>
          
-        <tag>java</tag>
-         
         <tag>dagger</tag>
+         
+        <tag>java</tag>
          
          
            
@@ -666,9 +688,9 @@
         
         <tag>android</tag>
          
-        <tag>java</tag>
-         
         <tag>dagger</tag>
+         
+        <tag>java</tag>
          
         <tag>kotlin</tag>
          

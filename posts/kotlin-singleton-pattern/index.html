@@ -107,17 +107,17 @@
 
 
 
-<meta name="description" content="介绍了单元测试的基本概念，为什么需要写单元测试">
-<meta name="keywords" content="单元测试, kotlin, unit test, android, Johnny, Shieh, Johnny Shieh, johnny shieh blog, ">
+<meta name="description" content="现在 Kotlin 的趋势日益高涨，Jake Wharton 大神近期从 Square 公司离职到 Google 负责 Kotlin 部分。我最近分析了 Kotlin 下的单例模式的实现方式，与 Java 下的实现有点区别，之前写过一篇 Java 设计模式之单例模式。 饿汉式Kotlin 引入了 object 类型，可以很容易声明单例模式。 123456789object Singleton &amp;#">
+<meta name="keywords" content="Kotlin, 设计模式, 单例, singleton, Johnny, Shieh, Johnny Shieh, johnny shieh blog, ">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Kotlin 写 Android 单元测试（一），单元测试是什么以及为什么需要">
-<meta property="og:url" content="http://johnnyshieh.me/posts/unit-test-what-and-why-in-kotlin/index.html">
+<meta property="og:title" content="Kotlin 设计模式之单例模式">
+<meta property="og:url" content="http://johnnyshieh.me/posts/kotlin-singleton-pattern/index.html">
 <meta property="og:site_name" content="Johnny Shieh">
-<meta property="og:description" content="介绍了单元测试的基本概念，为什么需要写单元测试">
-<meta property="og:updated_time" content="2017-07-08T12:16:43.000Z">
+<meta property="og:description" content="现在 Kotlin 的趋势日益高涨，Jake Wharton 大神近期从 Square 公司离职到 Google 负责 Kotlin 部分。我最近分析了 Kotlin 下的单例模式的实现方式，与 Java 下的实现有点区别，之前写过一篇 Java 设计模式之单例模式。 饿汉式Kotlin 引入了 object 类型，可以很容易声明单例模式。 123456789object Singleton &amp;#">
+<meta property="og:updated_time" content="2017-08-18T11:46:15.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Kotlin 写 Android 单元测试（一），单元测试是什么以及为什么需要">
-<meta name="twitter:description" content="介绍了单元测试的基本概念，为什么需要写单元测试">
+<meta name="twitter:title" content="Kotlin 设计模式之单例模式">
+<meta name="twitter:description" content="现在 Kotlin 的趋势日益高涨，Jake Wharton 大神近期从 Square 公司离职到 Google 负责 Kotlin 部分。我最近分析了 Kotlin 下的单例模式的实现方式，与 Java 下的实现有点区别，之前写过一篇 Java 设计模式之单例模式。 饿汉式Kotlin 引入了 object 类型，可以很容易声明单例模式。 123456789object Singleton &amp;#">
 
 
 
@@ -145,13 +145,13 @@
 
 
 
-  <link rel="canonical" href="http://johnnyshieh.me/posts/unit-test-what-and-why-in-kotlin/">
+  <link rel="canonical" href="http://johnnyshieh.me/posts/kotlin-singleton-pattern/">
 
 
 
 
 
-  <title>Kotlin 写 Android 单元测试（一），单元测试是什么以及为什么需要 | Johnny Shieh</title>
+  <title>Kotlin 设计模式之单例模式 | Johnny Shieh</title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -358,7 +358,7 @@
   
 
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://johnnyshieh.me/posts/unit-test-what-and-why-in-kotlin/">
+    <link itemprop="mainEntityOfPage" href="http://johnnyshieh.me/posts/kotlin-singleton-pattern/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Johnny Shieh">
@@ -375,7 +375,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Kotlin 写 Android 单元测试（一），单元测试是什么以及为什么需要</h1>
+          <h1 class="post-title" itemprop="name headline">Kotlin 设计模式之单例模式</h1>
         
 
         <div class="post-meta">
@@ -387,8 +387,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-05T16:31:29+08:00">
-                2017-07-05
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-18T17:21:38+08:00">
+                2017-08-18
               </time>
             
 
@@ -410,8 +410,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/unit-test/" itemprop="url" rel="index">
-                    <span itemprop="name">单元测试</span>
+                  <a href="/categories/designpattern/" itemprop="url" rel="index">
+                    <span itemprop="name">设计模式</span>
                   </a>
                 </span>
 
@@ -429,8 +429,8 @@
                 <i class="fa fa-comment-o"></i>
               </span>
               
-                <a href="/posts/unit-test-what-and-why-in-kotlin/#SOHUCS" itemprop="discussionUrl">
-                  <span id="changyan_count_unit" class="post-comments-count hc-comment-count" data-xid="posts/unit-test-what-and-why-in-kotlin/" itemprop="commentsCount"></span>
+                <a href="/posts/kotlin-singleton-pattern/#SOHUCS" itemprop="discussionUrl">
+                  <span id="changyan_count_unit" class="post-comments-count hc-comment-count" data-xid="posts/kotlin-singleton-pattern/" itemprop="commentsCount"></span>
                 </a>
               
             
@@ -438,7 +438,7 @@
 
           
           
-             <span id="/posts/unit-test-what-and-why-in-kotlin/" class="leancloud_visitors" data-flag-title="Kotlin 写 Android 单元测试（一），单元测试是什么以及为什么需要">
+             <span id="/posts/kotlin-singleton-pattern/" class="leancloud_visitors" data-flag-title="Kotlin 设计模式之单例模式">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -466,64 +466,38 @@
       
 
       
-        <p>越来越多的开发者开始使用 Kotlin 开发 Android 项目，Kotlin 逐渐成为 Android 开发的第一语言，公司项目中也开始用 Kotlin 写单元测试，在项目中以单元测试作为开始引入 Kotlin 语言的入口是个不错的选择，大家可以尝试下。但是现在网上关于如何使用 Kotlin 语言写单元测试的文档很少，所以写下这个系列文章记录自己使用 Kotlin 写 Android 项目的单元测试的一些经验。</p>
-<p>有些人可以对单元测试的概念比较模糊，更多的人则认为单元测试是完全没有必要的，所以下面介绍什么是单元测试以及为什么需要写单元测试。</p>
-<h2 id="什么是单元测试"><a href="#什么是单元测试" class="headerlink" title="什么是单元测试"></a>什么是单元测试</h2><h3 id="单元测试的定义"><a href="#单元测试的定义" class="headerlink" title="单元测试的定义"></a>单元测试的定义</h3><p>在 WiKi 上的定义是：在计算机编程中，单元测试（英语：Unit Testing）又称为模块测试, 是针对程序模块（软件设计的最小单位）来进行正确性检验的测试工作。程序单元是应用的最小可测试部件。</p>
-<p>简单点说就是对程序单元进行测试，在面向过程开发中，一个单元就是一个函数；在面向对象开发中，一个单元就是类的一个方法。</p>
-<p>下面使用 Junit 4 中的 <a href="https://github.com/junit-team/junit4/wiki/Getting-started" target="_blank" rel="external">Calculator 例子</a>来说明。</p>
-<a id="more"></a>
-<p>假设我们有一个 Calculator 类：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Calculator</span> </span>&#123;</div><div class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">evaluate</span><span class="params">(String expression)</span> </span>&#123;</div><div class="line">    <span class="keyword">int</span> sum = <span class="number">0</span>;</div><div class="line">    <span class="comment">// 计算整数相加的表达式的结果</span></div><div class="line">    <span class="keyword">for</span> (String summand: expression.split(<span class="string">"\\+"</span>))</div><div class="line">      sum += Integer.valueOf(summand);</div><div class="line">    <span class="keyword">return</span> sum;</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>那么为 Calculator 类的<code>evaluate</code>方法写的单元测试代码如下：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> <span class="keyword">static</span> org.junit.Assert.assertEquals;</div><div class="line"><span class="keyword">import</span> org.junit.Test;</div><div class="line"></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CalculatorTest</span> </span>&#123;</div><div class="line">  <span class="meta">@Test</span></div><div class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testEvaluate</span><span class="params">()</span> </span>&#123;</div><div class="line">    Calculator calculator = <span class="keyword">new</span> Calculator();</div><div class="line">    <span class="keyword">int</span> sum = calculator.evaluate(<span class="string">"1+2+3"</span>);</div><div class="line">    assertEquals(<span class="number">6</span>, sum);</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p><code>testEvaluate</code>就是<code>evaluate</code>的测试方法，测试<code>evaluate</code>方法是否实现预期功能。</p>
-<p>从上面的测试方法中可以发现，一般单元测试分为 3 步：</p>
-<ol>
-<li><p>初始化。一般是准备一些测试的前提条件，如新建需要测试的类的实例：<code>Calculator calculator = new Calculator();</code>。</p>
-</li>
-<li><p>调用要测试方法。如<code>int sum = calculator.evaluate(&quot;1+2+3&quot;);</code>。</p>
-</li>
-<li><p>验证结果。验证测试结果是否和预期一致：<code>assertEquals(6, sum);</code>。</p>
-</li>
-</ol>
-<p>有的时候还会有第四步：</p>
-<ol>
-<li>收尾工作。一般释放资源或者删除文件等。</li>
-</ol>
-<h3 id="单元测试的重点"><a href="#单元测试的重点" class="headerlink" title="单元测试的重点"></a>单元测试的重点</h3><p>Java 和 Android 中程序是由多个对象组成的，对象之间可以互相调用公开的方法，单元测试就是测试对象的公开方法，也就是说测试类的 public 方法，因为 public 方法是公开的，定义了类的行为，其他类可以调用。而 private 方法是类的内部实现细节，所以一般是不测试的，<strong>单元测试的重点是测试类的 public 方法</strong>。</p>
-<p>再进一步的说，面向对象中单元测试是：测试类的 public 方法的输出是否与预期一致。</p>
-<p>看下面的例子：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">save</span><span class="params">(String result)</span> </span>&#123;</div><div class="line">    ...</div><div class="line">    mStorage.saveToFile(result);    <span class="comment">// 把 result 写入到文件 file</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p><code>save</code>方法没有返回值，那么它的输出是什么，可能很多人会说就是<code>result 写入到文件 file</code>，但是那是<code>saveToFile</code>方法的输出，而<code>save</code>方法的输出是调用了<code>mStorage.saveToFile()</code>方法并且参数是<code>result</code>。单元测试只是测试方法单元，并不是测试一个流程。</p>
-<p>所以方法的输出分为两种：</p>
-<ol>
-<li><p><strong>直接的返回结果</strong>，这种情况可以用 <a href="http://junit.org/junit4/" target="_blank" rel="external">Junit 4</a> 测试框架的<code>assert</code>语句测试。</p>
-</li>
-<li><p><strong>间接的方法调用</strong>，这种情况验证方法是否调用，需要利用 mock 的测试框架，例如 <a href="http://site.mockito.org" target="_blank" rel="external">Mockito</a>，后续会有介绍。</p>
-</li>
-</ol>
-<h2 id="为什么要写单元测试"><a href="#为什么要写单元测试" class="headerlink" title="为什么要写单元测试"></a>为什么要写单元测试</h2><p>前面介绍了什么是单元测试，但是很多人还是不愿意写单元测试，之前我也认为单元测试是浪费时间，自己写的单元测试肯定都能测试通过，没有多大意义。大学时老师讲的单元测试的意义，自己也没当回事，没有单元测试，照样写好代码，而且速度还更快。毕业去第一家公司上班后，同事也是基本不写单元测试的，也没有认识到单元测试的价值。</p>
-<p>但是在 Github 上看国外大神的代码时，经常看到他们都会写测试代码，会怀疑单元测试真的有用？真正让我改变看法是不经意间看到<code>小创作</code>的一篇文章 <a href="http://chriszou.com/2016/04/16/android-unit-testing-about-why.html" target="_blank" rel="external">Android单元测试（二）：再来谈谈为什么</a>，于是开始尝试写单元测试代码，慢慢感受到单元测试的魅力，也开始由路转粉了。下面从自己的感受来说说，为什么需要写单元测试？</p>
-<h3 id="写正式代码时会不自觉地分离接口和实现，代码设计更加良好"><a href="#写正式代码时会不自觉地分离接口和实现，代码设计更加良好" class="headerlink" title="写正式代码时会不自觉地分离接口和实现，代码设计更加良好"></a>写正式代码时会不自觉地分离接口和实现，代码设计更加良好</h3><p>如果在项目一开始就写单元测试代码，甚至采用测试驱动开发，写出的代码质量会更高。在日常开发中，很多类会引用其他类，例如一个依赖于数据库的类，为了测试它，测试人员通常编写代码去操作数据库。这是不对的，因为单元测试不应超出待测试的类边界。前面有提到这时需要的是验证数据库的某个方法是否被调用，这时需要创建一个数据库连接的接口，然后实现这个接口的 mock 对象，去测试 mock 对象的某个方法是否被调用。这时已经不自觉地使用面向接口设计，分离数据库的接口和实现，扩展性更好。</p>
-<p>另外在某一个方法的实现前，先去写它对应的单元测试代码，需要注意该方法的输入和输出，不去想实现细节。也会考虑该方法的一些异常，各种情况的预期结果是什么。这样会对这个方法的本质有更清晰的认识，边界情况也考虑的更加全面，然后再去写正式代码时，我发现更加容易，质量也更高。</p>
-<h3 id="节约开发过程中-debug-时间"><a href="#节约开发过程中-debug-时间" class="headerlink" title="节约开发过程中 debug 时间"></a>节约开发过程中 debug 时间</h3><p>在没有写测试代码之前，开发过程中需要完成一个流程中所有模块，然后等 app 运行起来后看看有没 Crash 或者手动进入各个界面测试有没有异常，效率很低，而且往往一开始 Crash 的问题都是一些写代码时疏忽导致的低级错误。相信大多数开发者都跟我一样，或多或少总是会不小心犯一些低级错误。然后改一点后再运行一遍 app，这样反复进行。这种痛相信很多开发者都经历过，测试效率真是太低了。</p>
-<p>而开始写单元测试代码后，写完一部分代码就执行下测试代码，不用等其他模块也完成，其他模块可以先只定义好接口。这样在完成一个小模块的代码，可以通过单元测试及时发现错误，而且单元测试的方式比运行 app 测试的方式速度更快，也更容易发现问题。</p>
-<h3 id="保证代码工作正确，加强自信心"><a href="#保证代码工作正确，加强自信心" class="headerlink" title="保证代码工作正确，加强自信心"></a>保证代码工作正确，加强自信心</h3><p>很多时候，写完代码后自己也多大信心，不知道运行起来是否正常，一些特殊情况是否会崩溃，特别修改已有代码，不知道会不会有其他影响。有单元测试后，就不用那么担心，单元测试通过可以一定程度保证代码工作正确，对后续发版本提供信心，不用那么担心啦。人有自信很重要，自信的人通常更帅^_^。</p>
-<h3 id="便于后期重构或变更时，确保其他模块工作正确"><a href="#便于后期重构或变更时，确保其他模块工作正确" class="headerlink" title="便于后期重构或变更时，确保其他模块工作正确"></a>便于后期重构或变更时，确保其他模块工作正确</h3><p>在项目开发完成后，后期维护或重构的时间通常比较长，这时单元测试的价值也更为凸显。在修改一个地方的代码时，可能会对其他的代码造成影响，但是我们开发者很难知道。经常会出现一种情况，修改一个 bug，会产生另外一个 bug。</p>
-<p>单元测试可以保证修改代码后其他模块依然工作正确，一旦变更导致错误发生，借助单元测试可以快速定位错误。这样在变更代码可以确保不影响其他模块，降低重构成本。</p>
-<h2 id="还是不想写单元测试"><a href="#还是不想写单元测试" class="headerlink" title="还是不想写单元测试"></a>还是不想写单元测试</h2><p>可能看完上面写的这些内容，有些人还是不想写单元测试，主要有下面三个原因：</p>
-<h3 id="写单元测试增加时间成本"><a href="#写单元测试增加时间成本" class="headerlink" title="写单元测试增加时间成本"></a>写单元测试增加时间成本</h3><p>的确学习单元测试本身就需要额外时间，写单元测试代码也需要时间，但是单元测试可以减少后续的 debug 时间，还能保证代码质量，总的来说其实可以帮我们节约时间。而且学习单元测试让自己多一个技能点，国外大神都有的技能点，何乐而不为呢。</p>
-<h3 id="不相信单元测试的价值"><a href="#不相信单元测试的价值" class="headerlink" title="不相信单元测试的价值"></a>不相信单元测试的价值</h3><p>人们对于未知的事物总是会持有怀疑态度，我也一样，但是很多时候需要动手尝试，不去行动永远不知道具体是怎样的。所以去尝试开始写单元测试，你会慢慢发现单元测试的魅力的。</p>
-<h3 id="在已有项目中加入单元测试比较困难"><a href="#在已有项目中加入单元测试比较困难" class="headerlink" title="在已有项目中加入单元测试比较困难"></a>在已有项目中加入单元测试比较困难</h3><p>是的，我在公司项目加入单元测试也遇到一些困难，有些代码不方便测试，需要调整其他的代码或者加上接口，这比较花费时间。但是我也发现一般一个类不好测试时，往往因为这个类的设计有问题。调整后便于测试的代码，设计更加良好，更具有扩展性。所以这是一件非常值得做的事情，相当于重构代码。</p>
-<p>也可以在新需求中新增代码时，加入单元测试，这样困难会少一点，在涉及到之前代码时，可能还需要调整，这时不要轻易放弃，在经过一开始的代码适应阶段后，写单元测试会越来越容易。</p>
-<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>总的来说，单元测试可以提升代码设计，节约测试时间，增强对代码的信心。希望通过这篇文章让更多的人清楚单元测试的概念，同时开始学习写单元测试，后面会介绍如何用 Kotlin 语言写 Android 项目的单元测试。</p>
-<p><strong>参考文章：</strong></p>
+        <p>现在 Kotlin 的趋势日益高涨，Jake Wharton 大神近期从 Square 公司离职到 Google 负责 Kotlin 部分。我最近分析了 Kotlin 下的单例模式的实现方式，与 Java 下的实现有点区别，之前写过一篇 <a href="http://johnnyshieh.me/posts/java-singleton-pattern/">Java 设计模式之单例模式</a>。</p>
+<h2 id="饿汉式"><a href="#饿汉式" class="headerlink" title="饿汉式"></a>饿汉式</h2><p>Kotlin 引入了 <code>object</code> 类型，可以很容易声明单例模式。</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">object</span> Singleton &#123;</div><div class="line">    ...</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// Kotlin 中调用</span></div><div class="line">Singleton.xx()</div><div class="line"></div><div class="line"><span class="comment">// Java 中调用</span></div><div class="line">Singleton.INSTANCE.xx()</div></pre></td></tr></table></figure>
+<p>这种方式和 Java 单例模式的饿汉式一样，不过比 Java 中的实现代码量少很多，其实是个语法糖。反编译生成的 class 文件后如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="keyword">final</span> <span class="class"><span class="keyword">class</span> <span class="title">Singleton</span> </span>&#123;</div><div class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> Singleton INSTANCE = <span class="keyword">null</span>;</div><div class="line"></div><div class="line">    <span class="keyword">static</span> &#123;</div><div class="line">        Singleton singleton = <span class="keyword">new</span> Singleton();</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">private</span> <span class="title">Singleton</span><span class="params">()</span> </span>&#123;</div><div class="line">        INSTANCE = <span class="keyword">this</span>;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>从反编译的代码可以看出 object 对象实际上还是利用了 INSTANCE 静态变量，所以在 Java 中调用时需要使用 <code>Singleton.INSTANCE.xx()</code>。</p>
+<p>这种实现方式在类加载时就创建了单例对象，所以肯定是线程安全的，但是还是有饿汉式实现方式的问题：</p>
 <ul>
-<li><p><a href="http://chriszou.com/2016/04/13/android-unit-testing-start-from-what.html" target="_blank" rel="external">Android 单元测试: 首先，从是什么开始</a></p>
+<li><p>如果构造方法中有耗时操作的话，会导致这个类的加载比较慢。</p>
 </li>
-<li><p><a href="http://chriszou.com/2016/04/16/android-unit-testing-about-why.html" target="_blank" rel="external">Android单元测试（二）：再来谈谈为什么</a></p>
+<li><p>饿汉式一开始就创建实例，但是并没有调用，会造成资源浪费。</p>
+</li>
+<li><p>还有一个 Java 饿汉式单例模式没有的问题：无法自定义构造函数，object 中不允许 constructor 函数。</p>
 </li>
 </ul>
+<h2 id="懒汉式"><a href="#懒汉式" class="headerlink" title="懒汉式"></a>懒汉式</h2><p>前面的 object 的实现方式是饿汉式的，开始使用前就实例化好了，如何在第一次调用时在初始化呢？Kotlin 中的延迟属性 Lazy 刚好适合这种场景。</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Singleton</span> <span class="keyword">private</span> <span class="keyword">constructor</span></span>() &#123;</div><div class="line">    <span class="keyword">companion</span> <span class="keyword">object</span> &#123;</div><div class="line">        <span class="keyword">val</span> instance: Singleton <span class="keyword">by</span> lazy &#123; Singleton() &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// Kotlin 中调用</span></div><div class="line">Singleton.instance.xx()</div><div class="line"></div><div class="line"><span class="comment">// Java 中调用</span></div><div class="line">Singleton.Companion.getInstance().xx()</div></pre></td></tr></table></figure>
+<p>Lazy 延迟属性默认是线程安全的，它具体是如何实现的呢？Java 中线程安全的懒汉式有 synchronized 修饰方法、双重检查锁定、静态内部类，更多内容请阅读  <a href="http://johnnyshieh.me/posts/java-singleton-pattern/">Java 设计模式之单例模式</a>，下面看 Lazy 属性的源码：</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">fun</span> <span class="type">&lt;T&gt;</span> <span class="title">lazy</span><span class="params">(initializer: ()</span></span> -&gt; T): Lazy&lt;T&gt; = SynchronizedLazyImpl(initializer)</div><div class="line"></div><div class="line"><span class="keyword">private</span> <span class="class"><span class="keyword">class</span> <span class="title">SynchronizedLazyImpl</span>&lt;<span class="type">out T</span>&gt;</span>(initializer: () -&gt; T, lock: Any? = <span class="literal">null</span>) : Lazy&lt;T&gt;, Serializable &#123;</div><div class="line">    <span class="keyword">private</span> <span class="keyword">var</span> initializer: (() -&gt; T)? = initializer</div><div class="line">    <span class="meta">@Volatile</span> <span class="keyword">private</span> <span class="keyword">var</span> _value: Any? = UNINITIALIZED_VALUE    <span class="comment">// 声明为 volatile 变量</span></div><div class="line">    <span class="comment">// final field is required to enable safe publication of constructed instance</span></div><div class="line">    <span class="keyword">private</span> <span class="keyword">val</span> lock = lock ?: <span class="keyword">this</span></div><div class="line"></div><div class="line">    <span class="keyword">override</span> <span class="keyword">val</span> value: T</div><div class="line">        <span class="keyword">get</span>() &#123;</div><div class="line">            <span class="keyword">val</span> _v1 = _value</div><div class="line">            <span class="keyword">if</span> (_v1 !== UNINITIALIZED_VALUE) &#123;  <span class="comment">// 第一次检查</span></div><div class="line">                <span class="meta">@Suppress(<span class="meta-string">"UNCHECKED_CAST"</span>)</span></div><div class="line">                <span class="keyword">return</span> _v1 <span class="keyword">as</span> T</div><div class="line">            &#125;</div><div class="line"></div><div class="line">            <span class="keyword">return</span> synchronized(lock) &#123;  <span class="comment">// 加锁锁定</span></div><div class="line">                <span class="keyword">val</span> _v2 = _value</div><div class="line">                <span class="keyword">if</span> (_v2 !== UNINITIALIZED_VALUE) &#123;  <span class="comment">// 第二次检查</span></div><div class="line">                    <span class="meta">@Suppress(<span class="meta-string">"UNCHECKED_CAST"</span>)</span> (_v2 <span class="keyword">as</span> T)</div><div class="line">                &#125;</div><div class="line">                <span class="keyword">else</span> &#123;</div><div class="line">                    <span class="keyword">val</span> typedValue = initializer!!()</div><div class="line">                    _value = typedValue</div><div class="line">                    initializer = <span class="literal">null</span></div><div class="line">                    typedValue</div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">    ...</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>从上面代码中可以看出延迟属性 Lazy 内部也是使用双重检查锁定来实现线程安全的延迟初始化的。</p>
+<p><strong>LazyThreadSafetyMode</strong></p>
+<p>延迟属性 Lazy 默认线程安全模式是 LazyThreadSafetyMode.SYNCHRONIZED，使用同步锁的，LazyThreadSafetyMode 共有三种模式：</p>
+<ul>
+<li><p>SYNCHRONIZED – 使用同步锁保证只有一个线程可以初始化实例。</p>
+</li>
+<li><p>PUBLICATION – 同一时期多个线程可以初始化实例，但是只有最先返回的值会作为延迟初始化的实例，使用 AtomicReferenceFieldUpdater.compareAndSet() 方法实现。</p>
+</li>
+<li><p>NONE – 没有任何的线程安全的保证和开销。</p>
+</li>
+</ul>
+<p>例如，<code>lazy (LazyThreadSafetyMode.PUBLICATION, { LazySingleton() })</code>。</p>
+<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>内存占用低时，可以选择 object 声明的饿汉式单例模式，简单有效；如果初始化时需要额外的操作或者实例资源消耗大时，推荐 Lazy 延迟属性的懒汉式单例模式。</p>
       
     </div>
 
@@ -581,7 +555,7 @@
           
             <a href="/tags/kotlin/" rel="tag"># kotlin</a>
           
-            <a href="/tags/unit-test/" rel="tag"># 单元测试</a>
+            <a href="/tags/designpattern/" rel="tag"># 设计模式</a>
           
         </div>
       
@@ -594,8 +568,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/posts/reading-note-little-dog-money/" rel="next" title="「小狗钱钱」读书笔记">
-                <i class="fa fa-chevron-left"></i> 「小狗钱钱」读书笔记
+              <a href="/posts/android-proguard/" rel="next" title="Android ProGuard 代码混淆那些事儿">
+                <i class="fa fa-chevron-left"></i> Android ProGuard 代码混淆那些事儿
               </a>
             
           </div>
@@ -603,10 +577,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/posts/unit-test-junit4-and-kotlin-test/" rel="prev" title="Kotlin 写 Android 单元测试（二），JUnit 4 测试框架和 kotlin.test 库的使用">
-                Kotlin 写 Android 单元测试（二），JUnit 4 测试框架和 kotlin.test 库的使用 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -632,7 +602,7 @@
           
   <div class="comments" id="comments">
     
-      <div id="SOHUCS" sid="posts/unit-test-what-and-why-in-kotlin/"></div>
+      <div id="SOHUCS" sid="posts/kotlin-singleton-pattern/"></div>
     
   </div>
 
@@ -782,7 +752,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#什么是单元测试"><span class="nav-number">1.</span> <span class="nav-text">什么是单元测试</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#单元测试的定义"><span class="nav-number">1.1.</span> <span class="nav-text">单元测试的定义</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#单元测试的重点"><span class="nav-number">1.2.</span> <span class="nav-text">单元测试的重点</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#为什么要写单元测试"><span class="nav-number">2.</span> <span class="nav-text">为什么要写单元测试</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#写正式代码时会不自觉地分离接口和实现，代码设计更加良好"><span class="nav-number">2.1.</span> <span class="nav-text">写正式代码时会不自觉地分离接口和实现，代码设计更加良好</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#节约开发过程中-debug-时间"><span class="nav-number">2.2.</span> <span class="nav-text">节约开发过程中 debug 时间</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#保证代码工作正确，加强自信心"><span class="nav-number">2.3.</span> <span class="nav-text">保证代码工作正确，加强自信心</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#便于后期重构或变更时，确保其他模块工作正确"><span class="nav-number">2.4.</span> <span class="nav-text">便于后期重构或变更时，确保其他模块工作正确</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#还是不想写单元测试"><span class="nav-number">3.</span> <span class="nav-text">还是不想写单元测试</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#写单元测试增加时间成本"><span class="nav-number">3.1.</span> <span class="nav-text">写单元测试增加时间成本</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#不相信单元测试的价值"><span class="nav-number">3.2.</span> <span class="nav-text">不相信单元测试的价值</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#在已有项目中加入单元测试比较困难"><span class="nav-number">3.3.</span> <span class="nav-text">在已有项目中加入单元测试比较困难</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#小结"><span class="nav-number">4.</span> <span class="nav-text">小结</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#饿汉式"><span class="nav-number">1.</span> <span class="nav-text">饿汉式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#懒汉式"><span class="nav-number">2.</span> <span class="nav-text">懒汉式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#小结"><span class="nav-number">3.</span> <span class="nav-text">小结</span></a></li></ol></div>
             
 
           </div>
