@@ -1,0 +1,1161 @@
+<!doctype html>
+
+
+
+
+<html class="theme-next pisces" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta http-equiv="Content-Language" content="zh-cn">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+  <meta name="google-site-verification" content="r1Es2KSXuS6zYdab4rZeEA6X-pEwRwyT4x89S7a4EHE">
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+  <link href="http://images.johnnyshieh.me/lib/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="http://images.johnnyshieh.me/fonts/font.css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+  
+
+<link href="http://images.johnnyshieh.me/lib/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="http://images.johnnyshieh.me/css/main.css?v=5.1.1" rel="stylesheet" type="text/css">
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1">
+
+
+
+  
+    <link rel="apple-touch-icon-precomposed" sizes="57x57" href="/apple-touch-icon-57x57.png">
+  
+    <link rel="apple-touch-icon-precomposed" sizes="120x120" href="/apple-touch-icon-120x120.png">
+  
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="/apple-touch-icon-152x152.png">
+  
+
+
+
+
+
+
+<meta name="description" content="Dagger 2 完全解析系列文章第二篇，介绍 Lazy、Qualifier、Scope 等概念">
+<meta name="keywords" content="google, dagger, dagger 2, Qualifier, Scope, Lazy, Johnny, Shieh, Johnny Shieh, johnny shieh blog, ">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Dagger 2 完全解析（二），进阶使用 Lazy、Qualifier、Scope 等">
+<meta property="og:url" content="http://johnnyshieh.me/posts/dagger-advance/index.html">
+<meta property="og:site_name" content="Johnny Shieh">
+<meta property="og:description" content="Dagger 2 完全解析系列文章第二篇，介绍 Lazy、Qualifier、Scope 等概念">
+<meta property="og:updated_time" content="2017-08-02T03:15:36.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Dagger 2 完全解析（二），进阶使用 Lazy、Qualifier、Scope 等">
+<meta name="twitter:description" content="Dagger 2 完全解析系列文章第二篇，介绍 Lazy、Qualifier、Scope 等概念">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"right","display":"always","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: false,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: 'QK028ACQPB',
+      apiKey: '4e4a5ec0318356434aed6a3aa5aea209',
+      indexName: 'blog',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"搜索文章","hits_empty":"找不到与您搜索的 ${query} 相符的文章，请尝试其他关键字","hits_stats":"找到 ${hits} 条搜索结果，用时 ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://johnnyshieh.me/posts/dagger-advance/">
+
+
+
+
+
+  <title>Dagger 2 完全解析（二），进阶使用 Lazy、Qualifier、Scope 等 | Johnny Shieh</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?43cea51223ad3b7bc740196aab48d664";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Johnny Shieh</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">人如果没有梦想，跟咸鱼有什么分别</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-books">
+          <a href="/books" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br>
+            
+            读书
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-friends">
+          <a href="/friends" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-users"></i> <br>
+            
+            小伙伴
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  
+  <div class="algolia-popup popup search-popup">
+    <div class="algolia-search">
+      <div class="algolia-search-input-icon">
+        <i class="fa fa-search"></i>
+      </div>
+      <div class="algolia-search-input" id="algolia-search-input"></div>
+    </div>
+
+    <div class="algolia-results">
+      <div id="algolia-stats"></div>
+      <div id="algolia-hits"></div>
+      <div id="algolia-pagination" class="algolia-pagination"></div>
+    </div>
+
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+  </div>
+
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://johnnyshieh.me/posts/dagger-advance/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Johnny Shieh">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Johnny Shieh">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Dagger 2 完全解析（二），进阶使用 Lazy、Qualifier、Scope 等</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-05-25T10:37:31+08:00">
+                2017-05-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/android/" itemprop="url" rel="index">
+                    <span itemprop="name">Android</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+              <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-comment-o"></i>
+              </span>
+              
+                <a href="/posts/dagger-advance/#SOHUCS" itemprop="discussionUrl">
+                  <span id="changyan_count_unit" class="post-comments-count hc-comment-count" data-xid="posts/dagger-advance/" itemprop="commentsCount"></span>
+                </a>
+              
+            
+          
+
+          
+          
+             <span id="/posts/dagger-advance/" class="leancloud_visitors" data-flag-title="Dagger 2 完全解析（二），进阶使用 Lazy、Qualifier、Scope 等">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </span></div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>Dagger 2 完全解析系列：</p>
+<p><a href="http://johnnyshieh.me/posts/dagger-basic/">Dagger 2 完全解析（一），Dagger 2 的基本使用与原理</a></p>
+<p><a href="http://johnnyshieh.me/posts/dagger-advance/">Dagger 2 完全解析（二），进阶使用 Lazy、Qualifier、Scope 等</a></p>
+<p><a href="http://johnnyshieh.me/posts/dagger-subcomponent/">Dagger 2 完全解析（三），Component 的组织关系与 SubComponent</a></p>
+<p><a href="http://johnnyshieh.me/posts/dagger-use-in-android/">Dagger 2 完全解析（四），Android 中使用 Dagger 2</a></p>
+<p><a href="http://johnnyshieh.me/posts/dagger-use-in-kotlin/">Dagger 2 完全解析（五），Kotlin 中使用 Dagger 2</a></p>
+<blockquote>
+<p>本系列文章是基于 Google Dagger 2.11-rc2 版本</p>
+</blockquote>
+<p>在上篇文章中介绍了 Dagger 2 的三个核心要素，但是在实际使用过程中，还需要 Layz 注入、Qualifier（限定符）、Scope（作用域）等作为补充，也是在 Dagger 2 进阶中必须要掌握的内容。下面由简入繁地讲解这几个概念，同时结合 Dagger 2 的编译时生成代码分析背后的原理（示例代码沿用第一篇的，建议先阅读第一篇）。</p>
+<p>在分析 Qualifier（限定符）、Scope（作用域）之前，先介绍一些简单的概念： Lazy 和 Provider 注入。</p>
+<h2 id="Lazy-（延迟注入）"><a href="#Lazy-（延迟注入）" class="headerlink" title="Lazy （延迟注入）"></a>Lazy （延迟注入）</h2><p>有时我们想注入的依赖在使用时再完成初始化，加快加载速度，就可以使用注入<code>Lazy&lt;T&gt;</code>。只有在调用 Lazy<t> 的 get() 方法时才会初始化依赖实例注入依赖。</t></p>
+<a id="more"></a>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Man</span> </span>&#123;</div><div class="line">    <span class="meta">@Inject</span></div><div class="line">    Lazy&lt;Car&gt; lazyCar;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">goWork</span><span class="params">()</span> </span>&#123;</div><div class="line">        ...</div><div class="line">        lazyCar.get().go(); <span class="comment">// lazyCar.get() 返回 Car 实例</span></div><div class="line">        ...</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="Provider-注入"><a href="#Provider-注入" class="headerlink" title="Provider 注入"></a>Provider 注入</h2><p>有时候不仅仅是注入单个实例，我们需要多个实例，这时可以使用注入<code>Provider&lt;T&gt;</code>，每次调用它的 get() 方法都会调用到 <code>@Inject 构造函数</code>创建新实例或者 Module 的 provide 方法返回实例。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CarFactory</span> </span>&#123;</div><div class="line">    <span class="meta">@Inject</span></div><div class="line">    Provider&lt;Car&gt; carProvider;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> List&lt;Car&gt; <span class="title">makeCar</span><span class="params">(<span class="keyword">int</span> num)</span> </span>&#123;</div><div class="line">        ...</div><div class="line">        List&lt;Car&gt; carList = <span class="keyword">new</span> ArrayList&lt;Car&gt;(num);</div><div class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; num; i ++) &#123;</div><div class="line">            carList.add(carProvider.get());</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">return</span> carList;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="Qualifier（限定符）"><a href="#Qualifier（限定符）" class="headerlink" title="Qualifier（限定符）"></a>Qualifier（限定符）</h2><p>试想这样一种情况：沿用之前的 Man 和 Car 的例子，如果 CarModule 提供了两个生成 Car 实例的 provide 方法，Dagger 2 在注入 Car 实例到 Man 中时应该选择哪一个方法呢？</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Module</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CarModule</span> </span>&#123;</div><div class="line">    <span class="meta">@Provides</span></div><div class="line">    <span class="function"><span class="keyword">static</span> Car <span class="title">provideCar1</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">new</span> Car1();</div><div class="line">    &#125;</div><div class="line">    <span class="meta">@Provides</span></div><div class="line">    <span class="function"><span class="keyword">static</span> Car <span class="title">provideCar2</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">new</span> Car2();</div><div class="line">    &#125;</div><div class="line">    <span class="comment">// Car1 和 Car2 是 Car 的两个子类</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>这时 Dagger 2 不知道使用<code>provideCar1</code>还是<code>provideCar2</code>提供的实例，在编译时就会报错，这种情况也可以叫依赖迷失（网上看到的叫法）。而<code>@Qualifier</code>注解就是用来解决这个问题，使用注解来确定使用哪种 provide 方法。</p>
+<p>下面是自定义的<code>@Named</code>注解，你也可以用自定义的其他 Qualifier 注解：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Qualifier</span></div><div class="line"><span class="meta">@Documented</span></div><div class="line"><span class="meta">@Retention</span>(RUNTIME)</div><div class="line"><span class="keyword">public</span> <span class="meta">@interface</span> Named &#123;</div><div class="line">  <span class="function">String <span class="title">value</span><span class="params">()</span> <span class="keyword">default</span> ""</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>在 provide 方法上加上<code>@Named</code>注解，用来区分</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Module</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CarModule</span> </span>&#123;</div><div class="line">    <span class="meta">@Provides</span></div><div class="line">    <span class="meta">@Named</span>(<span class="string">"car1"</span>)</div><div class="line">    <span class="function"><span class="keyword">static</span> Car <span class="title">provideCar1</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">new</span> Car1();</div><div class="line">    &#125;</div><div class="line">    <span class="meta">@Provides</span></div><div class="line">    <span class="meta">@Named</span>(<span class="string">"car2"</span>)</div><div class="line">    <span class="function"><span class="keyword">static</span> Car <span class="title">provideCar2</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">new</span> Car2();</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>还需要在 Inject 注入的地方加上<code>@Named</code>注解，表明需要注入的是哪一种 Car：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Man</span> </span>&#123;</div><div class="line">    <span class="meta">@Inject</span></div><div class="line">    <span class="meta">@Named</span>(<span class="string">"car1"</span>)</div><div class="line">    Car car;</div><div class="line">    ...</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>这样在依赖注入时，Dagger 2 就会使用<code>provideCar1</code>方法提供的实例，所以<strong>Qualifier（限定符）的作用相当于起了个区分的别名。</strong></p>
+<h2 id="Scope（作用域）"><a href="#Scope（作用域）" class="headerlink" title="Scope（作用域）"></a>Scope（作用域）</h2><p>Scope 是用来确定注入的实例的生命周期的，如果没有使用 Scope 注解，Component 每次调用 Module 中的 provide 方法或 <code>Inject 构造函数</code>生成的工厂时都会创建一个新的实例，而使用 Scope 后可以复用之前的依赖实例。下面先介绍 Scope 的基本概念与原理，再分析 Singleton、Reusable 等作用域。</p>
+<h3 id="Scope-基本概念"><a href="#Scope-基本概念" class="headerlink" title="Scope 基本概念"></a>Scope 基本概念</h3><p>先介绍 Scope 的用法，<code>@Scope</code>是元注解，是用来标注自定义注解的，如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Documented</span></div><div class="line"><span class="meta">@Retention</span>(RUNTIME)</div><div class="line"><span class="meta">@Scope</span></div><div class="line"><span class="keyword">public</span> <span class="meta">@interface</span> MyScope &#123;&#125;</div></pre></td></tr></table></figure>
+<p>MyScope 就是一个 Scope 注解，<strong>Scope 注解只能标注目标类、@provide 方法和 Component。</strong>Scope 注解要生效的话，需要同时标注在 Component 和提供依赖实例的 Module 或目标类上。<strong>Module 中 provide 方法中的 Scope 注解必须和 与之绑定的 Component 的 Scope 注解一样，否则作用域不同会导致编译时会报错。</strong>例如，CarModule 中 provide 方法的 Scope 是MyScope 的话，ManComponent 的 Scope 必须是 是 MyScope 这样作用域才会生效，而且不能是<code>@Singleton</code>或其他 Scope 注解，不然编译时 Dagger 2 会报错（亲自测试过）。</p>
+<p>那么 Scope 注解又是如何产生作用的呢，怎么保证生成的依赖实例的生命周期呢？</p>
+<p>在 Dagger 2 官方文档中我找到一句话，非常清楚地描述了<code>@Scope</code>的原理：</p>
+<blockquote>
+<p>When a binding uses a scope annotation, that means that the component object holds a reference to the bound object until the component object itself is garbage-collected.</p>
+</blockquote>
+<p>当 Component 与 Module、目标类（需要被注入依赖）使用 Scope 注解绑定时，意味着 Component 对象持有绑定的依赖实例的一个引用直到 Component 对象本身被回收。<strong>也就是作用域的原理，其实是让生成的依赖实例的生命周期与 Component 绑定，Scope 注解并不能保证生命周期，要想保证赖实例的生命周期，需要确保 Component 的生命周期。</strong></p>
+<p>下面以<code>@MyScope</code>为例，看 Scope 注解背后的代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Module</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CarModule</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="meta">@Provides</span></div><div class="line">    <span class="meta">@MyScope</span></div><div class="line">    <span class="function"><span class="keyword">static</span> Car <span class="title">provideCar</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">new</span> Car();</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@MyScope</span></div><div class="line"><span class="meta">@Component</span>(modules = CarModule.class)</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">ManComponent</span> </span>&#123;</div><div class="line">    <span class="function"><span class="keyword">void</span> <span class="title">injectMan</span><span class="params">(Man man)</span></span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>这样生成的 Car 实例就与 ManComponent 绑定了。下面看编译时生成的代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="keyword">final</span> <span class="class"><span class="keyword">class</span> <span class="title">DaggerManComponent</span> <span class="keyword">implements</span> <span class="title">ManComponent</span> </span>&#123;</div><div class="line">  <span class="keyword">private</span> Provider&lt;Car&gt; provideCarProvider;</div><div class="line">  <span class="keyword">private</span> MembersInjector&lt;Man&gt; manMembersInjector;</div><div class="line">...</div><div class="line">  <span class="meta">@SuppressWarnings</span>(<span class="string">"unchecked"</span>)</div><div class="line">  <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">initialize</span><span class="params">(<span class="keyword">final</span> Builder builder)</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="keyword">this</span>.provideCarProvider = DoubleCheck.provider(CarModule_ProvideCarFactory.create());</div><div class="line"></div><div class="line">    <span class="keyword">this</span>.manMembersInjector = Man_MembersInjector.create(provideCarProvider);</div><div class="line">  &#125;</div><div class="line">...</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">public</span> <span class="keyword">final</span> <span class="class"><span class="keyword">class</span> <span class="title">DoubleCheck</span>&lt;<span class="title">T</span>&gt; <span class="keyword">implements</span> <span class="title">Provider</span>&lt;<span class="title">T</span>&gt;, <span class="title">Lazy</span>&lt;<span class="title">T</span>&gt; </span>&#123;</div><div class="line">  <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> Object UNINITIALIZED = <span class="keyword">new</span> Object();</div><div class="line"></div><div class="line">  <span class="keyword">private</span> <span class="keyword">volatile</span> Provider&lt;T&gt; provider;</div><div class="line">  <span class="keyword">private</span> <span class="keyword">volatile</span> Object instance = UNINITIALIZED; <span class="comment">// instance 就是依赖实例的引用</span></div><div class="line">...</div><div class="line">  <span class="meta">@SuppressWarnings</span>(<span class="string">"unchecked"</span>) <span class="comment">// cast only happens when result comes from the provider</span></div><div class="line">  <span class="meta">@Override</span></div><div class="line">  <span class="function"><span class="keyword">public</span> T <span class="title">get</span><span class="params">()</span> </span>&#123;</div><div class="line">    Object result = instance;</div><div class="line">    <span class="keyword">if</span> (result == UNINITIALIZED) &#123;  <span class="comment">// 只生成一次实例，之后调用的话直接复用</span></div><div class="line">      <span class="keyword">synchronized</span> (<span class="keyword">this</span>) &#123;</div><div class="line">        result = instance;</div><div class="line">        <span class="keyword">if</span> (result == UNINITIALIZED) &#123;</div><div class="line">          result = provider.get();  <span class="comment">// 生成实例</span></div><div class="line">          <span class="comment">/* Get the current instance and test to see if the call to provider.get() has resulted</span></div><div class="line">           * in a recursive call.  If it returns the same instance, we'll allow it, but if the</div><div class="line">           * instances differ, throw. */</div><div class="line">          Object currentInstance = instance;</div><div class="line">          <span class="keyword">if</span> (currentInstance != UNINITIALIZED &amp;&amp; currentInstance != result) &#123;</div><div class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> IllegalStateException(<span class="string">"Scoped provider was invoked recursively returning "</span></div><div class="line">                + <span class="string">"different results: "</span> + currentInstance + <span class="string">" &amp; "</span> + result + <span class="string">". This is likely "</span></div><div class="line">                + <span class="string">"due to a circular dependency."</span>);</div><div class="line">          &#125;</div><div class="line">          instance = result;</div><div class="line">          <span class="comment">/* Null out the reference to the provider. We are never going to need it again, so we</span></div><div class="line">           * can make it eligible for GC. */</div><div class="line">          provider = <span class="keyword">null</span>;</div><div class="line">        &#125;</div><div class="line">      &#125;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> (T) result;</div><div class="line">  &#125;</div><div class="line">...</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>从上面 DaggerManComponent 的代码可以看出使用了 MyScope 作用域后，<code>provideCarProvider</code>由<code>CarModule_ProvideCarFactory.create()</code>变为了<code>DoubleCheck.provider(CarModule_ProvideCarFactory.create())</code>。而 DoubleCheck 包装的意义在于持有了 Car 的实例，而且只会生成一次实例，也就是说：没有用 MyScope 作用域之前，DaggerManComponent 每次注入依赖都会新建一个 Car 实例，而用 MyScope 作用之后，每次注入依赖都只会返回第一次生成的实例。DaggerManComponent 持有 provideCarProvider 引用，provideCarProvider 又持有 instance（即 Car 实例）的引用，所以生成 Car 对象实例的生命周期就和 Component 一致了，作用域就生效了。</p>
+<p><strong>Scope 作用域的本质：Component 间接持有依赖实例的引用，把实例的作用域与 Component 绑定，它们不是同年同月同日生，但是同年同月死。</strong></p>
+<h3 id="Singleton-Scope"><a href="#Singleton-Scope" class="headerlink" title="Singleton Scope"></a>Singleton Scope</h3><p>在了解作用域的原理后，再来理解 Dagger 2 提供的自带作用域就容易了。<code>@Singleton</code>顾名思义保证单例，那么它又是如何实现的呢，实现了单例模式那样只返回一个实例吗？</p>
+<p>把上面例子中<code>@MyScope</code>换成<code>@Singleton</code>，发现生成的 DaggerManComponent 和其他类没有变化。也只是用<code>DoubleCheck</code>包装了工厂而已，并没有什么特殊实现。所以 Singleton 作用域可以保证一个 Component 中的单例，但是如果产生多个 Component 实例，那么实例的单例就无法保证了。</p>
+<p>所以在网上一些例子中，有看到<code>AppComponent</code>使用 Singleton 作用域，保证绑定的依赖实例的单例。它生效的原因是<code>AppComponent</code>只会在 Application 中创建一次，由<code>AppComponent</code>的单例来保证绑定的依赖实例的单例。</p>
+<p><strong>注意：Component 可以同时被多个 Scope 标记。</strong>即 Component 可以和多个 Scope 的 Moudle 或目标类绑定。</p>
+<h3 id="Reusable-Scope"><a href="#Reusable-Scope" class="headerlink" title="Reusable Scope"></a>Reusable Scope</h3><p>上文中的自定义的<code>@MyScope</code>和<code>@Singleton</code>都可以使得绑定的 Component 缓存依赖的实例，但是与之绑定 Component 必须有相同的 Scope 标记。假如我只想单纯缓存依赖的实例，可以复用之前的实例，不想关心与之绑定是什么 Component，应该怎么办呢？。</p>
+<p>这时就可以使用<code>@Reusable</code>作用域，<strong>Reusable 作用域不关心绑定的 Component，Reusable 作用域只需要标记目标类或 provide 方法，不用标记 Component。</strong>下面先看看使用 Reusable 作用域后，生成的 DaggerManComponent 的变化：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="keyword">final</span> <span class="class"><span class="keyword">class</span> <span class="title">DaggerManComponent</span> <span class="keyword">implements</span> <span class="title">ManComponent</span> </span>&#123;</div><div class="line">...</div><div class="line">  <span class="meta">@SuppressWarnings</span>(<span class="string">"unchecked"</span>)</div><div class="line">  <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">initialize</span><span class="params">(<span class="keyword">final</span> Builder builder)</span> </span>&#123;</div><div class="line">    <span class="keyword">this</span>.provideCarProvider = SingleCheck.provider(CarModule_ProvideCarFactory.create()); <span class="comment">// DaggerManComponent 的改动</span></div><div class="line"></div><div class="line">    <span class="keyword">this</span>.manMembersInjector = Man_MembersInjector.create(provideCarProvider);</div><div class="line">  &#125;</div><div class="line">...</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">public</span> <span class="keyword">final</span> <span class="class"><span class="keyword">class</span> <span class="title">SingleCheck</span>&lt;<span class="title">T</span>&gt; <span class="keyword">implements</span> <span class="title">Provider</span>&lt;<span class="title">T</span>&gt;, <span class="title">Lazy</span>&lt;<span class="title">T</span>&gt; </span>&#123;</div><div class="line">  <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> Object UNINITIALIZED = <span class="keyword">new</span> Object();</div><div class="line"></div><div class="line">  <span class="keyword">private</span> <span class="keyword">volatile</span> Provider&lt;T&gt; provider;</div><div class="line">  <span class="keyword">private</span> <span class="keyword">volatile</span> Object instance = UNINITIALIZED; <span class="comment">// 缓存实例的引用</span></div><div class="line">...</div><div class="line">  <span class="meta">@SuppressWarnings</span>(<span class="string">"unchecked"</span>) <span class="comment">// cast only happens when result comes from the delegate provider</span></div><div class="line">  <span class="meta">@Override</span></div><div class="line">  <span class="function"><span class="keyword">public</span> T <span class="title">get</span><span class="params">()</span> </span>&#123;</div><div class="line">    <span class="comment">// provider is volatile and might become null after the check to instance == UNINITIALIZED, so</span></div><div class="line">    <span class="comment">// retrieve the provider first, which should not be null if instance is UNINITIALIZED.</span></div><div class="line">    <span class="comment">// This relies upon instance also being volatile so that the reads and writes of both variables</span></div><div class="line">    <span class="comment">// cannot be reordered.</span></div><div class="line">    Provider&lt;T&gt; providerReference = provider;</div><div class="line">    <span class="keyword">if</span> (instance == UNINITIALIZED) &#123;</div><div class="line">      instance = providerReference.get(); <span class="comment">// 一般情况下只会生成一个实例，多线程中可能会有多个</span></div><div class="line">      <span class="comment">// Null out the reference to the provider. We are never going to need it again, so we can make</span></div><div class="line">      <span class="comment">// it eligible for GC.</span></div><div class="line">      provider = <span class="keyword">null</span>;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> (T) instance;</div><div class="line">  &#125;</div><div class="line">...</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>从上面代码可以看出使用<code>@Reusable</code>作用域后，利用到 Reusable 实例的 Component 会间接持有实例的引用。但是这里是用<code>SingleCheck</code>而不是<code>DoubleCheck</code>，在多线程情况下可能会生成多个实例，关于这个有疑问推荐阅读 <a href="http://johnnyshieh.me/posts/java-singleton-pattern/">Java 设计模式之单例模式</a>中双重检查锁定的部分。因为<code>@Reusable</code>作用域目的只是可以复用之前的实例，并不需要严格地保证实例的唯一，所以使用 SingleCheck 就足够了。</p>
+<h3 id="Releasable-references（可释放引用）"><a href="#Releasable-references（可释放引用）" class="headerlink" title="Releasable references（可释放引用）"></a>Releasable references（可释放引用）</h3><p>使用 Scope 注解时，Component 会间接持有绑定的依赖实例的引用，也就是说实例在 Component 还存活时无法被回收。而在 Android 中，应该尽量减少内存占用，把没有使用的对象释放，这时可以用<code>@CanReleaseReferences</code>标记 Scope 注解：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Documented</span></div><div class="line"><span class="meta">@Retention</span>(RUNTIME)</div><div class="line"><span class="meta">@CanReleaseReferences</span></div><div class="line"><span class="meta">@Scope</span></div><div class="line"><span class="keyword">public</span> <span class="meta">@interface</span> MyScope &#123;&#125;</div></pre></td></tr></table></figure>
+<p>然后在 Application 中注入<code>ReleasableReferenceManager</code>对象，在内存不足时调用<code>releaseStrongReferences()</code>方法把 Component 间接持有的强引用变为弱引用。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyApplication</span> <span class="keyword">extends</span> <span class="title">Application</span> </span>&#123;</div><div class="line">    <span class="meta">@Inject</span></div><div class="line">    <span class="meta">@ForReleasableReferences</span>(MyScope.class)</div><div class="line">    ReleasableReferenceManager myScopeReferences;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onLowMemory</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">super</span>.onLowMemory();</div><div class="line">        myScopeReferences.releaseStrongReferences();</div><div class="line">    &#125;</div><div class="line">...</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>这样在内存不足时，DaggerManComponent 间接持有的 Car 实例为弱引用，如果没有其他对象使用的话就可以被回收。</p>
+<h2 id="Binding-Instances"><a href="#Binding-Instances" class="headerlink" title="Binding Instances"></a>Binding Instances</h2><p>通过前面作用域的讲解，可以清楚 Component 可以间接持有 Module 或 Inject 目标类构造函数提供的依赖实例，除了这两种方式，Component 还可以在创建 Component 的时候绑定依赖实例，用以注入。这就是<code>@BindsInstance</code>注解的作用，只能在 Component.Builder 中使用。</p>
+<p>在 Android 中使用 Dagger 2 时，activity 实例经常也需要作为依赖实例用以注入，在之前只能使用 Module：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Module</span></div><div class="line"><span class="keyword">public</span> <span class="keyword">final</span> <span class="class"><span class="keyword">class</span> <span class="title">HomeActivityModule</span> </span>&#123;</div><div class="line">    <span class="keyword">private</span> <span class="keyword">final</span> HomeActivity activity;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="title">HomeActivityModule</span><span class="params">(HomeActivity activity)</span> </span>&#123;</div><div class="line">        <span class="keyword">this</span>.activity = activity;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Provides</span></div><div class="line">    <span class="meta">@ActivityScope</span>  <span class="comment">// 自定义作用域</span></div><div class="line">    <span class="function">Activity <span class="title">provideActivity</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> activity;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>而使用<code>@BindsInstance</code>的话会更加简单：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@ActivityScope</span></div><div class="line"><span class="meta">@Component</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">HomeActivityComponent</span> </span>&#123;</div><div class="line">    <span class="meta">@Component</span>.Builder</div><div class="line">    <span class="class"><span class="keyword">interface</span> <span class="title">Builder</span> </span>&#123;</div><div class="line">        <span class="meta">@BindsInstance</span></div><div class="line">        <span class="function">Builder <span class="title">activity</span><span class="params">(Activity activity)</span></span>;</div><div class="line">        <span class="function">HomeActivityComponent <span class="title">build</span><span class="params">()</span></span>;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>注意在调用<code>build()</code>创建 Component 之前，所有<code>@BindsInstance</code>方法必须先调用。上面例子中 HomeActivityComponent 还可以注入 Activity 类型的依赖，但是不能注入 HomeActivity，因为 Dagger 2 是使用具体类型作为依据的（也就是只能使用<code>@Inject Activity activity</code>而不是<code>@Inject HomeActivity activity</code>）。</p>
+<p>如果<code>@BindsInstance</code>方法的参数可能为 null，需要再用<code>@Nullable</code>标记，同时标注 Inject 的地方也需要用<code>@Nullable</code>标记。这时 Builder 也可以不调用<code>@BindsInstance</code>方法，这样 Component 会默认设置 instance 为 null。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ul>
+<li><p>Qualifier 限定符用来解决依赖迷失问题，可以依赖实例起个别名用来区分。</p>
+</li>
+<li><p>Scope 作用域的本质是 Component 会持有与之绑定的依赖实例的引用，要想确保实例的生命周期，关键在于控制 Component 的生命周期。</p>
+</li>
+<li><p>优先使用<code>@BindsInstance</code>方法，相对于写一个带有构造函数带有参数的 Module。</p>
+</li>
+</ul>
+<p>下一篇文章分析 Dagger 2 种 Component 的组织方式以及 SubComponent 的概念。</p>
+      
+    </div>
+
+    
+    <section data-mpa-template-id="95" class="mpa-template" data-mpa-color="#ffffff">
+      <section style="margin-top: 20px;display: -webkit-box;display: flex;-webkit-box-pack: center;justify-content: center;-webkit-box-align: center;align-items: center" data-mid="t22">
+        <section style="text-align: center;line-height: 30px" data-mid="">
+          <section style="display: inline-block;float: left;width: 95px;height: 2px;background: -webkit-linear-gradient(right, #141414, #f0f0f0);background: linear-gradient(to left, #141414, #f0f0f0);-webkit-transform: translate(0px, 12px);-ms-transform: translate(0px, 12px);transform: translate(0px, 12px)" data-mid="" data-contenteditable="false">
+          </section>
+          <section style="float: left;width: 4px;height: 4px;border-radius: 50%;padding: 3px;background-color: #b1b1b1;text-align: center;-webkit-transform: translate(0px, 8px);-ms-transform: translate(0px, 8px);transform: translate(0px, 8px)" data-mid="" data-contenteditable="false">
+            <section style="width: 5px;height: 5px;border-radius: 50%;background-color: #141414" data-mid="">
+            </section>
+          </section>
+          <section style="float: left;min-width: 50px;padding: 0 10px 0 10px;font-size: 16px;color: #4f4f4f;text-align: center;line-height: 30px" data-mid="">END</section>
+          <section style="float: left;padding: 3px;width: 4px;height: 4px;border-radius: 50%;background-color: #b1b1b1;text-align: center;-webkit-transform: translate(0px, 9px);-ms-transform: translate(0px, 9px);transform: translate(0px, 9px)" data-mid="" data-contenteditable="false">
+            <section style="width: 5px;height: 5px;border-radius: 50%;background-color: #141414" data-mid="">
+            </section>
+          </section>
+          <section style="display: inline-block;float: left;width: 95px;height: 2px;background: -webkit-linear-gradient(left, #141414, #f0f0f0);background: linear-gradient(to right, #141414, #f0f0f0);-webkit-transform: translate(-1px, 14px);-ms-transform: translate(-1px, 14px);transform: translate(-1px, 14px)" data-mid="" data-contenteditable="false">
+          </section>
+        </section>
+      </section>
+    </section>
+    
+
+    <div>
+      
+        
+<div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
+    <img id="wechat_subscriber_qcode" src="/uploads/wechat_qcode.jpg" alt="Johnny Shieh wechat" style="width: 200px; max-width: 100%">
+    <div>我的公众号，不只有技术，还有咖啡和彩蛋！</div>
+</div>
+
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/android/" rel="tag"># android</a>
+          
+            <a href="/tags/java/" rel="tag"># java</a>
+          
+            <a href="/tags/dagger/" rel="tag"># dagger</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/posts/dagger-basic/" rel="next" title="Dagger 2 完全解析（一），Dagger 2 的基本使用与原理">
+                <i class="fa fa-chevron-left"></i> Dagger 2 完全解析（一），Dagger 2 的基本使用与原理
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/posts/dagger-subcomponent/" rel="prev" title="Dagger 2 完全解析（三），Component 的组织关系与 SubComponent">
+                Dagger 2 完全解析（三），Component 的组织关系与 SubComponent <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="SOHUCS" sid="posts/dagger-advance/"></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image" src="/uploads/avatar.png" alt="Johnny Shieh">
+          <p class="site-author-name" itemprop="name">Johnny Shieh</p>
+           
+              <p class="site-description motion-element" itemprop="description">我本微末，心向天空</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">52</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">10</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">34</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/JohnnyShieh" rel="external nofollow" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/johnnyshieh17" rel="external nofollow" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  Weibo
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="mailto:JohnnyShieh17@gmail.com" rel="external nofollow" target="_blank" title="Gmail">
+                  
+                    <i class="fa fa-fw fa-envelope"></i>
+                  
+                  Gmail
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.jianshu.com/u/763027594c0b" rel="external nofollow" target="_blank" title="简书">
+                  
+                    <i class="fa fa-fw fa-book"></i>
+                  
+                  简书
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        <!--<div style="margin: 20px 0 20px 0; height: 1px; background: #eee"></div> 
+<div id="hot-series">
+    <ul class="sidebar-nav" style="margin-bottom: 0;">
+        <li>热门系列</li>
+    </ul>
+    <ul class="series-posts" style="font-size: 14px; padding-left: 10px; list-style: none; text-align: left;">
+        <li><span><a href="http://johnnyshieh.me/tags/dagger/">Dagger 完全解析</a></span>（5）</li>
+        <li><span><a href="http://johnnyshieh.me/categories/unit-test/">Kotlin 写 Android 单元测试</a>（2）</span></li>
+    </ul>
+</div>
+-->
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Lazy-（延迟注入）"><span class="nav-number">1.</span> <span class="nav-text">Lazy （延迟注入）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Provider-注入"><span class="nav-number">2.</span> <span class="nav-text">Provider 注入</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Qualifier（限定符）"><span class="nav-number">3.</span> <span class="nav-text">Qualifier（限定符）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Scope（作用域）"><span class="nav-number">4.</span> <span class="nav-text">Scope（作用域）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Scope-基本概念"><span class="nav-number">4.1.</span> <span class="nav-text">Scope 基本概念</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Singleton-Scope"><span class="nav-number">4.2.</span> <span class="nav-text">Singleton Scope</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Reusable-Scope"><span class="nav-number">4.3.</span> <span class="nav-text">Reusable Scope</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Releasable-references（可释放引用）"><span class="nav-number">4.4.</span> <span class="nav-text">Releasable references（可释放引用）</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Binding-Instances"><span class="nav-number">5.</span> <span class="nav-text">Binding Instances</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">6.</span> <span class="nav-text">总结</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+      <div style="margin: 20px 0 20px 0; height: 1px; background: #eee"></div> 
+<div id="hot-series">
+    <ul class="sidebar-nav" style="margin-bottom: 0">
+        <li>热门系列</li>
+    </ul>
+    <ul class="series-posts" style="font-size: 14px; padding-left: 10px; list-style: none; text-align: left">
+        <li><span><a href="http://johnnyshieh.me/tags/dagger/">Dagger 完全解析</a></span>（5）</li>
+        <li><span><a href="http://johnnyshieh.me/categories/unit-test/">Kotlin 写 Android 单元测试</a>（2）</span></li>
+    </ul>
+</div>
+
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy;  2015 - 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Johnny Shieh</span>
+</div>
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="http://images.johnnyshieh.me/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.1"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+  
+    <script type="text/javascript">
+    (function(){
+      var appid = 'cyt8KwhJ1';
+      var conf = 'prod_651756cd8d701505ffbb60e416929831';
+      var width = window.innerWidth || document.documentElement.clientWidth;
+      if (width < 960) {
+      window.document.write('<script id="changyan_mobile_js" charset="utf-8" type="text/javascript" src="https://changyan.sohu.com/upload/mobile/wap-js/changyan_mobile.js?client_id=' + appid + '&conf=' + conf + '"><\/script>'); } else { var loadJs=function(d,a){var c=document.getElementsByTagName("head")[0]||document.head||document.documentElement;var b=document.createElement("script");b.setAttribute("type","text/javascript");b.setAttribute("charset","UTF-8");b.setAttribute("src",d);if(typeof a==="function"){if(window.attachEvent){b.onreadystatechange=function(){var e=b.readyState;if(e==="loaded"||e==="complete"){b.onreadystatechange=null;a()}}}else{b.onload=a}}c.appendChild(b)};loadJs("https://changyan.sohu.com/upload/changyan.js",function(){
+        window.changyan.api.config({appid:appid,conf:conf})});
+      }
+    })();
+    </script>
+    <script type="text/javascript" src="https://assets.changyan.sohu.com/upload/plugins/plugins.count.js"></script>
+
+
+
+  
+
+
+
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/algolia-instant-search/instantsearch.min.css">
+
+  
+  
+  <script src="/lib/algolia-instant-search/instantsearch.min.js"></script>
+  
+
+  <script src="/js/src/algolia-search.js?v=5.1.1"></script>
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("n55tIxEzsDxW0BEFhehOkP2K-gzGzoHsz", "TwYjARitxhv7iOhbg7k2a9xB");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

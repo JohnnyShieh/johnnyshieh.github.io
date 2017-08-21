@@ -1,0 +1,1145 @@
+<!doctype html>
+
+
+
+
+<html class="theme-next pisces" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta http-equiv="Content-Language" content="zh-cn">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+  <meta name="google-site-verification" content="r1Es2KSXuS6zYdab4rZeEA6X-pEwRwyT4x89S7a4EHE">
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+  <link href="http://images.johnnyshieh.me/lib/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="http://images.johnnyshieh.me/fonts/font.css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+  
+
+<link href="http://images.johnnyshieh.me/lib/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="http://images.johnnyshieh.me/css/main.css?v=5.1.1" rel="stylesheet" type="text/css">
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1">
+
+
+
+  
+    <link rel="apple-touch-icon-precomposed" sizes="57x57" href="/apple-touch-icon-57x57.png">
+  
+    <link rel="apple-touch-icon-precomposed" sizes="120x120" href="/apple-touch-icon-120x120.png">
+  
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="/apple-touch-icon-152x152.png">
+  
+
+
+
+
+
+
+<meta name="description" content="介绍了单元测试的基本概念，为什么需要写单元测试">
+<meta name="keywords" content="单元测试, kotlin, unit test, android, Johnny, Shieh, Johnny Shieh, johnny shieh blog, ">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Kotlin 写 Android 单元测试（一），单元测试是什么以及为什么需要">
+<meta property="og:url" content="http://johnnyshieh.me/posts/unit-test-what-and-why-in-kotlin/index.html">
+<meta property="og:site_name" content="Johnny Shieh">
+<meta property="og:description" content="介绍了单元测试的基本概念，为什么需要写单元测试">
+<meta property="og:updated_time" content="2017-07-08T12:16:43.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Kotlin 写 Android 单元测试（一），单元测试是什么以及为什么需要">
+<meta name="twitter:description" content="介绍了单元测试的基本概念，为什么需要写单元测试">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"right","display":"always","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: false,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: 'QK028ACQPB',
+      apiKey: '4e4a5ec0318356434aed6a3aa5aea209',
+      indexName: 'blog',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"搜索文章","hits_empty":"找不到与您搜索的 ${query} 相符的文章，请尝试其他关键字","hits_stats":"找到 ${hits} 条搜索结果，用时 ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://johnnyshieh.me/posts/unit-test-what-and-why-in-kotlin/">
+
+
+
+
+
+  <title>Kotlin 写 Android 单元测试（一），单元测试是什么以及为什么需要 | Johnny Shieh</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?43cea51223ad3b7bc740196aab48d664";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Johnny Shieh</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">人如果没有梦想，跟咸鱼有什么分别</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-books">
+          <a href="/books" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br>
+            
+            读书
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-friends">
+          <a href="/friends" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-users"></i> <br>
+            
+            小伙伴
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  
+  <div class="algolia-popup popup search-popup">
+    <div class="algolia-search">
+      <div class="algolia-search-input-icon">
+        <i class="fa fa-search"></i>
+      </div>
+      <div class="algolia-search-input" id="algolia-search-input"></div>
+    </div>
+
+    <div class="algolia-results">
+      <div id="algolia-stats"></div>
+      <div id="algolia-hits"></div>
+      <div id="algolia-pagination" class="algolia-pagination"></div>
+    </div>
+
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+  </div>
+
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://johnnyshieh.me/posts/unit-test-what-and-why-in-kotlin/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Johnny Shieh">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Johnny Shieh">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Kotlin 写 Android 单元测试（一），单元测试是什么以及为什么需要</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-05T16:31:29+08:00">
+                2017-07-05
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/unit-test/" itemprop="url" rel="index">
+                    <span itemprop="name">单元测试</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+              <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-comment-o"></i>
+              </span>
+              
+                <a href="/posts/unit-test-what-and-why-in-kotlin/#SOHUCS" itemprop="discussionUrl">
+                  <span id="changyan_count_unit" class="post-comments-count hc-comment-count" data-xid="posts/unit-test-what-and-why-in-kotlin/" itemprop="commentsCount"></span>
+                </a>
+              
+            
+          
+
+          
+          
+             <span id="/posts/unit-test-what-and-why-in-kotlin/" class="leancloud_visitors" data-flag-title="Kotlin 写 Android 单元测试（一），单元测试是什么以及为什么需要">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </span></div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>越来越多的开发者开始使用 Kotlin 开发 Android 项目，Kotlin 逐渐成为 Android 开发的第一语言，公司项目中也开始用 Kotlin 写单元测试，在项目中以单元测试作为开始引入 Kotlin 语言的入口是个不错的选择，大家可以尝试下。但是现在网上关于如何使用 Kotlin 语言写单元测试的文档很少，所以写下这个系列文章记录自己使用 Kotlin 写 Android 项目的单元测试的一些经验。</p>
+<p>有些人可以对单元测试的概念比较模糊，更多的人则认为单元测试是完全没有必要的，所以下面介绍什么是单元测试以及为什么需要写单元测试。</p>
+<h2 id="什么是单元测试"><a href="#什么是单元测试" class="headerlink" title="什么是单元测试"></a>什么是单元测试</h2><h3 id="单元测试的定义"><a href="#单元测试的定义" class="headerlink" title="单元测试的定义"></a>单元测试的定义</h3><p>在 WiKi 上的定义是：在计算机编程中，单元测试（英语：Unit Testing）又称为模块测试, 是针对程序模块（软件设计的最小单位）来进行正确性检验的测试工作。程序单元是应用的最小可测试部件。</p>
+<p>简单点说就是对程序单元进行测试，在面向过程开发中，一个单元就是一个函数；在面向对象开发中，一个单元就是类的一个方法。</p>
+<p>下面使用 Junit 4 中的 <a href="https://github.com/junit-team/junit4/wiki/Getting-started" target="_blank" rel="external">Calculator 例子</a>来说明。</p>
+<a id="more"></a>
+<p>假设我们有一个 Calculator 类：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Calculator</span> </span>&#123;</div><div class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">evaluate</span><span class="params">(String expression)</span> </span>&#123;</div><div class="line">    <span class="keyword">int</span> sum = <span class="number">0</span>;</div><div class="line">    <span class="comment">// 计算整数相加的表达式的结果</span></div><div class="line">    <span class="keyword">for</span> (String summand: expression.split(<span class="string">"\\+"</span>))</div><div class="line">      sum += Integer.valueOf(summand);</div><div class="line">    <span class="keyword">return</span> sum;</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>那么为 Calculator 类的<code>evaluate</code>方法写的单元测试代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> <span class="keyword">static</span> org.junit.Assert.assertEquals;</div><div class="line"><span class="keyword">import</span> org.junit.Test;</div><div class="line"></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CalculatorTest</span> </span>&#123;</div><div class="line">  <span class="meta">@Test</span></div><div class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testEvaluate</span><span class="params">()</span> </span>&#123;</div><div class="line">    Calculator calculator = <span class="keyword">new</span> Calculator();</div><div class="line">    <span class="keyword">int</span> sum = calculator.evaluate(<span class="string">"1+2+3"</span>);</div><div class="line">    assertEquals(<span class="number">6</span>, sum);</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><code>testEvaluate</code>就是<code>evaluate</code>的测试方法，测试<code>evaluate</code>方法是否实现预期功能。</p>
+<p>从上面的测试方法中可以发现，一般单元测试分为 3 步：</p>
+<ol>
+<li><p>初始化。一般是准备一些测试的前提条件，如新建需要测试的类的实例：<code>Calculator calculator = new Calculator();</code>。</p>
+</li>
+<li><p>调用要测试方法。如<code>int sum = calculator.evaluate(&quot;1+2+3&quot;);</code>。</p>
+</li>
+<li><p>验证结果。验证测试结果是否和预期一致：<code>assertEquals(6, sum);</code>。</p>
+</li>
+</ol>
+<p>有的时候还会有第四步：</p>
+<ol>
+<li>收尾工作。一般释放资源或者删除文件等。</li>
+</ol>
+<h3 id="单元测试的重点"><a href="#单元测试的重点" class="headerlink" title="单元测试的重点"></a>单元测试的重点</h3><p>Java 和 Android 中程序是由多个对象组成的，对象之间可以互相调用公开的方法，单元测试就是测试对象的公开方法，也就是说测试类的 public 方法，因为 public 方法是公开的，定义了类的行为，其他类可以调用。而 private 方法是类的内部实现细节，所以一般是不测试的，<strong>单元测试的重点是测试类的 public 方法</strong>。</p>
+<p>再进一步的说，面向对象中单元测试是：测试类的 public 方法的输出是否与预期一致。</p>
+<p>看下面的例子：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">save</span><span class="params">(String result)</span> </span>&#123;</div><div class="line">    ...</div><div class="line">    mStorage.saveToFile(result);    <span class="comment">// 把 result 写入到文件 file</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><code>save</code>方法没有返回值，那么它的输出是什么，可能很多人会说就是<code>result 写入到文件 file</code>，但是那是<code>saveToFile</code>方法的输出，而<code>save</code>方法的输出是调用了<code>mStorage.saveToFile()</code>方法并且参数是<code>result</code>。单元测试只是测试方法单元，并不是测试一个流程。</p>
+<p>所以方法的输出分为两种：</p>
+<ol>
+<li><p><strong>直接的返回结果</strong>，这种情况可以用 <a href="http://junit.org/junit4/" target="_blank" rel="external">Junit 4</a> 测试框架的<code>assert</code>语句测试。</p>
+</li>
+<li><p><strong>间接的方法调用</strong>，这种情况验证方法是否调用，需要利用 mock 的测试框架，例如 <a href="http://site.mockito.org" target="_blank" rel="external">Mockito</a>，后续会有介绍。</p>
+</li>
+</ol>
+<h2 id="为什么要写单元测试"><a href="#为什么要写单元测试" class="headerlink" title="为什么要写单元测试"></a>为什么要写单元测试</h2><p>前面介绍了什么是单元测试，但是很多人还是不愿意写单元测试，之前我也认为单元测试是浪费时间，自己写的单元测试肯定都能测试通过，没有多大意义。大学时老师讲的单元测试的意义，自己也没当回事，没有单元测试，照样写好代码，而且速度还更快。毕业去第一家公司上班后，同事也是基本不写单元测试的，也没有认识到单元测试的价值。</p>
+<p>但是在 Github 上看国外大神的代码时，经常看到他们都会写测试代码，会怀疑单元测试真的有用？真正让我改变看法是不经意间看到<code>小创作</code>的一篇文章 <a href="http://chriszou.com/2016/04/16/android-unit-testing-about-why.html" target="_blank" rel="external">Android单元测试（二）：再来谈谈为什么</a>，于是开始尝试写单元测试代码，慢慢感受到单元测试的魅力，也开始由路转粉了。下面从自己的感受来说说，为什么需要写单元测试？</p>
+<h3 id="写正式代码时会不自觉地分离接口和实现，代码设计更加良好"><a href="#写正式代码时会不自觉地分离接口和实现，代码设计更加良好" class="headerlink" title="写正式代码时会不自觉地分离接口和实现，代码设计更加良好"></a>写正式代码时会不自觉地分离接口和实现，代码设计更加良好</h3><p>如果在项目一开始就写单元测试代码，甚至采用测试驱动开发，写出的代码质量会更高。在日常开发中，很多类会引用其他类，例如一个依赖于数据库的类，为了测试它，测试人员通常编写代码去操作数据库。这是不对的，因为单元测试不应超出待测试的类边界。前面有提到这时需要的是验证数据库的某个方法是否被调用，这时需要创建一个数据库连接的接口，然后实现这个接口的 mock 对象，去测试 mock 对象的某个方法是否被调用。这时已经不自觉地使用面向接口设计，分离数据库的接口和实现，扩展性更好。</p>
+<p>另外在某一个方法的实现前，先去写它对应的单元测试代码，需要注意该方法的输入和输出，不去想实现细节。也会考虑该方法的一些异常，各种情况的预期结果是什么。这样会对这个方法的本质有更清晰的认识，边界情况也考虑的更加全面，然后再去写正式代码时，我发现更加容易，质量也更高。</p>
+<h3 id="节约开发过程中-debug-时间"><a href="#节约开发过程中-debug-时间" class="headerlink" title="节约开发过程中 debug 时间"></a>节约开发过程中 debug 时间</h3><p>在没有写测试代码之前，开发过程中需要完成一个流程中所有模块，然后等 app 运行起来后看看有没 Crash 或者手动进入各个界面测试有没有异常，效率很低，而且往往一开始 Crash 的问题都是一些写代码时疏忽导致的低级错误。相信大多数开发者都跟我一样，或多或少总是会不小心犯一些低级错误。然后改一点后再运行一遍 app，这样反复进行。这种痛相信很多开发者都经历过，测试效率真是太低了。</p>
+<p>而开始写单元测试代码后，写完一部分代码就执行下测试代码，不用等其他模块也完成，其他模块可以先只定义好接口。这样在完成一个小模块的代码，可以通过单元测试及时发现错误，而且单元测试的方式比运行 app 测试的方式速度更快，也更容易发现问题。</p>
+<h3 id="保证代码工作正确，加强自信心"><a href="#保证代码工作正确，加强自信心" class="headerlink" title="保证代码工作正确，加强自信心"></a>保证代码工作正确，加强自信心</h3><p>很多时候，写完代码后自己也多大信心，不知道运行起来是否正常，一些特殊情况是否会崩溃，特别修改已有代码，不知道会不会有其他影响。有单元测试后，就不用那么担心，单元测试通过可以一定程度保证代码工作正确，对后续发版本提供信心，不用那么担心啦。人有自信很重要，自信的人通常更帅^_^。</p>
+<h3 id="便于后期重构或变更时，确保其他模块工作正确"><a href="#便于后期重构或变更时，确保其他模块工作正确" class="headerlink" title="便于后期重构或变更时，确保其他模块工作正确"></a>便于后期重构或变更时，确保其他模块工作正确</h3><p>在项目开发完成后，后期维护或重构的时间通常比较长，这时单元测试的价值也更为凸显。在修改一个地方的代码时，可能会对其他的代码造成影响，但是我们开发者很难知道。经常会出现一种情况，修改一个 bug，会产生另外一个 bug。</p>
+<p>单元测试可以保证修改代码后其他模块依然工作正确，一旦变更导致错误发生，借助单元测试可以快速定位错误。这样在变更代码可以确保不影响其他模块，降低重构成本。</p>
+<h2 id="还是不想写单元测试"><a href="#还是不想写单元测试" class="headerlink" title="还是不想写单元测试"></a>还是不想写单元测试</h2><p>可能看完上面写的这些内容，有些人还是不想写单元测试，主要有下面三个原因：</p>
+<h3 id="写单元测试增加时间成本"><a href="#写单元测试增加时间成本" class="headerlink" title="写单元测试增加时间成本"></a>写单元测试增加时间成本</h3><p>的确学习单元测试本身就需要额外时间，写单元测试代码也需要时间，但是单元测试可以减少后续的 debug 时间，还能保证代码质量，总的来说其实可以帮我们节约时间。而且学习单元测试让自己多一个技能点，国外大神都有的技能点，何乐而不为呢。</p>
+<h3 id="不相信单元测试的价值"><a href="#不相信单元测试的价值" class="headerlink" title="不相信单元测试的价值"></a>不相信单元测试的价值</h3><p>人们对于未知的事物总是会持有怀疑态度，我也一样，但是很多时候需要动手尝试，不去行动永远不知道具体是怎样的。所以去尝试开始写单元测试，你会慢慢发现单元测试的魅力的。</p>
+<h3 id="在已有项目中加入单元测试比较困难"><a href="#在已有项目中加入单元测试比较困难" class="headerlink" title="在已有项目中加入单元测试比较困难"></a>在已有项目中加入单元测试比较困难</h3><p>是的，我在公司项目加入单元测试也遇到一些困难，有些代码不方便测试，需要调整其他的代码或者加上接口，这比较花费时间。但是我也发现一般一个类不好测试时，往往因为这个类的设计有问题。调整后便于测试的代码，设计更加良好，更具有扩展性。所以这是一件非常值得做的事情，相当于重构代码。</p>
+<p>也可以在新需求中新增代码时，加入单元测试，这样困难会少一点，在涉及到之前代码时，可能还需要调整，这时不要轻易放弃，在经过一开始的代码适应阶段后，写单元测试会越来越容易。</p>
+<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>总的来说，单元测试可以提升代码设计，节约测试时间，增强对代码的信心。希望通过这篇文章让更多的人清楚单元测试的概念，同时开始学习写单元测试，后面会介绍如何用 Kotlin 语言写 Android 项目的单元测试。</p>
+<p><strong>参考文章：</strong></p>
+<ul>
+<li><p><a href="http://chriszou.com/2016/04/13/android-unit-testing-start-from-what.html" target="_blank" rel="external">Android 单元测试: 首先，从是什么开始</a></p>
+</li>
+<li><p><a href="http://chriszou.com/2016/04/16/android-unit-testing-about-why.html" target="_blank" rel="external">Android单元测试（二）：再来谈谈为什么</a></p>
+</li>
+</ul>
+      
+    </div>
+
+    
+    <section data-mpa-template-id="95" class="mpa-template" data-mpa-color="#ffffff">
+      <section style="margin-top: 20px;display: -webkit-box;display: flex;-webkit-box-pack: center;justify-content: center;-webkit-box-align: center;align-items: center" data-mid="t22">
+        <section style="text-align: center;line-height: 30px" data-mid="">
+          <section style="display: inline-block;float: left;width: 95px;height: 2px;background: -webkit-linear-gradient(right, #141414, #f0f0f0);background: linear-gradient(to left, #141414, #f0f0f0);-webkit-transform: translate(0px, 12px);-ms-transform: translate(0px, 12px);transform: translate(0px, 12px)" data-mid="" data-contenteditable="false">
+          </section>
+          <section style="float: left;width: 4px;height: 4px;border-radius: 50%;padding: 3px;background-color: #b1b1b1;text-align: center;-webkit-transform: translate(0px, 8px);-ms-transform: translate(0px, 8px);transform: translate(0px, 8px)" data-mid="" data-contenteditable="false">
+            <section style="width: 5px;height: 5px;border-radius: 50%;background-color: #141414" data-mid="">
+            </section>
+          </section>
+          <section style="float: left;min-width: 50px;padding: 0 10px 0 10px;font-size: 16px;color: #4f4f4f;text-align: center;line-height: 30px" data-mid="">END</section>
+          <section style="float: left;padding: 3px;width: 4px;height: 4px;border-radius: 50%;background-color: #b1b1b1;text-align: center;-webkit-transform: translate(0px, 9px);-ms-transform: translate(0px, 9px);transform: translate(0px, 9px)" data-mid="" data-contenteditable="false">
+            <section style="width: 5px;height: 5px;border-radius: 50%;background-color: #141414" data-mid="">
+            </section>
+          </section>
+          <section style="display: inline-block;float: left;width: 95px;height: 2px;background: -webkit-linear-gradient(left, #141414, #f0f0f0);background: linear-gradient(to right, #141414, #f0f0f0);-webkit-transform: translate(-1px, 14px);-ms-transform: translate(-1px, 14px);transform: translate(-1px, 14px)" data-mid="" data-contenteditable="false">
+          </section>
+        </section>
+      </section>
+    </section>
+    
+
+    <div>
+      
+        
+<div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
+    <img id="wechat_subscriber_qcode" src="/uploads/wechat_qcode.jpg" alt="Johnny Shieh wechat" style="width: 200px; max-width: 100%">
+    <div>我的公众号，不只有技术，还有咖啡和彩蛋！</div>
+</div>
+
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/kotlin/" rel="tag"># kotlin</a>
+          
+            <a href="/tags/unit-test/" rel="tag"># 单元测试</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/posts/java-proxy-pattern/" rel="next" title="Java 设计模式之代理模式">
+                <i class="fa fa-chevron-left"></i> Java 设计模式之代理模式
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/posts/reading-note-little-dog-money/" rel="prev" title="「小狗钱钱」读书笔记">
+                「小狗钱钱」读书笔记 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="SOHUCS" sid="posts/unit-test-what-and-why-in-kotlin/"></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image" src="/uploads/avatar.png" alt="Johnny Shieh">
+          <p class="site-author-name" itemprop="name">Johnny Shieh</p>
+           
+              <p class="site-description motion-element" itemprop="description">我本微末，心向天空</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">52</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">10</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">34</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/JohnnyShieh" rel="external nofollow" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/johnnyshieh17" rel="external nofollow" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  Weibo
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="mailto:JohnnyShieh17@gmail.com" rel="external nofollow" target="_blank" title="Gmail">
+                  
+                    <i class="fa fa-fw fa-envelope"></i>
+                  
+                  Gmail
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.jianshu.com/u/763027594c0b" rel="external nofollow" target="_blank" title="简书">
+                  
+                    <i class="fa fa-fw fa-book"></i>
+                  
+                  简书
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        <!--<div style="margin: 20px 0 20px 0; height: 1px; background: #eee"></div> 
+<div id="hot-series">
+    <ul class="sidebar-nav" style="margin-bottom: 0;">
+        <li>热门系列</li>
+    </ul>
+    <ul class="series-posts" style="font-size: 14px; padding-left: 10px; list-style: none; text-align: left;">
+        <li><span><a href="http://johnnyshieh.me/tags/dagger/">Dagger 完全解析</a></span>（5）</li>
+        <li><span><a href="http://johnnyshieh.me/categories/unit-test/">Kotlin 写 Android 单元测试</a>（2）</span></li>
+    </ul>
+</div>
+-->
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#什么是单元测试"><span class="nav-number">1.</span> <span class="nav-text">什么是单元测试</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#单元测试的定义"><span class="nav-number">1.1.</span> <span class="nav-text">单元测试的定义</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#单元测试的重点"><span class="nav-number">1.2.</span> <span class="nav-text">单元测试的重点</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#为什么要写单元测试"><span class="nav-number">2.</span> <span class="nav-text">为什么要写单元测试</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#写正式代码时会不自觉地分离接口和实现，代码设计更加良好"><span class="nav-number">2.1.</span> <span class="nav-text">写正式代码时会不自觉地分离接口和实现，代码设计更加良好</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#节约开发过程中-debug-时间"><span class="nav-number">2.2.</span> <span class="nav-text">节约开发过程中 debug 时间</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#保证代码工作正确，加强自信心"><span class="nav-number">2.3.</span> <span class="nav-text">保证代码工作正确，加强自信心</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#便于后期重构或变更时，确保其他模块工作正确"><span class="nav-number">2.4.</span> <span class="nav-text">便于后期重构或变更时，确保其他模块工作正确</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#还是不想写单元测试"><span class="nav-number">3.</span> <span class="nav-text">还是不想写单元测试</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#写单元测试增加时间成本"><span class="nav-number">3.1.</span> <span class="nav-text">写单元测试增加时间成本</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#不相信单元测试的价值"><span class="nav-number">3.2.</span> <span class="nav-text">不相信单元测试的价值</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#在已有项目中加入单元测试比较困难"><span class="nav-number">3.3.</span> <span class="nav-text">在已有项目中加入单元测试比较困难</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#小结"><span class="nav-number">4.</span> <span class="nav-text">小结</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+      <div style="margin: 20px 0 20px 0; height: 1px; background: #eee"></div> 
+<div id="hot-series">
+    <ul class="sidebar-nav" style="margin-bottom: 0">
+        <li>热门系列</li>
+    </ul>
+    <ul class="series-posts" style="font-size: 14px; padding-left: 10px; list-style: none; text-align: left">
+        <li><span><a href="http://johnnyshieh.me/tags/dagger/">Dagger 完全解析</a></span>（5）</li>
+        <li><span><a href="http://johnnyshieh.me/categories/unit-test/">Kotlin 写 Android 单元测试</a>（2）</span></li>
+    </ul>
+</div>
+
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy;  2015 - 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Johnny Shieh</span>
+</div>
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="http://images.johnnyshieh.me/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.1"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+  
+    <script type="text/javascript">
+    (function(){
+      var appid = 'cyt8KwhJ1';
+      var conf = 'prod_651756cd8d701505ffbb60e416929831';
+      var width = window.innerWidth || document.documentElement.clientWidth;
+      if (width < 960) {
+      window.document.write('<script id="changyan_mobile_js" charset="utf-8" type="text/javascript" src="https://changyan.sohu.com/upload/mobile/wap-js/changyan_mobile.js?client_id=' + appid + '&conf=' + conf + '"><\/script>'); } else { var loadJs=function(d,a){var c=document.getElementsByTagName("head")[0]||document.head||document.documentElement;var b=document.createElement("script");b.setAttribute("type","text/javascript");b.setAttribute("charset","UTF-8");b.setAttribute("src",d);if(typeof a==="function"){if(window.attachEvent){b.onreadystatechange=function(){var e=b.readyState;if(e==="loaded"||e==="complete"){b.onreadystatechange=null;a()}}}else{b.onload=a}}c.appendChild(b)};loadJs("https://changyan.sohu.com/upload/changyan.js",function(){
+        window.changyan.api.config({appid:appid,conf:conf})});
+      }
+    })();
+    </script>
+    <script type="text/javascript" src="https://assets.changyan.sohu.com/upload/plugins/plugins.count.js"></script>
+
+
+
+  
+
+
+
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/algolia-instant-search/instantsearch.min.css">
+
+  
+  
+  <script src="/lib/algolia-instant-search/instantsearch.min.js"></script>
+  
+
+  <script src="/js/src/algolia-search.js?v=5.1.1"></script>
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("n55tIxEzsDxW0BEFhehOkP2K-gzGzoHsz", "TwYjARitxhv7iOhbg7k2a9xB");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  
+
+  
+
+</body>
+</html>
