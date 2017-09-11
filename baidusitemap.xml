@@ -4,6 +4,50 @@
 
     
   <url>
+    <loc>http://johnnyshieh.me/posts/aspectj-in-android-basic/</loc>
+    <lastmod>2017-09-11T03:05:39.000Z</lastmod>
+    <data>
+        <display>
+        <title>AspectJ in Android （一），AspectJ 基础概念</title>
+        <pubTime>2017-09-05T09:21:38.000Z</pubTime>
+        
+        <tag>AOP</tag>
+         
+        <tag>AspectJ</tag>
+         
+         
+           
+             
+              <breadCrumb title="AspectJ" url="http://johnnyshieh.me/categories/AspectJ/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://johnnyshieh.me/posts/android-proguard/</loc>
+    <lastmod>2017-09-01T03:03:17.000Z</lastmod>
+    <data>
+        <display>
+        <title>Android ProGuard 代码混淆那些事儿</title>
+        <pubTime>2017-08-02T08:52:50.000Z</pubTime>
+        
+        <tag>android</tag>
+         
+        <tag>proguard</tag>
+         
+         
+           
+             
+              <breadCrumb title="Android" url="http://johnnyshieh.me/categories/android/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://johnnyshieh.me/posts/kotlin-singleton-pattern/</loc>
     <lastmod>2017-08-18T11:49:13.000Z</lastmod>
     <data>
@@ -37,28 +81,6 @@
         <tag>android</tag>
          
         <tag>rxjava</tag>
-         
-         
-           
-             
-              <breadCrumb title="Android" url="http://johnnyshieh.me/categories/android/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://johnnyshieh.me/posts/android-proguard/</loc>
-    <lastmod>2017-08-07T04:24:54.000Z</lastmod>
-    <data>
-        <display>
-        <title>Android ProGuard 代码混淆那些事儿</title>
-        <pubTime>2017-08-02T08:52:50.000Z</pubTime>
-        
-        <tag>android</tag>
-         
-        <tag>proguard</tag>
          
          
            

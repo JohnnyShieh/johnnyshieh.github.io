@@ -2,6 +2,20 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://johnnyshieh.me/posts/aspectj-in-android-basic/</loc>
+    
+    <lastmod>2017-09-11T03:05:39.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://johnnyshieh.me/posts/android-proguard/</loc>
+    
+    <lastmod>2017-09-01T03:03:17.000Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://johnnyshieh.me/posts/kotlin-singleton-pattern/</loc>
     
     <lastmod>2017-08-18T11:49:13.000Z</lastmod>
@@ -19,13 +33,6 @@
     <loc>http://johnnyshieh.me/posts/rxbus-rxjava2/</loc>
     
     <lastmod>2017-08-09T08:26:47.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://johnnyshieh.me/posts/android-proguard/</loc>
-    
-    <lastmod>2017-08-07T04:24:54.000Z</lastmod>
     
   </url>
   
