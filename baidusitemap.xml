@@ -5,7 +5,7 @@
     
   <url>
     <loc>http://johnnyshieh.me/posts/aspectj-in-android-basic/</loc>
-    <lastmod>2017-09-11T03:05:39.000Z</lastmod>
+    <lastmod>2017-09-12T02:31:40.000Z</lastmod>
     <data>
         <display>
         <title>AspectJ in Android （一），AspectJ 基础概念</title>
@@ -55,9 +55,9 @@
         <title>Kotlin 设计模式之单例模式</title>
         <pubTime>2017-08-18T09:21:38.000Z</pubTime>
         
-        <tag>kotlin</tag>
-         
         <tag>设计模式</tag>
+         
+        <tag>kotlin</tag>
          
          
            
