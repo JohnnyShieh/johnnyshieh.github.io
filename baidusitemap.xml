@@ -4,6 +4,28 @@
 
     
   <url>
+    <loc>http://johnnyshieh.me/posts/aspectj-grammar/</loc>
+    <lastmod>2017-09-15T06:45:20.000Z</lastmod>
+    <data>
+        <display>
+        <title>AspectJ in Android （二），AspectJ 语法</title>
+        <pubTime>2017-09-12T02:30:38.000Z</pubTime>
+        
+        <tag>AOP</tag>
+         
+        <tag>AspectJ</tag>
+         
+         
+           
+             
+              <breadCrumb title="AspectJ" url="http://johnnyshieh.me/categories/AspectJ/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://johnnyshieh.me/posts/aspectj-in-android-basic/</loc>
     <lastmod>2017-09-12T02:31:40.000Z</lastmod>
     <data>
@@ -55,9 +77,9 @@
         <title>Kotlin 设计模式之单例模式</title>
         <pubTime>2017-08-18T09:21:38.000Z</pubTime>
         
-        <tag>设计模式</tag>
-         
         <tag>kotlin</tag>
+         
+        <tag>设计模式</tag>
          
          
            

@@ -355,6 +355,177 @@
   
 
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://johnnyshieh.me/posts/android-setenable-false-not-work/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Johnny Shieh">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Johnny Shieh">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/posts/android-setenable-false-not-work/" itemprop="url">Android View setEnabled false 没有效果的解决方法</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2014-07-30T00:00:00+08:00">
+                2014-07-30
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/android/" itemprop="url" rel="index">
+                    <span itemprop="name">Android</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+              <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-comment-o"></i>
+              </span>
+              
+                <a href="/posts/android-setenable-false-not-work/#SOHUCS" itemprop="discussionUrl">
+                  <span id="sourceId::posts/android-setenable-false-not-work/" class="cy_cmt_count" data-xid="posts/android-setenable-false-not-work/" itemprop="commentsCount"></span>
+                </a>
+              
+            
+          
+
+          
+          
+             <span id="/posts/android-setenable-false-not-work/" class="leancloud_visitors" data-flag-title="Android View setEnabled false 没有效果的解决方法">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </span></div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h2 id="问题场景"><a href="#问题场景" class="headerlink" title="问题场景"></a>问题场景</h2><p>今天遇到了一个很诡异的问题，Android 中 setEnable(false) 没有作用，网上找的很多方法还是没用。会出现这种情况的有下面几个场景：</p>
+<ol>
+<li>ListView 中的子视图 setEnable(false) 后点击仍然会响应 onItemClick</li>
+<li>FrameLayout 中上层试图 disable 后，上层试图没有响应事件，但是 touch 事件传递到下层视图了</li>
+<li>ViewGroup 调用 setEnable(false)，不会自动把子视图设为 disabled</li>
+</ol>
+<p>针对第一个场景，同事给出了一个解决方法：设置一个空的 onClickListener</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">view.setEnabled ( <span class="keyword">false</span> );</div><div class="line">view.setOnClickListener( <span class="keyword">new</span> OnClickListener() &#123;</div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onClick</span><span class="params">(View v)</span> </span>&#123;</div><div class="line">        <span class="comment">// nothing, just to fix the bug that the view can be clicked.</span></div><div class="line">    &#125;</div><div class="line">&#125; );</div></pre></td></tr></table></figure>
+<p>其实上面的做法就是<strong>消费点击事件</strong>但是什么都不做，并不是一般情况下的不消费点击事件。在 Android 的 View 源码中我找到了产生这个效果的原因，具体看下面代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">onTouchEvent</span><span class="params">(MotionEvent event)</span> </span>&#123;</div><div class="line">    <span class="keyword">final</span> <span class="keyword">float</span> x = event.getX();</div><div class="line">    <span class="keyword">final</span> <span class="keyword">float</span> y = event.getY();</div><div class="line">    <span class="keyword">final</span> <span class="keyword">int</span> viewFlags = mViewFlags;</div><div class="line"></div><div class="line">    <span class="keyword">if</span> ((viewFlags &amp; ENABLED_MASK) == DISABLED) &#123;</div><div class="line">        <span class="keyword">if</span> (event.getAction() == MotionEvent.ACTION_UP &amp;&amp; (mPrivateFlags &amp; PFLAG_PRESSED) != <span class="number">0</span>) &#123;</div><div class="line">            setPressed(<span class="keyword">false</span>);</div><div class="line">        &#125;</div><div class="line">        <span class="comment">// A disabled view that is clickable still consumes the touch</span></div><div class="line">        <span class="comment">// events, it just doesn't respond to them.</span></div><div class="line">        <span class="keyword">return</span> (((viewFlags &amp; CLICKABLE) == CLICKABLE ||</div><div class="line">                (viewFlags &amp; LONG_CLICKABLE) == LONG_CLICKABLE));</div><div class="line">    &#125;</div><div class="line"><span class="comment">// ENABLED_MASK为DISABLED时，且isClickable()或isLongClickable()为true时，onTouchEvent 直接return true，消费了事件却不做其他事情</span></div><div class="line"><span class="comment">// 而setOnClickListener时，会setClickable(true).</span></div><div class="line">    ...</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * Register a callback to be invoked when this view is clicked. If this view is not</div><div class="line"> * clickable, it becomes clickable.</div><div class="line"> *</div><div class="line"> * <span class="doctag">@param</span> l The callback that will run</div><div class="line"> *</div><div class="line"> * <span class="doctag">@see</span> #setClickable(boolean)</div><div class="line"> */</div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setOnClickListener</span><span class="params">(OnClickListener l)</span> </span>&#123;</div><div class="line">    <span class="keyword">if</span> (!isClickable()) &#123;</div><div class="line">        setClickable(<span class="keyword">true</span>);</div><div class="line">    &#125;</div><div class="line">    getListenerInfo().mOnClickListener = l;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/posts/android-setenable-false-not-work/" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://johnnyshieh.me/posts/android-system-widget/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -900,7 +1071,7 @@ action_bar_subtitle  -- ActionBar 的 subtitle 的 ID
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">53</span>
+                <span class="site-state-item-count">54</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>

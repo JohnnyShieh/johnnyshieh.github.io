@@ -1,0 +1,1350 @@
+<!doctype html>
+
+
+
+
+<html class="theme-next pisces" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta http-equiv="Content-Language" content="zh-cn">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+  <meta name="google-site-verification" content="r1Es2KSXuS6zYdab4rZeEA6X-pEwRwyT4x89S7a4EHE">
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+  <link href="http://images.johnnyshieh.me/lib/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="http://images.johnnyshieh.me/fonts/font.css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+  
+
+<link href="http://images.johnnyshieh.me/lib/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="http://images.johnnyshieh.me/css/main.css?v=5.1.1" rel="stylesheet" type="text/css">
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1">
+
+
+
+  
+    <link rel="apple-touch-icon-precomposed" sizes="57x57" href="/apple-touch-icon-57x57.png">
+  
+    <link rel="apple-touch-icon-precomposed" sizes="120x120" href="/apple-touch-icon-120x120.png">
+  
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="/apple-touch-icon-152x152.png">
+  
+
+
+
+
+
+
+<meta name="description" content="上篇文章介绍了 AspectJ 的基本概念，这篇文章详细分析 AspectJ 基于注解开发方式的语法。 Join PointJoin Point 表示连接点，即 AOP 可织入代码的点，下表列出了 AspectJ 的所有连接点：    Join Point 说明     Method call 方法被调用   Method execution 方法执行   Constructor call 构造函">
+<meta name="keywords" content="AspectJ, Android, AOP, OOP, Johnny, Shieh, Johnny Shieh, johnny shieh blog, ">
+<meta property="og:type" content="article">
+<meta property="og:title" content="AspectJ in Android （二），AspectJ 语法">
+<meta property="og:url" content="http://johnnyshieh.me/posts/aspectj-grammar/index.html">
+<meta property="og:site_name" content="Johnny Shieh">
+<meta property="og:description" content="上篇文章介绍了 AspectJ 的基本概念，这篇文章详细分析 AspectJ 基于注解开发方式的语法。 Join PointJoin Point 表示连接点，即 AOP 可织入代码的点，下表列出了 AspectJ 的所有连接点：    Join Point 说明     Method call 方法被调用   Method execution 方法执行   Constructor call 构造函">
+<meta property="og:updated_time" content="2017-09-15T06:45:20.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="AspectJ in Android （二），AspectJ 语法">
+<meta name="twitter:description" content="上篇文章介绍了 AspectJ 的基本概念，这篇文章详细分析 AspectJ 基于注解开发方式的语法。 Join PointJoin Point 表示连接点，即 AOP 可织入代码的点，下表列出了 AspectJ 的所有连接点：    Join Point 说明     Method call 方法被调用   Method execution 方法执行   Constructor call 构造函">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"right","display":"always","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: false,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: 'QK028ACQPB',
+      apiKey: '4e4a5ec0318356434aed6a3aa5aea209',
+      indexName: 'blog',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"搜索文章","hits_empty":"找不到与您搜索的 ${query} 相符的文章，请尝试其他关键字","hits_stats":"找到 ${hits} 条搜索结果，用时 ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://johnnyshieh.me/posts/aspectj-grammar/">
+
+
+
+
+
+  <title>AspectJ in Android （二），AspectJ 语法 | Johnny Shieh</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?43cea51223ad3b7bc740196aab48d664";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Johnny Shieh</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">人如果没有梦想，跟咸鱼有什么分别</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-books">
+          <a href="/books" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br>
+            
+            读书
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-friends">
+          <a href="/friends" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-users"></i> <br>
+            
+            小伙伴
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  
+  <div class="algolia-popup popup search-popup">
+    <div class="algolia-search">
+      <div class="algolia-search-input-icon">
+        <i class="fa fa-search"></i>
+      </div>
+      <div class="algolia-search-input" id="algolia-search-input"></div>
+    </div>
+
+    <div class="algolia-results">
+      <div id="algolia-stats"></div>
+      <div id="algolia-hits"></div>
+      <div id="algolia-pagination" class="algolia-pagination"></div>
+    </div>
+
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+  </div>
+
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://johnnyshieh.me/posts/aspectj-grammar/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Johnny Shieh">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Johnny Shieh">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">AspectJ in Android （二），AspectJ 语法</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-12T10:30:38+08:00">
+                2017-09-12
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/AspectJ/" itemprop="url" rel="index">
+                    <span itemprop="name">AspectJ</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+              <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-comment-o"></i>
+              </span>
+              
+                <a href="/posts/aspectj-grammar/#SOHUCS" itemprop="discussionUrl">
+                  <span id="changyan_count_unit" class="post-comments-count hc-comment-count" data-xid="posts/aspectj-grammar/" itemprop="commentsCount"></span>
+                </a>
+              
+            
+          
+
+          
+          
+             <span id="/posts/aspectj-grammar/" class="leancloud_visitors" data-flag-title="AspectJ in Android （二），AspectJ 语法">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </span></div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>上篇文章介绍了 AspectJ 的基本概念，这篇文章详细分析 AspectJ 基于注解开发方式的语法。</p>
+<h2 id="Join-Point"><a href="#Join-Point" class="headerlink" title="Join Point"></a>Join Point</h2><p>Join Point 表示连接点，即 AOP 可织入代码的点，下表列出了 AspectJ 的所有连接点：</p>
+<table>
+<thead>
+<tr>
+<th>Join Point</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Method call</td>
+<td>方法被调用</td>
+</tr>
+<tr>
+<td>Method execution</td>
+<td>方法执行</td>
+</tr>
+<tr>
+<td>Constructor call</td>
+<td>构造函数被调用</td>
+</tr>
+<tr>
+<td>Constructor execution</td>
+<td>构造函数执行</td>
+</tr>
+<tr>
+<td>Field get</td>
+<td>读取属性</td>
+</tr>
+<tr>
+<td>Field set</td>
+<td>写入属性</td>
+</tr>
+<tr>
+<td>Pre-initialization</td>
+<td>与构造函数有关，很少用到</td>
+</tr>
+<tr>
+<td>Initialization</td>
+<td>与构造函数有关，很少用到</td>
+</tr>
+<tr>
+<td>Static initialization</td>
+<td>static 块初始化</td>
+</tr>
+<tr>
+<td>Handler</td>
+<td>异常处理</td>
+</tr>
+<tr>
+<td>Advice execution</td>
+<td>所有 Advice 执行</td>
+</tr>
+</tbody>
+</table>
+<a id="more"></a>
+<h2 id="Pointcuts"><a href="#Pointcuts" class="headerlink" title="Pointcuts"></a>Pointcuts</h2><p>Pointcuts 是具体的切入点，可以确定具体织入代码的地方，基本的 Pointcuts 是和 Join Point 相对应的。</p>
+<table>
+<thead>
+<tr>
+<th>Join Point</th>
+<th>Pointcuts syntax</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Method call</td>
+<td>call(MethodPattern)</td>
+</tr>
+<tr>
+<td>Method execution</td>
+<td>execution(MethodPattern)</td>
+</tr>
+<tr>
+<td>Constructor call</td>
+<td>call(ConstructorPattern)</td>
+</tr>
+<tr>
+<td>Constructor execution</td>
+<td>execution(ConstructorPattern)</td>
+</tr>
+<tr>
+<td>Field get</td>
+<td>get(FieldPattern)</td>
+</tr>
+<tr>
+<td>Field set</td>
+<td>set(FieldPattern)</td>
+</tr>
+<tr>
+<td>Pre-initialization</td>
+<td>initialization(ConstructorPattern)</td>
+</tr>
+<tr>
+<td>Initialization</td>
+<td>preinitialization(ConstructorPattern)</td>
+</tr>
+<tr>
+<td>Static initialization</td>
+<td>staticinitialization(TypePattern)</td>
+</tr>
+<tr>
+<td>Handler</td>
+<td>handler(TypePattern)</td>
+</tr>
+<tr>
+<td>Advice execution</td>
+<td>adviceexcution()</td>
+</tr>
+</tbody>
+</table>
+<p>除了上面与 Join Point 对应的选择外，Pointcuts 还有其他选择方法：</p>
+<table>
+<thead>
+<tr>
+<th>Pointcuts synatx</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>within(TypePattern)</td>
+<td>符合 TypePattern 的代码中的 Join Point</td>
+</tr>
+<tr>
+<td>withincode(MethodPattern)</td>
+<td>在某些方法中的 Join Point</td>
+</tr>
+<tr>
+<td>withincode(ConstructorPattern)</td>
+<td>在某些构造函数中的 Join Point</td>
+</tr>
+<tr>
+<td>cflow(Pointcut)</td>
+<td>Pointcut 选择出的切入点 P 的控制流中的所有 Join Point，包括 P 本身</td>
+</tr>
+<tr>
+<td>cflowbelow(Pointcut)</td>
+<td>Pointcut 选择出的切入点 P 的控制流中的所有 Join Point，不包括 P 本身</td>
+</tr>
+<tr>
+<td>this(Type or Id)</td>
+<td>Join Point 所属的 this 对象是否 instanceOf Type 或者 Id 的类型</td>
+</tr>
+<tr>
+<td>target(Type or Id)</td>
+<td>Join Point 所在的对象（例如 call 或 execution 操作符应用的对象）是否 instanceOf Type 或者 Id 的类型</td>
+</tr>
+<tr>
+<td>args(Type or Id, …)</td>
+<td>方法或构造函数参数的类型</td>
+</tr>
+<tr>
+<td>if(BooleanExpression)</td>
+<td>满足表达式的 Join Point，表达式只能使用静态属性、Pointcuts 或 Advice 暴露的参数、thisJoinPoint 对象</td>
+</tr>
+</tbody>
+</table>
+<p>Pointcut 表达式还可以 ！、&amp;&amp;、|| 来组合，!Pointcut 选取不符合 Pointcut 的 Join Point，Pointcut0 &amp;&amp; Pointcut1 选取符合 Pointcut0 和 Pointcut1 的 Join Point，Pointcut0 || Pointcut1 选取符合 Pointcut0 或 Pointcut1 的 Join Point。</p>
+<p>上面 Pointcuts 的语法中涉及到一些 Pattern，下面是这些 Pattern 的规则，<code>[]</code>里的内容是可选的：</p>
+<table>
+<thead>
+<tr>
+<th>Pattern</th>
+<th>规则</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>MethodPattern</td>
+<td>[!] [@Annotation] [public,protected,private] [static] [final] 返回值类型 [类名.]方法名(参数类型列表) [throws 异常类型]</td>
+</tr>
+<tr>
+<td>ConstructorPattern</td>
+<td>[!] [@Annotation] [public,protected,private] [final] [类名.]new(参数类型列表) [throws 异常类型]</td>
+</tr>
+<tr>
+<td>FieldPattern</td>
+<td>[!] [@Annotation] [public,protected,private] [static] [final] 属性类型 [类名.]属性名</td>
+</tr>
+<tr>
+<td>TypePattern</td>
+<td>其他 Pattern 涉及到的类型规则也是一样，可以使用 ‘!’、’<em>‘、’..’、’+’，’!’ 表示取反，’</em>‘ 匹配除 . 外的所有字符串，’*’ 单独使用事表示匹配任意类型，’..’ 匹配任意字符串，’..’ 单独使用时表示匹配任意长度任意类型，’+’ 匹配其自身及子类，还有一个 ‘…’表示不定个数</td>
+</tr>
+</tbody>
+</table>
+<p>TypePattern 也可以使用 &amp;&amp;、|| 操作符，其他 Pointcut 更详细的语法说明，见官网文档 <a href="http://www.eclipse.org/aspectj/doc/released/progguide/semantics-pointcuts.html" target="_blank" rel="external">Pointcuts Language Semantics</a>。</p>
+<h3 id="Pointcut-示例"><a href="#Pointcut-示例" class="headerlink" title="Pointcut 示例"></a>Pointcut 示例</h3><p>execution(void void android.view.View.OnClickListener+.onClick(..)) – OnClickListener 及其子类的 onClick 方法执行时</p>
+<p>call(@retrofit2.http.GET public <em> com.johnny.core.http..</em>(..)) – ‘com.johnny.core.http’开头的包下面的所有 GET 方法调用时</p>
+<p>call(android.support.v4.app.Fragment+.new(..)) – support 包中的 Fragment 及其子类的构造函数调用时</p>
+<p>set(@Inject <em> </em>) – 写入所有 @Inject 注解修饰的属性时</p>
+<p>handler(IOException) &amp;&amp; within(com.johnny.core.http..) – ‘com.johnny.core.http’开头的包代码中处理 IOException 时</p>
+<p>execution(void setUserVisibleHint(..)) &amp;&amp; target(android.support.v4.app.Fragment) &amp;&amp; args(boolean) – 执行 Fragment 及其子类的 setUserVisibleHint(boolean) 方法时</p>
+<p>execution(void Foo.foo(..)) &amp;&amp; cflowbelow(execution(void Foo.foo(..))) – 执行 Foo.foo() 方法中再递归执行 Foo.foo() 时</p>
+<h3 id="Pointcut-声明"><a href="#Pointcut-声明" class="headerlink" title="Pointcut 声明"></a>Pointcut 声明</h3><p>Pointcuts 可以在普通的 class 或 Aspect class 中定义，由 org.aspectj.lang.annotation.Pointcut 注解修饰的方法声明，方法返回值只能是 void。@Pointcut 修饰的方法只能由空的方法实现而且不能有 throws 语句，方法的参数和 pointcut 中的参数相对应。</p>
+<p>看下面这个例子：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Aspect</span></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Test</span> </span>&#123;</div><div class="line">    <span class="meta">@Pointcut</span>(<span class="string">"execution(void Foo.foo(..)"</span>)</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">executFoo</span><span class="params">()</span> </span>&#123;&#125;</div><div class="line"></div><div class="line">    <span class="meta">@Pointcut</span>(<span class="string">"executFoo() &amp;&amp; cflowbelow(executFoo()) &amp;&amp; target(foo) &amp;&amp; args(i)"</span>)</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">loopExecutFoo</span><span class="params">(Foo foo, <span class="keyword">int</span> i)</span> </span>&#123;&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="if-表达式"><a href="#if-表达式" class="headerlink" title="if() 表达式"></a>if() 表达式</h3><p>在基于 AspectJ 注解的开发方式中，<code>if(...)</code> 表达式的用法与其他的选择操作符不同，在 @Pointcut 的语句中 if 表达式只能是<code>if()</code>、<code>if(true)</code>或<code>if(false)</code>，而且 @Pointcut 方法必须为 public static boolean，方法体内就是 if 表达式的内容，可以使用暴露的参数、静态属性、JoinPoint、JoinPointStaticPart、JoinPoint.EnclosingStaticPart。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">static</span> <span class="keyword">int</span> COUNT = <span class="number">0</span>;</div><div class="line"></div><div class="line"><span class="meta">@Pointcut</span>(<span class="string">"call(* *.*(int)) &amp;&amp; args(i) &amp;&amp; if()"</span>)</div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">boolean</span> <span class="title">someCallWithIfTest</span><span class="params">(<span class="keyword">int</span> i, JoinPoint jp, JoinPoint.EnclosingStaticPart esjp)</span> </span>&#123;</div><div class="line">    <span class="comment">// any legal Java expression...</span></div><div class="line">    <span class="keyword">return</span> i &gt; <span class="number">0</span></div><div class="line">        &amp;&amp; jp.getSignature().getName.startsWith(<span class="string">"doo"</span>)</div><div class="line">        &amp;&amp; esjp.getSignature().getName().startsWith(<span class="string">"test"</span>)</div><div class="line">        &amp;&amp; COUNT++ &lt; <span class="number">10</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>if() 表达式使用的比较少，大致了解下就可以了。</p>
+<h3 id="target-与-this"><a href="#target-与-this" class="headerlink" title="target() 与 this()"></a>target() 与 this()</h3><p>target() 与 this() 很容易混淆，target() 是指 Pointcut 选取的 Join Point 的所有者；this() 是指 Pointcut 选取的 Join Point 的调用的所有者。简单地说就是，PointcutA 选取的是 methodA，那么 target 就是 methodA() 这个方法的对象，而 this 就是 methodA 被调用时所在类的对象。</p>
+<p>看下面这个例子：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Test</span> </span>&#123;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">test</span><span class="params">()</span> </span>&#123;...&#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">A</span> </span>&#123;</div><div class="line">    ...</div><div class="line">    test1.test(); <span class="comment">// test() 在 a 的某方法中调用</span></div><div class="line">    ...</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="meta">@Aspect</span></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">TestAspect</span> </span>&#123;</div><div class="line">    <span class="meta">@Pointcut</span>(<span class="string">"call(void Test.test()) &amp;&amp; target(Test)"</span>)</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="title">test1</span><span class="params">()</span> </span>&#123;&#125;</div><div class="line"></div><div class="line">    <span class="meta">@Pointcut</span>(<span class="string">"call(void Test.test()) &amp;&amp; this(A)"</span>)</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="title">test2</span><span class="params">()</span> </span>&#123;&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>上面代码中 <code>test1.test()</code> 方法属于 test1 对象，所以 target 为 test1，而该方法在 a 对象的方法中调用，所以 this 为 a。</p>
+<h2 id="Advice"><a href="#Advice" class="headerlink" title="Advice"></a>Advice</h2><p>Advice 是在切入点上织入的代码，在 AspectJ 中有五种类型：Before、After、AfterReturning、AfterThrowing、Around。</p>
+<table>
+<thead>
+<tr>
+<th>Advice</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>@Before</td>
+<td>在执行 Join Point 之前</td>
+</tr>
+<tr>
+<td>@After</td>
+<td>在执行 Join Point 之后，包括正常的 return 和 throw 异常</td>
+</tr>
+<tr>
+<td>@AfterReturning</td>
+<td>Join Point 为方法调用且正常 return 时，不指定返回类型时匹配所有类型</td>
+</tr>
+<tr>
+<td>@AfterThrowing</td>
+<td>Join Point 为方法调用且抛出异常时，不指定异常类型时匹配所有类型</td>
+</tr>
+<tr>
+<td>@Around</td>
+<td>替代 Join Point 的代码，如果要执行原来代码的话，要使用 ProceedingJoinPoint.proceed()</td>
+</tr>
+</tbody>
+</table>
+<p>注意: After 和 Before 没有返回值，但是 Around 的目标是替代原 Join Point 的，所以它一般会有返回值，而且返回值的类型需要匹配被选中的 Join Point 的代码。而且不能和其他 Advice 一起使用，如果在对一个 Pointcut 声明 Around 之后还声明 Before 或者 After 则会失效。</p>
+<p>Advice 注解修改的方法必须为 public，Before、After、AfterReturning、AfterThrowing 四种类型修饰的方法返回值也必须为 void，Advice 需要使用 JoinPoint、JoinPointStaticPart、JoinPoint.EnclosingStaticPart 时，要在方法中声明为额外的参数，@Around 方法可以使用 ProceedingJoinPoint，用以调用 proceed() 方法。</p>
+<p>看下面几个示例，进一步了解 Advice 用法：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Before</span>(<span class="string">"call(* *.*(..)) &amp;&amp; this(foo)"</span>)</div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">callFromFoo</span><span class="params">(Foo foo)</span> </span>&#123;</div><div class="line">    Log.d(TAG, <span class="string">"call from Foo:"</span> + foo);</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="meta">@AfterReturning</span>(pointcut=<span class="string">"call(Foo+.new(..))"</span>, returning=<span class="string">"f"</span>)</div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">itsAFoo</span><span class="params">(Foo f, JoinPoint thisJoinPoint)</span> </span>&#123;</div><div class="line">    <span class="comment">// ...</span></div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="meta">@Around</span>(<span class="string">"call(* setAge(..)) &amp;&amp; args(i)"</span>)</div><div class="line"><span class="function"><span class="keyword">public</span> Object <span class="title">twiceAsOld</span><span class="params">(<span class="keyword">int</span> i, ProceedingJoinPoint thisJoinPoint)</span> </span>&#123;</div><div class="line">    <span class="keyword">return</span> thisJoinPoint.proceed(<span class="keyword">new</span> Object[]&#123;i * <span class="number">2</span>&#125;); <span class="comment">// 原来参数乘以 2</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>注：Handler Pointcut 不能使用 After 和 Around，</p>
+<h2 id="Aspect"><a href="#Aspect" class="headerlink" title="Aspect"></a>Aspect</h2><p>Aspect 就是 AOP 中的关键单位 – 切面，我们一般会把相关 Pointcut 和 Advice 放在一个 Aspect 类中，在基于 AspectJ 注解开发方式中只需要在类的头部加上 @Aspect 注解即可,@Aspect 不能修饰接口。</p>
+<p>例如，定义一个 LogAspect，在需要的 Join Point 上加上打印日志的 Advice，这样就形成了一个 LogAspect 的切面，在编译期会将代码织入到相应的方法中，但是在编码中只需要关注 LogAspect 即可。</p>
+<p>在多个切入点织入 Advice 代码时，会涉及到 Aspect 对象实例的问题，因为 Advice 代码是 Aspect 的方法。一般情况下，我们使用的都是单例的 Aspect，即所有 Advice 代码使用的都是同一个 Aspect 对象实例。</p>
+<h3 id="Singleton-Aspect"><a href="#Singleton-Aspect" class="headerlink" title="Singleton Aspect"></a>Singleton Aspect</h3><p>文章中代码示例都是单例的 Aspect，这也是最常见的，定义方式为：<code>@Aspect</code> 或者 <code>@Aspect()</code>。</p>
+<p>编译期，ajc 编译期会给单例的切面加上静态的 aspectOf() 方法来获取单例实例，还有一个 hasAspect() 静态方法判断实例是否初始化。假设 FragmentAspect 有 Advice 方法 advice1()，织入切入点的代码就是 FragmentAspect.aspectOf().advice1()。</p>
+<h3 id="Per-object-Per-cflow-Aspect-等"><a href="#Per-object-Per-cflow-Aspect-等" class="headerlink" title="Per-object, Per-cflow Aspect 等"></a>Per-object, Per-cflow Aspect 等</h3><p>除了单例 Aspect 外，还可以根据 Join Point 的相应对象、控制流、所在类型产生不同的实例。</p>
+<p>定义方式为：<code>@Aspect(&quot;perthis|pertarget|percflow|percflowbelow(Pointcut) | pertypewithin(TypePattern)&quot;)</code>，因为不常见，所以就简单介绍下，想进一步了解请看 <a href="http://www.eclipse.org/aspectj/doc/released/progguide/semantics-aspects.html" target="_blank" rel="external">Aspects Language Semantics</a> 。</p>
+<h2 id="Inter-type-Declarations"><a href="#Inter-type-Declarations" class="headerlink" title="Inter-type Declarations"></a>Inter-type Declarations</h2><p>上面提到的都是 Pointcut 和 Advice 都是在类本身结构不变的情况下织入代码，AspectJ 的 Inter-type Declarations 可以修改类的结构，给类添加方法或者属性，让类继承多个类或者实现多个接口。但是基于 AspectJ 注解开发方式因为技术原因，目前只能让类实现多个接口，通俗的说法就是给类添加接口，也添加了接口的方法。</p>
+<p>给类添加接口，实际通过实现了该接口的代理来完成对原类型的替换，所以需要提供实现了该接口的实现完成代理中接口的具体行为，不然只是增加接口，没有接口实现没什么用处。@DeclareMixin 就是用来确定接口的默认实现，绑定一个产生该接口的默认实现的工厂方法，以该接口为返回类型。</p>
+<p>看下面代码，给 Fragment 添加 Title 接口：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">Title</span> </span>&#123;</div><div class="line">    <span class="function">String <span class="title">getTitle</span><span class="params">()</span></span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TitleImpl</span> <span class="keyword">implements</span> <span class="title">Title</span> </span>&#123;</div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getTitle</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> <span class="string">"Test"</span>;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="meta">@Aspect</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">FragmentAspect</span> </span>&#123;</div><div class="line">    <span class="meta">@DeclareMixin</span>(<span class="string">"android.support.v4.app.Fragment"</span>)</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Title <span class="title">createDelegate</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">new</span> TitleImpl();</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>上面代码可以给 Fragment 添加了 Title 接口，如果<code>@DeclareMixin(&quot;android.support.v4.app.*&quot;)</code>的话，则给 app 下所有类添加 Title 接口，之后通过正常的类型转换来访问 Title 接口：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">String title = ((Title) fragment).getTitle(); <span class="comment">// 返回 Test 字符串</span></div></pre></td></tr></table></figure>
+<p>也可以将原对象作为接口默认实现的参数，这样就可以根据 fragment 的属性返回不同的 title :</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TitleImpl</span> <span class="keyword">implements</span> <span class="title">Title</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="keyword">private</span> <span class="keyword">final</span> String title;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="title">TitleImpl</span><span class="params">(Fragment fragment)</span> </span>&#123;</div><div class="line">        title = fragment.getClass().getSimpleName();</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getTitle</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> title;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="meta">@Aspect</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">FragmentAspect</span> </span>&#123;</div><div class="line">    <span class="meta">@DeclareMixin</span>(<span class="string">"android.support.v4.app.Fragment"</span>)</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Title <span class="title">createDelegate</span><span class="params">(Fragment fragment)</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">new</span> TitleImpl(fragment);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>上面代码返回 fragment 的类名作为 title。</p>
+<p>关于 AspectJ 基于注解开发方式的语法就讲到这里，下一篇文章根据实际例子介绍 AspectJ 的常见用法。</p>
+<p><strong>参考资料</strong></p>
+<ul>
+<li><p><a href="http://www.eclipse.org/aspectj/doc/released/progguide/index.html" target="_blank" rel="external">The AspectJ Programming Guide</a></p>
+</li>
+<li><p><a href="http://www.eclipse.org/aspectj/doc/released/adk15notebook/ataspectj.html" target="_blank" rel="external">The AspectJ 5 Development Kit Developer’s Notebook</a></p>
+</li>
+<li><p><a href="http://linbinghe.com/2017/65db25bc.html" target="_blank" rel="external">关于AspectJ，你需要知道的一切</a></p>
+</li>
+</ul>
+      
+    </div>
+
+    
+    <section data-mpa-template-id="95" class="mpa-template" data-mpa-color="#ffffff">
+      <section style="margin-top: 20px;display: -webkit-box;display: flex;-webkit-box-pack: center;justify-content: center;-webkit-box-align: center;align-items: center" data-mid="t22">
+        <section style="text-align: center;line-height: 30px" data-mid="">
+          <section style="display: inline-block;float: left;width: 95px;height: 2px;background: -webkit-linear-gradient(right, #141414, #f0f0f0);background: linear-gradient(to left, #141414, #f0f0f0);-webkit-transform: translate(0px, 12px);-ms-transform: translate(0px, 12px);transform: translate(0px, 12px)" data-mid="" data-contenteditable="false">
+          </section>
+          <section style="float: left;width: 4px;height: 4px;border-radius: 50%;padding: 3px;background-color: #b1b1b1;text-align: center;-webkit-transform: translate(0px, 8px);-ms-transform: translate(0px, 8px);transform: translate(0px, 8px)" data-mid="" data-contenteditable="false">
+            <section style="width: 5px;height: 5px;border-radius: 50%;background-color: #141414" data-mid="">
+            </section>
+          </section>
+          <section style="float: left;min-width: 50px;padding: 0 10px 0 10px;font-size: 16px;color: #4f4f4f;text-align: center;line-height: 30px" data-mid="">END</section>
+          <section style="float: left;padding: 3px;width: 4px;height: 4px;border-radius: 50%;background-color: #b1b1b1;text-align: center;-webkit-transform: translate(0px, 9px);-ms-transform: translate(0px, 9px);transform: translate(0px, 9px)" data-mid="" data-contenteditable="false">
+            <section style="width: 5px;height: 5px;border-radius: 50%;background-color: #141414" data-mid="">
+            </section>
+          </section>
+          <section style="display: inline-block;float: left;width: 95px;height: 2px;background: -webkit-linear-gradient(left, #141414, #f0f0f0);background: linear-gradient(to right, #141414, #f0f0f0);-webkit-transform: translate(-1px, 14px);-ms-transform: translate(-1px, 14px);transform: translate(-1px, 14px)" data-mid="" data-contenteditable="false">
+          </section>
+        </section>
+      </section>
+    </section>
+    
+
+    <div>
+      
+        
+<div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
+    <img id="wechat_subscriber_qcode" src="/uploads/wechat_qcode.jpg" alt="Johnny Shieh wechat" style="width: 200px; max-width: 100%">
+    <div>我的公众号，不只有技术，还有咖啡和彩蛋！</div>
+</div>
+
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/AOP/" rel="tag"># AOP</a>
+          
+            <a href="/tags/AspectJ/" rel="tag"># AspectJ</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/posts/aspectj-in-android-basic/" rel="next" title="AspectJ in Android （一），AspectJ 基础概念">
+                <i class="fa fa-chevron-left"></i> AspectJ in Android （一），AspectJ 基础概念
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="SOHUCS" sid="posts/aspectj-grammar/"></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image" src="/uploads/avatar.png" alt="Johnny Shieh">
+          <p class="site-author-name" itemprop="name">Johnny Shieh</p>
+           
+              <p class="site-description motion-element" itemprop="description">我本微末，心向天空</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">54</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">11</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">36</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/JohnnyShieh" rel="external nofollow" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/johnnyshieh17" rel="external nofollow" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  Weibo
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="mailto:JohnnyShieh17@gmail.com" rel="external nofollow" target="_blank" title="Gmail">
+                  
+                    <i class="fa fa-fw fa-envelope"></i>
+                  
+                  Gmail
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.jianshu.com/u/763027594c0b" rel="external nofollow" target="_blank" title="简书">
+                  
+                    <i class="fa fa-fw fa-book"></i>
+                  
+                  简书
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        <!--<div style="margin: 20px 0 20px 0; height: 1px; background: #eee"></div> 
+<div id="hot-series">
+    <ul class="sidebar-nav" style="margin-bottom: 0;">
+        <li>热门系列</li>
+    </ul>
+    <ul class="series-posts" style="font-size: 14px; padding-left: 10px; list-style: none; text-align: left;">
+        <li><span><a href="http://johnnyshieh.me/tags/dagger/">Dagger 完全解析</a></span>（5）</li>
+        <li><span><a href="http://johnnyshieh.me/categories/unit-test/">Kotlin 写 Android 单元测试</a>（2）</span></li>
+    </ul>
+</div>
+-->
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Join-Point"><span class="nav-number">1.</span> <span class="nav-text">Join Point</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Pointcuts"><span class="nav-number">2.</span> <span class="nav-text">Pointcuts</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Pointcut-示例"><span class="nav-number">2.1.</span> <span class="nav-text">Pointcut 示例</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Pointcut-声明"><span class="nav-number">2.2.</span> <span class="nav-text">Pointcut 声明</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#if-表达式"><span class="nav-number">2.3.</span> <span class="nav-text">if() 表达式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#target-与-this"><span class="nav-number">2.4.</span> <span class="nav-text">target() 与 this()</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Advice"><span class="nav-number">3.</span> <span class="nav-text">Advice</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Aspect"><span class="nav-number">4.</span> <span class="nav-text">Aspect</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Singleton-Aspect"><span class="nav-number">4.1.</span> <span class="nav-text">Singleton Aspect</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Per-object-Per-cflow-Aspect-等"><span class="nav-number">4.2.</span> <span class="nav-text">Per-object, Per-cflow Aspect 等</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Inter-type-Declarations"><span class="nav-number">5.</span> <span class="nav-text">Inter-type Declarations</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+      <div style="margin: 20px 0 20px 0; height: 1px; background: #eee"></div> 
+<div id="hot-series">
+    <ul class="sidebar-nav" style="margin-bottom: 0">
+        <li>热门系列</li>
+    </ul>
+    <ul class="series-posts" style="font-size: 14px; padding-left: 10px; list-style: none; text-align: left">
+        <li><span><a href="http://johnnyshieh.me/tags/dagger/">Dagger 完全解析</a></span>（5）</li>
+        <li><span><a href="http://johnnyshieh.me/categories/unit-test/">Kotlin 写 Android 单元测试</a>（2）</span></li>
+    </ul>
+</div>
+
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy;  2015 - 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Johnny Shieh</span>
+</div>
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="http://images.johnnyshieh.me/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.1"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+  
+    <script type="text/javascript">
+    (function(){
+      var appid = 'cyt8KwhJ1';
+      var conf = 'prod_651756cd8d701505ffbb60e416929831';
+      var width = window.innerWidth || document.documentElement.clientWidth;
+      if (width < 960) {
+      window.document.write('<script id="changyan_mobile_js" charset="utf-8" type="text/javascript" src="https://changyan.sohu.com/upload/mobile/wap-js/changyan_mobile.js?client_id=' + appid + '&conf=' + conf + '"><\/script>'); } else { var loadJs=function(d,a){var c=document.getElementsByTagName("head")[0]||document.head||document.documentElement;var b=document.createElement("script");b.setAttribute("type","text/javascript");b.setAttribute("charset","UTF-8");b.setAttribute("src",d);if(typeof a==="function"){if(window.attachEvent){b.onreadystatechange=function(){var e=b.readyState;if(e==="loaded"||e==="complete"){b.onreadystatechange=null;a()}}}else{b.onload=a}}c.appendChild(b)};loadJs("https://changyan.sohu.com/upload/changyan.js",function(){
+        window.changyan.api.config({appid:appid,conf:conf})});
+      }
+    })();
+    </script>
+    <script type="text/javascript" src="https://assets.changyan.sohu.com/upload/plugins/plugins.count.js"></script>
+
+
+
+  
+
+
+
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/algolia-instant-search/instantsearch.min.css">
+
+  
+  
+  <script src="/lib/algolia-instant-search/instantsearch.min.js"></script>
+  
+
+  <script src="/js/src/algolia-search.js?v=5.1.1"></script>
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("n55tIxEzsDxW0BEFhehOkP2K-gzGzoHsz", "TwYjARitxhv7iOhbg7k2a9xB");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

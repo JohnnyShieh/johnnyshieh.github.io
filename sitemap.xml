@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://johnnyshieh.me/posts/aspectj-grammar/</loc>
+    
+    <lastmod>2017-09-15T06:45:20.000Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://johnnyshieh.me/posts/aspectj-in-android-basic/</loc>
     
     <lastmod>2017-09-12T02:31:40.000Z</lastmod>
