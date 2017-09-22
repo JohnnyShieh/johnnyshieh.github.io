@@ -107,17 +107,17 @@
 
 
 
-<meta name="description" content="上篇文章介绍了 AspectJ 的基本概念，这篇文章详细分析 AspectJ 基于注解开发方式的语法。 Join PointJoin Point 表示连接点，即 AOP 可织入代码的点，下表列出了 AspectJ 的所有连接点：    Join Point 说明     Method call 方法被调用   Method execution 方法执行   Constructor call 构造函">
+<meta name="description" content="AspectJ in Android 系列： AspectJ in Android （一），AspectJ 基础概念 AspectJ in Android （二），AspectJ 语法 AspectJ in Android （三），AspectJ 两种用法以及常见问题 上篇文章介绍了 AspectJ 的基本概念，这篇文章详细分析 AspectJ 基于注解开发方式的语法。 Join PointJoi">
 <meta name="keywords" content="AspectJ, Android, AOP, OOP, Johnny, Shieh, Johnny Shieh, johnny shieh blog, ">
 <meta property="og:type" content="article">
 <meta property="og:title" content="AspectJ in Android （二），AspectJ 语法">
 <meta property="og:url" content="http://johnnyshieh.me/posts/aspectj-grammar/index.html">
 <meta property="og:site_name" content="Johnny Shieh">
-<meta property="og:description" content="上篇文章介绍了 AspectJ 的基本概念，这篇文章详细分析 AspectJ 基于注解开发方式的语法。 Join PointJoin Point 表示连接点，即 AOP 可织入代码的点，下表列出了 AspectJ 的所有连接点：    Join Point 说明     Method call 方法被调用   Method execution 方法执行   Constructor call 构造函">
-<meta property="og:updated_time" content="2017-09-15T06:45:20.000Z">
+<meta property="og:description" content="AspectJ in Android 系列： AspectJ in Android （一），AspectJ 基础概念 AspectJ in Android （二），AspectJ 语法 AspectJ in Android （三），AspectJ 两种用法以及常见问题 上篇文章介绍了 AspectJ 的基本概念，这篇文章详细分析 AspectJ 基于注解开发方式的语法。 Join PointJoi">
+<meta property="og:updated_time" content="2017-09-22T03:51:46.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="AspectJ in Android （二），AspectJ 语法">
-<meta name="twitter:description" content="上篇文章介绍了 AspectJ 的基本概念，这篇文章详细分析 AspectJ 基于注解开发方式的语法。 Join PointJoin Point 表示连接点，即 AOP 可织入代码的点，下表列出了 AspectJ 的所有连接点：    Join Point 说明     Method call 方法被调用   Method execution 方法执行   Constructor call 构造函">
+<meta name="twitter:description" content="AspectJ in Android 系列： AspectJ in Android （一），AspectJ 基础概念 AspectJ in Android （二），AspectJ 语法 AspectJ in Android （三），AspectJ 两种用法以及常见问题 上篇文章介绍了 AspectJ 的基本概念，这篇文章详细分析 AspectJ 基于注解开发方式的语法。 Join PointJoi">
 
 
 
@@ -466,7 +466,11 @@
       
 
       
-        <p>上篇文章介绍了 AspectJ 的基本概念，这篇文章详细分析 AspectJ 基于注解开发方式的语法。</p>
+        <p>AspectJ in Android 系列：</p>
+<p><a href="http://johnnyshieh.me/posts/aspectj-in-android-basic/">AspectJ in Android （一），AspectJ 基础概念</a></p>
+<p><a href="http://johnnyshieh.me/posts/aspectj-grammar/">AspectJ in Android （二），AspectJ 语法</a></p>
+<p><a href="http://johnnyshieh.me/posts/aspectj-in-android-usage/">AspectJ in Android （三），AspectJ 两种用法以及常见问题</a></p>
+<p>上篇文章介绍了 AspectJ 的基本概念，这篇文章详细分析 AspectJ 基于注解开发方式的语法。</p>
 <h2 id="Join-Point"><a href="#Join-Point" class="headerlink" title="Join Point"></a>Join Point</h2><p>Join Point 表示连接点，即 AOP 可织入代码的点，下表列出了 AspectJ 的所有连接点：</p>
 <table>
 <thead>
@@ -706,7 +710,7 @@
 <p>Advice 注解修改的方法必须为 public，Before、After、AfterReturning、AfterThrowing 四种类型修饰的方法返回值也必须为 void，Advice 需要使用 JoinPoint、JoinPointStaticPart、JoinPoint.EnclosingStaticPart 时，要在方法中声明为额外的参数，@Around 方法可以使用 ProceedingJoinPoint，用以调用 proceed() 方法。</p>
 <p>看下面几个示例，进一步了解 Advice 用法：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Before</span>(<span class="string">"call(* *.*(..)) &amp;&amp; this(foo)"</span>)</div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">callFromFoo</span><span class="params">(Foo foo)</span> </span>&#123;</div><div class="line">    Log.d(TAG, <span class="string">"call from Foo:"</span> + foo);</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="meta">@AfterReturning</span>(pointcut=<span class="string">"call(Foo+.new(..))"</span>, returning=<span class="string">"f"</span>)</div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">itsAFoo</span><span class="params">(Foo f, JoinPoint thisJoinPoint)</span> </span>&#123;</div><div class="line">    <span class="comment">// ...</span></div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="meta">@Around</span>(<span class="string">"call(* setAge(..)) &amp;&amp; args(i)"</span>)</div><div class="line"><span class="function"><span class="keyword">public</span> Object <span class="title">twiceAsOld</span><span class="params">(<span class="keyword">int</span> i, ProceedingJoinPoint thisJoinPoint)</span> </span>&#123;</div><div class="line">    <span class="keyword">return</span> thisJoinPoint.proceed(<span class="keyword">new</span> Object[]&#123;i * <span class="number">2</span>&#125;); <span class="comment">// 原来参数乘以 2</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>注：Handler Pointcut 不能使用 After 和 Around，</p>
+<p>注：Handler Pointcut 不能使用 After 和 Around。</p>
 <h2 id="Aspect"><a href="#Aspect" class="headerlink" title="Aspect"></a>Aspect</h2><p>Aspect 就是 AOP 中的关键单位 – 切面，我们一般会把相关 Pointcut 和 Advice 放在一个 Aspect 类中，在基于 AspectJ 注解开发方式中只需要在类的头部加上 @Aspect 注解即可,@Aspect 不能修饰接口。</p>
 <p>例如，定义一个 LogAspect，在需要的 Join Point 上加上打印日志的 Advice，这样就形成了一个 LogAspect 的切面，在编译期会将代码织入到相应的方法中，但是在编码中只需要关注 LogAspect 即可。</p>
 <p>在多个切入点织入 Advice 代码时，会涉及到 Aspect 对象实例的问题，因为 Advice 代码是 Aspect 的方法。一般情况下，我们使用的都是单例的 Aspect，即所有 Advice 代码使用的都是同一个 Aspect 对象实例。</p>
@@ -813,6 +817,10 @@
 
           <div class="post-nav-prev post-nav-item">
             
+              <a href="/posts/aspectj-in-android-usage/" rel="prev" title="AspectJ in Android （三），AspectJ 两种用法以及常见问题">
+                AspectJ in Android （三），AspectJ 两种用法以及常见问题 <i class="fa fa-chevron-right"></i>
+              </a>
+            
           </div>
         </div>
       
@@ -883,7 +891,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">54</span>
+                <span class="site-state-item-count">55</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -970,6 +978,7 @@
     </ul>
     <ul class="series-posts" style="font-size: 14px; padding-left: 10px; list-style: none; text-align: left;">
         <li><span><a href="http://johnnyshieh.me/tags/dagger/">Dagger 完全解析</a></span>（5）</li>
+         <li><span><a href="http://johnnyshieh.me/categories/AspectJ/">AspectJ in Android</a></span>（3）</li>
         <li><span><a href="http://johnnyshieh.me/categories/unit-test/">Kotlin 写 Android 单元测试</a>（2）</span></li>
     </ul>
 </div>
@@ -1004,6 +1013,7 @@
     </ul>
     <ul class="series-posts" style="font-size: 14px; padding-left: 10px; list-style: none; text-align: left">
         <li><span><a href="http://johnnyshieh.me/tags/dagger/">Dagger 完全解析</a></span>（5）</li>
+         <li><span><a href="http://johnnyshieh.me/categories/AspectJ/">AspectJ in Android</a></span>（3）</li>
         <li><span><a href="http://johnnyshieh.me/categories/unit-test/">Kotlin 写 Android 单元测试</a>（2）</span></li>
     </ul>
 </div>

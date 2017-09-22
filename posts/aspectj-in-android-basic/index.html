@@ -114,7 +114,7 @@
 <meta property="og:url" content="http://johnnyshieh.me/posts/aspectj-in-android-basic/index.html">
 <meta property="og:site_name" content="Johnny Shieh">
 <meta property="og:description" content="AOP 和 AspectJ 的一些基本概念">
-<meta property="og:updated_time" content="2017-09-12T02:31:40.000Z">
+<meta property="og:updated_time" content="2017-09-22T03:51:30.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="AspectJ in Android （一），AspectJ 基础概念">
 <meta name="twitter:description" content="AOP 和 AspectJ 的一些基本概念">
@@ -466,7 +466,11 @@
       
 
       
-        <p>最近项目在做无埋点统计，解决新增功能都需要人工添加埋点的问题，其中使用了 AspectJ 技术。在这过程中发现网上关于 AspectJ 在 Android 中应用的文章比较少，所以自己整理写了 《AspectJ in Android》系列文章，记录自己所学的同时希望读者可以少走一些弯路。</p>
+        <p>AspectJ in Android 系列：</p>
+<p><a href="http://johnnyshieh.me/posts/aspectj-in-android-basic/">AspectJ in Android （一），AspectJ 基础概念</a></p>
+<p><a href="http://johnnyshieh.me/posts/aspectj-grammar/">AspectJ in Android （二），AspectJ 语法</a></p>
+<p><a href="http://johnnyshieh.me/posts/aspectj-in-android-usage/">AspectJ in Android （三），AspectJ 两种用法以及常见问题</a></p>
+<p>最近项目在做无埋点统计，解决新增功能都需要人工添加埋点的问题，其中使用了 AspectJ 技术。在这过程中发现网上关于 AspectJ 在 Android 中应用的文章比较少，所以自己整理写了 《AspectJ in Android》系列文章，记录自己所学的同时希望读者可以少走一些弯路。</p>
 <p>这篇文章主要讲 AspectJ 涉及到的 AOP 编程思想和 AspectJ 的一些基本概念。</p>
 <h2 id="AOP"><a href="#AOP" class="headerlink" title="AOP"></a>AOP</h2><h3 id="什么是-AOP-？"><a href="#什么是-AOP-？" class="headerlink" title="什么是 AOP ？"></a>什么是 AOP ？</h3><p>AOP （Aspect-Oriented Programming），面向切面编程，是一种编程思想。AOP 以切面（aspect）为基础，切面是一种新的模块化机制，用来描述分散在对象、类或函数中的横切关点（crosscutting concern）。</p>
 <p>AOP 和我们熟悉的 OOP 面向对象编程只有一字之差，面向对象编程是以对象为基础，把功能抽象成对象模型，优先从对象的属性和行为职责出发，把代码分散到一个个的类中，降低代码的复杂度同时提供复用性。但是在分散代码时会出现重复代码，例如，在两个类的每个方法中加上日志。按照 OOP 的思想，需要在方法中都加入重复的日志代码，也许有人说把日志代码抽象成例外一个日志的类，但是这样的话日志类和两个类都有耦合，而且日志类和这两个的职责没有关联，调用日志类的方法却遍布两个类的方法中。</p>
@@ -667,7 +671,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">54</span>
+                <span class="site-state-item-count">55</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -754,6 +758,7 @@
     </ul>
     <ul class="series-posts" style="font-size: 14px; padding-left: 10px; list-style: none; text-align: left;">
         <li><span><a href="http://johnnyshieh.me/tags/dagger/">Dagger 完全解析</a></span>（5）</li>
+         <li><span><a href="http://johnnyshieh.me/categories/AspectJ/">AspectJ in Android</a></span>（3）</li>
         <li><span><a href="http://johnnyshieh.me/categories/unit-test/">Kotlin 写 Android 单元测试</a>（2）</span></li>
     </ul>
 </div>
@@ -788,6 +793,7 @@
     </ul>
     <ul class="series-posts" style="font-size: 14px; padding-left: 10px; list-style: none; text-align: left">
         <li><span><a href="http://johnnyshieh.me/tags/dagger/">Dagger 完全解析</a></span>（5）</li>
+         <li><span><a href="http://johnnyshieh.me/categories/AspectJ/">AspectJ in Android</a></span>（3）</li>
         <li><span><a href="http://johnnyshieh.me/categories/unit-test/">Kotlin 写 Android 单元测试</a>（2）</span></li>
     </ul>
 </div>

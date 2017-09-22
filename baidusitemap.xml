@@ -4,8 +4,30 @@
 
     
   <url>
+    <loc>http://johnnyshieh.me/posts/aspectj-in-android-usage/</loc>
+    <lastmod>2017-09-22T03:55:08.000Z</lastmod>
+    <data>
+        <display>
+        <title>AspectJ in Android （三），AspectJ 两种用法以及常见问题</title>
+        <pubTime>2017-09-20T07:35:00.000Z</pubTime>
+        
+        <tag>AOP</tag>
+         
+        <tag>AspectJ</tag>
+         
+         
+           
+             
+              <breadCrumb title="AspectJ" url="http://johnnyshieh.me/categories/AspectJ/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://johnnyshieh.me/posts/aspectj-grammar/</loc>
-    <lastmod>2017-09-15T06:45:20.000Z</lastmod>
+    <lastmod>2017-09-22T03:51:46.000Z</lastmod>
     <data>
         <display>
         <title>AspectJ in Android （二），AspectJ 语法</title>
@@ -27,7 +49,7 @@
     
   <url>
     <loc>http://johnnyshieh.me/posts/aspectj-in-android-basic/</loc>
-    <lastmod>2017-09-12T02:31:40.000Z</lastmod>
+    <lastmod>2017-09-22T03:51:30.000Z</lastmod>
     <data>
         <display>
         <title>AspectJ in Android （一），AspectJ 基础概念</title>
