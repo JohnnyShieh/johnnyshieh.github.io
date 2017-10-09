@@ -4,8 +4,53 @@
 
     
   <url>
+    <loc>http://johnnyshieh.me/posts/kotlin-design-pattern-impl/</loc>
+    <lastmod>2017-10-09T08:24:04.000Z</lastmod>
+    <data>
+        <display>
+        <title>Kotlin 语言下设计模式的不同实现</title>
+        <pubTime>2017-09-29T02:34:42.000Z</pubTime>
+        
+        <tag>设计模式</tag>
+         
+        <tag>kotlin</tag>
+         
+         
+           
+             
+              <breadCrumb title="设计模式" url="http://johnnyshieh.me/categories/designpattern/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://johnnyshieh.me/posts/kotlin-singleton-pattern/</loc>
+    <lastmod>2017-09-29T08:00:28.000Z</lastmod>
+    <data>
+        <display>
+        <title>Kotlin 设计模式之单例模式</title>
+        <pubTime>2017-08-18T09:21:38.000Z</pubTime>
+        
+        <tag>设计模式</tag>
+         
+        <tag>kotlin</tag>
+         
+         
+           
+             
+              <breadCrumb title="设计模式" url="http://johnnyshieh.me/categories/designpattern/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+    
+  <url>
     <loc>http://johnnyshieh.me/posts/aspectj-in-android-usage/</loc>
-    <lastmod>2017-09-22T03:55:08.000Z</lastmod>
+    <lastmod>2017-09-25T08:40:50.000Z</lastmod>
     <data>
         <display>
         <title>AspectJ in Android （三），AspectJ 两种用法以及常见问题</title>
@@ -91,28 +136,6 @@
     </url>
 
     
-  <url>
-    <loc>http://johnnyshieh.me/posts/kotlin-singleton-pattern/</loc>
-    <lastmod>2017-08-18T11:49:13.000Z</lastmod>
-    <data>
-        <display>
-        <title>Kotlin 设计模式之单例模式</title>
-        <pubTime>2017-08-18T09:21:38.000Z</pubTime>
-        
-        <tag>kotlin</tag>
-         
-        <tag>设计模式</tag>
-         
-         
-           
-             
-              <breadCrumb title="设计模式" url="http://johnnyshieh.me/categories/designpattern/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
     
   <url>
     <loc>http://johnnyshieh.me/posts/rxbus-rxjava2/</loc>
@@ -147,9 +170,9 @@
         
         <tag>android</tag>
          
-        <tag>java</tag>
-         
         <tag>dagger</tag>
+         
+        <tag>java</tag>
          
          
            
@@ -171,9 +194,9 @@
         
         <tag>android</tag>
          
-        <tag>java</tag>
-         
         <tag>dagger</tag>
+         
+        <tag>java</tag>
          
          
            
@@ -369,9 +392,9 @@
         
         <tag>android</tag>
          
-        <tag>java</tag>
-         
         <tag>dagger</tag>
+         
+        <tag>java</tag>
          
          
            
@@ -393,9 +416,9 @@
         
         <tag>android</tag>
          
-        <tag>java</tag>
-         
         <tag>dagger</tag>
+         
+        <tag>java</tag>
          
          
            
@@ -496,7 +519,6 @@
     </data>
     </url>
 
-    
     
   <url>
     <loc>http://johnnyshieh.me/posts/reading-note-little-dog-money/</loc>
@@ -754,9 +776,9 @@
         
         <tag>android</tag>
          
-        <tag>java</tag>
-         
         <tag>dagger</tag>
+         
+        <tag>java</tag>
          
         <tag>kotlin</tag>
          

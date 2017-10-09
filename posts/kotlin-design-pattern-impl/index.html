@@ -1,0 +1,1137 @@
+<!doctype html>
+
+
+
+
+<html class="theme-next pisces" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta http-equiv="Content-Language" content="zh-cn">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+  <meta name="google-site-verification" content="r1Es2KSXuS6zYdab4rZeEA6X-pEwRwyT4x89S7a4EHE">
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+  <link href="http://images.johnnyshieh.me/lib/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="http://images.johnnyshieh.me/fonts/font.css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+  
+
+<link href="http://images.johnnyshieh.me/lib/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="http://images.johnnyshieh.me/css/main.css?v=5.1.1" rel="stylesheet" type="text/css">
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1">
+
+
+
+  
+    <link rel="apple-touch-icon-precomposed" sizes="57x57" href="/apple-touch-icon-57x57.png">
+  
+    <link rel="apple-touch-icon-precomposed" sizes="120x120" href="/apple-touch-icon-120x120.png">
+  
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="/apple-touch-icon-152x152.png">
+  
+
+
+
+
+
+
+<meta name="description" content="Kotlin 下设计模式的不同实现">
+<meta name="keywords" content="Kotlin, design pattern, 设计模式, 模式, Johnny, Shieh, Johnny Shieh, johnny shieh blog, ">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Kotlin 语言下设计模式的不同实现">
+<meta property="og:url" content="http://johnnyshieh.me/posts/kotlin-design-pattern-impl/index.html">
+<meta property="og:site_name" content="Johnny Shieh">
+<meta property="og:description" content="Kotlin 下设计模式的不同实现">
+<meta property="og:updated_time" content="2017-10-09T08:24:04.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Kotlin 语言下设计模式的不同实现">
+<meta name="twitter:description" content="Kotlin 下设计模式的不同实现">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"right","display":"always","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: false,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: 'QK028ACQPB',
+      apiKey: '4e4a5ec0318356434aed6a3aa5aea209',
+      indexName: 'blog',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"搜索文章","hits_empty":"找不到与您搜索的 ${query} 相符的文章，请尝试其他关键字","hits_stats":"找到 ${hits} 条搜索结果，用时 ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://johnnyshieh.me/posts/kotlin-design-pattern-impl/">
+
+
+
+
+
+  <title>Kotlin 语言下设计模式的不同实现 | Johnny Shieh</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?43cea51223ad3b7bc740196aab48d664";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Johnny Shieh</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">人如果没有梦想，跟咸鱼有什么分别</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-books">
+          <a href="/books" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br>
+            
+            读书
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-friends">
+          <a href="/friends" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-users"></i> <br>
+            
+            小伙伴
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  
+  <div class="algolia-popup popup search-popup">
+    <div class="algolia-search">
+      <div class="algolia-search-input-icon">
+        <i class="fa fa-search"></i>
+      </div>
+      <div class="algolia-search-input" id="algolia-search-input"></div>
+    </div>
+
+    <div class="algolia-results">
+      <div id="algolia-stats"></div>
+      <div id="algolia-hits"></div>
+      <div id="algolia-pagination" class="algolia-pagination"></div>
+    </div>
+
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+  </div>
+
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://johnnyshieh.me/posts/kotlin-design-pattern-impl/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Johnny Shieh">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Johnny Shieh">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Kotlin 语言下设计模式的不同实现</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-29T10:34:42+08:00">
+                2017-09-29
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/designpattern/" itemprop="url" rel="index">
+                    <span itemprop="name">设计模式</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+              <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-comment-o"></i>
+              </span>
+              
+                <a href="/posts/kotlin-design-pattern-impl/#SOHUCS" itemprop="discussionUrl">
+                  <span id="changyan_count_unit" class="post-comments-count hc-comment-count" data-xid="posts/kotlin-design-pattern-impl/" itemprop="commentsCount"></span>
+                </a>
+              
+            
+          
+
+          
+          
+             <span id="/posts/kotlin-design-pattern-impl/" class="leancloud_visitors" data-flag-title="Kotlin 语言下设计模式的不同实现">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </span></div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>偶然在 Github 上看到 dbacinski 写的 Kotlin 语言下设计模式的不同实现（这里的不同是相对于 Java 语言的），有些实现非常好，但是有些实现的例子不是很赞同。所以自己写了 Kotlin 语言版本的 23 种设计模式的实现，充分利用 Kotlin 的语法糖，例如单例模式、策略模式等可以很巧妙地实现，其他实现方式与 Java 不变的也有代码示例，就当是回顾设计模式。</p>
+<h2 id="创建型模式"><a href="#创建型模式" class="headerlink" title="创建型模式"></a>创建型模式</h2><h3 id="工厂方法模式"><a href="#工厂方法模式" class="headerlink" title="工厂方法模式"></a>工厂方法模式</h3><p>工厂方法把创建对象的过程抽象为接口，由工厂的子类决定对象的创建，Kotlin 下的实现与 Java 一样。</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">interface</span> <span class="title">Product</span> </span>&#123;</div><div class="line">    <span class="keyword">val</span> name: String</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">ProductA</span></span>(<span class="keyword">override</span> <span class="keyword">val</span> name: String = <span class="string">"ProductA"</span>) : Product</div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">ProductB</span></span>(<span class="keyword">override</span> <span class="keyword">val</span> name: String = <span class="string">"ProductB"</span>) : Product</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">interface</span> <span class="title">Factory</span> </span>&#123;</div><div class="line">    <span class="function"><span class="keyword">fun</span> <span class="title">makeProduct</span><span class="params">()</span></span>: Product</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">FactoryA</span> : <span class="type">Factory &#123;</span></span></div><div class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">makeProduct</span><span class="params">()</span></span> = ProductA()</div><div class="line">&#125;</div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">FactoryB</span> : <span class="type">Factory &#123;</span></span></div><div class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">makeProduct</span><span class="params">()</span></span> = ProductB()</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<a id="more"></a>
+<h3 id="抽象工厂模式"><a href="#抽象工厂模式" class="headerlink" title="抽象工厂模式"></a>抽象工厂模式</h3><p>工厂方法针对一种产品，而抽象工厂是针对一系列产品，为每种产品定义一个工厂方法，工厂子类负责创建该系列的多种产品，Kotlin 下的实现与 Java 一样。</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">SeriesATextView</span></span>(context: Context?) : TextView(context)</div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">SeriesBTextView</span></span>(context: Context?) : TextView(context)</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">SeriesAButton</span></span>(context: Context?) : Button(context)</div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">SeriesBButton</span></span>(context: Context?) : Button(context)</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">interface</span> <span class="title">AbstractFactory</span> </span>&#123;</div><div class="line">    <span class="keyword">val</span> context: Context?</div><div class="line">    <span class="function"><span class="keyword">fun</span> <span class="title">makeTextView</span><span class="params">()</span></span>: TextView</div><div class="line">    <span class="function"><span class="keyword">fun</span> <span class="title">makeButton</span><span class="params">()</span></span>: Button</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">SeriesAFactory</span></span>(<span class="keyword">override</span> <span class="keyword">val</span> context: Context?) : AbstractFactory &#123;</div><div class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">makeTextView</span><span class="params">()</span></span> = SeriesATextView(context)</div><div class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">makeButton</span><span class="params">()</span></span> = SeriesAButton(context)</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">SeriesBFactory</span></span>(<span class="keyword">override</span> <span class="keyword">val</span> context: Context?) : AbstractFactory &#123;</div><div class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">makeTextView</span><span class="params">()</span></span> = SeriesBTextView(context)</div><div class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">makeButton</span><span class="params">()</span></span> = SeriesBButton(context)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="建造者模式"><a href="#建造者模式" class="headerlink" title="建造者模式"></a>建造者模式</h3><p>建造者模式是为了构建复杂对象的，一般情况下，Kotlin 中使用标准的<code>apply</code>函数就可以了，例如下面创建 Dialog 的例子：</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">val</span> dialog = Dialog(context).apply &#123; </div><div class="line">    setTitle(<span class="string">"DialogA"</span>) </div><div class="line">    setCancelable(<span class="literal">true</span>)</div><div class="line">    setCanceledOnTouchOutside(<span class="literal">true</span>)</div><div class="line">    setContentView(contentView)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>不过上面的代码中在 apply 里的 lambda 表达式里可以调用 Dialog.show() 等其他与构建对象无关的方法，或者不想公开构造函数，只想通过 Builder 来构建对象，这时可以使用 Type-Safe Builders：</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Car</span> </span>(</div><div class="line">    <span class="keyword">val</span> model: String?,</div><div class="line">    <span class="keyword">val</span> year: <span class="built_in">Int</span></div><div class="line">) &#123;</div><div class="line">    <span class="keyword">private</span> <span class="keyword">constructor</span>(builder: Builder) : <span class="keyword">this</span>(builder.model, builder.year)</div><div class="line"></div><div class="line">    <span class="class"><span class="keyword">class</span> <span class="title">Builder</span> </span>&#123;</div><div class="line">        <span class="keyword">var</span> model: String? = <span class="literal">null</span></div><div class="line">        <span class="keyword">var</span> year: <span class="built_in">Int</span> = <span class="number">-1</span></div><div class="line"></div><div class="line">        <span class="function"><span class="keyword">fun</span> <span class="title">build</span><span class="params">()</span></span> = Car(<span class="keyword">this</span>)</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">companion</span> <span class="keyword">object</span> &#123;</div><div class="line">        <span class="keyword">inline</span> <span class="function"><span class="keyword">fun</span> <span class="title">build</span><span class="params">(block: <span class="type">Builder</span>.()</span></span> -&gt; <span class="built_in">Unit</span>) = Builder().apply(block).build()</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// usage</span></div><div class="line"><span class="keyword">val</span> car = Car.build &#123; </div><div class="line">    model = <span class="string">"John One"</span></div><div class="line">    year = <span class="number">2017</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="原型模式"><a href="#原型模式" class="headerlink" title="原型模式"></a>原型模式</h3><p>原型模式是以一个对象为原型，创建出一个新的对象，在 Kotlin 下很容易实现，因为使用 data class 时，会自动获得<code>equals</code>、<code>hashCode</code>、<code>toString</code>和<code>copy</code>方法，而<code>copy</code>方法可以克隆整个对象并且允许修改新对象某些属性。</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">data</span> <span class="class"><span class="keyword">class</span> <span class="title">EMail</span></span>(<span class="keyword">var</span> recipient: String, <span class="keyword">var</span> subject: String?, <span class="keyword">var</span> message: String?)</div><div class="line"></div><div class="line"><span class="keyword">val</span> mail = EMail(<span class="string">"abc@example.com"</span>, <span class="string">"Hello"</span>, <span class="string">"Don't know what to write."</span>)</div><div class="line"><span class="keyword">val</span> copy = mail.copy(recipient = <span class="string">"other@example.com"</span>)</div></pre></td></tr></table></figure>
+<h3 id="单例模式"><a href="#单例模式" class="headerlink" title="单例模式"></a>单例模式</h3><p>单例模式在 Kotlin 下直接使用<code>object</code>就行了。想要实现懒汉式单例或更详细的内容，请看之前的文章 <a href="http://johnnyshieh.me/posts/kotlin-singleton-pattern">Kotlin 设计模式之单例模式</a>。</p>
+<h2 id="结构型模式"><a href="#结构型模式" class="headerlink" title="结构型模式"></a>结构型模式</h2><h3 id="适配器模式"><a href="#适配器模式" class="headerlink" title="适配器模式"></a>适配器模式</h3><p>适配器模式是把一个不兼容的接口转化为另一个类可以使用的接口，Kotlin 下的实现与 Java 一样。</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">interface</span> <span class="title">Target</span> </span>&#123;</div><div class="line">    <span class="function"><span class="keyword">fun</span> <span class="title">request</span><span class="params">()</span></span></div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">interface</span> <span class="title">Adaptee</span> </span>&#123;</div><div class="line">    <span class="function"><span class="keyword">fun</span> <span class="title">ask</span><span class="params">()</span></span></div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Adapter</span></span>(<span class="keyword">val</span> wrapper: Adaptee) : Target &#123;</div><div class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">request</span><span class="params">()</span></span> &#123;</div><div class="line">        wrapper.ask()</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="桥接模式"><a href="#桥接模式" class="headerlink" title="桥接模式"></a>桥接模式</h3><p>桥接模式可以分离某个类存在两个独立变化的纬度，把多层继承结构改为两个独立的继承结构，在两个抽象层中有一个抽象关联，Kotlin 下的实现与 Java 一样。</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">interface</span> <span class="title">Color</span> </span>&#123;</div><div class="line">    <span class="function"><span class="keyword">fun</span> <span class="title">coloring</span><span class="params">()</span></span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">RedColor</span> : <span class="type">Color &#123; ... &#125;</span></span></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">BlueColor</span> : <span class="type">Color &#123; ... &#125;</span></span></div><div class="line"></div><div class="line"><span class="class"><span class="keyword">interface</span> <span class="title">Pen</span> </span>&#123;</div><div class="line">    <span class="keyword">val</span> colorImpl: Color    <span class="comment">// this is bridge</span></div><div class="line">    <span class="function"><span class="keyword">fun</span> <span class="title">write</span><span class="params">()</span></span></div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">BigPen</span></span>(<span class="keyword">override</span> <span class="keyword">val</span> colorImpl: Color) : Pen &#123; ... &#125;</div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">SmallPen</span></span>(<span class="keyword">override</span> <span class="keyword">val</span> colorImpl: Color) : Pen &#123; ... &#125;</div></pre></td></tr></table></figure>
+<h3 id="组合模式"><a href="#组合模式" class="headerlink" title="组合模式"></a>组合模式</h3><p>组合模式是对树形结构的处理，让调用者忽视单个对象和组合结构的差异，通常会新增包含叶子节点和容器节点接口的抽象构件 Component，Kotlin 下的实现与 Java 一样。</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">interface</span> <span class="title">AbstractFile</span> </span>&#123;    <span class="comment">// Component</span></div><div class="line">    <span class="keyword">var</span> childCount: <span class="built_in">Int</span></div><div class="line">    <span class="function"><span class="keyword">fun</span> <span class="title">getChild</span><span class="params">(i: <span class="type">Int</span>)</span></span>: AbstractFile</div><div class="line">    <span class="function"><span class="keyword">fun</span> <span class="title">size</span><span class="params">()</span></span>: <span class="built_in">Long</span></div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">File</span></span>(<span class="keyword">val</span> size: <span class="built_in">Long</span>, <span class="keyword">override</span> <span class="keyword">var</span> childCount: <span class="built_in">Int</span> = <span class="number">0</span>) : AbstractFile &#123;</div><div class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">getChild</span><span class="params">(i: <span class="type">Int</span>)</span></span>: AbstractFile &#123;</div><div class="line">        <span class="keyword">throw</span> RuntimeException(<span class="string">"You shouldn't call the method in File"</span>)</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">size</span><span class="params">()</span></span> = size</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Folder</span></span>(<span class="keyword">override</span> <span class="keyword">var</span> childCount: <span class="built_in">Int</span>) : AbstractFile &#123;</div><div class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">getChild</span><span class="params">(i: <span class="type">Int</span>)</span></span>: AbstractFile &#123;</div><div class="line">        ...</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">size</span><span class="params">()</span></span>: <span class="built_in">Long</span> &#123;</div><div class="line">        <span class="keyword">return</span> (<span class="number">0.</span>.childCount)</div><div class="line">                .map &#123; getChild(it).size() &#125;</div><div class="line">                .sum()</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="装饰模式"><a href="#装饰模式" class="headerlink" title="装饰模式"></a>装饰模式</h3><p>装饰模式可以给一个对象添加额外的行为，在 Kotlin 中可以通过扩展函数简单的实现。</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Text</span></span>(<span class="keyword">val</span> text: String) &#123;</div><div class="line">    <span class="function"><span class="keyword">fun</span> <span class="title">draw</span><span class="params">()</span></span> = print(text)</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">fun</span> Text.<span class="title">underline</span><span class="params">(decorated: <span class="type">Text</span>.()</span></span> -&gt; <span class="built_in">Unit</span>) &#123;</div><div class="line">    print(<span class="string">"_"</span>)</div><div class="line">    <span class="keyword">this</span>.decorated()</div><div class="line">    print(<span class="string">"_"</span>)</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// usage</span></div><div class="line">Text(<span class="string">"Hello"</span>).run &#123;</div><div class="line">    underline &#123;</div><div class="line">        draw()</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="外观模式"><a href="#外观模式" class="headerlink" title="外观模式"></a>外观模式</h3><p>外观模式是为一个复杂的子系统提供一个简化的统一接口，Kotlin 下的实现与 Java 一样，下面我直接使用 dbacinski 的例子。</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">ComplexSystemStore</span></span>(<span class="keyword">val</span> filePath: String) &#123;</div><div class="line">    init &#123;</div><div class="line">        println(<span class="string">"Reading data from file: <span class="subst">$filePath</span>"</span>)</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">val</span> store = HashMap&lt;String, String&gt;()</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">fun</span> <span class="title">store</span><span class="params">(key: <span class="type">String</span>, payload: <span class="type">String</span>)</span></span> &#123;</div><div class="line">        store.put(key, payload)</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">fun</span> <span class="title">read</span><span class="params">(key: <span class="type">String</span>)</span></span>: String = store[key] ?: <span class="string">""</span></div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">fun</span> <span class="title">commit</span><span class="params">()</span></span> = println(<span class="string">"Storing cached data: <span class="subst">$store</span> to file: <span class="subst">$filePath</span>"</span>)</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">data</span> <span class="class"><span class="keyword">class</span> <span class="title">User</span></span>(<span class="keyword">val</span> login: String)</div><div class="line"></div><div class="line"><span class="comment">//Facade:</span></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">UserRepository</span> </span>&#123;</div><div class="line">    <span class="keyword">val</span> systemPreferences = ComplexSystemStore(<span class="string">"/data/default.prefs"</span>)</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">fun</span> <span class="title">save</span><span class="params">(user: <span class="type">User</span>)</span></span> &#123;</div><div class="line">        systemPreferences.store(<span class="string">"USER_KEY"</span>, user.login)</div><div class="line">        systemPreferences.commit()</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">fun</span> <span class="title">findFirst</span><span class="params">()</span></span>: User = User(systemPreferences.read(<span class="string">"USER_KEY"</span>))</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// usage</span></div><div class="line"><span class="keyword">val</span> userRepository = UserRepository()</div><div class="line"><span class="keyword">val</span> user = User(<span class="string">"dbacinski"</span>)</div><div class="line">userRepository.save(user)</div><div class="line"><span class="keyword">val</span> resultUser = userRepository.findFirst()</div></pre></td></tr></table></figure>
+<h3 id="享元模式"><a href="#享元模式" class="headerlink" title="享元模式"></a>享元模式</h3><p>享元模式以共享的方式高效地支持大量细粒度对象的重用，享元对象能做到共享的关键是区分了可共享内部状态和不可共享外部状态。Kotlin 下的实现与 Java 一样。</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">enum</span> <span class="class"><span class="keyword">class</span> <span class="title">Color</span> </span>&#123;</div><div class="line">    black, white</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">open</span> <span class="class"><span class="keyword">class</span> <span class="title">Chess</span></span>(<span class="keyword">val</span> color: Color) &#123; </div><div class="line">    <span class="function"><span class="keyword">fun</span> <span class="title">display</span><span class="params">(pos: <span class="type">Pair</span>&lt;<span class="type">Int</span>, <span class="built_in">Int</span>&gt;)</span></span> &#123;</div><div class="line">        println(<span class="string">"The <span class="subst">$color</span> chess at position <span class="subst">$pos</span>"</span>)</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">BlackChess</span> : <span class="type">Chess</span></span>(color = Color.black)</div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">WhiteChess</span> : <span class="type">Chess</span></span>(color = Color.white)</div><div class="line"></div><div class="line"><span class="keyword">object</span> ChessFactory &#123;</div><div class="line">    <span class="keyword">private</span> <span class="keyword">val</span> table = Hashtable&lt;Color, Chess&gt;()</div><div class="line">    </div><div class="line">    init &#123;</div><div class="line">        table.put(Color.black, BlackChess())</div><div class="line">        table.put(Color.white, WhiteChess())</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    <span class="function"><span class="keyword">fun</span> <span class="title">getChess</span><span class="params">(color: <span class="type">Color</span>)</span></span> = table[color]!!</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// usage</span></div><div class="line"><span class="keyword">val</span> blackChess = ChessFactory.getChess(Color.black)</div><div class="line"><span class="keyword">val</span> whiteChess = ChessFactory.getChess(Color.white)</div><div class="line">blackChess.display(Pair(<span class="number">9</span>, <span class="number">5</span>))</div><div class="line">whiteChess.display(Pair(<span class="number">5</span>, <span class="number">9</span>))</div><div class="line">whiteChess.display(Pair(<span class="number">2</span>, <span class="number">3</span>))</div></pre></td></tr></table></figure>
+<h3 id="代理模式"><a href="#代理模式" class="headerlink" title="代理模式"></a>代理模式</h3><p>代理模式是使用一个代理对象来访问目标对象的行为，Kotlin 下的实现与 Java 一样，下面我也直接使用 dbacinski 的例子。</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">interface</span> <span class="title">File</span> </span>&#123;</div><div class="line">    <span class="function"><span class="keyword">fun</span> <span class="title">read</span><span class="params">(name: <span class="type">String</span>)</span></span></div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">NormalFile</span> : <span class="type">File &#123;</span></span></div><div class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">read</span><span class="params">(name: <span class="type">String</span>)</span></span> = println(<span class="string">"Reading file: <span class="subst">$name</span>"</span>)</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// proxy</span></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">SecuredFile</span> : <span class="type">File &#123;</span></span></div><div class="line">    <span class="keyword">val</span> normalFile = NormalFile()</div><div class="line">    <span class="keyword">var</span> password: String = <span class="string">""</span></div><div class="line"></div><div class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">read</span><span class="params">(name: <span class="type">String</span>)</span></span> &#123;</div><div class="line">        <span class="keyword">if</span> (password == <span class="string">"secret"</span>) &#123;</div><div class="line">            println(<span class="string">"Password is correct: <span class="subst">$password</span>"</span>)</div><div class="line">            normalFile.read(name)   <span class="comment">// call target object behavior</span></div><div class="line">        &#125; <span class="keyword">else</span> &#123;</div><div class="line">            println(<span class="string">"Incorrect password. Access denied!"</span>)</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="行为型模式"><a href="#行为型模式" class="headerlink" title="行为型模式"></a>行为型模式</h2><h3 id="职责链模式"><a href="#职责链模式" class="headerlink" title="职责链模式"></a>职责链模式</h3><p>职责链模式通过建立一条链来组织请求的处理者，请求将沿着链进行传递，请求发送者无须知道请求在何时、何处以及如何被处理，实现了请求发送者与处理者的解耦。Kotlin 下的实现与 Java 一样，看下面这个简易的 Android 事件传递的例子，event 不知道是否被 ViewGroup 拦截并处理。</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">interface</span> <span class="title">EventHandler</span> </span>&#123;</div><div class="line">    <span class="keyword">var</span> next: EventHandler?</div><div class="line">    <span class="function"><span class="keyword">fun</span> <span class="title">handle</span><span class="params">(event: <span class="type">MotionEvent</span>)</span></span>: <span class="built_in">Boolean</span></div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">open</span> <span class="class"><span class="keyword">class</span> <span class="title">View</span> : <span class="type">EventHandler &#123;</span></span></div><div class="line">    <span class="keyword">override</span> <span class="keyword">var</span> next: EventHandler? = <span class="literal">null</span></div><div class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">handle</span><span class="params">(event: <span class="type">MotionEvent</span>)</span></span>: <span class="built_in">Boolean</span> &#123;</div><div class="line">        <span class="keyword">return</span> onTouchEvent()</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">open</span> <span class="function"><span class="keyword">fun</span> <span class="title">onTouchEvent</span><span class="params">()</span></span> : <span class="built_in">Boolean</span> &#123; </div><div class="line">        ...</div><div class="line">        <span class="keyword">return</span> <span class="literal">false</span> </div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">open</span> <span class="class"><span class="keyword">class</span> <span class="title">ViewGroup</span> : <span class="type">View</span></span>() &#123;</div><div class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">handle</span><span class="params">(event: <span class="type">MotionEvent</span>)</span></span>: <span class="built_in">Boolean</span> &#123;</div><div class="line">        <span class="keyword">if</span> (onInterceptTouchEvent(event)) <span class="keyword">return</span> onTouchEvent()</div><div class="line">        <span class="keyword">else</span> <span class="keyword">return</span> next?.handle(event)!!</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    <span class="keyword">open</span> <span class="function"><span class="keyword">fun</span> <span class="title">onInterceptTouchEvent</span><span class="params">(event: <span class="type">MotionEvent</span>)</span></span>: <span class="built_in">Boolean</span> &#123; <span class="comment">// 是否拦截事件</span></div><div class="line">        ...</div><div class="line">        <span class="keyword">return</span> <span class="literal">false</span></div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="命令模式"><a href="#命令模式" class="headerlink" title="命令模式"></a>命令模式</h3><p>命令模式是将请求封装为命令对象，解耦请求发送者与接收者，对请求排队或者记录请求日志，以及支持可撤销的操作。Kotlin 下的实现与 Java 一样。</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">interface</span> <span class="title">Command</span> </span>&#123;</div><div class="line">    <span class="keyword">var</span> value: <span class="built_in">Int</span></div><div class="line">    <span class="keyword">val</span> param: <span class="built_in">Int</span></div><div class="line">    <span class="function"><span class="keyword">fun</span> <span class="title">execute</span><span class="params">()</span></span></div><div class="line">    <span class="function"><span class="keyword">fun</span> <span class="title">undo</span><span class="params">()</span></span></div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">AddCommand</span></span>(<span class="keyword">override</span> <span class="keyword">var</span> value: <span class="built_in">Int</span>, <span class="keyword">override</span> <span class="keyword">val</span> param: <span class="built_in">Int</span>) : Command &#123;</div><div class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">execute</span><span class="params">()</span></span> &#123;</div><div class="line">        value += param</div><div class="line">        println(<span class="string">"execute add command and value:<span class="subst">$value</span>"</span>)</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">undo</span><span class="params">()</span></span> &#123;</div><div class="line">        value -= param</div><div class="line">        println(<span class="string">"undo add command and value:<span class="subst">$value</span>"</span>)</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">MultiplyCommand</span></span>(<span class="keyword">override</span> <span class="keyword">var</span> value: <span class="built_in">Int</span>, <span class="keyword">override</span> <span class="keyword">val</span> param: <span class="built_in">Int</span>) : Command &#123;</div><div class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">execute</span><span class="params">()</span></span> &#123;</div><div class="line">        value *= param</div><div class="line">        println(<span class="string">"execute multiply command and value:<span class="subst">$value</span>"</span>)</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">undo</span><span class="params">()</span></span> &#123;</div><div class="line">        value /= param</div><div class="line">        println(<span class="string">"undo multiply command and value:<span class="subst">$value</span>"</span>)</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Calculator</span> </span>&#123;</div><div class="line">    <span class="keyword">val</span> queue = mutableListOf&lt;Command&gt;()</div><div class="line">    <span class="function"><span class="keyword">fun</span> <span class="title">compute</span><span class="params">(command: <span class="type">Command</span>)</span></span> &#123;</div><div class="line">        command.execute()</div><div class="line">        queue.add(command)</div><div class="line">    &#125;</div><div class="line">    <span class="function"><span class="keyword">fun</span> <span class="title">undo</span><span class="params">()</span></span> &#123;</div><div class="line">        queue.lastOrNull()?.undo()</div><div class="line">        queue.removeAt(queue.lastIndex)</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="解释器模式"><a href="#解释器模式" class="headerlink" title="解释器模式"></a>解释器模式</h3><p>解释器模式是定义一个语言的文法，并且建立一个解释器来解释该语言中的句子，这里的“语言”是指使用规定格式和语法的代码。因为使用频率较低，而且 Kotlin 中也没有特殊的实现，所以就不举例说明了。</p>
+<h3 id="迭代器模式"><a href="#迭代器模式" class="headerlink" title="迭代器模式"></a>迭代器模式</h3><p>迭代器模式提供一种遍历聚合对象中的元素的一种方式，在不暴露底层实现的情况下。在 Kotlin 下，定义 <code>operator fun iterator()</code> 迭代器函数，或者是作为扩展函数时，可以在 for 循环中遍历。</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Sentence</span></span>(<span class="keyword">val</span> words: List&lt;String&gt;)</div><div class="line"></div><div class="line"><span class="keyword">operator</span> <span class="function"><span class="keyword">fun</span> Sentence.<span class="title">iterator</span><span class="params">()</span></span>: Iterator&lt;String&gt; = words.iterator()</div><div class="line"><span class="comment">// or</span></div><div class="line"><span class="keyword">operator</span> <span class="function"><span class="keyword">fun</span> Sentence.<span class="title">iterator</span><span class="params">()</span></span>: Iterator&lt;String&gt; = <span class="keyword">object</span> : Iterator&lt;String&gt; &#123;</div><div class="line">    <span class="keyword">val</span> iterator = words.iterator()</div><div class="line">    </div><div class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">hasNext</span><span class="params">()</span></span> = iterator.hasNext()</div><div class="line"></div><div class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">next</span><span class="params">()</span></span> = iterator.next()</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="中介者模式"><a href="#中介者模式" class="headerlink" title="中介者模式"></a>中介者模式</h3><p>中介者模式用一个中介对象（中介者）来封装一系列的对象交互，中介者使各对象不需要显式地相互引用，从而使其耦合松散，而且可以独立地改变它们之间的交互。</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">interface</span> <span class="title">ChatMediator</span> </span>&#123;</div><div class="line">    <span class="function"><span class="keyword">fun</span> <span class="title">sendMsg</span><span class="params">(msg: <span class="type">String</span>, user: <span class="type">User</span>)</span></span></div><div class="line">    <span class="function"><span class="keyword">fun</span> <span class="title">addUser</span><span class="params">(user: <span class="type">User</span>)</span></span></div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">User</span></span>(<span class="keyword">val</span> name: String, <span class="keyword">val</span> mediator: ChatMediator) &#123;</div><div class="line">    <span class="keyword">abstract</span> <span class="function"><span class="keyword">fun</span> <span class="title">send</span><span class="params">(msg: <span class="type">String</span>)</span></span></div><div class="line">    <span class="keyword">abstract</span> <span class="function"><span class="keyword">fun</span> <span class="title">receive</span><span class="params">(msg: <span class="type">String</span>)</span></span></div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">ChatMediatorImpl</span> : <span class="type">ChatMediator &#123;</span></span></div><div class="line">    <span class="keyword">private</span> <span class="keyword">val</span> users = mutableListOf&lt;User&gt;()</div><div class="line"></div><div class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">sendMsg</span><span class="params">(msg: <span class="type">String</span>, user: <span class="type">User</span>)</span></span> &#123;</div><div class="line">        users.filter &#123; it != user &#125;</div><div class="line">                .forEach &#123; it.receive(msg) &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">addUser</span><span class="params">(user: <span class="type">User</span>)</span></span> &#123;</div><div class="line">        users.add(user)</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">UserImpl</span></span>(name: String, mediator: ChatMediator) : User(name, mediator) &#123;</div><div class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">send</span><span class="params">(msg: <span class="type">String</span>)</span></span> &#123;</div><div class="line">        println(<span class="string">"<span class="subst">$name</span> : sending messages = <span class="subst">$msg</span>"</span>)</div><div class="line">        mediator.sendMsg(msg, <span class="keyword">this</span>)</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">receive</span><span class="params">(msg: <span class="type">String</span>)</span></span> &#123;</div><div class="line">        println(<span class="string">"<span class="subst">$name</span> : received messages = <span class="subst">$msg</span>"</span>)</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="备忘录模式"><a href="#备忘录模式" class="headerlink" title="备忘录模式"></a>备忘录模式</h3><p>备忘录模式是在不破坏封装的前提下，捕获一个对象的内部状态，并在该对象之外保存这个状态，这样可以在以后将对象恢复到原先保存的状态。</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">data</span> <span class="class"><span class="keyword">class</span> <span class="title">Memento</span></span>(<span class="keyword">val</span> fileName: String, <span class="keyword">val</span> content: StringBuilder)</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">FileWriter</span></span>(<span class="keyword">var</span> fileName: String) &#123;</div><div class="line">    </div><div class="line">    <span class="keyword">private</span> <span class="keyword">var</span> content = StringBuilder()</div><div class="line">    </div><div class="line">    <span class="function"><span class="keyword">fun</span> <span class="title">write</span><span class="params">(str: <span class="type">String</span>)</span></span> &#123;</div><div class="line">        content.append(str)</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    <span class="function"><span class="keyword">fun</span> <span class="title">save</span><span class="params">()</span></span> = Memento(fileName, StringBuilder(content))</div><div class="line">    </div><div class="line">    <span class="function"><span class="keyword">fun</span> <span class="title">restore</span><span class="params">(m: <span class="type">Memento</span>)</span></span> &#123;</div><div class="line">        fileName = m.fileName</div><div class="line">        content = m.content</div><div class="line">    &#125; </div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="观察者模式"><a href="#观察者模式" class="headerlink" title="观察者模式"></a>观察者模式</h3><p>观察者模式是一个对象状态发生变化后，可以立即通知已订阅的另一个对象。在 Kotlin 下可以使用 observable properties，简化实现。</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">interface</span> <span class="title">TextChangedListener</span> </span>&#123;</div><div class="line">    <span class="function"><span class="keyword">fun</span> <span class="title">onTextChanged</span><span class="params">(newText: <span class="type">String</span>)</span></span></div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">TextView</span> </span>&#123;</div><div class="line">    <span class="keyword">var</span> listener: TextChangedListener? = <span class="literal">null</span></div><div class="line"></div><div class="line">    <span class="keyword">var</span> text: String <span class="keyword">by</span> Delegates.observable(<span class="string">""</span>) &#123; prop, old, new -&gt;</div><div class="line">        listener?.onTextChanged(new)</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="状态模式"><a href="#状态模式" class="headerlink" title="状态模式"></a>状态模式</h3><p>状态模式将一个对象在不同状态下的不同行为封装在一个个状态类中，通过设置不同的状态可以让对象拥有不同的行为。</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">sealed</span> <span class="class"><span class="keyword">class</span> <span class="title">UserState</span></span>(<span class="keyword">val</span> name:String, <span class="keyword">val</span> isAuthorized: <span class="built_in">Boolean</span>) &#123;</div><div class="line">    <span class="keyword">abstract</span> <span class="function"><span class="keyword">fun</span> <span class="title">click</span><span class="params">()</span></span></div><div class="line"></div><div class="line">    <span class="class"><span class="keyword">class</span> <span class="title">Unauthorized</span> : <span class="type">UserState</span></span>(name = <span class="string">"Unauthorized"</span>, isAuthorized = <span class="literal">false</span>) &#123;</div><div class="line">        <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">click</span><span class="params">()</span></span> &#123;</div><div class="line">            print(<span class="string">"User is unauthorized."</span>)</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="class"><span class="keyword">class</span> <span class="title">Authorized</span></span>(name: String) : UserState(name, isAuthorized = <span class="literal">true</span>) &#123;</div><div class="line">        <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">click</span><span class="params">()</span></span> &#123;</div><div class="line">            print(<span class="string">"User is authorized as <span class="subst">$name</span>"</span>)</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">User</span> </span>&#123;</div><div class="line">    <span class="keyword">private</span> <span class="keyword">var</span> state: UserState = UserState.Unauthorized()</div><div class="line">    </div><div class="line">    <span class="keyword">val</span> name: String</div><div class="line">        <span class="keyword">get</span>() = state.name</div><div class="line">    </div><div class="line">    <span class="keyword">val</span> isAuthorized: <span class="built_in">Boolean</span></div><div class="line">        <span class="keyword">get</span>() = state.isAuthorized</div><div class="line">    </div><div class="line">    <span class="function"><span class="keyword">fun</span> <span class="title">click</span><span class="params">()</span></span> = state.click()</div><div class="line">    </div><div class="line">    <span class="function"><span class="keyword">fun</span> <span class="title">login</span><span class="params">(name: <span class="type">String</span>)</span></span> &#123;</div><div class="line">        state = UserState.Authorized(name)</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    <span class="function"><span class="keyword">fun</span> <span class="title">logout</span><span class="params">()</span></span> &#123;</div><div class="line">        state = UserState.Unauthorized()</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="策略模式"><a href="#策略模式" class="headerlink" title="策略模式"></a>策略模式</h3><p>策略模式用于算法的自由切换和扩展，分离算法的定义与实现，在 Kotlin 中可以使用高阶函数作为算法的抽象。</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Customer</span></span>(<span class="keyword">val</span> name: String, <span class="keyword">val</span> fee: <span class="built_in">Double</span>, <span class="keyword">val</span> discount: (<span class="built_in">Double</span>) -&gt; <span class="built_in">Double</span>) &#123;</div><div class="line">    <span class="function"><span class="keyword">fun</span> <span class="title">pricePerMonth</span><span class="params">()</span></span> = discount(fee)</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// usage</span></div><div class="line"><span class="keyword">val</span> studentDiscount = &#123; fee: <span class="built_in">Double</span> -&gt; fee/<span class="number">2</span> &#125;</div><div class="line"><span class="keyword">val</span> noDiscount = &#123; fee: <span class="built_in">Double</span> -&gt; fee &#125;</div><div class="line"></div><div class="line"><span class="keyword">val</span> student = Customer(<span class="string">"Ned"</span>, <span class="number">10.0</span>, studentDiscount)</div><div class="line"><span class="keyword">val</span> regular = Customer(<span class="string">"John"</span>, <span class="number">10.0</span>, noDiscount)</div></pre></td></tr></table></figure>
+<h3 id="模版方法模式"><a href="#模版方法模式" class="headerlink" title="模版方法模式"></a>模版方法模式</h3><p>模板方法模式提供了一个模板方法来定义算法框架，而某些具体步骤的实现可以在其子类中完成，Kotlin 中使用高阶函数可以避免继承的方式。</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Task</span> </span>&#123;</div><div class="line">    <span class="function"><span class="keyword">fun</span> <span class="title">run</span><span class="params">(step2: ()</span></span> -&gt; <span class="built_in">Unit</span>, step3: () -&gt; <span class="built_in">Unit</span>) &#123;</div><div class="line">        step1()</div><div class="line">        step2()</div><div class="line">        step3()</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    <span class="function"><span class="keyword">fun</span> <span class="title">step1</span><span class="params">()</span></span> &#123; ... &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="访问者模式"><a href="#访问者模式" class="headerlink" title="访问者模式"></a>访问者模式</h3><p>访问者模式提供一个作用于某对象结构中的各元素的操作表示，它使我们可以在不改变各元素的类的前提下定义作用于这些元素的新操作。</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">interface</span> <span class="title">Employee</span> </span>&#123;</div><div class="line">    <span class="function"><span class="keyword">fun</span> <span class="title">accept</span><span class="params">(visitor: <span class="type">Visitor</span>)</span></span></div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">GeneralEmployee</span></span>(<span class="keyword">val</span> wage: <span class="built_in">Int</span>) : Employee &#123;</div><div class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">accept</span><span class="params">(visitor: <span class="type">Visitor</span>)</span></span> = visitor.visit(<span class="keyword">this</span>)</div><div class="line"></div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">ManagerEmployee</span></span>(<span class="keyword">val</span> wage: <span class="built_in">Int</span>, <span class="keyword">val</span> bonus: <span class="built_in">Int</span>) : Employee &#123;</div><div class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">accept</span><span class="params">(visitor: <span class="type">Visitor</span>)</span></span> = visitor.visit(<span class="keyword">this</span>)</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">interface</span> <span class="title">Visitor</span> </span>&#123;</div><div class="line">    <span class="function"><span class="keyword">fun</span> <span class="title">visit</span><span class="params">(ge: <span class="type">GeneralEmployee</span>)</span></span></div><div class="line">    <span class="function"><span class="keyword">fun</span> <span class="title">visit</span><span class="params">(me: <span class="type">ManagerEmployee</span>)</span></span></div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">FADVisitor</span> : <span class="type">Visitor &#123;</span></span></div><div class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">visit</span><span class="params">(ge: <span class="type">GeneralEmployee</span>)</span></span> &#123;</div><div class="line">        println(<span class="string">"GeneralEmployee wage:<span class="subst">$&#123;ge.wage&#125;</span>"</span>)</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">visit</span><span class="params">(me: <span class="type">ManagerEmployee</span>)</span></span> &#123;</div><div class="line">        println(<span class="string">"ManagerEmployee wage:<span class="subst">$&#123;me.wage + me.bonus&#125;</span>"</span>)</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"><span class="comment">// other visitor ...</span></div></pre></td></tr></table></figure>
+<p><strong>参考资料</strong></p>
+<p><a href="https://dev.to/lovis/gang-of-four-patterns-in-kotlin" target="_blank" rel="external">Gang of Four Patterns in Kotlin</a></p>
+<p><a href="https://sourcemaking.com/design_patterns" target="_blank" rel="external">Design Patterns</a></p>
+<p><a href="https://gof.quanke.name/" target="_blank" rel="external">设计模式 Java 版</a></p>
+      
+    </div>
+
+    
+    <section data-mpa-template-id="95" class="mpa-template" data-mpa-color="#ffffff">
+      <section style="margin-top: 20px;display: -webkit-box;display: flex;-webkit-box-pack: center;justify-content: center;-webkit-box-align: center;align-items: center" data-mid="t22">
+        <section style="text-align: center;line-height: 30px" data-mid="">
+          <section style="display: inline-block;float: left;width: 95px;height: 2px;background: -webkit-linear-gradient(right, #141414, #f0f0f0);background: linear-gradient(to left, #141414, #f0f0f0);-webkit-transform: translate(0px, 12px);-ms-transform: translate(0px, 12px);transform: translate(0px, 12px)" data-mid="" data-contenteditable="false">
+          </section>
+          <section style="float: left;width: 4px;height: 4px;border-radius: 50%;padding: 3px;background-color: #b1b1b1;text-align: center;-webkit-transform: translate(0px, 8px);-ms-transform: translate(0px, 8px);transform: translate(0px, 8px)" data-mid="" data-contenteditable="false">
+            <section style="width: 5px;height: 5px;border-radius: 50%;background-color: #141414" data-mid="">
+            </section>
+          </section>
+          <section style="float: left;min-width: 50px;padding: 0 10px 0 10px;font-size: 16px;color: #4f4f4f;text-align: center;line-height: 30px" data-mid="">END</section>
+          <section style="float: left;padding: 3px;width: 4px;height: 4px;border-radius: 50%;background-color: #b1b1b1;text-align: center;-webkit-transform: translate(0px, 9px);-ms-transform: translate(0px, 9px);transform: translate(0px, 9px)" data-mid="" data-contenteditable="false">
+            <section style="width: 5px;height: 5px;border-radius: 50%;background-color: #141414" data-mid="">
+            </section>
+          </section>
+          <section style="display: inline-block;float: left;width: 95px;height: 2px;background: -webkit-linear-gradient(left, #141414, #f0f0f0);background: linear-gradient(to right, #141414, #f0f0f0);-webkit-transform: translate(-1px, 14px);-ms-transform: translate(-1px, 14px);transform: translate(-1px, 14px)" data-mid="" data-contenteditable="false">
+          </section>
+        </section>
+      </section>
+    </section>
+    
+
+    <div>
+      
+        
+<div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
+    <img id="wechat_subscriber_qcode" src="/uploads/wechat_qcode.jpg" alt="Johnny Shieh wechat" style="width: 200px; max-width: 100%">
+    <div>我的公众号，不只有技术，还有咖啡和彩蛋！</div>
+</div>
+
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/designpattern/" rel="tag"># 设计模式</a>
+          
+            <a href="/tags/kotlin/" rel="tag"># kotlin</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/posts/aspectj-in-android-usage/" rel="next" title="AspectJ in Android （三），AspectJ 两种用法以及常见问题">
+                <i class="fa fa-chevron-left"></i> AspectJ in Android （三），AspectJ 两种用法以及常见问题
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="SOHUCS" sid="posts/kotlin-design-pattern-impl/"></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image" src="/uploads/avatar.png" alt="Johnny Shieh">
+          <p class="site-author-name" itemprop="name">Johnny Shieh</p>
+           
+              <p class="site-description motion-element" itemprop="description">我本微末，心向天空</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">56</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">11</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">36</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/JohnnyShieh" rel="external nofollow" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/johnnyshieh17" rel="external nofollow" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  Weibo
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="mailto:JohnnyShieh17@gmail.com" rel="external nofollow" target="_blank" title="Gmail">
+                  
+                    <i class="fa fa-fw fa-envelope"></i>
+                  
+                  Gmail
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.jianshu.com/u/763027594c0b" rel="external nofollow" target="_blank" title="简书">
+                  
+                    <i class="fa fa-fw fa-book"></i>
+                  
+                  简书
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        <!--<div style="margin: 20px 0 20px 0; height: 1px; background: #eee"></div> 
+<div id="hot-series">
+    <ul class="sidebar-nav" style="margin-bottom: 0;">
+        <li>热门系列</li>
+    </ul>
+    <ul class="series-posts" style="font-size: 14px; padding-left: 10px; list-style: none; text-align: left;">
+        <li><span><a href="http://johnnyshieh.me/tags/dagger/">Dagger 完全解析</a></span>（5）</li>
+         <li><span><a href="http://johnnyshieh.me/categories/AspectJ/">AspectJ in Android</a></span>（3）</li>
+        <li><span><a href="http://johnnyshieh.me/categories/unit-test/">Kotlin 写 Android 单元测试</a>（2）</span></li>
+    </ul>
+</div>
+-->
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#创建型模式"><span class="nav-number">1.</span> <span class="nav-text">创建型模式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#工厂方法模式"><span class="nav-number">1.1.</span> <span class="nav-text">工厂方法模式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#抽象工厂模式"><span class="nav-number">1.2.</span> <span class="nav-text">抽象工厂模式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#建造者模式"><span class="nav-number">1.3.</span> <span class="nav-text">建造者模式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#原型模式"><span class="nav-number">1.4.</span> <span class="nav-text">原型模式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#单例模式"><span class="nav-number">1.5.</span> <span class="nav-text">单例模式</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#结构型模式"><span class="nav-number">2.</span> <span class="nav-text">结构型模式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#适配器模式"><span class="nav-number">2.1.</span> <span class="nav-text">适配器模式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#桥接模式"><span class="nav-number">2.2.</span> <span class="nav-text">桥接模式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#组合模式"><span class="nav-number">2.3.</span> <span class="nav-text">组合模式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#装饰模式"><span class="nav-number">2.4.</span> <span class="nav-text">装饰模式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#外观模式"><span class="nav-number">2.5.</span> <span class="nav-text">外观模式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#享元模式"><span class="nav-number">2.6.</span> <span class="nav-text">享元模式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#代理模式"><span class="nav-number">2.7.</span> <span class="nav-text">代理模式</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#行为型模式"><span class="nav-number">3.</span> <span class="nav-text">行为型模式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#职责链模式"><span class="nav-number">3.1.</span> <span class="nav-text">职责链模式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#命令模式"><span class="nav-number">3.2.</span> <span class="nav-text">命令模式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#解释器模式"><span class="nav-number">3.3.</span> <span class="nav-text">解释器模式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#迭代器模式"><span class="nav-number">3.4.</span> <span class="nav-text">迭代器模式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#中介者模式"><span class="nav-number">3.5.</span> <span class="nav-text">中介者模式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#备忘录模式"><span class="nav-number">3.6.</span> <span class="nav-text">备忘录模式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#观察者模式"><span class="nav-number">3.7.</span> <span class="nav-text">观察者模式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#状态模式"><span class="nav-number">3.8.</span> <span class="nav-text">状态模式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#策略模式"><span class="nav-number">3.9.</span> <span class="nav-text">策略模式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#模版方法模式"><span class="nav-number">3.10.</span> <span class="nav-text">模版方法模式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#访问者模式"><span class="nav-number">3.11.</span> <span class="nav-text">访问者模式</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+      <div style="margin: 20px 0 20px 0; height: 1px; background: #eee"></div> 
+<div id="hot-series">
+    <ul class="sidebar-nav" style="margin-bottom: 0">
+        <li>热门系列</li>
+    </ul>
+    <ul class="series-posts" style="font-size: 14px; padding-left: 10px; list-style: none; text-align: left">
+        <li><span><a href="http://johnnyshieh.me/tags/dagger/">Dagger 完全解析</a></span>（5）</li>
+         <li><span><a href="http://johnnyshieh.me/categories/AspectJ/">AspectJ in Android</a></span>（3）</li>
+        <li><span><a href="http://johnnyshieh.me/categories/unit-test/">Kotlin 写 Android 单元测试</a>（2）</span></li>
+    </ul>
+</div>
+
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy;  2015 - 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Johnny Shieh</span>
+</div>
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="http://images.johnnyshieh.me/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.1"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+  
+    <script type="text/javascript">
+    (function(){
+      var appid = 'cyt8KwhJ1';
+      var conf = 'prod_651756cd8d701505ffbb60e416929831';
+      var width = window.innerWidth || document.documentElement.clientWidth;
+      if (width < 960) {
+      window.document.write('<script id="changyan_mobile_js" charset="utf-8" type="text/javascript" src="https://changyan.sohu.com/upload/mobile/wap-js/changyan_mobile.js?client_id=' + appid + '&conf=' + conf + '"><\/script>'); } else { var loadJs=function(d,a){var c=document.getElementsByTagName("head")[0]||document.head||document.documentElement;var b=document.createElement("script");b.setAttribute("type","text/javascript");b.setAttribute("charset","UTF-8");b.setAttribute("src",d);if(typeof a==="function"){if(window.attachEvent){b.onreadystatechange=function(){var e=b.readyState;if(e==="loaded"||e==="complete"){b.onreadystatechange=null;a()}}}else{b.onload=a}}c.appendChild(b)};loadJs("https://changyan.sohu.com/upload/changyan.js",function(){
+        window.changyan.api.config({appid:appid,conf:conf})});
+      }
+    })();
+    </script>
+    <script type="text/javascript" src="https://assets.changyan.sohu.com/upload/plugins/plugins.count.js"></script>
+
+
+
+  
+
+
+
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/algolia-instant-search/instantsearch.min.css">
+
+  
+  
+  <script src="/lib/algolia-instant-search/instantsearch.min.js"></script>
+  
+
+  <script src="/js/src/algolia-search.js?v=5.1.1"></script>
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("n55tIxEzsDxW0BEFhehOkP2K-gzGzoHsz", "TwYjARitxhv7iOhbg7k2a9xB");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

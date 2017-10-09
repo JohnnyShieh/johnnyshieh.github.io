@@ -107,17 +107,17 @@
 
 
 
-<meta name="description" content="AspectJ in Android 系列： AspectJ in Android （一），AspectJ 基础概念 AspectJ in Android （二），AspectJ 语法 AspectJ in Android （三），AspectJ 两种用法以及常见问题 前面两篇文章介绍了 AspectJ 的基础概念以及基于注解开发方式的语法，这篇文章总结了 AspectJ 的两种用法和 andro">
+<meta name="description" content="总结了 AspectJ 的两种用法和 android-aspectjx 插件的常见问题">
 <meta name="keywords" content="AspectJ, Android, AOP, OOP, hugo, 埋点, Johnny, Shieh, Johnny Shieh, johnny shieh blog, ">
 <meta property="og:type" content="article">
 <meta property="og:title" content="AspectJ in Android （三），AspectJ 两种用法以及常见问题">
 <meta property="og:url" content="http://johnnyshieh.me/posts/aspectj-in-android-usage/index.html">
 <meta property="og:site_name" content="Johnny Shieh">
-<meta property="og:description" content="AspectJ in Android 系列： AspectJ in Android （一），AspectJ 基础概念 AspectJ in Android （二），AspectJ 语法 AspectJ in Android （三），AspectJ 两种用法以及常见问题 前面两篇文章介绍了 AspectJ 的基础概念以及基于注解开发方式的语法，这篇文章总结了 AspectJ 的两种用法和 andro">
-<meta property="og:updated_time" content="2017-09-22T03:55:08.000Z">
+<meta property="og:description" content="总结了 AspectJ 的两种用法和 android-aspectjx 插件的常见问题">
+<meta property="og:updated_time" content="2017-09-25T08:40:50.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="AspectJ in Android （三），AspectJ 两种用法以及常见问题">
-<meta name="twitter:description" content="AspectJ in Android 系列： AspectJ in Android （一），AspectJ 基础概念 AspectJ in Android （二），AspectJ 语法 AspectJ in Android （三），AspectJ 两种用法以及常见问题 前面两篇文章介绍了 AspectJ 的基础概念以及基于注解开发方式的语法，这篇文章总结了 AspectJ 的两种用法和 andro">
+<meta name="twitter:description" content="总结了 AspectJ 的两种用法和 android-aspectjx 插件的常见问题">
 
 
 
@@ -500,11 +500,10 @@
 <p>所以这种写法其实有两个问题：（1）如果 BaseActivity 和 其子类 XXActivity 都重写了 onPause 方法，那么两个方法都会织入 AOP 代码，所以 XXActivity 执行 onPause 方法时，会调用两次数据统计的 AOP 代码；（2）如果 XXActivity 没有重写 onDestroy 方法，那么就 XXActivity.onDestroy 方法就无法作为切入点。</p>
 <p>我觉得有两种方式比较合理：</p>
 <ol>
-<li>项目中有个 BaseActivity 作为所有 Activity 的基类，而且 BaseActivity 重写了 Activity 的所有 onXX 方法时，可以以 BaseActivity 作为切入点。</li>
-</ol>
-<p>Pointcut 表达式：<code>execution(* BaseActivity.on**(..))</code></p>
-<ol>
-<li>使用 Android API 的 Application.ActivityLifecycleCallbacks，可以监听应用中所有 Activity 生命周期的变化，这也更为通用。</li>
+<li><p>项目中有个 BaseActivity 作为所有 Activity 的基类，而且 BaseActivity 重写了 Activity 的所有 onXX 方法时，可以以 BaseActivity 作为切入点。Pointcut 表达式：<code>execution(* BaseActivity.on**(..))</code></p>
+</li>
+<li><p>使用 Android API 的 Application.ActivityLifecycleCallbacks，可以监听应用中所有 Activity 生命周期的变化，这也更为通用。</p>
+</li>
 </ol>
 <p><strong>Fragment 页面统计</strong></p>
 <p>公司项目中使用的是 support-v4 包中的 Fragment，support-v4 会作为依赖一起编译打包进 apk，所以可以直接切入 Fragment 中。</p>
@@ -616,6 +615,10 @@
 
           <div class="post-nav-prev post-nav-item">
             
+              <a href="/posts/kotlin-design-pattern-impl/" rel="prev" title="Kotlin 语言下设计模式的不同实现">
+                Kotlin 语言下设计模式的不同实现 <i class="fa fa-chevron-right"></i>
+              </a>
+            
           </div>
         </div>
       
@@ -686,7 +689,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">55</span>
+                <span class="site-state-item-count">56</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
