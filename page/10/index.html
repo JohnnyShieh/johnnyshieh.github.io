@@ -355,6 +355,176 @@
   
 
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://johnnyshieh.me/posts/four-way-to-query-from-contentresolver/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Johnny Shieh">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Johnny Shieh">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/posts/four-way-to-query-from-contentresolver/" itemprop="url">Android 中利用 ContentResolver 查询数据库的四种方式</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-06-25T00:00:00+08:00">
+                2015-06-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/android/" itemprop="url" rel="index">
+                    <span itemprop="name">Android</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+              <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-comment-o"></i>
+              </span>
+              
+                <a href="/posts/four-way-to-query-from-contentresolver/#SOHUCS" itemprop="discussionUrl">
+                  <span id="sourceId::posts/four-way-to-query-from-contentresolver/" class="cy_cmt_count" data-xid="posts/four-way-to-query-from-contentresolver/" itemprop="commentsCount"></span>
+                </a>
+              
+            
+          
+
+          
+          
+             <span id="/posts/four-way-to-query-from-contentresolver/" class="leancloud_visitors" data-flag-title="Android 中利用 ContentResolver 查询数据库的四种方式">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </span></div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h2 id="直接使用-ContentResolver-的-query-方法在主线程中查询数据（非异步查询）"><a href="#直接使用-ContentResolver-的-query-方法在主线程中查询数据（非异步查询）" class="headerlink" title="直接使用 ContentResolver 的 query 方法在主线程中查询数据（非异步查询）"></a>直接使用 ContentResolver 的 query 方法在主线程中查询数据（非异步查询）</h2><p>由于是在主线程中执行查询操作，为了不阻塞主线程，尽量在数据量小的时候使用，而且要注意及时关闭 cursor</p>
+<p>代码示例</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">Cursor cursor = getContentResolver().query(ContactsContract.Data.CONTENT_URI, <span class="keyword">null</span>, <span class="keyword">null</span>, <span class="keyword">null</span>, <span class="keyword">null</span>);</div><div class="line"><span class="comment">// 获得 cursor 中数据 ...</span></div><div class="line">cursor.close();</div></pre></td></tr></table></figure>
+<h2 id="利用-Activity-的-managedQuery-方法在主线程中查询数据（非异步查询）"><a href="#利用-Activity-的-managedQuery-方法在主线程中查询数据（非异步查询）" class="headerlink" title="利用 Activity 的 managedQuery 方法在主线程中查询数据（非异步查询）"></a>利用 Activity 的 managedQuery 方法在主线程中查询数据（非异步查询）</h2><p>相对于上一种方式，我们不需要处理 cusor 的关闭，但是同样只适合在数据量小的时候。</p>
+<p>对于 Android 3.0 HONEYCOMB 以上的版本，Android 官方建议使用 LoaderManager 替代，这也是下一种查询方式。</p>
+<p>代码示例：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">Cursor cursor = managedQuery(ContactsContract.Data.CONTENT_URI, <span class="keyword">null</span>, <span class="keyword">null</span>, <span class="keyword">null</span>, <span class="keyword">null</span>);</div><div class="line"><span class="comment">// 获得 cursor 中数据 ...</span></div></pre></td></tr></table></figure>
+<h2 id="利用-LoaderManager-机制中的-CursorLoader-异步查询数据库（异步查询）"><a href="#利用-LoaderManager-机制中的-CursorLoader-异步查询数据库（异步查询）" class="headerlink" title="利用 LoaderManager 机制中的 CursorLoader 异步查询数据库（异步查询）"></a>利用 LoaderManager 机制中的 CursorLoader 异步查询数据库（异步查询）</h2><p>Android3.0 以上可以直接使用，3.0 以下需要使用 support 库.</p>
+<p>注：LoaderManager 开始一个 Loader 之后，如果没有调用 destroyLoader 方法，在 activity 的 onStart 时候会重新开始 Loader 中的任务</p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/posts/four-way-to-query-from-contentresolver/" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://johnnyshieh.me/posts/java-reflection/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1037,172 +1207,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://johnnyshieh.me/posts/android-editext-contextmenu/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Johnny Shieh">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Johnny Shieh">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/posts/android-editext-contextmenu/" itemprop="url">Android Edittext 长按没有弹出上下文菜单</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2014-10-11T00:00:00+08:00">
-                2014-10-11
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/android/" itemprop="url" rel="index">
-                    <span itemprop="name">Android</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-              <span class="post-meta-divider">|</span>
-              <span class="post-meta-item-icon">
-                <i class="fa fa-comment-o"></i>
-              </span>
-              
-                <a href="/posts/android-editext-contextmenu/#SOHUCS" itemprop="discussionUrl">
-                  <span id="sourceId::posts/android-editext-contextmenu/" class="cy_cmt_count" data-xid="posts/android-editext-contextmenu/" itemprop="commentsCount"></span>
-                </a>
-              
-            
-          
-
-          
-          
-             <span id="/posts/android-editext-contextmenu/" class="leancloud_visitors" data-flag-title="Android Edittext 长按没有弹出上下文菜单">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数 </span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </span></div>
-      </header>
-    
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h2 id="问题分析"><a href="#问题分析" class="headerlink" title="问题分析"></a>问题分析</h2><p>Edittext 在 ListView 的 item 中，没有其他的类似焦点冲突问题，在没有头绪的情况下，先从源码开始分析问题根源，Edittext 关于处理长按事件的部分是继承 TextView 的，所以先看 TextView 的 performLongClick 方法</p>
-<p>TextView 的 performLongClick 方法源码：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">performLongClick</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">boolean</span> handled = <span class="keyword">false</span>;</div><div class="line"></div><div class="line">        <span class="keyword">if</span> (<span class="keyword">super</span>.performLongClick()) &#123;</div><div class="line">            handled = <span class="keyword">true</span>;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        <span class="keyword">if</span> (mEditor != <span class="keyword">null</span>) &#123;</div><div class="line">            handled |= mEditor.performLongClick(handled);</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        <span class="keyword">if</span> (handled) &#123;</div><div class="line">            performHapticFeedback(HapticFeedbackConstants.LONG_PRESS);</div><div class="line">            <span class="keyword">if</span> (mEditor != <span class="keyword">null</span>) mEditor.mDiscardNextActionUp = <span class="keyword">true</span>;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        <span class="keyword">return</span> handled;</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
-<p>可以发现 TextView 的 performLongClick 方法主要分为两步：一、调用 View 的 performLongClick；二、调用 Editor 的 performLongClick</p>
-<p>Editor 的 performLongClick 方法源码：</p>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/posts/android-editext-contextmenu/" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -1250,7 +1254,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">56</span>
+                <span class="site-state-item-count">57</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>

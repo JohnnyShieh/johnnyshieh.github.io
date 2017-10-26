@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://johnnyshieh.me/posts/java-reentrantlock/</loc>
+    
+    <lastmod>2017-10-26T09:01:18.000Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://johnnyshieh.me/friends/index.html</loc>
     
     <lastmod>2017-10-11T01:42:49.000Z</lastmod>
