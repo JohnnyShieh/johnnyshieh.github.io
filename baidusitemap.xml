@@ -3,6 +3,29 @@
 
 
     
+    
+  <url>
+    <loc>http://johnnyshieh.me/posts/android-proguard/</loc>
+    <lastmod>2017-11-01T07:32:30.000Z</lastmod>
+    <data>
+        <display>
+        <title>Android ProGuard 代码混淆那些事儿</title>
+        <pubTime>2017-08-02T08:52:50.000Z</pubTime>
+        
+        <tag>android</tag>
+         
+        <tag>proguard</tag>
+         
+         
+           
+             
+              <breadCrumb title="Android" url="http://johnnyshieh.me/categories/android/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
   <url>
     <loc>http://johnnyshieh.me/posts/java-reentrantlock/</loc>
     <lastmod>2017-10-26T09:01:18.000Z</lastmod>
@@ -137,28 +160,6 @@
     </url>
 
     
-  <url>
-    <loc>http://johnnyshieh.me/posts/android-proguard/</loc>
-    <lastmod>2017-09-01T03:03:17.000Z</lastmod>
-    <data>
-        <display>
-        <title>Android ProGuard 代码混淆那些事儿</title>
-        <pubTime>2017-08-02T08:52:50.000Z</pubTime>
-        
-        <tag>android</tag>
-         
-        <tag>proguard</tag>
-         
-         
-           
-             
-              <breadCrumb title="Android" url="http://johnnyshieh.me/categories/android/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
     
   <url>
     <loc>http://johnnyshieh.me/posts/rxbus-rxjava2/</loc>
@@ -181,7 +182,6 @@
     </data>
     </url>
 
-    
     
   <url>
     <loc>http://johnnyshieh.me/posts/dagger-subcomponent/</loc>
@@ -644,9 +644,9 @@
         
         <tag>android</tag>
          
-        <tag>java</tag>
-         
         <tag>注解</tag>
+         
+        <tag>java</tag>
          
          
            
