@@ -355,6 +355,187 @@
   
 
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://johnnyshieh.me/posts/ubuntu14.04-tutorial/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Johnny Shieh">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Johnny Shieh">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/posts/ubuntu14.04-tutorial/" itemprop="url">如何优雅地使用 Ubuntu 14.04 LTS</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-12-26T00:00:00+08:00">
+                2015-12-26
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/ubuntu/" itemprop="url" rel="index">
+                    <span itemprop="name">Ubuntu</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+              <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-comment-o"></i>
+              </span>
+              
+                <a href="/posts/ubuntu14.04-tutorial/#SOHUCS" itemprop="discussionUrl">
+                  <span id="sourceId::posts/ubuntu14.04-tutorial/" class="cy_cmt_count" data-xid="posts/ubuntu14.04-tutorial/" itemprop="commentsCount"></span>
+                </a>
+              
+            
+          
+
+          
+          
+             <span id="/posts/ubuntu14.04-tutorial/" class="leancloud_visitors" data-flag-title="如何优雅地使用 Ubuntu 14.04 LTS">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </span></div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>最近在折腾我的本本 Lenovo I1000，本来想安装 Windows 系统，但是安装 win7 和 win8 中途都出现了文件损坏的问题，就索性用 U 盘安装了 Ubuntu 14.04 系统。之前在 2012 年就开始尝试过 12.04 版本,感觉用来开发还是不错的,因为玩游戏上 QQ 都不太方便，所以少了很多干扰. 不过安装完系统后需要做一些优化，才能让自己用的更加顺手。</p>
+<p>建议安装的时候先选择中文语言，在 language-support 更新语言包再切换到 English，这样中文编码的问题可以少一点.</p>
+<p>这里先给给出我的电脑配置:</p>
+<p>机型: Lenovo I1000 (联想小新出色版)</p>
+<p>显卡: Intel 集成显卡</p>
+<p>系统: Ubuntu 14.04 64 位</p>
+<p>声卡: High Definition Audio</p>
+<p>语言: English</p>
+<p>下面把自己体验的 Ubuntu 14.04 的优化方案整理一下，以防下次折腾的时候四处 Google，也希望对大家有些帮助。</p>
+<p>下面的命令中有的是用<code>sudo</code>有的是用<code>gksudo</code>，而<code>gksudo</code>需要先通过<code>sudo apt-get install gksu</code>安装后才能使用。</p>
+<p>简单说明一下两者的区别:</p>
+<p>sudo: 用来执行命令行 (CLI) 程序，是当前用户的 home 目录</p>
+<p>gksudo: 用来执行图形的 (GUI) 程序，是 root 用户的 home 目录</p>
+<h2 id="Dash-关闭在线搜索建议"><a href="#Dash-关闭在线搜索建议" class="headerlink" title="Dash 关闭在线搜索建议"></a>Dash 关闭在线搜索建议</h2><p>在 Dash 搜索内容的时候会显示在线搜索建议，显然这个完全没有必要，很影响体验。</p>
+<p>可以在系统的 System Settings &gt; Security &amp; Privacy &gt; Search 中去掉 Include online search results 的选项。</p>
+<p>然后可以 Dash App 下禁用很多不需要的 Dash Plugins，提高运行速度.</p>
+<h2 id="解决-gedit-中文乱码"><a href="#解决-gedit-中文乱码" class="headerlink" title="解决 gedit 中文乱码"></a>解决 gedit 中文乱码</h2><p>一般情况都是用 gedit 编辑文本文件，gedit 可以设置显示行数和高亮当前行,但是 gedit 对中文字符集的支持不是很好，有时会出现乱码的情况。</p>
+<p>可以在终端输入下面命令，添加中文编码</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">gsettings <span class="built_in">set</span> org.gnome.gedit.preferences.encodings auto-detected <span class="string">"['GB18030', 'GB2312', 'GBK', 'UTF-8', 'BIG5', 'CURRENT', 'UTF-16']"</span></div><div class="line">gsettings <span class="built_in">set</span> org.gnome.gedit.preferences.encodings shown-in-menu <span class="string">"['GB18030', 'GB2312', 'GBK', 'UTF-8', 'BIG5', 'CURRENT', 'UTF-16']"</span></div></pre></td></tr></table></figure>
+<p>也通过 dconf-editor 编辑修改，需要先安装 dconf-tools。</p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/posts/ubuntu14.04-tutorial/" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://johnnyshieh.me/posts/android-layoutinflater-analysis/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1025,171 +1206,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://johnnyshieh.me/posts/scrollview-detect-scroll-stop/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Johnny Shieh">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Johnny Shieh">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/posts/scrollview-detect-scroll-stop/" itemprop="url">Android 中 ScrollView 监听滚动停止的方案</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-07-17T00:00:00+08:00">
-                2015-07-17
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/android/" itemprop="url" rel="index">
-                    <span itemprop="name">Android</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-              <span class="post-meta-divider">|</span>
-              <span class="post-meta-item-icon">
-                <i class="fa fa-comment-o"></i>
-              </span>
-              
-                <a href="/posts/scrollview-detect-scroll-stop/#SOHUCS" itemprop="discussionUrl">
-                  <span id="sourceId::posts/scrollview-detect-scroll-stop/" class="cy_cmt_count" data-xid="posts/scrollview-detect-scroll-stop/" itemprop="commentsCount"></span>
-                </a>
-              
-            
-          
-
-          
-          
-             <span id="/posts/scrollview-detect-scroll-stop/" class="leancloud_visitors" data-flag-title="Android 中 ScrollView 监听滚动停止的方案">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数 </span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </span></div>
-      </header>
-    
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>前几天工作上遇到一个需要监听 Scrollview 滚动停止的问题，然后开始谷歌解决方案，但是都不是很满意，最后在和同事的讨论中获得灵感得出了下面的解决方案，经实测有效，供大家参考一下。</p>
-<h2 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h2><p>思路是这样的：首先要确定监听的时机，因为 ScrollView 在滚动的过程中和绘制的时候需要 computeScroll，所以在 computeScroll 的时候监听; 然后用反射检测滚动是否停止； 最后由于工作的需求是在 Touch 的情况下都不算停止所以还要监听 touch event。</p>
-<p>其中有用到反射，对反射不是很了解的可以看我的这篇博客 <a href="http://johnnyshieh.me/posts/java-reflection/">Java 反射机制</a></p>
-<h2 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h2><p>关键代码如下：</p>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/posts/scrollview-detect-scroll-stop/" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -1237,7 +1253,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">57</span>
+                <span class="site-state-item-count">58</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -1248,7 +1264,7 @@
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">11</span>
+                <span class="site-state-item-count">12</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -1259,7 +1275,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">36</span>
+                <span class="site-state-item-count">39</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>

@@ -1,0 +1,1148 @@
+<!doctype html>
+
+
+
+
+<html class="theme-next pisces" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta http-equiv="Content-Language" content="zh-cn">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+  <meta name="google-site-verification" content="r1Es2KSXuS6zYdab4rZeEA6X-pEwRwyT4x89S7a4EHE">
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+  <link href="http://images.johnnyshieh.me/lib/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="http://images.johnnyshieh.me/fonts/font.css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+  
+
+<link href="http://images.johnnyshieh.me/lib/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="http://images.johnnyshieh.me/css/main.css?v=5.1.1" rel="stylesheet" type="text/css">
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1">
+
+
+
+  
+    <link rel="apple-touch-icon-precomposed" sizes="57x57" href="/apple-touch-icon-57x57.png">
+  
+    <link rel="apple-touch-icon-precomposed" sizes="120x120" href="/apple-touch-icon-120x120.png">
+  
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="/apple-touch-icon-152x152.png">
+  
+
+
+
+
+
+
+<meta name="description" content="总结在 LeetCode 上做过的有代表性的链表问题">
+<meta name="keywords" content="面试, 链表, interview, linked list, Johnny, Shieh, Johnny Shieh, johnny shieh blog, ">
+<meta property="og:type" content="article">
+<meta property="og:title" content="面试精选之链表问题集锦">
+<meta property="og:url" content="http://johnnyshieh.me/posts/interview-linked-list/index.html">
+<meta property="og:site_name" content="Johnny Shieh">
+<meta property="og:description" content="总结在 LeetCode 上做过的有代表性的链表问题">
+<meta property="og:updated_time" content="2017-11-24T10:20:50.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="面试精选之链表问题集锦">
+<meta name="twitter:description" content="总结在 LeetCode 上做过的有代表性的链表问题">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"right","display":"always","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: false,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: 'QK028ACQPB',
+      apiKey: '4e4a5ec0318356434aed6a3aa5aea209',
+      indexName: 'blog',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"搜索文章","hits_empty":"找不到与您搜索的 ${query} 相符的文章，请尝试其他关键字","hits_stats":"找到 ${hits} 条搜索结果，用时 ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://johnnyshieh.me/posts/interview-linked-list/">
+
+
+
+
+
+  <title>面试精选之链表问题集锦 | Johnny Shieh</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?43cea51223ad3b7bc740196aab48d664";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Johnny Shieh</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">人如果没有梦想，跟咸鱼有什么分别</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-books">
+          <a href="/books" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br>
+            
+            读书
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-friends">
+          <a href="/friends" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-users"></i> <br>
+            
+            小伙伴
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  
+  <div class="algolia-popup popup search-popup">
+    <div class="algolia-search">
+      <div class="algolia-search-input-icon">
+        <i class="fa fa-search"></i>
+      </div>
+      <div class="algolia-search-input" id="algolia-search-input"></div>
+    </div>
+
+    <div class="algolia-results">
+      <div id="algolia-stats"></div>
+      <div id="algolia-hits"></div>
+      <div id="algolia-pagination" class="algolia-pagination"></div>
+    </div>
+
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+  </div>
+
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://johnnyshieh.me/posts/interview-linked-list/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Johnny Shieh">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Johnny Shieh">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">面试精选之链表问题集锦</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-24T10:40:49+08:00">
+                2017-11-24
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/interview/" itemprop="url" rel="index">
+                    <span itemprop="name">面试精选</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+              <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-comment-o"></i>
+              </span>
+              
+                <a href="/posts/interview-linked-list/#SOHUCS" itemprop="discussionUrl">
+                  <span id="changyan_count_unit" class="post-comments-count hc-comment-count" data-xid="posts/interview-linked-list/" itemprop="commentsCount"></span>
+                </a>
+              
+            
+          
+
+          
+          
+             <span id="/posts/interview-linked-list/" class="leancloud_visitors" data-flag-title="面试精选之链表问题集锦">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </span></div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>链表问题是面试过程中经常被问到的一部分，很考查编程功底。最近刷了 LeetCode 上链表部分的面试题，我总结了一些有代表性的链表问题。</p>
+<p>本文使用的是 Java 语言，下面是所用到的链表节点的定义：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ListNode</span> </span>&#123;</div><div class="line">    <span class="keyword">int</span> val;</div><div class="line">    ListNode next;</div><div class="line"></div><div class="line">    ListNode(<span class="keyword">int</span> x) &#123;</div><div class="line">        val = x;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="1-在-O-1-时间删除链表节点"><a href="#1-在-O-1-时间删除链表节点" class="headerlink" title="1. 在 O(1) 时间删除链表节点"></a>1. 在 O(1) 时间删除链表节点</h2><p><a href="https://leetcode.com/problems/delete-node-in-a-linked-list/description/" target="_blank" rel="external">Leetcode 237. Delete Node in a Linked List</a></p>
+<p><strong>题目描述：</strong>给定单链表中需要删除的节点（不是尾节点），在 O(1) 时间删除该节点。</p>
+<p><strong>分析：</strong>本题与《编程之美》上的「从无头单链表中删除节点」类似。主要思想都是「狸猫换太子」，即用下一个节点数据覆盖要删除的节点，然后删除下一个节点。但是如果节点是尾节点时，该方法就行不通了。</p>
+<p>代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 在 O(1) 时间从无头单链表中删除节点</span></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">deleteNode</span><span class="params">(ListNode node)</span> </span>&#123;</div><div class="line">    <span class="comment">// 不能为空，不能为尾节点</span></div><div class="line">    <span class="keyword">if</span> (<span class="keyword">null</span> == node || <span class="keyword">null</span> == node.next) &#123;</div><div class="line">        <span class="keyword">return</span>;</div><div class="line">    &#125;</div><div class="line">    node.val = node.next.val;</div><div class="line">    node.next = node.next.next;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<a id="more"></a>
+<h2 id="2-逆转单链表"><a href="#2-逆转单链表" class="headerlink" title="2. 逆转单链表"></a>2. 逆转单链表</h2><p><a href="https://leetcode.com/problems/reverse-linked-list/" target="_blank" rel="external">LeetCode 206. Reverse Linked List</a></p>
+<p><strong>题目描述：</strong>输出一个单链表的逆序反转后的链表。</p>
+<p><strong>分析：</strong>非递归的算法很简单，用三个临时指针 prev、cur、next 在链表上循环一遍即可。递归算法是先逆转下一个节点，再逆转当前节点。</p>
+<p>下面是两种算法的代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 逆转单链表，循环方法</span></div><div class="line"><span class="function"><span class="keyword">public</span> ListNode <span class="title">reverseByLoop</span><span class="params">(ListNode head)</span> </span>&#123;</div><div class="line">    <span class="keyword">if</span> (<span class="keyword">null</span> == head || <span class="keyword">null</span> == head.next) &#123;</div><div class="line">        <span class="keyword">return</span> head;</div><div class="line">    &#125;</div><div class="line">    ListNode prev = <span class="keyword">null</span>;</div><div class="line">    ListNode next = <span class="keyword">null</span>;</div><div class="line">    <span class="comment">// 用 head 作为 cur 指针</span></div><div class="line">    <span class="keyword">while</span> (<span class="keyword">null</span> != head) &#123;</div><div class="line">        next = head.next;</div><div class="line"></div><div class="line">        head.next = prev;</div><div class="line">        prev = head;</div><div class="line">        head = next;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> prev;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// 逆转单链表，递归方法</span></div><div class="line"><span class="function"><span class="keyword">public</span> ListNode <span class="title">reverseByRecursion</span><span class="params">(ListNode head)</span> </span>&#123;</div><div class="line">    <span class="comment">// 第一个条件判断异常，第二个条件是结束递归</span></div><div class="line">    <span class="keyword">if</span> (<span class="keyword">null</span> == head || <span class="keyword">null</span> == head.next) &#123;</div><div class="line">        <span class="keyword">return</span> head;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    ListNode newHead = reverseByRecursion(head.next);</div><div class="line"></div><div class="line">    head.next.next = head;</div><div class="line">    head.next = <span class="keyword">null</span>;</div><div class="line"></div><div class="line">    <span class="keyword">return</span> newHead;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="3-删除单链表倒数第-n-个节点"><a href="#3-删除单链表倒数第-n-个节点" class="headerlink" title="3. 删除单链表倒数第 n 个节点"></a>3. 删除单链表倒数第 n 个节点</h2><p><a href="https://leetcode.com/problems/remove-nth-node-from-end-of-list/description/" target="_blank" rel="external">LeetCode 19. Remove Nth Node From End of List</a></p>
+<p><strong>题目描述：</strong>删除单链表倒数第 n 个节点，1 &lt;= n &lt;= length，尽量在一次遍历中完成。</p>
+<p><strong>分析：</strong>看到题目时的第一想法是先遍历一次计算出单链表的长度 length，然后在遍历第二次删除第 length - n + 1 个节点，但是这需要遍历两次。正常的删除第 n 个节点只需要遍历一次就可以，如何只遍历一次找到倒数第 n 个节点呢？可以设置两个指针 p1、p2，首先 p1 和 p2 都指向 head，p2 移动到第 n 个节点，然后 p1 和 p2 同时向后移动，当 p2 移动到末尾时，p1 刚好指向倒数第 n 个节点。因为最后要删除倒数第 n 个节点，所以可以找到倒数第 n + 1 个节点，方便删除节点。</p>
+<p>代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 遍历一次，删除单链表倒数第 n 个节点</span></div><div class="line"><span class="function"><span class="keyword">public</span> ListNode <span class="title">removeNthFromEnd</span><span class="params">(ListNode head, <span class="keyword">int</span> n)</span> </span>&#123;</div><div class="line">    <span class="keyword">if</span> (<span class="keyword">null</span> == head) &#123;</div><div class="line">        <span class="keyword">return</span> head;</div><div class="line">    &#125;</div><div class="line">    ListNode p1 = head;</div><div class="line">    ListNode p2 = head;</div><div class="line">    <span class="comment">// 1. p2 移动到第 n + 1 个节点</span></div><div class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; i ++&gt;) &#123;</div><div class="line">        p2 = p2.next;</div><div class="line">    &#125;</div><div class="line">    <span class="comment">// n == 链表长度时，p2 指向第 n + 1 节点为空，倒数第 n 个节点就是头节点</span></div><div class="line">    <span class="keyword">if</span> (<span class="keyword">null</span> == p2) &#123;</div><div class="line">        p1 = head.next;</div><div class="line">        <span class="keyword">return</span> p1;</div><div class="line">    &#125;</div><div class="line">    <span class="comment">// p1 和 p2 同时向后移动，直到 p2 到达尾节点</span></div><div class="line">    <span class="keyword">while</span> (<span class="keyword">null</span> != p2.next) &#123;</div><div class="line">        p1 = p1.next;</div><div class="line">        p2 = p2.next;</div><div class="line">    &#125;</div><div class="line">    <span class="comment">// 此时 p1 指向倒数第 n + 1 个节点，删除它的下一个节点</span></div><div class="line">    p1.next = p1.next.next;</div><div class="line">    <span class="keyword">return</span> head;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="4-求单链表的中间节点"><a href="#4-求单链表的中间节点" class="headerlink" title="4. 求单链表的中间节点"></a>4. 求单链表的中间节点</h2><p><strong>题目描述：</strong>求单链表的中间节点，如果链表的长度为偶数，返回中间两个节点的任意一个，若为奇数，则返回中间节点。</p>
+<p><strong>分析：</strong>这道题的思路和第 3 题「删除单链表倒数第 n 个节点」很相似。如果要求只能遍历一遍链表的花，也通过两个指针来完成。两个指针从头节点开始，慢指针每次向后移动一步，快指针每次向后移动两步，直到快指针移动到尾节点时，慢指针移动到中间节点。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 遍历一次，找出单链表的中间节点</span></div><div class="line"><span class="function"><span class="keyword">public</span> ListNode <span class="title">findMiddleNode</span><span class="params">(ListNode head)</span> </span>&#123;</div><div class="line">    <span class="keyword">if</span> (<span class="keyword">null</span> == head) &#123;</div><div class="line">        <span class="keyword">return</span>;</div><div class="line">    &#125;</div><div class="line">    ListNode slow = head;</div><div class="line">    ListNode fast = head;</div><div class="line">    <span class="comment">//如果要求在单链表长度为偶数的情况下，返回中间两个节点的第一个，可以用下面的循环条件</span></div><div class="line">    <span class="comment">//while(null != fast.next &amp;&amp; null != fast.next.next)</span></div><div class="line">    <span class="keyword">while</span> (<span class="keyword">null</span> != fast &amp;&amp; <span class="keyword">null</span> != fast.next) &#123;</div><div class="line">        fast = fast.next.next;</div><div class="line">        slow = slow.next;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> slow;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="5-判断单链表是否存在环"><a href="#5-判断单链表是否存在环" class="headerlink" title="5. 判断单链表是否存在环"></a>5. 判断单链表是否存在环</h2><p><a href="https://leetcode.com/problems/linked-list-cycle/description/" target="_blank" rel="external">LeetCode 141. Linked List Cycle</a></p>
+<p><strong>题目描述：</strong>判断一个单链表是否有环</p>
+<p><strong>分析：</strong>还是通过快慢指针来解决，两个指针从头节点开始，慢指针每次向后移动一步，快指针每次向后移动两步，如果存在环，那么两个指针一定会在环内相遇。</p>
+<p>代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 判断单链表是否有环</span></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">hasCycle</span><span class="params">(ListNode head)</span> </span>&#123;</div><div class="line">    <span class="keyword">if</span> (<span class="keyword">null</span> == head) &#123;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">false</span>;</div><div class="line">    &#125;</div><div class="line">    ListNode slow = head;</div><div class="line">    ListNode fast = head;</div><div class="line">    <span class="keyword">while</span> (<span class="keyword">null</span> != fast.next &amp;&amp; <span class="keyword">null</span> != fast.next.next) &#123;</div><div class="line">        fast = fast.next.next;</div><div class="line">        slow = slow.next;</div><div class="line">        <span class="keyword">if</span> (fast == slow) &#123;</div><div class="line">            <span class="keyword">return</span> <span class="keyword">true</span>;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> <span class="keyword">false</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="6-单链表是否有环扩展：找到环的入口点"><a href="#6-单链表是否有环扩展：找到环的入口点" class="headerlink" title="6. 单链表是否有环扩展：找到环的入口点"></a>6. 单链表是否有环扩展：找到环的入口点</h2><p><a href="https://leetcode.com/problems/linked-list-cycle-ii/description/" target="_blank" rel="external">LeetCode 142. Linked List Cycle II</a></p>
+<p><strong>题目描述：</strong>判断单链表是否有环，如果有，找到环的入口点</p>
+<p><strong>分析：</strong>由上题可知，按照 p2 每次两步，p1 每次一步的方式走，发现 p2 和 p1 重合，确定了单向链表有环路了。接下来，让 p2 回到链表的头部，重新走，每次步长不是走 2 了，而是走 1，那么当 p1 和 p2 再次相遇的时候，就是在环路的入口点。</p>
+<p>假设起点到环入口的距离尾 a，p1 和 p2 第一次相遇的相交点 M 与环入口的距离为 b，环的周长为 L，当 p1 和 p2 第一次相遇时，假设 p1 走了 n 步。其中 p1 和 p2 第一次相遇时，p1 在环内走过的步数为 b，因为当 p1 走到环入口时，p2 已经在环内了，假设此时 p2 走到环入口的步数为 c，那么 p1 再走 c 步 p2 刚好追上来和 p1 相遇，c &lt; L，所以此时 p1 肯定还没走完一圈。那么根据上面的假设，有下面的关系：</p>
+<p>p1 走的路径：<code>a + b = n</code><br>p2 走的路径：<code>a + b + k * L = 2n</code>，假设此时 p2 比 p1 多走了 k 圈环路，k &gt;= 1</p>
+<p>根据上面的两个等式可以得出<code>k * L = n = a + b</code>，那么从相交点 M 开始，p1 再走 a（a = k * L - b） 步，就相当于走了 k 圈，然后回退 b 步，注意环入口到相交点的距离刚好为 b，所以 p1 再走 a 步时到达环入口；而 p2 从头开始走 a 的话也到达了环入口，与 p1 相遇。</p>
+<p>而在后面这个步骤中，p1 和 p2 前 a 步走的路径不同，再次相遇时必然在环的入口点。</p>
+<p>代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 找到环的入口点</span></div><div class="line"><span class="function"><span class="keyword">public</span> ListNode <span class="title">findLoopPort</span><span class="params">(ListNode head)</span> </span>&#123;</div><div class="line">    <span class="keyword">if</span> (<span class="keyword">null</span> == head) &#123;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">null</span>;</div><div class="line">    &#125;</div><div class="line">    ListNode p1 = head;</div><div class="line">    ListNode p2 = head;</div><div class="line">    <span class="keyword">boolean</span> hasCycle = <span class="keyword">false</span>;</div><div class="line">    <span class="comment">// 1. 判断是否有环</span></div><div class="line">    <span class="keyword">while</span> (<span class="keyword">null</span> != p2.next &amp;&amp; <span class="keyword">null</span> != p2.next.next) &#123;</div><div class="line">        p1 = p1.next;</div><div class="line">        p2 = p2.next.next;</div><div class="line">        <span class="keyword">if</span> (p1 == p2) &#123;</div><div class="line">            hasCycle = <span class="keyword">true</span>;</div><div class="line">            <span class="keyword">break</span>;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">if</span> (!hasCycle) &#123;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">null</span>;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">// p2 从头开始走，步长变为 1</span></div><div class="line">    p2 = head;</div><div class="line">    <span class="keyword">while</span> (p1 != p2) &#123;</div><div class="line">        p1 = p1.next;</div><div class="line">        p2 = p2.next;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> p1;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="7-判断两个无环单链表是否相交"><a href="#7-判断两个无环单链表是否相交" class="headerlink" title="7. 判断两个无环单链表是否相交"></a>7. 判断两个无环单链表是否相交</h2><p><strong>题目描述：</strong>给出两个无环单链表</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">A:       a1 → a2</div><div class="line">                 ↘</div><div class="line">                    c1 → c2 → c3 → null</div><div class="line">                 ↗            </div><div class="line">B:  b1 → b2 → b3</div></pre></td></tr></table></figure>
+<p>判断 A 和 B 是否相交。</p>
+<p><strong>分析：</strong></p>
+<p>1.最直接的方法是判断 A 链表的每个节点是否在 B 链表中，但是这种方法的时间复杂度为 O(Length(A) * Length(B))。</p>
+<p>2.转化为环的问题。把 B 链表接在 A 链表后面，如果得到的链表有环，则说明两个链表相交。可以之前讨论过的快慢指针来判断是否有环，但是这里还有更简单的方法。如果 B 链表和 A 链表相交，把 B 链表接在 A 链表后面时，B 链表的所有节点都在环内，所以此时只需要遍历 B 链表，看是否会回到起点就可以判断是否相交。这个方法需要先遍历一次 A 链表，找到尾节点，然后还要遍历一次 B 链表，判断是否形成环，时间复杂度为 O(Length(A) + Length(B))。</p>
+<p>3.除了转化为环的问题，还可以利用“如果两个链表相交于某一节点，那么之后的节点都是共有的”这个特点，如果两个链表相交，那么最后一个节点一定是共有的。所以可以得出另外一种解法，先遍历 A 链表，记住尾节点，然后遍历 B 链表，比较两个链表的尾节点，如果相同则相交，不同则不相交。时间复杂度为 O(Length(A) + Length(B))，空间复杂度为 O(1)，思路比解法 2 更简单。</p>
+<p>解法 3 的代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 判断两个无环单链表是否相交</span></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isIntersect</span><span class="params">(ListNode headA, ListNode headB)</span> </span>&#123;</div><div class="line">    <span class="keyword">if</span> (<span class="keyword">null</span> == headA || <span class="keyword">null</span> == headB) &#123;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">false</span>;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">if</span> (headA == headB) &#123;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">true</span>;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">while</span> (<span class="keyword">null</span> != headA.next) &#123;</div><div class="line">        headA = headA.next;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">while</span> (<span class="keyword">null</span> != headB.next) &#123;</div><div class="line">        headB = headB.next;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> headA == headB;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="8-两个链表相交扩展：判断两个有环单链表是否相交"><a href="#8-两个链表相交扩展：判断两个有环单链表是否相交" class="headerlink" title="8. 两个链表相交扩展：判断两个有环单链表是否相交"></a>8. 两个链表相交扩展：判断两个有环单链表是否相交</h2><p><strong>题目描述：</strong>上面的问题是针对无环链表的，如果是链表有环呢？</p>
+<p><strong>分析：</strong>如果两个有环单链表相交，那么它们一定共有一个环。因此可以先用之前快慢指针的方式找到两个链表中位于环内的两个节点，如果相交的话，两个节点在一个环内，那么移动其中一个节点，在一次循环内肯定可以与另外一个节点相遇。</p>
+<p>代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 判断两个有环单链表是否相交</span></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isisIntersectWithLoop</span><span class="params">(ListNode headA, ListNode headB)</span> </span>&#123;</div><div class="line">    <span class="keyword">if</span> (<span class="keyword">null</span> == headA || <span class="keyword">null</span> == headB) &#123;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">false</span>;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">if</span> (headA == headB) &#123;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">true</span>;</div><div class="line">    &#125;</div><div class="line">    headA = hasCycle(headA);</div><div class="line">    headB = hasCycle(headB);</div><div class="line">    <span class="comment">// 没有环，则退出</span></div><div class="line">    <span class="keyword">if</span> (<span class="keyword">null</span> == headA || headB) &#123;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">false</span>;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    ListNode p = headB.next;</div><div class="line">    <span class="comment">// p 在环内循环一次，直到与 headA 相遇</span></div><div class="line">    <span class="keyword">while</span> (p != headB) &#123;</div><div class="line">        <span class="keyword">if</span> (p == headA) &#123;</div><div class="line">            <span class="keyword">return</span> <span class="keyword">true</span>;</div><div class="line">        &#125;</div><div class="line">        p = p.next;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> <span class="keyword">false</span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// 判断单链表是否有环，并返回环内的某一节点</span></div><div class="line"><span class="function"><span class="keyword">public</span> ListNode <span class="title">hasCycle</span><span class="params">(ListNode head)</span> </span>&#123;</div><div class="line">    <span class="keyword">if</span> (<span class="keyword">null</span> == head) &#123;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">null</span>;</div><div class="line">    &#125;</div><div class="line">    ListNode slow = head;</div><div class="line">    ListNode fast = head;</div><div class="line">    <span class="keyword">while</span> (<span class="keyword">null</span> != fast.next &amp;&amp; <span class="keyword">null</span> != fast.next.next) &#123;</div><div class="line">        fast = fast.next.next;</div><div class="line">        slow = slow.next;</div><div class="line">        <span class="keyword">if</span> (fast == slow) &#123;</div><div class="line">            <span class="keyword">return</span> slow;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> <span class="keyword">null</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="9-两个链表相交扩展：求两个无环单链表的第一个相交点"><a href="#9-两个链表相交扩展：求两个无环单链表的第一个相交点" class="headerlink" title="9. 两个链表相交扩展：求两个无环单链表的第一个相交点"></a>9. 两个链表相交扩展：求两个无环单链表的第一个相交点</h2><p><a href="https://leetcode.com/problems/intersection-of-two-linked-lists/description/" target="_blank" rel="external">LeetCode 160. Intersection of Two Linked Lists</a></p>
+<p><strong>题目描述：</strong>找到两个无环单链表第一个相交点，如果不相交返回空，要求在线性时间复杂度和常量空间复杂度内完成。</p>
+<p><strong>分析：</strong></p>
+<p>下面所说的对齐：表示指针到链表末尾的距离相同。</p>
+<p>1.分为先判断是否有环，再求第一个相交点的方式。分别遍历 A 链表和 B 链表，判断它们的最后一个节点是否相交。然后利用对齐的思想，计算两个链表的长度（这个可以放在之前的遍历中做），分别用 p1 和 p2 指向两个链表的头，然后将较长链表的 p1 (假设为 p1)向后移动 <code>LB - LA</code> 个节点。这样 p1 和 p2 对齐了，然后同时向后移动 p1 和 p2，直到 <code>p1 == p2</code>，相遇的点就是第一个节点。</p>
+<p>2.解法 1 中为了对齐需要计算链表的长度，有没有什么方法可以不用计算链表长度呢？假设 A 链表和 B 链表的长度为 LA 和 LB，假设 LB &gt;= LA，两个指针 p1 和 p2 分别指向 A 链表和 B 链表的头节点。同时向后移动，当 p1 移动 A 链表的末尾时，p2 距离 B 链表的末尾的距离为 <code>LB - LA</code>，此时可以看出我们已经得到了长度差，如何利用这个长度差对齐呢。这时将 p1 移动到 B 链表的头部，两个指针继续移动，当 p2 移动到 B 链表的末尾时，p1 刚好移动了 <code>LB - LA</code> 步。此时再将 p2 移动到 A 链表的头部，这样 p1 和 p2 就对齐了，然后继续移动，直到 <code>p1 == p2</code>。如果两个链表不相交，p1 和 p2 移动会同时移动到末尾都指向空，而相交的话，第一次相等时就是第一个相交点。这种方法的时间复杂度为 O (2 * (Length(B)))，最多要遍历两次长度较长的链表。</p>
+<p>解法 2 的代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 求两个无环单链表的第一个相交点</span></div><div class="line"><span class="function"><span class="keyword">public</span> ListNode <span class="title">getIntersectionNode</span><span class="params">(ListNode headA, ListNode headB)</span> </span>&#123;</div><div class="line">    <span class="keyword">if</span> (<span class="keyword">null</span> == headA || <span class="keyword">null</span> == headB) &#123;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">null</span>;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">if</span> (headA == headB) &#123;</div><div class="line">        <span class="keyword">return</span> headA;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    ListNode p1 = headA;</div><div class="line">    ListNode p2 = headB;</div><div class="line">    <span class="keyword">while</span> (p1 != p2) &#123;</div><div class="line">        <span class="comment">// 遍历完所在链表后从另外一个链表再开始</span></div><div class="line">        <span class="comment">// 当 p1 和 p2 都换到另一个链表时，它们对齐了：</span></div><div class="line">        <span class="comment">// （1）如果链表相交，p1 == p2 时为第一个相交点</span></div><div class="line">        <span class="comment">// （2）如果链表不相交，p1 和 p2 同时移动到末尾，p1 = p2 = null，然后退出循环</span></div><div class="line">        p1 = (<span class="keyword">null</span> == p1) ? headB : p1.next;</div><div class="line">        p2 = (<span class="keyword">null</span> == p2) ? headA : p2.next;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> p1;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><strong>参考文章：</strong></p>
+<ul>
+<li><a href="http://wuchong.me/blog/2014/03/25/interview-link-questions/" target="_blank" rel="external">面试精选：链表问题集锦</a></li>
+</ul>
+      
+    </div>
+
+    
+    <section data-mpa-template-id="95" class="mpa-template" data-mpa-color="#ffffff">
+      <section style="margin-top: 20px;display: -webkit-box;display: flex;-webkit-box-pack: center;justify-content: center;-webkit-box-align: center;align-items: center" data-mid="t22">
+        <section style="text-align: center;line-height: 30px" data-mid="">
+          <section style="display: inline-block;float: left;width: 95px;height: 2px;background: -webkit-linear-gradient(right, #141414, #f0f0f0);background: linear-gradient(to left, #141414, #f0f0f0);-webkit-transform: translate(0px, 12px);-ms-transform: translate(0px, 12px);transform: translate(0px, 12px)" data-mid="" data-contenteditable="false">
+          </section>
+          <section style="float: left;width: 4px;height: 4px;border-radius: 50%;padding: 3px;background-color: #b1b1b1;text-align: center;-webkit-transform: translate(0px, 8px);-ms-transform: translate(0px, 8px);transform: translate(0px, 8px)" data-mid="" data-contenteditable="false">
+            <section style="width: 5px;height: 5px;border-radius: 50%;background-color: #141414" data-mid="">
+            </section>
+          </section>
+          <section style="float: left;min-width: 50px;padding: 0 10px 0 10px;font-size: 16px;color: #4f4f4f;text-align: center;line-height: 30px" data-mid="">END</section>
+          <section style="float: left;padding: 3px;width: 4px;height: 4px;border-radius: 50%;background-color: #b1b1b1;text-align: center;-webkit-transform: translate(0px, 9px);-ms-transform: translate(0px, 9px);transform: translate(0px, 9px)" data-mid="" data-contenteditable="false">
+            <section style="width: 5px;height: 5px;border-radius: 50%;background-color: #141414" data-mid="">
+            </section>
+          </section>
+          <section style="display: inline-block;float: left;width: 95px;height: 2px;background: -webkit-linear-gradient(left, #141414, #f0f0f0);background: linear-gradient(to right, #141414, #f0f0f0);-webkit-transform: translate(-1px, 14px);-ms-transform: translate(-1px, 14px);transform: translate(-1px, 14px)" data-mid="" data-contenteditable="false">
+          </section>
+        </section>
+      </section>
+    </section>
+    
+
+    <div>
+      
+        
+<div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
+    <img id="wechat_subscriber_qcode" src="/uploads/wechat_qcode.jpg" alt="Johnny Shieh wechat" style="width: 200px; max-width: 100%">
+    <div>我的公众号，不只有技术，还有咖啡和彩蛋！</div>
+</div>
+
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/interview/" rel="tag"># 面试</a>
+          
+            <a href="/tags/data-structure-and-algorithms/" rel="tag"># 数据结构与算法</a>
+          
+            <a href="/tags/linked-list/" rel="tag"># 链表</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/posts/java-reentrantlock/" rel="next" title="线程安全之 ReentrantLock 完全解析">
+                <i class="fa fa-chevron-left"></i> 线程安全之 ReentrantLock 完全解析
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="SOHUCS" sid="posts/interview-linked-list/"></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image" src="/uploads/avatar.png" alt="Johnny Shieh">
+          <p class="site-author-name" itemprop="name">Johnny Shieh</p>
+           
+              <p class="site-description motion-element" itemprop="description">我本微末，心向天空</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">58</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">12</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">39</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/JohnnyShieh" rel="external nofollow" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/johnnyshieh17" rel="external nofollow" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  Weibo
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="mailto:JohnnyShieh17@gmail.com" rel="external nofollow" target="_blank" title="Gmail">
+                  
+                    <i class="fa fa-fw fa-envelope"></i>
+                  
+                  Gmail
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.jianshu.com/u/763027594c0b" rel="external nofollow" target="_blank" title="简书">
+                  
+                    <i class="fa fa-fw fa-book"></i>
+                  
+                  简书
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        <!--<div style="margin: 20px 0 20px 0; height: 1px; background: #eee"></div> 
+<div id="hot-series">
+    <ul class="sidebar-nav" style="margin-bottom: 0;">
+        <li>热门系列</li>
+    </ul>
+    <ul class="series-posts" style="font-size: 14px; padding-left: 10px; list-style: none; text-align: left;">
+        <li><span><a href="http://johnnyshieh.me/tags/dagger/">Dagger 完全解析</a></span>（5）</li>
+         <li><span><a href="http://johnnyshieh.me/categories/AspectJ/">AspectJ in Android</a></span>（3）</li>
+        <li><span><a href="http://johnnyshieh.me/categories/unit-test/">Kotlin 写 Android 单元测试</a>（2）</span></li>
+    </ul>
+</div>
+-->
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-在-O-1-时间删除链表节点"><span class="nav-text">1. 在 O(1) 时间删除链表节点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-逆转单链表"><span class="nav-text">2. 逆转单链表</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-删除单链表倒数第-n-个节点"><span class="nav-text">3. 删除单链表倒数第 n 个节点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-求单链表的中间节点"><span class="nav-text">4. 求单链表的中间节点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-判断单链表是否存在环"><span class="nav-text">5. 判断单链表是否存在环</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-单链表是否有环扩展：找到环的入口点"><span class="nav-text">6. 单链表是否有环扩展：找到环的入口点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-判断两个无环单链表是否相交"><span class="nav-text">7. 判断两个无环单链表是否相交</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#8-两个链表相交扩展：判断两个有环单链表是否相交"><span class="nav-text">8. 两个链表相交扩展：判断两个有环单链表是否相交</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#9-两个链表相交扩展：求两个无环单链表的第一个相交点"><span class="nav-text">9. 两个链表相交扩展：求两个无环单链表的第一个相交点</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+      <div style="margin: 20px 0 20px 0; height: 1px; background: #eee"></div> 
+<div id="hot-series">
+    <ul class="sidebar-nav" style="margin-bottom: 0">
+        <li>热门系列</li>
+    </ul>
+    <ul class="series-posts" style="font-size: 14px; padding-left: 10px; list-style: none; text-align: left">
+        <li><span><a href="http://johnnyshieh.me/tags/dagger/">Dagger 完全解析</a></span>（5）</li>
+         <li><span><a href="http://johnnyshieh.me/categories/AspectJ/">AspectJ in Android</a></span>（3）</li>
+        <li><span><a href="http://johnnyshieh.me/categories/unit-test/">Kotlin 写 Android 单元测试</a>（2）</span></li>
+    </ul>
+</div>
+
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy;  2015 - 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Johnny Shieh</span>
+</div>
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>访客数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>总访问量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="http://images.johnnyshieh.me/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.1"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+  
+    <script type="text/javascript">
+    (function(){
+      var appid = 'cyt8KwhJ1';
+      var conf = 'prod_651756cd8d701505ffbb60e416929831';
+      var width = window.innerWidth || document.documentElement.clientWidth;
+      if (width < 960) {
+      window.document.write('<script id="changyan_mobile_js" charset="utf-8" type="text/javascript" src="https://changyan.sohu.com/upload/mobile/wap-js/changyan_mobile.js?client_id=' + appid + '&conf=' + conf + '"><\/script>'); } else { var loadJs=function(d,a){var c=document.getElementsByTagName("head")[0]||document.head||document.documentElement;var b=document.createElement("script");b.setAttribute("type","text/javascript");b.setAttribute("charset","UTF-8");b.setAttribute("src",d);if(typeof a==="function"){if(window.attachEvent){b.onreadystatechange=function(){var e=b.readyState;if(e==="loaded"||e==="complete"){b.onreadystatechange=null;a()}}}else{b.onload=a}}c.appendChild(b)};loadJs("https://changyan.sohu.com/upload/changyan.js",function(){
+        window.changyan.api.config({appid:appid,conf:conf})});
+      }
+    })();
+    </script>
+    <script type="text/javascript" src="https://assets.changyan.sohu.com/upload/plugins/plugins.count.js"></script>
+
+
+
+  
+
+
+
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/algolia-instant-search/instantsearch.min.css">
+
+  
+  
+  <script src="/lib/algolia-instant-search/instantsearch.min.js"></script>
+  
+
+  <script src="/js/src/algolia-search.js?v=5.1.1"></script>
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("n55tIxEzsDxW0BEFhehOkP2K-gzGzoHsz", "TwYjARitxhv7iOhbg7k2a9xB");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

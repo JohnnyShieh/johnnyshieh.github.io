@@ -355,6 +355,175 @@
   
 
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://johnnyshieh.me/posts/interview-linked-list/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Johnny Shieh">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Johnny Shieh">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/posts/interview-linked-list/" itemprop="url">面试精选之链表问题集锦</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-24T10:40:49+08:00">
+                2017-11-24
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/interview/" itemprop="url" rel="index">
+                    <span itemprop="name">面试精选</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+              <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-comment-o"></i>
+              </span>
+              
+                <a href="/posts/interview-linked-list/#SOHUCS" itemprop="discussionUrl">
+                  <span id="sourceId::posts/interview-linked-list/" class="cy_cmt_count" data-xid="posts/interview-linked-list/" itemprop="commentsCount"></span>
+                </a>
+              
+            
+          
+
+          
+          
+             <span id="/posts/interview-linked-list/" class="leancloud_visitors" data-flag-title="面试精选之链表问题集锦">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </span></div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>链表问题是面试过程中经常被问到的一部分，很考查编程功底。最近刷了 LeetCode 上链表部分的面试题，我总结了一些有代表性的链表问题。</p>
+<p>本文使用的是 Java 语言，下面是所用到的链表节点的定义：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ListNode</span> </span>&#123;</div><div class="line">    <span class="keyword">int</span> val;</div><div class="line">    ListNode next;</div><div class="line"></div><div class="line">    ListNode(<span class="keyword">int</span> x) &#123;</div><div class="line">        val = x;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="1-在-O-1-时间删除链表节点"><a href="#1-在-O-1-时间删除链表节点" class="headerlink" title="1. 在 O(1) 时间删除链表节点"></a>1. 在 O(1) 时间删除链表节点</h2><p><a href="https://leetcode.com/problems/delete-node-in-a-linked-list/description/" target="_blank" rel="external">Leetcode 237. Delete Node in a Linked List</a></p>
+<p><strong>题目描述：</strong>给定单链表中需要删除的节点（不是尾节点），在 O(1) 时间删除该节点。</p>
+<p><strong>分析：</strong>本题与《编程之美》上的「从无头单链表中删除节点」类似。主要思想都是「狸猫换太子」，即用下一个节点数据覆盖要删除的节点，然后删除下一个节点。但是如果节点是尾节点时，该方法就行不通了。</p>
+<p>代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 在 O(1) 时间从无头单链表中删除节点</span></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">deleteNode</span><span class="params">(ListNode node)</span> </span>&#123;</div><div class="line">    <span class="comment">// 不能为空，不能为尾节点</span></div><div class="line">    <span class="keyword">if</span> (<span class="keyword">null</span> == node || <span class="keyword">null</span> == node.next) &#123;</div><div class="line">        <span class="keyword">return</span>;</div><div class="line">    &#125;</div><div class="line">    node.val = node.next.val;</div><div class="line">    node.next = node.next.next;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/posts/interview-linked-list/" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://johnnyshieh.me/posts/java-reentrantlock/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1068,177 +1237,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://johnnyshieh.me/posts/aspectj-in-android-basic/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Johnny Shieh">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Johnny Shieh">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/posts/aspectj-in-android-basic/" itemprop="url">AspectJ in Android （一），AspectJ 基础概念</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-05T17:21:38+08:00">
-                2017-09-05
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/AspectJ/" itemprop="url" rel="index">
-                    <span itemprop="name">AspectJ</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-              <span class="post-meta-divider">|</span>
-              <span class="post-meta-item-icon">
-                <i class="fa fa-comment-o"></i>
-              </span>
-              
-                <a href="/posts/aspectj-in-android-basic/#SOHUCS" itemprop="discussionUrl">
-                  <span id="sourceId::posts/aspectj-in-android-basic/" class="cy_cmt_count" data-xid="posts/aspectj-in-android-basic/" itemprop="commentsCount"></span>
-                </a>
-              
-            
-          
-
-          
-          
-             <span id="/posts/aspectj-in-android-basic/" class="leancloud_visitors" data-flag-title="AspectJ in Android （一），AspectJ 基础概念">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数 </span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </span></div>
-      </header>
-    
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>AspectJ in Android 系列：</p>
-<p><a href="http://johnnyshieh.me/posts/aspectj-in-android-basic/">AspectJ in Android （一），AspectJ 基础概念</a></p>
-<p><a href="http://johnnyshieh.me/posts/aspectj-grammar/">AspectJ in Android （二），AspectJ 语法</a></p>
-<p><a href="http://johnnyshieh.me/posts/aspectj-in-android-usage/">AspectJ in Android （三），AspectJ 两种用法以及常见问题</a></p>
-<p>最近项目在做无埋点统计，解决新增功能都需要人工添加埋点的问题，其中使用了 AspectJ 技术。在这过程中发现网上关于 AspectJ 在 Android 中应用的文章比较少，所以自己整理写了 《AspectJ in Android》系列文章，记录自己所学的同时希望读者可以少走一些弯路。</p>
-<p>这篇文章主要讲 AspectJ 涉及到的 AOP 编程思想和 AspectJ 的一些基本概念。</p>
-<h2 id="AOP"><a href="#AOP" class="headerlink" title="AOP"></a>AOP</h2><h3 id="什么是-AOP-？"><a href="#什么是-AOP-？" class="headerlink" title="什么是 AOP ？"></a>什么是 AOP ？</h3><p>AOP （Aspect-Oriented Programming），面向切面编程，是一种编程思想。AOP 以切面（aspect）为基础，切面是一种新的模块化机制，用来描述分散在对象、类或函数中的横切关点（crosscutting concern）。</p>
-<p>AOP 和我们熟悉的 OOP 面向对象编程只有一字之差，面向对象编程是以对象为基础，把功能抽象成对象模型，优先从对象的属性和行为职责出发，把代码分散到一个个的类中，降低代码的复杂度同时提供复用性。但是在分散代码时会出现重复代码，例如，在两个类的每个方法中加上日志。按照 OOP 的思想，需要在方法中都加入重复的日志代码，也许有人说把日志代码抽象成例外一个日志的类，但是这样的话日志类和两个类都有耦合，而且日志类和这两个的职责没有关联，调用日志类的方法却遍布两个类的方法中。</p>
-<p>而 AOP 的思想是把对象的核心职责外的通用逻辑（如日志，性能，校验等）抽象出来，把散布在多个对象多个模块的通用逻辑当作切面，然后动态地把代码插入到类的指定方法、指定位置中，实现 AOP 的核心技术也是代码织入技术，如 AspectJ、Javassist、DexMaker、ASMDex、动态代理等。</p>
-<p>所以 AOP 可以说是对 OOP 的补充，OOP 以核心职责为主从纵向划分出一个一个类，AOP 以多个类中通用逻辑为主横向划分出一个一个切面，AOP 让 OOP 立体，去除重复代码，降低耦合并且增加可维护性。</p>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/posts/aspectj-in-android-basic/" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -1292,7 +1290,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">57</span>
+                <span class="site-state-item-count">58</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -1303,7 +1301,7 @@
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">11</span>
+                <span class="site-state-item-count">12</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -1314,7 +1312,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">36</span>
+                <span class="site-state-item-count">39</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
