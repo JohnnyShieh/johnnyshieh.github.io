@@ -114,7 +114,7 @@
 <meta property="og:url" content="http://johnnyshieh.me/posts/unit-test-what-and-why-in-kotlin/index.html">
 <meta property="og:site_name" content="Johnny Shieh">
 <meta property="og:description" content="介绍了单元测试的基本概念，为什么需要写单元测试">
-<meta property="og:updated_time" content="2017-07-08T12:16:43.000Z">
+<meta property="og:updated_time" content="2017-12-01T06:41:50.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Kotlin 写 Android 单元测试（一），单元测试是什么以及为什么需要">
 <meta name="twitter:description" content="介绍了单元测试的基本概念，为什么需要写单元测试">
@@ -478,18 +478,11 @@
 <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> <span class="keyword">static</span> org.junit.Assert.assertEquals;</div><div class="line"><span class="keyword">import</span> org.junit.Test;</div><div class="line"></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CalculatorTest</span> </span>&#123;</div><div class="line">  <span class="meta">@Test</span></div><div class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testEvaluate</span><span class="params">()</span> </span>&#123;</div><div class="line">    Calculator calculator = <span class="keyword">new</span> Calculator();</div><div class="line">    <span class="keyword">int</span> sum = calculator.evaluate(<span class="string">"1+2+3"</span>);</div><div class="line">    assertEquals(<span class="number">6</span>, sum);</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p><code>testEvaluate</code>就是<code>evaluate</code>的测试方法，测试<code>evaluate</code>方法是否实现预期功能。</p>
 <p>从上面的测试方法中可以发现，一般单元测试分为 3 步：</p>
-<ol>
-<li><p>初始化。一般是准备一些测试的前提条件，如新建需要测试的类的实例：<code>Calculator calculator = new Calculator();</code>。</p>
-</li>
-<li><p>调用要测试方法。如<code>int sum = calculator.evaluate(&quot;1+2+3&quot;);</code>。</p>
-</li>
-<li><p>验证结果。验证测试结果是否和预期一致：<code>assertEquals(6, sum);</code>。</p>
-</li>
-</ol>
+<p>1.初始化。一般是准备一些测试的前提条件，如新建需要测试的类的实例：<code>Calculator calculator = new Calculator();</code>。</p>
+<p>2.调用要测试方法。如<code>int sum = calculator.evaluate(&quot;1+2+3&quot;);</code>。</p>
+<p>3.验证结果。验证测试结果是否和预期一致：<code>assertEquals(6, sum);</code>。</p>
 <p>有的时候还会有第四步：</p>
-<ol>
-<li>收尾工作。一般释放资源或者删除文件等。</li>
-</ol>
+<p>4.收尾工作。一般释放资源或者删除文件等。</p>
 <h3 id="单元测试的重点"><a href="#单元测试的重点" class="headerlink" title="单元测试的重点"></a>单元测试的重点</h3><p>Java 和 Android 中程序是由多个对象组成的，对象之间可以互相调用公开的方法，单元测试就是测试对象的公开方法，也就是说测试类的 public 方法，因为 public 方法是公开的，定义了类的行为，其他类可以调用。而 private 方法是类的内部实现细节，所以一般是不测试的，<strong>单元测试的重点是测试类的 public 方法</strong>。</p>
 <p>再进一步的说，面向对象中单元测试是：测试类的 public 方法的输出是否与预期一致。</p>
 <p>看下面的例子：</p>
@@ -594,8 +587,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/posts/reading-note-little-dog-money/" rel="next" title="「小狗钱钱」读书笔记">
-                <i class="fa fa-chevron-left"></i> 「小狗钱钱」读书笔记
+              <a href="/posts/java-proxy-pattern/" rel="next" title="Java 设计模式之代理模式">
+                <i class="fa fa-chevron-left"></i> Java 设计模式之代理模式
               </a>
             
           </div>
@@ -604,8 +597,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/posts/unit-test-junit4-and-kotlin-test/" rel="prev" title="Kotlin 写 Android 单元测试（二），JUnit 4 测试框架和 kotlin.test 库的使用">
-                Kotlin 写 Android 单元测试（二），JUnit 4 测试框架和 kotlin.test 库的使用 <i class="fa fa-chevron-right"></i>
+              <a href="/posts/reading-note-little-dog-money/" rel="prev" title="「小狗钱钱」读书笔记">
+                「小狗钱钱」读书笔记 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -678,7 +671,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">58</span>
+                <span class="site-state-item-count">59</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -766,7 +759,7 @@
     <ul class="series-posts" style="font-size: 14px; padding-left: 10px; list-style: none; text-align: left;">
         <li><span><a href="http://johnnyshieh.me/tags/dagger/">Dagger 完全解析</a></span>（5）</li>
          <li><span><a href="http://johnnyshieh.me/categories/AspectJ/">AspectJ in Android</a></span>（3）</li>
-        <li><span><a href="http://johnnyshieh.me/categories/unit-test/">Kotlin 写 Android 单元测试</a>（2）</span></li>
+        <li><span><a href="http://johnnyshieh.me/categories/unit-test/">Kotlin 写 Android 单元测试</a>（3）</span></li>
     </ul>
 </div>
 -->
@@ -801,7 +794,7 @@
     <ul class="series-posts" style="font-size: 14px; padding-left: 10px; list-style: none; text-align: left">
         <li><span><a href="http://johnnyshieh.me/tags/dagger/">Dagger 完全解析</a></span>（5）</li>
          <li><span><a href="http://johnnyshieh.me/categories/AspectJ/">AspectJ in Android</a></span>（3）</li>
-        <li><span><a href="http://johnnyshieh.me/categories/unit-test/">Kotlin 写 Android 单元测试</a>（2）</span></li>
+        <li><span><a href="http://johnnyshieh.me/categories/unit-test/">Kotlin 写 Android 单元测试</a>（3）</span></li>
     </ul>
 </div>
 

@@ -355,6 +355,227 @@
   
 
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://johnnyshieh.me/posts/aspectj-grammar/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Johnny Shieh">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Johnny Shieh">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/posts/aspectj-grammar/" itemprop="url">AspectJ in Android （二），AspectJ 语法</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-12T10:30:38+08:00">
+                2017-09-12
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/AspectJ/" itemprop="url" rel="index">
+                    <span itemprop="name">AspectJ</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+              <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-comment-o"></i>
+              </span>
+              
+                <a href="/posts/aspectj-grammar/#SOHUCS" itemprop="discussionUrl">
+                  <span id="sourceId::posts/aspectj-grammar/" class="cy_cmt_count" data-xid="posts/aspectj-grammar/" itemprop="commentsCount"></span>
+                </a>
+              
+            
+          
+
+          
+          
+             <span id="/posts/aspectj-grammar/" class="leancloud_visitors" data-flag-title="AspectJ in Android （二），AspectJ 语法">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </span></div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>AspectJ in Android 系列：</p>
+<p><a href="http://johnnyshieh.me/posts/aspectj-in-android-basic/">AspectJ in Android （一），AspectJ 基础概念</a></p>
+<p><a href="http://johnnyshieh.me/posts/aspectj-grammar/">AspectJ in Android （二），AspectJ 语法</a></p>
+<p><a href="http://johnnyshieh.me/posts/aspectj-in-android-usage/">AspectJ in Android （三），AspectJ 两种用法以及常见问题</a></p>
+<p>上篇文章介绍了 AspectJ 的基本概念，这篇文章详细分析 AspectJ 基于注解开发方式的语法。</p>
+<h2 id="Join-Point"><a href="#Join-Point" class="headerlink" title="Join Point"></a>Join Point</h2><p>Join Point 表示连接点，即 AOP 可织入代码的点，下表列出了 AspectJ 的所有连接点：</p>
+<table>
+<thead>
+<tr>
+<th>Join Point</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Method call</td>
+<td>方法被调用</td>
+</tr>
+<tr>
+<td>Method execution</td>
+<td>方法执行</td>
+</tr>
+<tr>
+<td>Constructor call</td>
+<td>构造函数被调用</td>
+</tr>
+<tr>
+<td>Constructor execution</td>
+<td>构造函数执行</td>
+</tr>
+<tr>
+<td>Field get</td>
+<td>读取属性</td>
+</tr>
+<tr>
+<td>Field set</td>
+<td>写入属性</td>
+</tr>
+<tr>
+<td>Pre-initialization</td>
+<td>与构造函数有关，很少用到</td>
+</tr>
+<tr>
+<td>Initialization</td>
+<td>与构造函数有关，很少用到</td>
+</tr>
+<tr>
+<td>Static initialization</td>
+<td>static 块初始化</td>
+</tr>
+<tr>
+<td>Handler</td>
+<td>异常处理</td>
+</tr>
+<tr>
+<td>Advice execution</td>
+<td>所有 Advice 执行</td>
+</tr>
+</tbody>
+</table>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/posts/aspectj-grammar/" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://johnnyshieh.me/posts/aspectj-in-android-basic/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1017,172 +1238,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://johnnyshieh.me/posts/unit-test-what-and-why-in-kotlin/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Johnny Shieh">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Johnny Shieh">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/posts/unit-test-what-and-why-in-kotlin/" itemprop="url">Kotlin 写 Android 单元测试（一），单元测试是什么以及为什么需要</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-05T16:31:29+08:00">
-                2017-07-05
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/unit-test/" itemprop="url" rel="index">
-                    <span itemprop="name">单元测试</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-              <span class="post-meta-divider">|</span>
-              <span class="post-meta-item-icon">
-                <i class="fa fa-comment-o"></i>
-              </span>
-              
-                <a href="/posts/unit-test-what-and-why-in-kotlin/#SOHUCS" itemprop="discussionUrl">
-                  <span id="sourceId::posts/unit-test-what-and-why-in-kotlin/" class="cy_cmt_count" data-xid="posts/unit-test-what-and-why-in-kotlin/" itemprop="commentsCount"></span>
-                </a>
-              
-            
-          
-
-          
-          
-             <span id="/posts/unit-test-what-and-why-in-kotlin/" class="leancloud_visitors" data-flag-title="Kotlin 写 Android 单元测试（一），单元测试是什么以及为什么需要">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数 </span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </span></div>
-      </header>
-    
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>越来越多的开发者开始使用 Kotlin 开发 Android 项目，Kotlin 逐渐成为 Android 开发的第一语言，公司项目中也开始用 Kotlin 写单元测试，在项目中以单元测试作为开始引入 Kotlin 语言的入口是个不错的选择，大家可以尝试下。但是现在网上关于如何使用 Kotlin 语言写单元测试的文档很少，所以写下这个系列文章记录自己使用 Kotlin 写 Android 项目的单元测试的一些经验。</p>
-<p>有些人可以对单元测试的概念比较模糊，更多的人则认为单元测试是完全没有必要的，所以下面介绍什么是单元测试以及为什么需要写单元测试。</p>
-<h2 id="什么是单元测试"><a href="#什么是单元测试" class="headerlink" title="什么是单元测试"></a>什么是单元测试</h2><h3 id="单元测试的定义"><a href="#单元测试的定义" class="headerlink" title="单元测试的定义"></a>单元测试的定义</h3><p>在 WiKi 上的定义是：在计算机编程中，单元测试（英语：Unit Testing）又称为模块测试, 是针对程序模块（软件设计的最小单位）来进行正确性检验的测试工作。程序单元是应用的最小可测试部件。</p>
-<p>简单点说就是对程序单元进行测试，在面向过程开发中，一个单元就是一个函数；在面向对象开发中，一个单元就是类的一个方法。</p>
-<p>下面使用 Junit 4 中的 <a href="https://github.com/junit-team/junit4/wiki/Getting-started" target="_blank" rel="external">Calculator 例子</a>来说明。</p>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/posts/unit-test-what-and-why-in-kotlin/" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -1230,7 +1285,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">58</span>
+                <span class="site-state-item-count">59</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -1318,7 +1373,7 @@
     <ul class="series-posts" style="font-size: 14px; padding-left: 10px; list-style: none; text-align: left;">
         <li><span><a href="http://johnnyshieh.me/tags/dagger/">Dagger 完全解析</a></span>（5）</li>
          <li><span><a href="http://johnnyshieh.me/categories/AspectJ/">AspectJ in Android</a></span>（3）</li>
-        <li><span><a href="http://johnnyshieh.me/categories/unit-test/">Kotlin 写 Android 单元测试</a>（2）</span></li>
+        <li><span><a href="http://johnnyshieh.me/categories/unit-test/">Kotlin 写 Android 单元测试</a>（3）</span></li>
     </ul>
 </div>
 -->
@@ -1337,7 +1392,7 @@
     <ul class="series-posts" style="font-size: 14px; padding-left: 10px; list-style: none; text-align: left">
         <li><span><a href="http://johnnyshieh.me/tags/dagger/">Dagger 完全解析</a></span>（5）</li>
          <li><span><a href="http://johnnyshieh.me/categories/AspectJ/">AspectJ in Android</a></span>（3）</li>
-        <li><span><a href="http://johnnyshieh.me/categories/unit-test/">Kotlin 写 Android 单元测试</a>（2）</span></li>
+        <li><span><a href="http://johnnyshieh.me/categories/unit-test/">Kotlin 写 Android 单元测试</a>（3）</span></li>
     </ul>
 </div>
 
