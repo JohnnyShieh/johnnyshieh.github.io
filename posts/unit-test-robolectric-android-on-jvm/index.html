@@ -107,17 +107,17 @@
 
 
 
-<meta name="description" content="线程安全之 volatile 关键字">
-<meta name="keywords" content="线程安全, volatile, Johnny, Shieh, Johnny Shieh, johnny shieh blog, ">
+<meta name="description" content="介绍 Robolectric 框架的用法，以及如何测试安卓代码">
+<meta name="keywords" content="单元测试, Kotlin, unit test, Android, Robolectric, JVM, Johnny, Shieh, Johnny Shieh, johnny shieh blog, ">
 <meta property="og:type" content="article">
-<meta property="og:title" content="线程安全之 volatile 关键字">
-<meta property="og:url" content="http://johnnyshieh.me/posts/java-valatile/index.html">
+<meta property="og:title" content="Kotlin 写 Android 单元测试（四），Robolectric 在 JVM 上测试安卓相关代码">
+<meta property="og:url" content="http://johnnyshieh.me/posts/unit-test-robolectric-android-on-jvm/index.html">
 <meta property="og:site_name" content="Johnny Shieh">
-<meta property="og:description" content="线程安全之 volatile 关键字">
-<meta property="og:updated_time" content="2017-07-06T08:39:45.000Z">
+<meta property="og:description" content="介绍 Robolectric 框架的用法，以及如何测试安卓代码">
+<meta property="og:updated_time" content="2017-12-15T11:00:34.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="线程安全之 volatile 关键字">
-<meta name="twitter:description" content="线程安全之 volatile 关键字">
+<meta name="twitter:title" content="Kotlin 写 Android 单元测试（四），Robolectric 在 JVM 上测试安卓相关代码">
+<meta name="twitter:description" content="介绍 Robolectric 框架的用法，以及如何测试安卓代码">
 
 
 
@@ -145,13 +145,13 @@
 
 
 
-  <link rel="canonical" href="http://johnnyshieh.me/posts/java-valatile/">
+  <link rel="canonical" href="http://johnnyshieh.me/posts/unit-test-robolectric-android-on-jvm/">
 
 
 
 
 
-  <title>线程安全之 volatile 关键字 | Johnny Shieh</title>
+  <title>Kotlin 写 Android 单元测试（四），Robolectric 在 JVM 上测试安卓相关代码 | Johnny Shieh</title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -358,7 +358,7 @@
   
 
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://johnnyshieh.me/posts/java-valatile/">
+    <link itemprop="mainEntityOfPage" href="http://johnnyshieh.me/posts/unit-test-robolectric-android-on-jvm/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Johnny Shieh">
@@ -375,7 +375,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">线程安全之 volatile 关键字</h1>
+          <h1 class="post-title" itemprop="name headline">Kotlin 写 Android 单元测试（四），Robolectric 在 JVM 上测试安卓相关代码</h1>
         
 
         <div class="post-meta">
@@ -387,8 +387,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-02-25T20:23:49+08:00">
-                2017-02-25
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-15T15:18:30+08:00">
+                2017-12-15
               </time>
             
 
@@ -410,8 +410,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/java/" itemprop="url" rel="index">
-                    <span itemprop="name">Java</span>
+                  <a href="/categories/unit-test/" itemprop="url" rel="index">
+                    <span itemprop="name">单元测试</span>
                   </a>
                 </span>
 
@@ -429,8 +429,8 @@
                 <i class="fa fa-comment-o"></i>
               </span>
               
-                <a href="/posts/java-valatile/#SOHUCS" itemprop="discussionUrl">
-                  <span id="changyan_count_unit" class="post-comments-count hc-comment-count" data-xid="posts/java-valatile/" itemprop="commentsCount"></span>
+                <a href="/posts/unit-test-robolectric-android-on-jvm/#SOHUCS" itemprop="discussionUrl">
+                  <span id="changyan_count_unit" class="post-comments-count hc-comment-count" data-xid="posts/unit-test-robolectric-android-on-jvm/" itemprop="commentsCount"></span>
                 </a>
               
             
@@ -438,7 +438,7 @@
 
           
           
-             <span id="/posts/java-valatile/" class="leancloud_visitors" data-flag-title="线程安全之 volatile 关键字">
+             <span id="/posts/unit-test-robolectric-android-on-jvm/" class="leancloud_visitors" data-flag-title="Kotlin 写 Android 单元测试（四），Robolectric 在 JVM 上测试安卓相关代码">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -466,61 +466,37 @@
       
 
       
-        <p>在阅读本文前，建议先看下面两篇文章：</p>
-<p><a href="http://johnnyshieh.me/posts/java-memory-model/">Java 内存模型</a></p>
-<p><a href="http://johnnyshieh.me/posts/java-synchronized/">线程安全之 synchronized 关键字</a></p>
-<p>Java 中 volatile 是轻量级的 synchronized，不会引起线程上下文的切换和调度。虽然 volatile 关键字只能修饰变量，但是要用好它并不容易，下面分析它的原理及注意事项。</p>
-<h2 id="volatile-关键字的两层语义"><a href="#volatile-关键字的两层语义" class="headerlink" title="volatile 关键字的两层语义"></a>volatile 关键字的两层语义</h2><ul>
-<li><p>保证变量对所有线程的可见性，即一个线程修改了某个值，新值对其他线程来说是立即可见的</p>
-</li>
-<li><p>禁止指令重排序（Java 5 后才有的）</p>
-</li>
-</ul>
+        <p>Kotlin 写 Android 单元测试系列文章：</p>
+<p><a href="http://johnnyshieh.me/posts/unit-test-what-and-why-in-kotlin/">Kotlin 写 Android 单元测试（一），单元测试是什么以及为什么需要</a></p>
+<p><a href="http://johnnyshieh.me/posts/unit-test-junit4-and-kotlin-test/">Kotlin 写 Android 单元测试（二），JUnit 4 测试框架和 kotlin.test 库的使用</a></p>
+<p><a href="http://johnnyshieh.me/posts/unit-test-mockito-2-in-kotlin/">Kotlin 写 Android 单元测试（三），Mockito mocking 框架的使用</a></p>
+<p><a href="http://johnnyshieh.me/posts/unit-test-robolectric-android-on-jvm/">Kotlin 写 Android 单元测试（四），Robolectric 在 JVM 上测试安卓相关代码</a></p>
+<p>未完待续…</p>
+<p>通过前面几篇文章，我们知道可以使用 JUnit 4 和 Mockito 测试框架来测试纯 Java 业务逻辑，但是无法在 JVM 上测试 Android 相关代码。因为 Android 代码需要运行在 Android 平台的虚拟机 Dalvik 或 ART 上，不能直接在 Java 虚拟机（JVM）上直接运行。而我们用 Android Studio 编写 Android 代码时只需要下载 JDK 和 Android SDK，在项目的<code>External Libraries</code>可以看到编译所需要的 Android API，实际上就是 android.jar，这样 Android 代码就能正常开发编译了。</p>
+<p>但是 android.jar 里的类只是个壳，里面的方法都是<code>throw RuntimeException(&quot;stub!!&quot;);</code>，所以在 Android Studio 中可以正常开发编译，但是在 JDK 中 JVM 下运行的话会抛 RuntimeException。我们的 app 代码能在 Dalvik 或 ART 上运行，可以运行是因为它们把 android.jar 里面替换为 Android 的系统实现，所以才能正常运行。</p>
 <a id="more"></a>
-<h2 id="volatile-的可见性保证"><a href="#volatile-的可见性保证" class="headerlink" title="volatile 的可见性保证"></a>volatile 的可见性保证</h2><p>要明白可见性语义，需要先了解 Java 内存模型的概念，具体可看 <a href="http://johnnyshieh.me/posts/java-memory-model/">Java 内存模型</a>，简单的说就是一个公共变量在每个线程都有线程私有的副本，所以正常情况下，一个线程修改了某个变量的值，只是修改其副本，其他线程不能得知该值的修改。</p>
-<p>先看下面这段代码：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">boolean</span> count = <span class="number">0</span>;  <span class="comment">// 线程共享变量</span></div><div class="line"></div><div class="line"><span class="comment">// 线程1</span></div><div class="line">count = <span class="number">1</span>;</div><div class="line"></div><div class="line"><span class="comment">// 线程2</span></div><div class="line">System.out.println(count);</div></pre></td></tr></table></figure>
-<p>线程1 先执行<code>count = 1;</code>，然后线程2 中读取<code>count</code>的值时可能为 0 也可能为 1。因为线程2 无法知道线程1对<code>count</code>变量的修改，但是也不确定的是也不知道该修改什么时候同步到共享内存，不知道何时把共享内存的值更新到线程2 的工作内存中。</p>
-<p>而 volatile 关键字修饰变量后，每个线程对 volatile 变量的读取都要从共享内存中读，而每个线程对 volatile 变量的写不仅要更新工作内存还要刷新共享内存。而普通变量没法保证 JVM 何时把工作内存的值更新到共享内存，以及把共享内存的值读取到工作内存。所以用 volatile 关键字修饰<code>count</code>变量后，线程2 就可以知道线程1 对其的修改了。</p>
-<p><strong>volatile 关键字不具备原子性</strong></p>
-<p>从上面知道 volatile 关键字保证了操作的可见性，但是 volatile 能保证对变量的操作是原子性吗？</p>
-<p>看下面这个例子：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Test</span> </span>&#123;</div><div class="line">    <span class="keyword">public</span> <span class="keyword">volatile</span> <span class="keyword">int</span> count = <span class="number">0</span>;</div><div class="line">     </div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">increase</span><span class="params">()</span> </span>&#123;</div><div class="line">        count ++;</div><div class="line">    &#125;</div><div class="line">     </div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</div><div class="line">        <span class="keyword">final</span> Test test = <span class="keyword">new</span> Test();</div><div class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">10</span>; i ++)&#123;</div><div class="line">            <span class="keyword">new</span> Thread()&#123;</div><div class="line">                <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</div><div class="line">                    <span class="keyword">for</span>(<span class="keyword">int</span> j = <span class="number">0</span>;  j&lt; <span class="number">1000</span>; j ++)</div><div class="line">                        test.increase();</div><div class="line">                &#125;;</div><div class="line">            &#125;.start();</div><div class="line">        &#125;</div><div class="line">         </div><div class="line">        <span class="keyword">while</span>(Thread.activeCount()&gt;<span class="number">1</span>)  <span class="comment">//保证前面的线程都执行完</span></div><div class="line">            Thread.yield();</div><div class="line">        System.out.println(test.count);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>上面这段程序的输出结果很多朋友会认为是 10000，因为每个线程自增 1000 次，10线程的话就是 自增 10000 次，结果就是 10000。但是实际上它每次的运行结果都不一定一致，但都是一个小于 10000 的数值。</p>
-<p>原因是 volatile 关键字保证了 count 变量的可见性，但是并没有保证<code>increase()</code>方法的原子性。自增操作是不具备原子性的，编译成 class 文件的话，它分成三个指令：读取变量的值、进行加 1 操作、写入工作内存（因为是 volatile 变量，所以也会同步到共享内存）。大家可以想象一下这个场景：</p>
-<p>某一时刻 count 的值为 10， 线程1对其进行自增操作，读取了值后就被阻塞了，切换到线程2对其进行自增操作，读取到的值为 10，然后进行加 1 操作并写入工作内存，同时同步到共享内存。然后切换回线程1，虽然共享内存中 count 的值为 11， 但是线程1下面的操作没有去读 count 的值，线程1的副本中 count的值还是 10，所以继续自增操作的下面两步后也把 11 更新到共享内存。这样执行两次自增操作，结果 count 只增加了 1。volatile 只能保证每次读取的是最新的值，但是线程没读取时是不知道其他线程修改的值的。</p>
-<p>上面的问题的根源就是自增操作不是原子性操作，有下面几种方式把它变为原子性：（1）用 synchronized 修饰 increase() 方法（2）使用 ReentrantLock 把自增操作加锁（3）把 count 改为 AtomicInteger 类型，用 getAndIncrement() 原子操作自增。</p>
-<h2 id="volatile-禁止指令重排序"><a href="#volatile-禁止指令重排序" class="headerlink" title="volatile 禁止指令重排序"></a>volatile 禁止指令重排序</h2><p>volatile 关键字能禁止指令重排序，所以 volatile 能在一定程度上保证有序性。</p>
-<p>volatile 关键字禁止指令重排序有两层含义：</p>
-<ul>
-<li><p>当程序执行到 volatile 变量的读操作或者写操作时，在其前面的操作的更改肯定全部已经进行，且结果已经对后面的操作可见；在其后面的操作肯定还没有进行</p>
-</li>
-<li><p>在进行指令优化时，不能将在对 volatile 变量访问的语句放在其后面执行，也不能把 volatile 变量后面的语句放到其前面执行</p>
-</li>
-</ul>
-<p>看下单例模式的双重检查锁定写法：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Singleton</span> </span>&#123;</div><div class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">volatile</span> Singleton sInstance;</div><div class="line">    <span class="function"><span class="keyword">private</span> <span class="title">Singleton</span><span class="params">()</span> </span>&#123;&#125;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">synchronized</span> Singleton <span class="title">getInstance</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">if</span>(<span class="keyword">null</span> == sInstance) &#123;                 <span class="comment">//第一次检查</span></div><div class="line">            <span class="keyword">synchronized</span>(Singleton.class) &#123;</div><div class="line">                <span class="keyword">if</span>(<span class="keyword">null</span> == sInstance) &#123;         <span class="comment">//第二次检查</span></div><div class="line">                    sInstance = <span class="keyword">new</span> Singleton();</div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">return</span> sInstance;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>为什么<code>sInstance</code>需要 volatile 关键字修饰，如果不修饰会可能会出现得到未初始化完成的对象，原因就是因为指令重排序。把<code>sInstance = new Singleton();</code>换成字节码伪代码：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">memory=allocate(); <span class="comment">//1: 分配对象的内存空间</span></div><div class="line">ctorInstance(memory); <span class="comment">//2: 初始化对象</span></div><div class="line">sInstance=memory; <span class="comment">//3: 设置sInstance指向刚分配的内存地址</span></div></pre></td></tr></table></figure>
-<p>但是在一些 JIT 编译器上，2 和 3 可能会重排序，变成下面这样：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">memory=allocate(); <span class="comment">//1: 分配对象的内存空间</span></div><div class="line">sInstance=memory; <span class="comment">//3: 设置sInstance指向刚分配的内存地址</span></div><div class="line">ctorInstance(sInstance); <span class="comment">//2: 初始化对象</span></div></pre></td></tr></table></figure>
-<p>重排序后，sInstance 可能会为未调用构造函数的对象，假设线程1 执行到上面代码第二步时，还没构造完成，但是 sInstance 非空，切换到线程2 调用<code>getInstance()</code>方法，因为 sInstance 非空就直接返回了，这样就会使用还没构造完成的对象。</p>
-<p>但是用 volatile 关键字修饰了 sInstance 变量后，语句3 是 volatile 变量的写操作，不能将在对 volatile 变量访问的语句放在其后面执行，也就不允许语句2 放在语句3 后面，这样就能避免返回还未初始化完成的对象。</p>
-<h2 id="volatile-的实现原理"><a href="#volatile-的实现原理" class="headerlink" title="volatile 的实现原理"></a>volatile 的实现原理</h2><p>下面这段话摘自《深入理解 Java 虚拟机》：</p>
-<p>“观察加入 volatile 关键字和没有加入 volatile 关键字时所生成的汇编代码发现，加入 volatile 关键字时，会多出一个 lock 前缀指令”</p>
-<p>lock 前缀指令实际上相当于一个内存屏障（也成内存栅栏），内存屏障会提供 3 个功能：</p>
-<p>1）它确保指令重排序时不会把其后面的指令排到内存屏障之前的位置，也不会把前面的指令排到内存屏障的后面；即在执行到内存屏障这句指令时，在它前面的操作已经全部完成；</p>
-<p>2）它会强制将对缓存的修改操作立即写入主存；</p>
-<p>3）如果是写操作，它会导致其他 CPU 中对应的缓存行无效。</p>
-<p><strong>参考文章</strong></p>
-<ul>
-<li><p><a href="http://tutorials.jenkov.com/java-concurrency/volatile.html" target="_blank" rel="external">Java Volatile Keyword</a></p>
-</li>
-<li><p><a href="http://www.cnblogs.com/dolphin0520/p/3920373.html" target="_blank" rel="external">Java并发编程：volatile关键字解析</a></p>
-</li>
-<li><p><a href="http://blog.csdn.net/u014351782/article/details/51381802" target="_blank" rel="external">从一个简单的Java单例示例谈谈并发</a></p>
-</li>
-</ul>
+<p>这种情况如何做 Android 代码的单元测试呢？一种方式是使用 Android 官方提供的 Instrumentation 框架，不过测试代码还是不能在 JVM 上运行，只能在模拟器或者真机上运行，这种方式相当于编一个测试版的 apk，传到模拟器或者真机上再运行，显然速度不可能快，不方便做单元测试。那有没有什么方式可以直接 Android Studio 的开发环境 JVM 中运行 Android 代码呢，Robolectric 框架就可以解决这个问题。</p>
+<blockquote>
+<p>本文是基于 Robolectric 3.5.1，Android Studio 3.0 环境</p>
+</blockquote>
+<h2 id="1-Robolectric"><a href="#1-Robolectric" class="headerlink" title="1. Robolectric"></a>1. Robolectric</h2><p>官网：<a href="http://robolectric.org/" target="_blank" rel="external">http://robolectric.org/</a></p>
+<p>Robolectric 重新实现了 android.jar，使得 Android 相关的测试代码都可以直接在 JVM 上运行。对于 Android 中的类<code>XXX</code>，它们都实现了<code>ShadowXXX</code>，例如 ShadowActivity、ShadowView 等，在调用 Activity 代码，Robolectric 会拦截并实际上调用 ShadowActivity 的同名方法。而且 Robolectric 还处理了布局加载、资源加载等 Android 运行需要的东西，可以在 JVM 中测试 Android 代码在真机上运行的样子。</p>
+<h3 id="1-1-Gradle-引入"><a href="#1-1-Gradle-引入" class="headerlink" title="1.1 Gradle 引入"></a>1.1 Gradle 引入</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">test</span>Implementation <span class="string">'junit:junit:4.12'</span></div><div class="line"><span class="built_in">test</span>Implementation <span class="string">'org.robolectric:robolectric:3.5.1'</span></div><div class="line">// 如果用到 multidex 和 support-v4 包的话，还需要引入 robolectric 对应的模块</div><div class="line"><span class="built_in">test</span>Implementation <span class="string">'org.robolectric:shadows-multidex:3.5.1'</span></div><div class="line"><span class="built_in">test</span>Implementation <span class="string">'org.robolectric:shadows-supportv4:3.5.1'</span></div><div class="line"></div><div class="line">android &#123;</div><div class="line">  <span class="built_in">test</span>Options &#123;</div><div class="line">    unitTests &#123;</div><div class="line">      includeAndroidResources = <span class="literal">true</span></div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>注意：Robolectric 3.3 以上的版本都需要 Android Studio 的版本在 3.0 以上。</p>
+<p>如果是 Linux 或者 Mac 用户，还需要在 Run -&gt; Edit Configuration… 的窗口中，在左侧边栏选择 Defaults -&gt; Android JUnit，然后将右侧的 working directory 值改为<code>$MODULE_DIR$</code>。</p>
+<h3 id="1-2-测试实例"><a href="#1-2-测试实例" class="headerlink" title="1.2 测试实例"></a>1.2 测试实例</h3><p>下面这个 Activity 点击按钮后会跳转到登录页。</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">class WelcomeActivity : Activity() &#123;</div><div class="line"></div><div class="line">    override fun onCreate(savedInstanceState: Bundle?) &#123;</div><div class="line">        super.onCreate(savedInstanceState)</div><div class="line">        setContentView(R.layout.welcome_activity)</div><div class="line">        </div><div class="line">        findViewById(R.id.login).setOnClickListener &#123; startActivity(Intent(this, LoginActivity::class.java)) &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>再看下测试代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@RunWith</span>(RobolectricTestRunner::<span class="class"><span class="keyword">class</span>)</span></div><div class="line"><span class="title">class</span> <span class="title">WelcomeActivityTest</span> &#123;</div><div class="line"></div><div class="line">    <span class="meta">@Test</span></div><div class="line">    <span class="function">fun <span class="title">clickLogin</span><span class="params">()</span> </span>&#123;</div><div class="line">        val activity = Robolectric.setupActivity(WelcomeActivity::<span class="class"><span class="keyword">class</span>.<span class="title">java</span>)</span></div><div class="line">        <span class="title">activity</span>.<span class="title">findViewById</span>(<span class="title">R</span>.<span class="title">id</span>.<span class="title">login</span>).<span class="title">performClick</span>()</div><div class="line">        </div><div class="line">        <span class="title">val</span> <span class="title">expectedIntent</span> = Intent(activity, LoginActivity::<span class="class"><span class="keyword">class</span>.<span class="title">java</span>)</span></div><div class="line">        <span class="title">val</span> <span class="title">actualIntent</span> = ShadowApplication.getInstance().<span class="function">nextStartedActivity</span></div><div class="line">        <span class="title">assertEquals</span><span class="params">(expectedIntent.component, actualIntent.component)</span></div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>上面测试代码中<code>@RunWith(RobolectricTestRunner::class)</code>保证 Robolectric 框架生效，这样才能在调用 Android 代码时转到 Robolectric 的 Shadow 实现。而且 Robolectric 会在测试框架执行一开始创建 application 实例，在 AndroidManifest.xml 中定义的 Application 类也会被反射创建实例，并执行 onCreate 生命周期。</p>
+<p><code>ShadowApplication.getInstance().nextStartedActivity</code> 是 Robolectric 提供方便测试的方法，可以获取最近一个启动的 Activity 的 Intent。</p>
+<h3 id="1-3-测试版的-Application"><a href="#1-3-测试版的-Application" class="headerlink" title="1.3 测试版的 Application"></a>1.3 测试版的 Application</h3><p>Robolectric 会自动识别出 AndroidManifest.xml 中定义的 Application 类，并且初始化，但是我们在做单元测试的时候，只需要测试项目代码的逻辑，不测试第三方库，例如网络请求、图片加载、数据库读写。我们测试的是调用第三方库时，所传递的参数是否符合预期，所以不需要初始化第三方库，而且 Robolectric 不支持加载第三方 native 库。</p>
+<p>写单元测试时，有时需要使用 Mockito 框架 Mock 出一些对象，如果使用 Dagger 2 依赖注入框架的话，最好直接把 Module 里的依赖对象换成 Mock 对象，这时就需要改写 Application 的初始化逻辑。</p>
+<p>值得庆幸的是，<strong>Robolectric 支持测试版的 Application</strong>，方法也很简单，所以可以用测试版的 Application 来修改初始化逻辑。如果在 AndroidManifest.xml 中定义的为 MyApplication，那么在测试文件下，同样包名，新建一个加上<code>Test</code>前缀的 Application 即可：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">class TestMyApplication : MyApplication(), TestLifecycleApplication &#123;</div><div class="line">    override fun onCreate() &#123;</div><div class="line">        ...</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    override fun beforeTest(method: Method) &#123;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    override fun prepareTest(test: Any) &#123;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    override fun afterTest(method: Method) &#123;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>这样 Robolectric 就好创建 TestMyApplication 实例作为应用的 Application。</p>
+<h2 id="2-小结"><a href="#2-小结" class="headerlink" title="2. 小结"></a>2. 小结</h2><p>总的来说，Robolectric 让我们很方便地测试 Android 相关代码，不过在一开始时使用时会遇到一些问题，坚持一下就过去了。使用过程中遇到什么问题，可以在网络下搜索下，或者断点看源码，当然可以在文章下面留言。我在使用过程就遇到一个问题：Application 实例创建后，Robolectric 会先注册广播监听器，然后在调用 Application 的 onCreate 方法，因为项目中的广播监听器初始化时用到了 onCreate 执行后才会生成的属性，结果就抛出空异常。</p>
+<p>到目前为主，已经介绍了大体上在 Kotlin 下写 Android 单元测试需要用到的 JUnit、Mockito、Roblectric 测试框架，之后会写一些实际项目过程中单元测试的常见问题的解决方案。</p>
       
     </div>
 
@@ -576,11 +552,9 @@
       
         <div class="post-tags">
           
-            <a href="/tags/android/" rel="tag"># android</a>
+            <a href="/tags/kotlin/" rel="tag"># kotlin</a>
           
-            <a href="/tags/java/" rel="tag"># java</a>
-          
-            <a href="/tags/multi-thread/" rel="tag"># 多线程</a>
+            <a href="/tags/unit-test/" rel="tag"># 单元测试</a>
           
         </div>
       
@@ -593,8 +567,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/posts/android-hardware-layer-animation/" rel="next" title="[译]通过 Hardware Layer 提升 Android 动画性能">
-                <i class="fa fa-chevron-left"></i> [译]通过 Hardware Layer 提升 Android 动画性能
+              <a href="/posts/unit-test-mockito-2-in-kotlin/" rel="next" title="Kotlin 写 Android 单元测试（三），Mockito mocking 框架的使用">
+                <i class="fa fa-chevron-left"></i> Kotlin 写 Android 单元测试（三），Mockito mocking 框架的使用
               </a>
             
           </div>
@@ -602,10 +576,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/posts/rxbus-rxjava2/" rel="prev" title="RxJava 2 版本的 Rxbus">
-                RxJava 2 版本的 Rxbus <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -631,7 +601,7 @@
           
   <div class="comments" id="comments">
     
-      <div id="SOHUCS" sid="posts/java-valatile/"></div>
+      <div id="SOHUCS" sid="posts/unit-test-robolectric-android-on-jvm/"></div>
     
   </div>
 
@@ -782,7 +752,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#volatile-关键字的两层语义"><span class="nav-number">1.</span> <span class="nav-text">volatile 关键字的两层语义</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#volatile-的可见性保证"><span class="nav-number">2.</span> <span class="nav-text">volatile 的可见性保证</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#volatile-禁止指令重排序"><span class="nav-number">3.</span> <span class="nav-text">volatile 禁止指令重排序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#volatile-的实现原理"><span class="nav-number">4.</span> <span class="nav-text">volatile 的实现原理</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-Robolectric"><span class="nav-text">1. Robolectric</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-Gradle-引入"><span class="nav-text">1.1 Gradle 引入</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-测试实例"><span class="nav-text">1.2 测试实例</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3-测试版的-Application"><span class="nav-text">1.3 测试版的 Application</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-小结"><span class="nav-text">2. 小结</span></a></li></ol></div>
             
 
           </div>

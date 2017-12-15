@@ -114,7 +114,7 @@
 <meta property="og:url" content="http://johnnyshieh.me/posts/unit-test-what-and-why-in-kotlin/index.html">
 <meta property="og:site_name" content="Johnny Shieh">
 <meta property="og:description" content="介绍了单元测试的基本概念，为什么需要写单元测试">
-<meta property="og:updated_time" content="2017-12-01T06:41:50.000Z">
+<meta property="og:updated_time" content="2017-12-15T10:59:32.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Kotlin 写 Android 单元测试（一），单元测试是什么以及为什么需要">
 <meta name="twitter:description" content="介绍了单元测试的基本概念，为什么需要写单元测试">
@@ -466,7 +466,13 @@
       
 
       
-        <p>越来越多的开发者开始使用 Kotlin 开发 Android 项目，Kotlin 逐渐成为 Android 开发的第一语言，公司项目中也开始用 Kotlin 写单元测试，在项目中以单元测试作为开始引入 Kotlin 语言的入口是个不错的选择，大家可以尝试下。但是现在网上关于如何使用 Kotlin 语言写单元测试的文档很少，所以写下这个系列文章记录自己使用 Kotlin 写 Android 项目的单元测试的一些经验。</p>
+        <p>Kotlin 写 Android 单元测试系列文章：</p>
+<p><a href="http://johnnyshieh.me/posts/unit-test-what-and-why-in-kotlin/">Kotlin 写 Android 单元测试（一），单元测试是什么以及为什么需要</a></p>
+<p><a href="http://johnnyshieh.me/posts/unit-test-junit4-and-kotlin-test/">Kotlin 写 Android 单元测试（二），JUnit 4 测试框架和 kotlin.test 库的使用</a></p>
+<p><a href="http://johnnyshieh.me/posts/unit-test-mockito-2-in-kotlin/">Kotlin 写 Android 单元测试（三），Mockito mocking 框架的使用</a></p>
+<p><a href="http://johnnyshieh.me/posts/unit-test-robolectric-android-on-jvm/">Kotlin 写 Android 单元测试（四），Robolectric 在 JVM 上测试安卓相关代码</a></p>
+<p>未完待续…</p>
+<p>越来越多的开发者开始使用 Kotlin 开发 Android 项目，Kotlin 逐渐成为 Android 开发的第一语言，公司项目中也开始用 Kotlin 写单元测试，在项目中以单元测试作为开始引入 Kotlin 语言的入口是个不错的选择，大家可以尝试下。但是现在网上关于如何使用 Kotlin 语言写单元测试的文档很少，所以写下这个系列文章记录自己使用 Kotlin 写 Android 项目的单元测试的一些经验。</p>
 <p>有些人可以对单元测试的概念比较模糊，更多的人则认为单元测试是完全没有必要的，所以下面介绍什么是单元测试以及为什么需要写单元测试。</p>
 <h2 id="什么是单元测试"><a href="#什么是单元测试" class="headerlink" title="什么是单元测试"></a>什么是单元测试</h2><h3 id="单元测试的定义"><a href="#单元测试的定义" class="headerlink" title="单元测试的定义"></a>单元测试的定义</h3><p>在 WiKi 上的定义是：在计算机编程中，单元测试（英语：Unit Testing）又称为模块测试, 是针对程序模块（软件设计的最小单位）来进行正确性检验的测试工作。程序单元是应用的最小可测试部件。</p>
 <p>简单点说就是对程序单元进行测试，在面向过程开发中，一个单元就是一个函数；在面向对象开发中，一个单元就是类的一个方法。</p>
@@ -587,8 +593,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/posts/reading-note-little-dog-money/" rel="next" title="「小狗钱钱」读书笔记">
-                <i class="fa fa-chevron-left"></i> 「小狗钱钱」读书笔记
+              <a href="/posts/java-proxy-pattern/" rel="next" title="Java 设计模式之代理模式">
+                <i class="fa fa-chevron-left"></i> Java 设计模式之代理模式
               </a>
             
           </div>
@@ -597,8 +603,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/posts/unit-test-junit4-and-kotlin-test/" rel="prev" title="Kotlin 写 Android 单元测试（二），JUnit 4 测试框架和 kotlin.test 库的使用">
-                Kotlin 写 Android 单元测试（二），JUnit 4 测试框架和 kotlin.test 库的使用 <i class="fa fa-chevron-right"></i>
+              <a href="/posts/reading-note-little-dog-money/" rel="prev" title="「小狗钱钱」读书笔记">
+                「小狗钱钱」读书笔记 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -671,7 +677,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">59</span>
+                <span class="site-state-item-count">60</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -759,7 +765,7 @@
     <ul class="series-posts" style="font-size: 14px; padding-left: 10px; list-style: none; text-align: left;">
         <li><span><a href="http://johnnyshieh.me/tags/dagger/">Dagger 完全解析</a></span>（5）</li>
          <li><span><a href="http://johnnyshieh.me/categories/AspectJ/">AspectJ in Android</a></span>（3）</li>
-        <li><span><a href="http://johnnyshieh.me/categories/unit-test/">Kotlin 写 Android 单元测试</a>（3）</span></li>
+        <li><span><a href="http://johnnyshieh.me/categories/unit-test/">Kotlin 写 Android 单元测试</a>（4）</span></li>
     </ul>
 </div>
 -->
@@ -794,7 +800,7 @@
     <ul class="series-posts" style="font-size: 14px; padding-left: 10px; list-style: none; text-align: left">
         <li><span><a href="http://johnnyshieh.me/tags/dagger/">Dagger 完全解析</a></span>（5）</li>
          <li><span><a href="http://johnnyshieh.me/categories/AspectJ/">AspectJ in Android</a></span>（3）</li>
-        <li><span><a href="http://johnnyshieh.me/categories/unit-test/">Kotlin 写 Android 单元测试</a>（3）</span></li>
+        <li><span><a href="http://johnnyshieh.me/categories/unit-test/">Kotlin 写 Android 单元测试</a>（4）</span></li>
     </ul>
 </div>
 

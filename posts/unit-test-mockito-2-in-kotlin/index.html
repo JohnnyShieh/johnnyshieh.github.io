@@ -114,7 +114,7 @@
 <meta property="og:url" content="http://johnnyshieh.me/posts/unit-test-mockito-2-in-kotlin/index.html">
 <meta property="og:site_name" content="Johnny Shieh">
 <meta property="og:description" content="介绍 mockito 的基本用法以及 mockito-kotlin">
-<meta property="og:updated_time" content="2017-12-13T12:14:47.000Z">
+<meta property="og:updated_time" content="2017-12-15T10:59:16.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Kotlin 写 Android 单元测试（三），Mockito mocking 框架的使用">
 <meta name="twitter:description" content="介绍 mockito 的基本用法以及 mockito-kotlin">
@@ -466,7 +466,13 @@
       
 
       
-        <p>Junit 4 测试框架可以验证有直接返回值的方法，但是对于没有返回值的 void 方法应该如何测试呢？void 方法的输出结果其实是调用了另外一个方法，所以需要验证该方法是否有被调用，调用时参数是否正确。Mocking 框架可以验证方法的调用，目前流行的 Mocking 框架有 Mockito、JMockit、EasyMock、PowerMock 等。我选择的是 Mockito 框架，原因是：（1）Mockito 是 Java 中最流行的 mocking 框架；（2）Google 的 Google Sample 下的开源库中使用也是 <a href="http://site.mockito.org/" target="_blank" rel="external">Mockito</a> 框架。下面介绍 Mockito 框架一些概念和用法，以及 Kotlin 中 <a href="">mockito-kotlin</a> 库的使用。</p>
+        <p>Kotlin 写 Android 单元测试系列文章：</p>
+<p><a href="http://johnnyshieh.me/posts/unit-test-what-and-why-in-kotlin/">Kotlin 写 Android 单元测试（一），单元测试是什么以及为什么需要</a></p>
+<p><a href="http://johnnyshieh.me/posts/unit-test-junit4-and-kotlin-test/">Kotlin 写 Android 单元测试（二），JUnit 4 测试框架和 kotlin.test 库的使用</a></p>
+<p><a href="http://johnnyshieh.me/posts/unit-test-mockito-2-in-kotlin/">Kotlin 写 Android 单元测试（三），Mockito mocking 框架的使用</a></p>
+<p><a href="http://johnnyshieh.me/posts/unit-test-robolectric-android-on-jvm/">Kotlin 写 Android 单元测试（四），Robolectric 在 JVM 上测试安卓相关代码</a></p>
+<p>未完待续…</p>
+<p>Junit 4 测试框架可以验证有直接返回值的方法，但是对于没有返回值的 void 方法应该如何测试呢？void 方法的输出结果其实是调用了另外一个方法，所以需要验证该方法是否有被调用，调用时参数是否正确。Mocking 框架可以验证方法的调用，目前流行的 Mocking 框架有 Mockito、JMockit、EasyMock、PowerMock 等。我选择的是 Mockito 框架，原因是：（1）Mockito 是 Java 中最流行的 mocking 框架；（2）Google 的 Google Sample 下的开源库中使用也是 <a href="http://site.mockito.org/" target="_blank" rel="external">Mockito</a> 框架。下面介绍 Mockito 框架一些概念和用法，以及 Kotlin 中 <a href="">mockito-kotlin</a> 库的使用。</p>
 <blockquote>
 <p>本文是基于 Mockito 2.13.0 版本，Android Studio 3.0 环境</p>
 </blockquote>
@@ -623,6 +629,10 @@
 
           <div class="post-nav-prev post-nav-item">
             
+              <a href="/posts/unit-test-robolectric-android-on-jvm/" rel="prev" title="Kotlin 写 Android 单元测试（四），Robolectric 在 JVM 上测试安卓相关代码">
+                Kotlin 写 Android 单元测试（四），Robolectric 在 JVM 上测试安卓相关代码 <i class="fa fa-chevron-right"></i>
+              </a>
+            
           </div>
         </div>
       
@@ -693,7 +703,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">59</span>
+                <span class="site-state-item-count">60</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -781,7 +791,7 @@
     <ul class="series-posts" style="font-size: 14px; padding-left: 10px; list-style: none; text-align: left;">
         <li><span><a href="http://johnnyshieh.me/tags/dagger/">Dagger 完全解析</a></span>（5）</li>
          <li><span><a href="http://johnnyshieh.me/categories/AspectJ/">AspectJ in Android</a></span>（3）</li>
-        <li><span><a href="http://johnnyshieh.me/categories/unit-test/">Kotlin 写 Android 单元测试</a>（3）</span></li>
+        <li><span><a href="http://johnnyshieh.me/categories/unit-test/">Kotlin 写 Android 单元测试</a>（4）</span></li>
     </ul>
 </div>
 -->
@@ -816,7 +826,7 @@
     <ul class="series-posts" style="font-size: 14px; padding-left: 10px; list-style: none; text-align: left">
         <li><span><a href="http://johnnyshieh.me/tags/dagger/">Dagger 完全解析</a></span>（5）</li>
          <li><span><a href="http://johnnyshieh.me/categories/AspectJ/">AspectJ in Android</a></span>（3）</li>
-        <li><span><a href="http://johnnyshieh.me/categories/unit-test/">Kotlin 写 Android 单元测试</a>（3）</span></li>
+        <li><span><a href="http://johnnyshieh.me/categories/unit-test/">Kotlin 写 Android 单元测试</a>（4）</span></li>
     </ul>
 </div>
 

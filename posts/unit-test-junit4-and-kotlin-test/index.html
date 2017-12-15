@@ -116,7 +116,7 @@
 <meta property="og:description" content="介绍 JUnit 4 的一些基本用法以及 kotlin.test 库的简化写法">
 <meta property="og:image" content="http://images.johnnyshieh.me/unit_test_run.png">
 <meta property="og:image" content="http://images.johnnyshieh.me/unit_test_result.png">
-<meta property="og:updated_time" content="2017-12-13T11:59:36.000Z">
+<meta property="og:updated_time" content="2017-12-15T10:59:08.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Kotlin 写 Android 单元测试（二），JUnit 4 测试框架和 kotlin.test 库的使用">
 <meta name="twitter:description" content="介绍 JUnit 4 的一些基本用法以及 kotlin.test 库的简化写法">
@@ -469,7 +469,13 @@
       
 
       
-        <p>上篇文章介绍了单元测试的概念和为什么要使用单元测试，提到当方法的输出结果是<strong>直接的返回结果</strong>时，可以用 <a href="http://junit.org/junit4/" target="_blank" rel="external">Junit 4</a> 测试框架来测试，这也是 Java 中最基础的测试框架。下面来介绍 JUnit 4 测试框架中的基本概念，以及 Kotlin 中提供的 kotlin.test 库的使用。</p>
+        <p>Kotlin 写 Android 单元测试系列文章：</p>
+<p><a href="http://johnnyshieh.me/posts/unit-test-what-and-why-in-kotlin/">Kotlin 写 Android 单元测试（一），单元测试是什么以及为什么需要</a></p>
+<p><a href="http://johnnyshieh.me/posts/unit-test-junit4-and-kotlin-test/">Kotlin 写 Android 单元测试（二），JUnit 4 测试框架和 kotlin.test 库的使用</a></p>
+<p><a href="http://johnnyshieh.me/posts/unit-test-mockito-2-in-kotlin/">Kotlin 写 Android 单元测试（三），Mockito mocking 框架的使用</a></p>
+<p><a href="http://johnnyshieh.me/posts/unit-test-robolectric-android-on-jvm/">Kotlin 写 Android 单元测试（四），Robolectric 在 JVM 上测试安卓相关代码</a></p>
+<p>未完待续…</p>
+<p>上篇文章介绍了单元测试的概念和为什么要使用单元测试，提到当方法的输出结果是<strong>直接的返回结果</strong>时，可以用 <a href="http://junit.org/junit4/" target="_blank" rel="external">Junit 4</a> 测试框架来测试，这也是 Java 中最基础的测试框架。下面来介绍 JUnit 4 测试框架中的基本概念，以及 Kotlin 中提供的 kotlin.test 库的使用。</p>
 <h2 id="JUnit-4-框架"><a href="#JUnit-4-框架" class="headerlink" title="JUnit 4 框架"></a>JUnit 4 框架</h2><h3 id="gradle-引入"><a href="#gradle-引入" class="headerlink" title="gradle 引入"></a>gradle 引入</h3><p>目前 JUnit 4 的最稳定的版本为 4.12，JUnit 5 还没有正式发布。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">dependencies &#123;</div><div class="line">  <span class="built_in">test</span>Compile <span class="string">'junit:junit:4.12'</span></div><div class="line">&#125;</div><div class="line"></div><div class="line">android &#123;</div><div class="line">    <span class="built_in">source</span>Sets &#123;</div><div class="line">        test.java.srcDirs += <span class="string">'src/test/kotlin'</span>  // 如果不是默认（src/<span class="built_in">test</span>/java）的话，加上测试代码的路径</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>一般运行 Android 项目的测试命令为：</p>
@@ -602,8 +608,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/posts/unit-test-what-and-why-in-kotlin/" rel="next" title="Kotlin 写 Android 单元测试（一），单元测试是什么以及为什么需要">
-                <i class="fa fa-chevron-left"></i> Kotlin 写 Android 单元测试（一），单元测试是什么以及为什么需要
+              <a href="/posts/reading-note-little-dog-money/" rel="next" title="「小狗钱钱」读书笔记">
+                <i class="fa fa-chevron-left"></i> 「小狗钱钱」读书笔记
               </a>
             
           </div>
@@ -686,7 +692,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">59</span>
+                <span class="site-state-item-count">60</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -774,7 +780,7 @@
     <ul class="series-posts" style="font-size: 14px; padding-left: 10px; list-style: none; text-align: left;">
         <li><span><a href="http://johnnyshieh.me/tags/dagger/">Dagger 完全解析</a></span>（5）</li>
          <li><span><a href="http://johnnyshieh.me/categories/AspectJ/">AspectJ in Android</a></span>（3）</li>
-        <li><span><a href="http://johnnyshieh.me/categories/unit-test/">Kotlin 写 Android 单元测试</a>（3）</span></li>
+        <li><span><a href="http://johnnyshieh.me/categories/unit-test/">Kotlin 写 Android 单元测试</a>（4）</span></li>
     </ul>
 </div>
 -->
@@ -809,7 +815,7 @@
     <ul class="series-posts" style="font-size: 14px; padding-left: 10px; list-style: none; text-align: left">
         <li><span><a href="http://johnnyshieh.me/tags/dagger/">Dagger 完全解析</a></span>（5）</li>
          <li><span><a href="http://johnnyshieh.me/categories/AspectJ/">AspectJ in Android</a></span>（3）</li>
-        <li><span><a href="http://johnnyshieh.me/categories/unit-test/">Kotlin 写 Android 单元测试</a>（3）</span></li>
+        <li><span><a href="http://johnnyshieh.me/categories/unit-test/">Kotlin 写 Android 单元测试</a>（4）</span></li>
     </ul>
 </div>
 

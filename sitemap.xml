@@ -2,23 +2,30 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>http://johnnyshieh.me/posts/unit-test-mockito-2-in-kotlin/</loc>
+    <loc>http://johnnyshieh.me/posts/unit-test-robolectric-android-on-jvm/</loc>
     
-    <lastmod>2017-12-13T12:14:47.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://johnnyshieh.me/posts/unit-test-junit4-and-kotlin-test/</loc>
-    
-    <lastmod>2017-12-13T11:59:36.000Z</lastmod>
+    <lastmod>2017-12-15T11:00:34.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://johnnyshieh.me/posts/unit-test-what-and-why-in-kotlin/</loc>
     
-    <lastmod>2017-12-01T06:41:50.000Z</lastmod>
+    <lastmod>2017-12-15T10:59:32.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://johnnyshieh.me/posts/unit-test-mockito-2-in-kotlin/</loc>
+    
+    <lastmod>2017-12-15T10:59:16.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://johnnyshieh.me/posts/unit-test-junit4-and-kotlin-test/</loc>
+    
+    <lastmod>2017-12-15T10:59:08.000Z</lastmod>
     
   </url>
   

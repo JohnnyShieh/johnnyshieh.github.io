@@ -4,8 +4,52 @@
 
     
   <url>
+    <loc>http://johnnyshieh.me/posts/unit-test-robolectric-android-on-jvm/</loc>
+    <lastmod>2017-12-15T11:00:34.000Z</lastmod>
+    <data>
+        <display>
+        <title>Kotlin 写 Android 单元测试（四），Robolectric 在 JVM 上测试安卓相关代码</title>
+        <pubTime>2017-12-15T07:18:30.000Z</pubTime>
+        
+        <tag>kotlin</tag>
+         
+        <tag>单元测试</tag>
+         
+         
+           
+             
+              <breadCrumb title="单元测试" url="http://johnnyshieh.me/categories/unit-test/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://johnnyshieh.me/posts/unit-test-what-and-why-in-kotlin/</loc>
+    <lastmod>2017-12-15T10:59:32.000Z</lastmod>
+    <data>
+        <display>
+        <title>Kotlin 写 Android 单元测试（一），单元测试是什么以及为什么需要</title>
+        <pubTime>2017-07-05T08:31:29.000Z</pubTime>
+        
+        <tag>kotlin</tag>
+         
+        <tag>单元测试</tag>
+         
+         
+           
+             
+              <breadCrumb title="单元测试" url="http://johnnyshieh.me/categories/unit-test/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://johnnyshieh.me/posts/unit-test-mockito-2-in-kotlin/</loc>
-    <lastmod>2017-12-13T12:14:47.000Z</lastmod>
+    <lastmod>2017-12-15T10:59:16.000Z</lastmod>
     <data>
         <display>
         <title>Kotlin 写 Android 单元测试（三），Mockito mocking 框架的使用</title>
@@ -27,33 +71,11 @@
     
   <url>
     <loc>http://johnnyshieh.me/posts/unit-test-junit4-and-kotlin-test/</loc>
-    <lastmod>2017-12-13T11:59:36.000Z</lastmod>
+    <lastmod>2017-12-15T10:59:08.000Z</lastmod>
     <data>
         <display>
         <title>Kotlin 写 Android 单元测试（二），JUnit 4 测试框架和 kotlin.test 库的使用</title>
         <pubTime>2017-07-12T09:19:23.000Z</pubTime>
-        
-        <tag>kotlin</tag>
-         
-        <tag>单元测试</tag>
-         
-         
-           
-             
-              <breadCrumb title="单元测试" url="http://johnnyshieh.me/categories/unit-test/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://johnnyshieh.me/posts/unit-test-what-and-why-in-kotlin/</loc>
-    <lastmod>2017-12-01T06:41:50.000Z</lastmod>
-    <data>
-        <display>
-        <title>Kotlin 写 Android 单元测试（一），单元测试是什么以及为什么需要</title>
-        <pubTime>2017-07-05T08:31:29.000Z</pubTime>
         
         <tag>kotlin</tag>
          

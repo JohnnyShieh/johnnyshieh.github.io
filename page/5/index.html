@@ -355,6 +355,170 @@
   
 
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://johnnyshieh.me/posts/detect-activity-fragment-lifecycle/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Johnny Shieh">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Johnny Shieh">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/posts/detect-activity-fragment-lifecycle/" itemprop="url">Headless Fragment 监听 Activity 或 Fragment 生命周期</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-04-15T20:29:50+08:00">
+                2017-04-15
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/android/" itemprop="url" rel="index">
+                    <span itemprop="name">Android</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+              <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-comment-o"></i>
+              </span>
+              
+                <a href="/posts/detect-activity-fragment-lifecycle/#SOHUCS" itemprop="discussionUrl">
+                  <span id="sourceId::posts/detect-activity-fragment-lifecycle/" class="cy_cmt_count" data-xid="posts/detect-activity-fragment-lifecycle/" itemprop="commentsCount"></span>
+                </a>
+              
+            
+          
+
+          
+          
+             <span id="/posts/detect-activity-fragment-lifecycle/" class="leancloud_visitors" data-flag-title="Headless Fragment 监听 Activity 或 Fragment 生命周期">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </span></div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>监听 Activity 或者 Fragment 的生命周期对于很多开发者来说是小菜一碟，重载<code>onResume</code>、<code>onPause</code>等方法就行了，的确很多时候这种方法就可以了。但是这种方法是侵入式的，需要修改 Activity 或者 Fragment 的实现，但有时我们不能修改它们的实现，例如第三方 SDK 需要监听宿主页面的生命周期，这时需要非侵入式的实现方法。</p>
+<p>对于 Activity 来说，可以注册 Application.ActivityLifecycleCallbacks 回调来监听其生命周期。但是对 Fragment 又应该怎么办呢？</p>
+<h2 id="Headless-Fragment-监听生命周期"><a href="#Headless-Fragment-监听生命周期" class="headerlink" title="Headless Fragment 监听生命周期"></a>Headless Fragment 监听生命周期</h2><p>Headless Fragment 是没有布局不可见的 Fragment。Fragment 是与相关的 FragmentManager 的组件的生命周期相关联的，例如 Activity 的 onPause 会引起其中 Fragment 的 onPause。因为 Headless Fragment 是不可见的，所以它可以用来监听 Activity 和 Fragment 的生命周期。</p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/posts/detect-activity-fragment-lifecycle/" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://johnnyshieh.me/posts/web-evoke-app/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1024,172 +1188,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://johnnyshieh.me/posts/android-hardware-layer-animation/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Johnny Shieh">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Johnny Shieh">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/posts/android-hardware-layer-animation/" itemprop="url">[译]通过 Hardware Layer 提升 Android 动画性能</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-01-11T20:19:55+08:00">
-                2017-01-11
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/android/" itemprop="url" rel="index">
-                    <span itemprop="name">Android</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-              <span class="post-meta-divider">|</span>
-              <span class="post-meta-item-icon">
-                <i class="fa fa-comment-o"></i>
-              </span>
-              
-                <a href="/posts/android-hardware-layer-animation/#SOHUCS" itemprop="discussionUrl">
-                  <span id="sourceId::posts/android-hardware-layer-animation/" class="cy_cmt_count" data-xid="posts/android-hardware-layer-animation/" itemprop="commentsCount"></span>
-                </a>
-              
-            
-          
-
-          
-          
-             <span id="/posts/android-hardware-layer-animation/" class="leancloud_visitors" data-flag-title="[译]通过 Hardware Layer 提升 Android 动画性能">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数 </span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </span></div>
-      </header>
-    
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>当有人问我关于动画性能表现不佳问题时，我首先会问他们是否使用 Hardware layer。</p>
-<p>在动画过程中你的视图可能在每一帧都需要进行重绘。如果使用 Hardware layer，可以避免重绘每一帧，因为 View 的渲染一旦进入离屏缓冲区就能够被复用。</p>
-<p>另外，Hardware Layer 缓存在 GPU 上，它能够使动画中的某些操作变得更顺畅。通过使用 Hardware Layer 能够迅速渲染简单的变换（如，移动，旋转，缩放，透明度）。因为许多动画都是多种变换的组合，所以使用 Hardware Layer 能够显著提高动画性能。</p>
-<h2 id="用法"><a href="#用法" class="headerlink" title="用法"></a>用法</h2><p>在使用 Hardware layer 之前，你的视图需要启用硬件加速，可以在 AndroidManifest 文件中的 application 或所在的 activity 加上<code>android:hardwareAccelerated=&quot;true&quot;</code>, 当 Target API &gt;= 14 时，硬件加速是默认启用的。</p>
-<p>View 的 layer API 非常简单：<code>View.setLayerType()</code>。你应该只是暂时设置 Hardware Layer，因为它们无法自动释放（稍后介绍）。基本使用步骤如下：</p>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/posts/android-hardware-layer-animation/" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -1237,7 +1235,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">59</span>
+                <span class="site-state-item-count">60</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -1325,7 +1323,7 @@
     <ul class="series-posts" style="font-size: 14px; padding-left: 10px; list-style: none; text-align: left;">
         <li><span><a href="http://johnnyshieh.me/tags/dagger/">Dagger 完全解析</a></span>（5）</li>
          <li><span><a href="http://johnnyshieh.me/categories/AspectJ/">AspectJ in Android</a></span>（3）</li>
-        <li><span><a href="http://johnnyshieh.me/categories/unit-test/">Kotlin 写 Android 单元测试</a>（3）</span></li>
+        <li><span><a href="http://johnnyshieh.me/categories/unit-test/">Kotlin 写 Android 单元测试</a>（4）</span></li>
     </ul>
 </div>
 -->
@@ -1344,7 +1342,7 @@
     <ul class="series-posts" style="font-size: 14px; padding-left: 10px; list-style: none; text-align: left">
         <li><span><a href="http://johnnyshieh.me/tags/dagger/">Dagger 完全解析</a></span>（5）</li>
          <li><span><a href="http://johnnyshieh.me/categories/AspectJ/">AspectJ in Android</a></span>（3）</li>
-        <li><span><a href="http://johnnyshieh.me/categories/unit-test/">Kotlin 写 Android 单元测试</a>（3）</span></li>
+        <li><span><a href="http://johnnyshieh.me/categories/unit-test/">Kotlin 写 Android 单元测试</a>（4）</span></li>
     </ul>
 </div>
 
