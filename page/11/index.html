@@ -355,6 +355,185 @@
   
 
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://johnnyshieh.me/posts/java-reflection/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Johnny Shieh">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Johnny Shieh">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/posts/java-reflection/" itemprop="url">Java 反射机制</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-01-30T00:00:00+08:00">
+                2015-01-30
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/java/" itemprop="url" rel="index">
+                    <span itemprop="name">Java</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+              <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-comment-o"></i>
+              </span>
+              
+                <a href="/posts/java-reflection/#SOHUCS" itemprop="discussionUrl">
+                  <span id="sourceId::posts/java-reflection/" class="cy_cmt_count" data-xid="posts/java-reflection/" itemprop="commentsCount"></span>
+                </a>
+              
+            
+          
+
+          
+          
+             <span id="/posts/java-reflection/" class="leancloud_visitors" data-flag-title="Java 反射机制">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </span></div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h2 id="什么是反射？"><a href="#什么是反射？" class="headerlink" title="什么是反射？"></a>什么是反射？</h2><p>Java 的反射机制可以使得程序在 Java 运行时能够检测、访问并且修改编译时完全未知的 classes，这个概念很容易和内省混淆。下面是 WiKi 上对这两个概念给出的定义：</p>
+<p><strong>反射</strong>（Reflection）：反射是指计算机程序在运行时可以访问、检测和修改它本身状态或行为的一种能力。<br><strong>内省</strong>（Introspection）：内省是指计算机程序在运行检查对象类型的一种能力，通常也可以称作<strong>运行时类型检查</strong>。</p>
+<p>从上面的定义可以看出，相对于内省，反射更进一步。例如，Java 具有反射特性，而 C++ 不具有反射特性只具有内省特性。</p>
+<h2 id="反射有什么用途？"><a href="#反射有什么用途？" class="headerlink" title="反射有什么用途？"></a>反射有什么用途？</h2><p>反射主要提供以下功能：</p>
+<ol>
+<li><p>在运行时检查对象的类型</p>
+</li>
+<li><p>在运行时新建类的实例</p>
+</li>
+<li><p>在运行时检测对象一个类的成员变量和方法</p>
+</li>
+<li><p>在运行时调用对象的任意方法</p>
+</li>
+<li><p>在运行时修改构造函数、成员变量和方法的访问权限</p>
+</li>
+<li><p>等等</p>
+</li>
+</ol>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/posts/java-reflection/" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://johnnyshieh.me/posts/how-to-use-android-studio/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1024,186 +1203,11 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://johnnyshieh.me/posts/android-accessing-resources/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Johnny Shieh">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Johnny Shieh">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/posts/android-accessing-resources/" itemprop="url">Android xml 资源文件中 @、@android:、@*、？的含义和区别</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2014-09-12T00:00:00+08:00">
-                2014-09-12
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/android/" itemprop="url" rel="index">
-                    <span itemprop="name">Android</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-              <span class="post-meta-divider">|</span>
-              <span class="post-meta-item-icon">
-                <i class="fa fa-comment-o"></i>
-              </span>
-              
-                <a href="/posts/android-accessing-resources/#SOHUCS" itemprop="discussionUrl">
-                  <span id="sourceId::posts/android-accessing-resources/" class="cy_cmt_count" data-xid="posts/android-accessing-resources/" itemprop="commentsCount"></span>
-                </a>
-              
-            
-          
-
-          
-          
-             <span id="/posts/android-accessing-resources/" class="leancloud_visitors" data-flag-title="Android xml 资源文件中 @、@android:、@*、？的含义和区别">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数 </span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </span></div>
-      </header>
-    
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h2 id="引用自定义资源文件"><a href="#引用自定义资源文件" class="headerlink" title="引用自定义资源文件"></a>引用自定义资源文件</h2><ul>
-<li>在 xml 中引用的格式为：<code>@[&lt;package_name&gt;:]&lt;resource_type&gt;/&lt;resource_name&gt;</code></li>
-</ul>
-<p><code>&lt;package_name&gt;</code>: 资源文件所在的包名( layout文件和自定义其他resource文件在同一个包，所以可以省略)<br><code>&lt;resource_type&gt;</code>:资源文件的类型<br><code>&lt;resource_name&gt;</code>:资源文件的名称</p>
-<p>例如： android:text=”@string/hello”</p>
-<ul>
-<li>在代码中引用的格式为：<code>R.&lt;resource_type&gt;.&lt;resource_name&gt;</code>，如：R.string.hello</li>
-</ul>
-<h2 id="引用系统资源文件"><a href="#引用系统资源文件" class="headerlink" title="引用系统资源文件"></a>引用系统资源文件</h2><p>系统资源文件分为 pulbic 和非 public，public 的声明在：<code>&lt;sdk_path&gt;/platforms/android-19/data/res/values/public.xml</code></p>
-<ul>
-<li>引用 public 资源文件</li>
-</ul>
-<p>xml:  <code>@android:&lt;resource_type&gt;/&lt;resource_name&gt;</code><br>code: <code>android.R.&lt;resource_type&gt;.&lt;resource_name&gt;</code></p>
-<p>例如：android:drawable=”@android:drawable/dialog_frame”<br>      getResources.getDrawable( android.R.drawable.dialog_frame );</p>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/posts/android-accessing-resources/" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/10/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/10/">10</a><span class="page-number current">11</span><a class="page-number" href="/page/12/">12</a><a class="extend next" rel="next" href="/page/12/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/page/10/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/10/">10</a><span class="page-number current">11</span><a class="page-number" href="/page/12/">12</a><a class="page-number" href="/page/13/">13</a><a class="extend next" rel="next" href="/page/12/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1246,7 +1250,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">60</span>
+                <span class="site-state-item-count">61</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>

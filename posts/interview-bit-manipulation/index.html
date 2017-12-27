@@ -1,0 +1,1260 @@
+<!doctype html>
+
+
+
+
+<html class="theme-next pisces" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta http-equiv="Content-Language" content="zh-cn">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+  <meta name="google-site-verification" content="r1Es2KSXuS6zYdab4rZeEA6X-pEwRwyT4x89S7a4EHE">
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+  <link href="http://images.johnnyshieh.me/lib/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="http://images.johnnyshieh.me/fonts/font.css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+  
+
+<link href="http://images.johnnyshieh.me/lib/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="http://images.johnnyshieh.me/css/main.css?v=5.1.1" rel="stylesheet" type="text/css">
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1">
+
+
+
+  
+    <link rel="apple-touch-icon-precomposed" sizes="57x57" href="/apple-touch-icon-57x57.png">
+  
+    <link rel="apple-touch-icon-precomposed" sizes="120x120" href="/apple-touch-icon-120x120.png">
+  
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="/apple-touch-icon-152x152.png">
+  
+
+
+
+
+
+
+<meta name="description" content="总结在 LeetCode 上做过的有代表性的位操作问题">
+<meta name="keywords" content="面试, 位操作, interview, bit, 位运算, Johnny, Shieh, Johnny Shieh, johnny shieh blog, ">
+<meta property="og:type" content="article">
+<meta property="og:title" content="面试精选之位操作问题集锦">
+<meta property="og:url" content="http://johnnyshieh.me/posts/interview-bit-manipulation/index.html">
+<meta property="og:site_name" content="Johnny Shieh">
+<meta property="og:description" content="总结在 LeetCode 上做过的有代表性的位操作问题">
+<meta property="og:updated_time" content="2017-12-27T06:37:31.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="面试精选之位操作问题集锦">
+<meta name="twitter:description" content="总结在 LeetCode 上做过的有代表性的位操作问题">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"right","display":"always","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: false,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: 'QK028ACQPB',
+      apiKey: '4e4a5ec0318356434aed6a3aa5aea209',
+      indexName: 'blog',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"搜索文章","hits_empty":"找不到与您搜索的 ${query} 相符的文章，请尝试其他关键字","hits_stats":"找到 ${hits} 条搜索结果，用时 ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://johnnyshieh.me/posts/interview-bit-manipulation/">
+
+
+
+
+
+  <title>面试精选之位操作问题集锦 | Johnny Shieh</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?43cea51223ad3b7bc740196aab48d664";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Johnny Shieh</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">人如果没有梦想，跟咸鱼有什么分别</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-books">
+          <a href="/books" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br>
+            
+            读书
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-friends">
+          <a href="/friends" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-users"></i> <br>
+            
+            小伙伴
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  
+  <div class="algolia-popup popup search-popup">
+    <div class="algolia-search">
+      <div class="algolia-search-input-icon">
+        <i class="fa fa-search"></i>
+      </div>
+      <div class="algolia-search-input" id="algolia-search-input"></div>
+    </div>
+
+    <div class="algolia-results">
+      <div id="algolia-stats"></div>
+      <div id="algolia-hits"></div>
+      <div id="algolia-pagination" class="algolia-pagination"></div>
+    </div>
+
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+  </div>
+
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://johnnyshieh.me/posts/interview-bit-manipulation/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Johnny Shieh">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Johnny Shieh">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">面试精选之位操作问题集锦</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-19T10:22:23+08:00">
+                2017-12-19
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/interview/" itemprop="url" rel="index">
+                    <span itemprop="name">面试精选</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+              <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-comment-o"></i>
+              </span>
+              
+                <a href="/posts/interview-bit-manipulation/#SOHUCS" itemprop="discussionUrl">
+                  <span id="changyan_count_unit" class="post-comments-count hc-comment-count" data-xid="posts/interview-bit-manipulation/" itemprop="commentsCount"></span>
+                </a>
+              
+            
+          
+
+          
+          
+             <span id="/posts/interview-bit-manipulation/" class="leancloud_visitors" data-flag-title="面试精选之位操作问题集锦">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </span></div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>Java 中位运算符有与（&amp;）、或（|）、非（～）、异或（^）、左移（&lt;&lt;）、右移（&gt;&gt;）、无符号右移（&gt;&gt;&gt;），只针对 int 类型有效，也可以作用于 byte、short、char、long，当为这四种类型时，JVM 会先把它们转换为 int 再操作。使用位运算符可以优化一些场景的运行速度，有时也可以简化代码，掌握一些位操作的技巧还是很有必要的，下面是我总结的 LeetCode 上一些位操作算法问题。</p>
+<h2 id="1-在-O（n）时间内求-0-～-N-的所有整数的二进制表示中-1-的个数"><a href="#1-在-O（n）时间内求-0-～-N-的所有整数的二进制表示中-1-的个数" class="headerlink" title="1. 在 O（n）时间内求 0 ～ N 的所有整数的二进制表示中 1 的个数"></a>1. 在 O（n）时间内求 0 ～ N 的所有整数的二进制表示中 1 的个数</h2><p><a href="https://leetcode.com/problems/counting-bits/description/" target="_blank" rel="external">LeetCode 338. Counting Bits</a></p>
+<p><strong>题目描述：</strong>给定一个非负整数 num，求 0 到 num 所有数的二进制表示中 1 的个数，最好在一次遍历 O（n）时间内完成，而且不能使用内置 API。</p>
+<p><strong>分析：</strong>求二进制表示中 1 的个数可以使用 Integer.bitcount() 实现，但是题目要求不能使用其他内置函数，所以好像没什么办法可以 O(1) 时间内求一个数的 bitcount。这种情况下，可以看下实际的例子。</p>
+<table>
+<thead>
+<tr>
+<th>0</th>
+<th>1</th>
+<th>2</th>
+<th>3</th>
+<th>4</th>
+<th>5</th>
+<th>6</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>1</td>
+<td>10</td>
+<td>11</td>
+<td>100</td>
+<td>101</td>
+<td>110</td>
+</tr>
+<tr>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>2</td>
+<td>1</td>
+<td>2</td>
+<td>2</td>
+</tr>
+</tbody>
+</table>
+<a id="more"></a>
+<p>上面表格中第二行为 int 的二进制表示，第三行为 bit 为 1 的个数，仔细观察可以发现每个 num 的 bitcount 为 1 加上 除去最高位后的 bitcount，例如 2 的 bitcount 为 1 加上 0 的bitcount，3 的 bitcount 为 1 加上 1 的 bitcount，6 的 bitcount 为 1 加上 2 的 bitcount。所以可以通过 0 和 1 的 bitcount，计算出之后每个数的 bitcount。</p>
+<p>代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 在 O（n）时间内求 0 ～ N 之间整数的 bitcount</span></div><div class="line"><span class="keyword">public</span> <span class="keyword">int</span>[] countBits(<span class="keyword">int</span> num) &#123;</div><div class="line">    <span class="keyword">if</span> (<span class="number">0</span> == num) &#123;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">new</span> <span class="keyword">int</span>[]&#123;<span class="number">0</span>&#125;;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">if</span> (<span class="number">1</span> == num) &#123;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">new</span> <span class="keyword">int</span>[]&#123;<span class="number">0</span>, <span class="number">1</span>&#125;;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">int</span>[] bitCounts = <span class="keyword">new</span> <span class="keyword">int</span>[num + <span class="number">1</span>];</div><div class="line">    bitCounts[<span class="number">0</span>] = <span class="number">0</span>;</div><div class="line">    bitCounts[<span class="number">1</span>] = <span class="number">1</span>;</div><div class="line">    <span class="keyword">int</span> offset = <span class="number">1</span>;</div><div class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">2</span>; i &lt;= num; i ++) &#123;</div><div class="line">        <span class="keyword">if</span> (offset * <span class="number">2</span> == i) &#123;</div><div class="line">            offset = i;</div><div class="line">        &#125;</div><div class="line">        bitCounts[i] = bitCounts[i - offset] + <span class="number">1</span>;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> bitCounts;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>除了上面的解法外，计算 bitcount 还有其他方式，b[n] = b [n &gt;&gt; 1] + n &amp; 1，b[n &gt;&gt; 1] 为 n 除去最后一位的 bitcount，再加上 n &amp; 1 为最后一位是否为 1。</p>
+<h2 id="2-给定包含不同整数的集合，返回它的所有可能子集"><a href="#2-给定包含不同整数的集合，返回它的所有可能子集" class="headerlink" title="2. 给定包含不同整数的集合，返回它的所有可能子集"></a>2. 给定包含不同整数的集合，返回它的所有可能子集</h2><p><a href="https://leetcode.com/problems/subsets/description/" target="_blank" rel="external">LeetCode 78. Subsets</a></p>
+<p><strong>题目描述：</strong>返回一个整数集合的所有子集，子集不能重复</p>
+<p><strong>分析：</strong>对于任何一个子集，第 i 个整数是否包含，可以使用一个整数的第 i 位是否为 1 表示，所以从 0 ～ 2^n - 1 个整数刚好可以对应集合的 2^n 个子集。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 求集合的所有子集</span></div><div class="line"><span class="keyword">public</span> List&lt;List&lt;Integer&gt;&gt; subsets(<span class="keyword">int</span>[] nums) &#123;</div><div class="line">    <span class="keyword">int</span> setSize = (<span class="keyword">int</span>)Math.pow(<span class="number">2</span>, nums.length);</div><div class="line">    List&lt;List&lt;Integer&gt;&gt; sets = <span class="keyword">new</span> ArrayList&lt;&gt;(setSize);</div><div class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; setSize; i ++) &#123;</div><div class="line">        List&lt;Integer&gt; set = <span class="keyword">new</span> ArrayList&lt;&gt;();</div><div class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; nums.length; j ++) &#123;</div><div class="line">            <span class="keyword">if</span> (((i &gt;&gt; j) &amp; <span class="number">1</span>) == <span class="number">1</span>) &#123;</div><div class="line">                set.add(nums[j]);</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">        sets.add(set);</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> sets;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="3-求-m-～-n-内所有整数进行-amp-运算后的结果"><a href="#3-求-m-～-n-内所有整数进行-amp-运算后的结果" class="headerlink" title="3. 求 m ～ n 内所有整数进行 &amp; 运算后的结果"></a>3. 求 m ～ n 内所有整数进行 &amp; 运算后的结果</h2><p><a href="https://leetcode.com/problems/bitwise-and-of-numbers-range/description/" target="_blank" rel="external">LeetCode 201. Bitwise AND of Numbers Range</a></p>
+<p><strong>题目描述：</strong>给定 m 和 n，其中 0 &lt;= m &lt;= n &lt;= 2^31 - 1，求 m ～ n 内所有整数进行 &amp; 运算后的结果</p>
+<p><strong>分析：</strong>这里求的是所有整数进行 &amp; 运算后的结果，如果有两个整数 &amp; 运算后为 0，那么最后结果肯定为 0。当 m 和 n 的最高位不同时，那么一定存在这么一个数 10..0，它与 n 计算的结果为 0。而 m 和 n 的最高位相同时，那么最后结果肯定包含最高位，接下来求除去最高位后的整数运算的结果，重复之前的过程即可。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 求 m ～ n 内所有整数进行 &amp; 运算后的结果</span></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">rangeBitwiseAnd</span><span class="params">(<span class="keyword">int</span> m, <span class="keyword">int</span> n)</span> </span>&#123;</div><div class="line">    <span class="keyword">if</span> (m == n) &#123;</div><div class="line">        <span class="keyword">return</span> m;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">int</span> result = <span class="number">0</span>;</div><div class="line">    <span class="keyword">while</span> (m &lt; n) &#123;</div><div class="line">        <span class="keyword">int</span> mHightBit = Integer.highestOneBit(m);</div><div class="line">        <span class="keyword">int</span> nHightBit = Integer.highestOneBit(n);</div><div class="line">        <span class="keyword">if</span> (mHightBit != nHightBit) &#123;</div><div class="line">            <span class="keyword">break</span>;</div><div class="line">        &#125;</div><div class="line">        result |= mHightBit;</div><div class="line">        m &amp;= (mHightBit - <span class="number">1</span>);</div><div class="line">        n &amp;= (nHightBit - <span class="number">1</span>);</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> result;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="4-求二进制表示中-1-的个数"><a href="#4-求二进制表示中-1-的个数" class="headerlink" title="4. 求二进制表示中 1 的个数"></a>4. 求二进制表示中 1 的个数</h2><p><a href="https://leetcode.com/problems/number-of-1-bits/description/" target="_blank" rel="external">LeetCode 191. Number of Bits</a></p>
+<p><strong>题目描述：</strong>给定一个无符号整数，求它的二进制表示中 1 的个数。</p>
+<p><strong>分析：</strong></p>
+<p>1.一个无符号整数二进制有 32 位，一种通用的方式是计算 32 位 bit 是否为 1，使用 n &amp; 1 计算最后一位是否为 1，时间复杂度为 O(32)。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 求二进制表示中 1 的个数</span></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">hammingWeight</span><span class="params">(<span class="keyword">int</span> n)</span> </span>&#123;</div><div class="line">    <span class="keyword">int</span> num = <span class="number">0</span>;</div><div class="line">    <span class="keyword">while</span> (n != <span class="number">0</span>) &#123;</div><div class="line">        num += n &amp; <span class="number">1</span>;</div><div class="line">        n = n &gt;&gt;&gt; <span class="number">1</span>;</div><div class="line">    &#125; </div><div class="line">    <span class="keyword">return</span> num;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>2.除了利用 n &amp; 1 计算最后一位为 1，还有另外一种方法，<code>n &amp;= n - 1</code> 可以消除最后一位为 1 的位，例如 n = 1100，那么 n - 1 = 1011，与运算之后的结果为 1000，消除了倒数第 3 位的 1 bit，为负数时也是一样，这种方式的时间复杂度与 1 的位数有关。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 求二进制表示中 1 的个数</span></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">hammingWeight</span><span class="params">(<span class="keyword">int</span> n)</span> </span>&#123;</div><div class="line">    <span class="keyword">int</span> num = <span class="number">0</span>;</div><div class="line">    <span class="keyword">while</span> (n != <span class="number">0</span>) &#123;</div><div class="line">        n &amp;= n - <span class="number">1</span>;</div><div class="line">        num ++;</div><div class="line">    &#125; </div><div class="line">    <span class="keyword">return</span> num;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>3.其实 Integer 类有个静态方法 <code>bitCount()</code> 计算 1 的个数，采用二分法的思想，先计算每两位中 1 的个数，再计算每四位、每八位、每十六位，最后把两个十六位的个数相加。其中第一步求每两位中 1 的个数的方法很巧妙，<code>i - (i &gt;&gt;&gt; 1)</code>即位 1 的个数，例如 11 - 01 = 10，11 中 1 的个数刚好为 2（10），对于 32 位的整数来说，移位后还需要把偶数位改为 0，所以还要和 0x55555555 进行与运算。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 求二进制表示中 1 的个数</span></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">hammingWeight</span><span class="params">(<span class="keyword">int</span> i)</span> </span>&#123;</div><div class="line">    i = i - ((i &gt;&gt;&gt; <span class="number">1</span>) &amp; <span class="number">0x55555555</span>);</div><div class="line">    i = (i &amp; <span class="number">0x33333333</span>) + ((i &gt;&gt;&gt; <span class="number">2</span>) &amp; <span class="number">0x33333333</span>);</div><div class="line">    i = (i + (i &gt;&gt;&gt; <span class="number">4</span>)) &amp; <span class="number">0x0f0f0f0f</span>;</div><div class="line">    i = i + (i &gt;&gt;&gt; <span class="number">8</span>);</div><div class="line">    i = i + (i &gt;&gt;&gt; <span class="number">16</span>);</div><div class="line">    <span class="keyword">return</span> i &amp; <span class="number">0x3f</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="5-反转无符号整数的-bit"><a href="#5-反转无符号整数的-bit" class="headerlink" title="5. 反转无符号整数的 bit"></a>5. 反转无符号整数的 bit</h2><p><a href="https://leetcode.com/problems/reverse-bits/description/" target="_blank" rel="external">LeetCode 190. Reverse Bits</a></p>
+<p><strong>题目描述：</strong>给定一个无符号 32 位整数，反转它的二进制表示中的 bit。</p>
+<p><strong>分析：</strong>最简单的方式是每次取出最后一位，按相反顺序排列，时间复杂度为 O(32)。有没有什么优化的方式的，可以学习 bitCount 的二分法，依次反转相邻的每十六位、每八位、每四位、每两位到最后相邻的每一位。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 反转无符号整数的 bit</span></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">reverseBits</span><span class="params">(<span class="keyword">int</span> n)</span> </span>&#123;</div><div class="line">    <span class="comment">// binary swap</span></div><div class="line">    n = (n &gt;&gt;&gt; <span class="number">16</span>) | (n &lt;&lt; <span class="number">16</span>);</div><div class="line">    n = ((n &amp; <span class="number">0xff00ff00</span>) &gt;&gt;&gt; <span class="number">8</span>) | ((n &amp; <span class="number">0x00ff00ff</span>) &lt;&lt; <span class="number">8</span>);</div><div class="line">    n = ((n &amp; <span class="number">0xf0f0f0f0</span>) &gt;&gt;&gt; <span class="number">4</span>) | ((n &amp; <span class="number">0x0f0f0f0f</span>) &lt;&lt; <span class="number">4</span>);</div><div class="line">    n = ((n &amp; <span class="number">0xcccccccc</span>) &gt;&gt;&gt; <span class="number">2</span>) | ((n &amp; <span class="number">0x33333333</span>) &lt;&lt; <span class="number">2</span>);</div><div class="line">    n = ((n &amp; <span class="number">0xaaaaaaaa</span>) &gt;&gt;&gt; <span class="number">1</span>) | ((n &amp; <span class="number">0x55555555</span>) &lt;&lt; <span class="number">1</span>);</div><div class="line">    <span class="keyword">return</span> n;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="6-在-O-1-的时间内检测一个整数是否为-2-的幂"><a href="#6-在-O-1-的时间内检测一个整数是否为-2-的幂" class="headerlink" title="6. 在 O(1) 的时间内检测一个整数是否为 2 的幂"></a>6. 在 O(1) 的时间内检测一个整数是否为 2 的幂</h2><p><a href="https://leetcode.com/problems/power-of-two/description/" target="_blank" rel="external">LeetCode 231. Power of Two</a></p>
+<p><strong>题目描述：</strong>判断一个整数是否为 2 的幂。</p>
+<p><strong>分析：</strong>首先分析 2 的幂一般是 1，10，100，1000，10000 这种类型，在 32 位二进制中只有一位为 1，其他都是 0，这种情况可以使用之前 <code>n &amp;= n - 1</code> 消除最后一位 1 bit 的方式，<code>n &amp; (n - 1)</code> 为 0 则表示只有一位 bit 为 1，当第 32 位为 1 时，此时为负数，不是 2 的幂，可以通过 <code>n &gt; 0</code> 来排除。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 检测一个整数是否为 2 的幂</span></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isPowerOfTwo</span><span class="params">(<span class="keyword">int</span> n)</span> </span>&#123;</div><div class="line">    <span class="keyword">return</span> (n &gt; <span class="number">0</span>) &amp;&amp; (n &amp; (n - <span class="number">1</span>) == <span class="number">0</span>)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="7-在-O-1-的时间内检测一个整数是否为-4-的幂"><a href="#7-在-O-1-的时间内检测一个整数是否为-4-的幂" class="headerlink" title="7. 在 O(1) 的时间内检测一个整数是否为 4 的幂"></a>7. 在 O(1) 的时间内检测一个整数是否为 4 的幂</h2><p><a href="https://leetcode.com/problems/power-of-four/description/" target="_blank" rel="external">LeetCode 342. Power of Four</a></p>
+<p><strong>题目描述：</strong>判断一个整数是否为 4 的幂。</p>
+<p><strong>分析：</strong>和上一题相似，4 的幂一般是 1，100，10000，1000000，一个数为 4 的幂，它同时也是 2 的幂，但是 1 bit 所在的位都是奇数位，这个只需要和 0x55555555 与运算不为 0 即可。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isPowerOfFour</span><span class="params">(<span class="keyword">int</span> n)</span> </span>&#123;</div><div class="line">    <span class="keyword">return</span> (n &gt; <span class="number">0</span>) &amp;&amp; (n &amp; (n - <span class="number">1</span>) == <span class="number">0</span>) &amp;&amp; (n &amp; <span class="number">0x55555555</span> != <span class="number">0</span>)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="8-找出数组中只出现一次的数"><a href="#8-找出数组中只出现一次的数" class="headerlink" title="8. 找出数组中只出现一次的数"></a>8. 找出数组中只出现一次的数</h2><p><a href="https://leetcode.com/problems/single-number/description/" target="_blank" rel="external">LeetCode 136. Single Number</a></p>
+<p><strong>题目描述：</strong>给定一个整数数组，所有元素都出现两次除了一个元素，找出只出现一次的元素。要求时间复杂度为线性的，不用额外的空间。</p>
+<p><strong>分析：</strong>可以利用 <code>n ^ n = 0</code> 的特点，把数组所有元素进行异或运算，最后的结果就是只出现一次的那个元素。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 其他元素都出现两次</span></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">singleNumber</span><span class="params">(<span class="keyword">int</span>[] nums)</span> </span>&#123;</div><div class="line">    <span class="keyword">int</span> result = <span class="number">0</span>;</div><div class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> n : nums) &#123;</div><div class="line">        result ^= n;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> result;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="9-找出数组中只出现一次的数扩展：其他数都出现三次"><a href="#9-找出数组中只出现一次的数扩展：其他数都出现三次" class="headerlink" title="9. 找出数组中只出现一次的数扩展：其他数都出现三次"></a>9. 找出数组中只出现一次的数扩展：其他数都出现三次</h2><p><a href="https://leetcode.com/problems/single-number-ii/description/" target="_blank" rel="external">LeetCode 137. Single Number II</a></p>
+<p><strong>题目描述：</strong> 如果所有元素都出现三次只有一个元素只出现一次，在线性时间复杂度内找到这个单独的元素。</p>
+<p><strong>分析：</strong></p>
+<p>1.元素出现三次的话就不用利用 <code>n ^ n = 0</code> 的特点了，整数在内存中是 32 位二进制，每位只能是 0 和 1，所以可以统计每位 1 出现的个数，再对 3 取余就是单独元素在该位上的结果。这种方式比较通用，如果其他元素都出现四、五、六次都可以利用这种思想，时间复杂度为 O(32N)。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 其他元素都出现三次</span></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">singleNumber</span><span class="params">(<span class="keyword">int</span>[] nums)</span> </span>&#123;</div><div class="line">    <span class="keyword">int</span> result = <span class="number">0</span>;</div><div class="line">    <span class="keyword">int</span> count = <span class="number">0</span>;</div><div class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">32</span>; i ++) &#123;</div><div class="line">        count = <span class="number">0</span>;</div><div class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> n : nums) &#123;</div><div class="line">            count += (n &gt;&gt; i) &amp; <span class="number">1</span>;</div><div class="line">        &#125;</div><div class="line">        result |= (count % <span class="number">3</span>) &lt;&lt; i;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> result;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>2.还有一种解法是用 3 个整数来表示各个 1 bit 的出现次数，one 表示只出现一次的，two 表示出现了两次，出现三次时把该位清零，时间复杂度为 O(N)。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 其他元素都出现三次</span></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">singleNumber</span><span class="params">(<span class="keyword">int</span>[] nums)</span> </span>&#123;</div><div class="line">    <span class="keyword">int</span> one = <span class="number">0</span>, two = <span class="number">0</span>, three = <span class="number">0</span>;</div><div class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> n : nums) &#123;</div><div class="line">        <span class="comment">// 上个状态的 one &amp; n 得到出现两次的结果，再 | 之前的结果，得到出现两次以上的 bits</span></div><div class="line">        two |= one &amp; n;</div><div class="line">        <span class="comment">// one ^ n 就是出现一次以上的 bits</span></div><div class="line">        one ^= n;</div><div class="line">        <span class="comment">// 再计算出现三次的 bits</span></div><div class="line">        three = one &amp; two;</div><div class="line">        one &amp;= ~three;</div><div class="line">        two &amp;= ~three;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> one;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>3.第一种解法是将 32 位分开考虑的，有没有什么方式同时进行 32 位 bit 的对 3 取模运算呢？二进制中 1 个 bit 最多只能表示 0 和 1，当一个数出现三次时，可以用两个 bit 来表示，每两个 bit 的高位存放在一个 int 中，低位存放在另一个 int 中。用 00 表示 32 位 bit 中的某位未出现过一次（即该位没出现过 1），01 表示该位出现一次，10 表示该位出现两次，当出现三次时重置为 00，出现次数的规律变化为 00 -&gt; 01 -&gt; 10 -&gt; 00，最后的结果就是低位的那个 int。根据这个关系，可以得到一个真值表：</p>
+<table>
+<thead>
+<tr>
+<th><code>high_bit</code></th>
+<th><code>low_bit</code></th>
+<th><code>input</code></th>
+<th><code>high_bit_output</code></th>
+<th><code>low_bit_output</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+</tr>
+<tr>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+</tr>
+<tr>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+</tr>
+<tr>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+</tr>
+<tr>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+<p>如何根据上面的真值表推导出高位和低位的逻辑表达式呢？这需要用到数字电路的知识，有两种方法：</p>
+<p>第一种方法：以真值表内输出端“1”为准，1) 从真值表内找出输出端为“1”的各行，把每行的输入变量写成乘积形式，遇到“0”的输入时加上非号；2）把各乘积项相加，即得到逻辑表达式。</p>
+<p>第二种方法：以真值表内输出端“0”为准，1) 从真值表内找出输出端为“0”的各行，把每行的输入变量写成求和形式，遇到“1”的输入时加上非号；2）把各求和项相乘，即得到逻辑表达式。</p>
+<p>现在先推导 <code>low_bit_output</code> 的逻辑表达式，以 <code>high_bit</code>、<code>low_bit</code>、<code>input</code> 作为输入，输出端为“1”的只有两行，使用第一种方法：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">low_bit_output = ~hight_bit &amp; low_bit &amp; ~input +  ~hight_bit &amp; ~low_bit &amp; input</div><div class="line">               = ~hight_bit &amp; (low_bit &amp; ~input + ~low_bit &amp; input)</div><div class="line">               = ~hight_bit &amp; (low_bit ^ input)</div></pre></td></tr></table></figure>
+<p>再推导 <code>high_bit_output</code> 的逻辑表达式，这里需要注意的是，如果也以 <code>high_bit</code>、<code>low_bit</code>、<code>input</code> 作为输入的话，在计算 <code>low_bit_output</code> 前需要用临时变量保存 <code>low_bit</code>，不然计算完 <code>low_bit_output</code> 后 <code>low_bit</code> 已经改变了。另一种不用临时变量的方式就是以 <code>high_bit</code>、<code>low_bit_output</code>、<code>input</code> 作为输入：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">high_bit_output = high_bit &amp; ~input &amp; ~low_bit_output + ~high_bit &amp; input &amp; ~low_bit_output</div><div class="line">                = ~low_bit_output &amp; (high_bit &amp; ~input + ~high_bit &amp; input)</div><div class="line">                = ~low_bit_output &amp; (high_bit ^ input)</div></pre></td></tr></table></figure>
+<p>根据上面两个逻辑表达式，就很容易得出下面这种解法，时间复杂度只有 O(N)：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 其他元素都出现三次</span></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">singleNumber</span><span class="params">(<span class="keyword">int</span>[] nums)</span> </span>&#123;</div><div class="line">    <span class="keyword">int</span> low = <span class="number">0</span>, high = <span class="number">0</span>;</div><div class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> n : nums) &#123;</div><div class="line">        low = ~high &amp; (low ^ n);</div><div class="line">        high = ~low &amp; (high ^ n);</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> low;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>这种利用真值表推导的方法具有非常好的扩展性，如果求一个只出现两次的数，只需要返回 <code>high</code> 即可，而且对于其他所有数都出现五次或者七次也可以用这种方式解决，只需要增加输入位数即可。</p>
+<h2 id="10-找出数组中只出现一次的数扩展：有两个数只出现一次"><a href="#10-找出数组中只出现一次的数扩展：有两个数只出现一次" class="headerlink" title="10. 找出数组中只出现一次的数扩展：有两个数只出现一次"></a>10. 找出数组中只出现一次的数扩展：有两个数只出现一次</h2><p><a href="https://leetcode.com/problems/single-number-iii/description/" target="_blank" rel="external">LeetCode 260. Single Number III</a></p>
+<p><strong>题目描述：</strong>数组中所有的数都出现两次，只有两个数只出现一次，要求在线性时间复杂度内完成。</p>
+<p><strong>分析：</strong>假设两个只出现一次数为 x 和 y，继续利用 <code>n ^ n = 0</code> 的特点，所有元素异或的结果为 x ^ y。如何找出 x 和 y 呢，可以根据 x 和 y 某一位 bit 不同把数组分为两个子数组，x 和 y 分别在两个子数组，其他成对出现的元素要么两个都在 x 所在的数组，要么两个都在 y 所在的数组，这样就转化为一开始的问题了。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 其他元素都出现两次，只有两个元素出现一次</span></div><div class="line"><span class="keyword">public</span> <span class="keyword">int</span>[] singleNumber(<span class="keyword">int</span>[] nums) &#123;</div><div class="line">    <span class="comment">// first, get diff = x ^ y</span></div><div class="line">    <span class="keyword">int</span> diff = <span class="number">0</span>;</div><div class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> num : nums) &#123;</div><div class="line">        diff ^= num;</div><div class="line">    &#125;</div><div class="line">    <span class="comment">// second, get the last 1 bit, mean the last bit a diff b</span></div><div class="line">    diff &amp;= -diff;</div><div class="line">    <span class="keyword">int</span>[] result = &#123;<span class="number">0</span>, <span class="number">0</span>&#125;;</div><div class="line">    <span class="comment">// divide array to two group</span></div><div class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> num : nums) &#123;</div><div class="line">        <span class="keyword">if</span> ((num &amp; diff) == <span class="number">0</span>) &#123;</div><div class="line">            result[<span class="number">0</span>] ^= num;</div><div class="line">        &#125; <span class="keyword">else</span> &#123;</div><div class="line">            result[<span class="number">1</span>] ^= num;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> result;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="11-求数组中两个整数最大的异或结果"><a href="#11-求数组中两个整数最大的异或结果" class="headerlink" title="11. 求数组中两个整数最大的异或结果"></a>11. 求数组中两个整数最大的异或结果</h2><p><a href="https://leetcode.com/problems/maximum-xor-of-two-numbers-in-an-array/description/" target="_blank" rel="external">LeetCode 421. Maximum XOR of Two Numbers in an Array</a></p>
+<p><strong>题目描述：</strong>给定一个非空数组，里面的元素都是非负整数，在 O(N) 时间内求数组中两个元素最大的异或结果。</p>
+<p><strong>分析：</strong>正常思路很难在 O(N) 时间内完成，这时可以考虑分成 32 位 bit 来考虑，题目是求最大的异或结果，可以从结果的高位算起，从低到高的第 32 位肯定为 0，表示为非负数。那么怎么知道第 31 位是否为 1 呢？假设最大的异或结果的第 31 位是否为 1，那么数组中肯定有两个数的异或结果的第 31 位是否为 1，根据 <code>t = a ^ b, b = a ^ t</code> 的特点，如果数组存在一个数 a，而且 a ^ t 也在数组，说明存在两个数异或后在第 31 位为 1，那么最大的异或结果的在第 31 位为 1。然后判断第 30 位，这时要加上第 31 位的结果，循环直到第 1 位。时间复杂度为 O(31N)，也相当于 O(N)。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 求数组两个数最大异或结果</span></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">findMaximumXOR</span><span class="params">(<span class="keyword">int</span>[] nums)</span> </span>&#123;</div><div class="line">    <span class="keyword">if</span> (nums.length &lt; <span class="number">2</span>) &#123;</div><div class="line">        <span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">int</span> max = <span class="number">0</span>, mask = <span class="number">0</span>;</div><div class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">30</span>; i &gt;= <span class="number">0</span>; i --) &#123;</div><div class="line">        mask |= <span class="number">1</span> &lt;&lt; i;</div><div class="line">        Set&lt;Integer&gt; set = <span class="keyword">new</span> HashSet&lt;&gt;();</div><div class="line">        <span class="comment">// 提取数组的前缀</span></div><div class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> n : nums) &#123;</div><div class="line">            set.add(n &amp; mask);</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">int</span> t = max | (<span class="number">1</span> &lt;&lt; i);</div><div class="line">        <span class="comment">// 如果 t = a ^ b, b = t ^ a 一定在 sets 中</span></div><div class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> prefix : set) &#123;</div><div class="line">            <span class="keyword">if</span> (set.contains(t ^ prefix)) &#123;</div><div class="line">                max = t;</div><div class="line">                <span class="keyword">break</span>;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> max;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="12-总结"><a href="#12-总结" class="headerlink" title="12. 总结"></a>12. 总结</h2><p>仔细思考上面 11 道位操作的算法题后，我总结出下面一些特点，牢记这些特点以后遇到位操作的算法题后就每那么难了：</p>
+<ol>
+<li><p>整数在计算机中是以 32 位二进制表示的，可以把 32 位拆分开思考问题，上面很多的题目都利用了这种思想。</p>
+</li>
+<li><p>对于单个整数的操作，例如 bitCount、reverseBit，可以采用二分法，简化问题。</p>
+</li>
+<li><p><code>n &amp; (n - 1)</code> 可以消除 n 中最后一位 1 bit，<code>n &amp; (- n)</code>可以得到最后一位 1 bit。</p>
+</li>
+<li><p><code>n ^ n = 0</code>，这个特点可以消除重复出现的数。</p>
+</li>
+<li><p>可以利用数字电路的知识，用真值表推导逻辑表达式，Single Number II 的最后一种解法非常值得借鉴。</p>
+</li>
+<li><p>异或运算符有个特点 <code>t = a ^ b, b = a ^ t</code>。</p>
+</li>
+</ol>
+<p><strong>参考文章：</strong></p>
+<ul>
+<li><a href="http://blog.csdn.net/yutianzuijin/article/details/50597413" target="_blank" rel="external">leetcode 之 Single Number II</a></li>
+</ul>
+      
+    </div>
+
+    
+    <section data-mpa-template-id="95" class="mpa-template" data-mpa-color="#ffffff">
+      <section style="margin-top: 20px;display: -webkit-box;display: flex;-webkit-box-pack: center;justify-content: center;-webkit-box-align: center;align-items: center" data-mid="t22">
+        <section style="text-align: center;line-height: 30px" data-mid="">
+          <section style="display: inline-block;float: left;width: 95px;height: 2px;background: -webkit-linear-gradient(right, #141414, #f0f0f0);background: linear-gradient(to left, #141414, #f0f0f0);-webkit-transform: translate(0px, 12px);-ms-transform: translate(0px, 12px);transform: translate(0px, 12px)" data-mid="" data-contenteditable="false">
+          </section>
+          <section style="float: left;width: 4px;height: 4px;border-radius: 50%;padding: 3px;background-color: #b1b1b1;text-align: center;-webkit-transform: translate(0px, 8px);-ms-transform: translate(0px, 8px);transform: translate(0px, 8px)" data-mid="" data-contenteditable="false">
+            <section style="width: 5px;height: 5px;border-radius: 50%;background-color: #141414" data-mid="">
+            </section>
+          </section>
+          <section style="float: left;min-width: 50px;padding: 0 10px 0 10px;font-size: 16px;color: #4f4f4f;text-align: center;line-height: 30px" data-mid="">END</section>
+          <section style="float: left;padding: 3px;width: 4px;height: 4px;border-radius: 50%;background-color: #b1b1b1;text-align: center;-webkit-transform: translate(0px, 9px);-ms-transform: translate(0px, 9px);transform: translate(0px, 9px)" data-mid="" data-contenteditable="false">
+            <section style="width: 5px;height: 5px;border-radius: 50%;background-color: #141414" data-mid="">
+            </section>
+          </section>
+          <section style="display: inline-block;float: left;width: 95px;height: 2px;background: -webkit-linear-gradient(left, #141414, #f0f0f0);background: linear-gradient(to right, #141414, #f0f0f0);-webkit-transform: translate(-1px, 14px);-ms-transform: translate(-1px, 14px);transform: translate(-1px, 14px)" data-mid="" data-contenteditable="false">
+          </section>
+        </section>
+      </section>
+    </section>
+    
+
+    <div>
+      
+        
+<div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
+    <img id="wechat_subscriber_qcode" src="/uploads/wechat_qcode.jpg" alt="Johnny Shieh wechat" style="width: 200px; max-width: 100%">
+    <div>我的公众号，不只有技术，还有咖啡和彩蛋！</div>
+</div>
+
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/interview/" rel="tag"># 面试</a>
+          
+            <a href="/tags/data-structure-and-algorithms/" rel="tag"># 数据结构与算法</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/posts/unit-test-robolectric-android-on-jvm/" rel="next" title="Kotlin 写 Android 单元测试（四），Robolectric 在 JVM 上测试安卓相关代码">
+                <i class="fa fa-chevron-left"></i> Kotlin 写 Android 单元测试（四），Robolectric 在 JVM 上测试安卓相关代码
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="SOHUCS" sid="posts/interview-bit-manipulation/"></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image" src="/uploads/avatar.png" alt="Johnny Shieh">
+          <p class="site-author-name" itemprop="name">Johnny Shieh</p>
+           
+              <p class="site-description motion-element" itemprop="description">我本微末，心向天空</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">61</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">12</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">39</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/JohnnyShieh" rel="external nofollow" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/johnnyshieh17" rel="external nofollow" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  Weibo
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="mailto:JohnnyShieh17@gmail.com" rel="external nofollow" target="_blank" title="Gmail">
+                  
+                    <i class="fa fa-fw fa-envelope"></i>
+                  
+                  Gmail
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.jianshu.com/u/763027594c0b" rel="external nofollow" target="_blank" title="简书">
+                  
+                    <i class="fa fa-fw fa-book"></i>
+                  
+                  简书
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        <!--<div style="margin: 20px 0 20px 0; height: 1px; background: #eee"></div> 
+<div id="hot-series">
+    <ul class="sidebar-nav" style="margin-bottom: 0;">
+        <li>热门系列</li>
+    </ul>
+    <ul class="series-posts" style="font-size: 14px; padding-left: 10px; list-style: none; text-align: left;">
+        <li><span><a href="http://johnnyshieh.me/tags/dagger/">Dagger 完全解析</a></span>（5）</li>
+         <li><span><a href="http://johnnyshieh.me/categories/AspectJ/">AspectJ in Android</a></span>（3）</li>
+        <li><span><a href="http://johnnyshieh.me/categories/unit-test/">Kotlin 写 Android 单元测试</a>（4）</span></li>
+    </ul>
+</div>
+-->
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-在-O（n）时间内求-0-～-N-的所有整数的二进制表示中-1-的个数"><span class="nav-text">1. 在 O（n）时间内求 0 ～ N 的所有整数的二进制表示中 1 的个数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-给定包含不同整数的集合，返回它的所有可能子集"><span class="nav-text">2. 给定包含不同整数的集合，返回它的所有可能子集</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-求-m-～-n-内所有整数进行-amp-运算后的结果"><span class="nav-text">3. 求 m ～ n 内所有整数进行 & 运算后的结果</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-求二进制表示中-1-的个数"><span class="nav-text">4. 求二进制表示中 1 的个数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-反转无符号整数的-bit"><span class="nav-text">5. 反转无符号整数的 bit</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-在-O-1-的时间内检测一个整数是否为-2-的幂"><span class="nav-text">6. 在 O(1) 的时间内检测一个整数是否为 2 的幂</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-在-O-1-的时间内检测一个整数是否为-4-的幂"><span class="nav-text">7. 在 O(1) 的时间内检测一个整数是否为 4 的幂</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#8-找出数组中只出现一次的数"><span class="nav-text">8. 找出数组中只出现一次的数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#9-找出数组中只出现一次的数扩展：其他数都出现三次"><span class="nav-text">9. 找出数组中只出现一次的数扩展：其他数都出现三次</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#10-找出数组中只出现一次的数扩展：有两个数只出现一次"><span class="nav-text">10. 找出数组中只出现一次的数扩展：有两个数只出现一次</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#11-求数组中两个整数最大的异或结果"><span class="nav-text">11. 求数组中两个整数最大的异或结果</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#12-总结"><span class="nav-text">12. 总结</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+      <div style="margin: 20px 0 20px 0; height: 1px; background: #eee"></div> 
+<div id="hot-series">
+    <ul class="sidebar-nav" style="margin-bottom: 0">
+        <li>热门系列</li>
+    </ul>
+    <ul class="series-posts" style="font-size: 14px; padding-left: 10px; list-style: none; text-align: left">
+        <li><span><a href="http://johnnyshieh.me/tags/dagger/">Dagger 完全解析</a></span>（5）</li>
+         <li><span><a href="http://johnnyshieh.me/categories/AspectJ/">AspectJ in Android</a></span>（3）</li>
+        <li><span><a href="http://johnnyshieh.me/categories/unit-test/">Kotlin 写 Android 单元测试</a>（4）</span></li>
+    </ul>
+</div>
+
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy;  2015 - 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Johnny Shieh</span>
+</div>
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>访客数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>总访问量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="http://images.johnnyshieh.me/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.1"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+  
+    <script type="text/javascript">
+    (function(){
+      var appid = 'cyt8KwhJ1';
+      var conf = 'prod_651756cd8d701505ffbb60e416929831';
+      var width = window.innerWidth || document.documentElement.clientWidth;
+      if (width < 960) {
+      window.document.write('<script id="changyan_mobile_js" charset="utf-8" type="text/javascript" src="https://changyan.sohu.com/upload/mobile/wap-js/changyan_mobile.js?client_id=' + appid + '&conf=' + conf + '"><\/script>'); } else { var loadJs=function(d,a){var c=document.getElementsByTagName("head")[0]||document.head||document.documentElement;var b=document.createElement("script");b.setAttribute("type","text/javascript");b.setAttribute("charset","UTF-8");b.setAttribute("src",d);if(typeof a==="function"){if(window.attachEvent){b.onreadystatechange=function(){var e=b.readyState;if(e==="loaded"||e==="complete"){b.onreadystatechange=null;a()}}}else{b.onload=a}}c.appendChild(b)};loadJs("https://changyan.sohu.com/upload/changyan.js",function(){
+        window.changyan.api.config({appid:appid,conf:conf})});
+      }
+    })();
+    </script>
+    <script type="text/javascript" src="https://assets.changyan.sohu.com/upload/plugins/plugins.count.js"></script>
+
+
+
+  
+
+
+
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/algolia-instant-search/instantsearch.min.css">
+
+  
+  
+  <script src="/lib/algolia-instant-search/instantsearch.min.js"></script>
+  
+
+  <script src="/js/src/algolia-search.js?v=5.1.1"></script>
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("n55tIxEzsDxW0BEFhehOkP2K-gzGzoHsz", "TwYjARitxhv7iOhbg7k2a9xB");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  
+
+  
+
+</body>
+</html>
