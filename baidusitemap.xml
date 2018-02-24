@@ -4,6 +4,153 @@
 
     
   <url>
+    <loc>http://johnnyshieh.me/posts/dagger-use-in-kotlin/</loc>
+    <lastmod>2018-02-24T07:47:41.000Z</lastmod>
+    <data>
+        <display>
+        <title>Dagger 2 完全解析（五），Kotlin 中使用 Dagger 2</title>
+        <pubTime>2017-06-19T09:17:04.000Z</pubTime>
+        
+        <tag>android</tag>
+         
+        <tag>java</tag>
+         
+        <tag>dagger</tag>
+         
+        <tag>kotlin</tag>
+         
+         
+           
+             
+              <breadCrumb title="Android" url="http://johnnyshieh.me/categories/android/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://johnnyshieh.me/posts/dagger-subcomponent/</loc>
+    <lastmod>2018-02-24T07:47:27.000Z</lastmod>
+    <data>
+        <display>
+        <title>Dagger 2 完全解析（三），Component 的组织关系与 SubComponent</title>
+        <pubTime>2017-05-31T02:26:58.000Z</pubTime>
+        
+        <tag>android</tag>
+         
+        <tag>java</tag>
+         
+        <tag>dagger</tag>
+         
+         
+           
+             
+              <breadCrumb title="Android" url="http://johnnyshieh.me/categories/android/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://johnnyshieh.me/posts/dagger-advance/</loc>
+    <lastmod>2018-02-24T07:47:18.000Z</lastmod>
+    <data>
+        <display>
+        <title>Dagger 2 完全解析（二），进阶使用 Lazy、Qualifier、Scope 等</title>
+        <pubTime>2017-05-25T02:37:31.000Z</pubTime>
+        
+        <tag>android</tag>
+         
+        <tag>java</tag>
+         
+        <tag>dagger</tag>
+         
+         
+           
+             
+              <breadCrumb title="Android" url="http://johnnyshieh.me/categories/android/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://johnnyshieh.me/posts/dagger-basic/</loc>
+    <lastmod>2018-02-24T07:47:07.000Z</lastmod>
+    <data>
+        <display>
+        <title>Dagger 2 完全解析（一），Dagger 2 的基本使用与原理</title>
+        <pubTime>2017-05-22T06:50:41.000Z</pubTime>
+        
+        <tag>android</tag>
+         
+        <tag>java</tag>
+         
+        <tag>dagger</tag>
+         
+         
+           
+             
+              <breadCrumb title="Android" url="http://johnnyshieh.me/categories/android/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://johnnyshieh.me/posts/dagger-use-in-android/</loc>
+    <lastmod>2018-02-24T07:46:57.000Z</lastmod>
+    <data>
+        <display>
+        <title>Dagger 2 完全解析（四），Android 中使用 Dagger 2</title>
+        <pubTime>2017-06-08T11:31:38.000Z</pubTime>
+        
+        <tag>android</tag>
+         
+        <tag>java</tag>
+         
+        <tag>dagger</tag>
+         
+         
+           
+             
+              <breadCrumb title="Android" url="http://johnnyshieh.me/categories/android/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://johnnyshieh.me/posts/dagger-use-of-dagger-dot-android/</loc>
+    <lastmod>2018-02-24T07:46:18.000Z</lastmod>
+    <data>
+        <display>
+        <title>Dagger 2 完全解析（六），dagger.android 扩展库的使用</title>
+        <pubTime>2018-02-23T06:32:00.000Z</pubTime>
+        
+        <tag>android</tag>
+         
+        <tag>java</tag>
+         
+        <tag>dagger</tag>
+         
+         
+           
+             
+              <breadCrumb title="Android" url="http://johnnyshieh.me/categories/android/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+    
+  <url>
     <loc>http://johnnyshieh.me/posts/summary-of-2017/</loc>
     <lastmod>2018-01-02T11:56:01.000Z</lastmod>
     <data>
@@ -314,7 +461,6 @@
     </url>
 
     
-    
   <url>
     <loc>http://johnnyshieh.me/posts/rxbus-rxjava2/</loc>
     <lastmod>2017-08-09T08:26:47.000Z</lastmod>
@@ -326,54 +472,6 @@
         <tag>android</tag>
          
         <tag>rxjava</tag>
-         
-         
-           
-             
-              <breadCrumb title="Android" url="http://johnnyshieh.me/categories/android/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://johnnyshieh.me/posts/dagger-subcomponent/</loc>
-    <lastmod>2017-08-03T03:58:07.000Z</lastmod>
-    <data>
-        <display>
-        <title>Dagger 2 完全解析（三），Component 的组织关系与 SubComponent</title>
-        <pubTime>2017-05-31T02:26:58.000Z</pubTime>
-        
-        <tag>android</tag>
-         
-        <tag>java</tag>
-         
-        <tag>dagger</tag>
-         
-         
-           
-             
-              <breadCrumb title="Android" url="http://johnnyshieh.me/categories/android/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://johnnyshieh.me/posts/dagger-advance/</loc>
-    <lastmod>2017-08-02T03:15:36.000Z</lastmod>
-    <data>
-        <display>
-        <title>Dagger 2 完全解析（二），进阶使用 Lazy、Qualifier、Scope 等</title>
-        <pubTime>2017-05-25T02:37:31.000Z</pubTime>
-        
-        <tag>android</tag>
-         
-        <tag>java</tag>
-         
-        <tag>dagger</tag>
          
          
            
@@ -531,54 +629,6 @@
            
              
               <breadCrumb title="Java" url="http://johnnyshieh.me/categories/java/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://johnnyshieh.me/posts/dagger-use-in-android/</loc>
-    <lastmod>2017-08-02T03:12:44.000Z</lastmod>
-    <data>
-        <display>
-        <title>Dagger 2 完全解析（四），Android 中使用 Dagger 2</title>
-        <pubTime>2017-06-08T11:31:38.000Z</pubTime>
-        
-        <tag>android</tag>
-         
-        <tag>java</tag>
-         
-        <tag>dagger</tag>
-         
-         
-           
-             
-              <breadCrumb title="Android" url="http://johnnyshieh.me/categories/android/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://johnnyshieh.me/posts/dagger-basic/</loc>
-    <lastmod>2017-08-02T03:12:29.000Z</lastmod>
-    <data>
-        <display>
-        <title>Dagger 2 完全解析（一），Dagger 2 的基本使用与原理</title>
-        <pubTime>2017-05-22T06:50:41.000Z</pubTime>
-        
-        <tag>android</tag>
-         
-        <tag>java</tag>
-         
-        <tag>dagger</tag>
-         
-         
-           
-             
-              <breadCrumb title="Android" url="http://johnnyshieh.me/categories/android/"/>
           
         </display>
     </data>
@@ -892,32 +942,6 @@
            
              
               <breadCrumb title="设计模式" url="http://johnnyshieh.me/categories/designpattern/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://johnnyshieh.me/posts/dagger-use-in-kotlin/</loc>
-    <lastmod>2017-06-27T03:50:55.000Z</lastmod>
-    <data>
-        <display>
-        <title>Dagger 2 完全解析（五），Kotlin 中使用 Dagger 2</title>
-        <pubTime>2017-06-19T09:17:04.000Z</pubTime>
-        
-        <tag>android</tag>
-         
-        <tag>java</tag>
-         
-        <tag>dagger</tag>
-         
-        <tag>kotlin</tag>
-         
-         
-           
-             
-              <breadCrumb title="Android" url="http://johnnyshieh.me/categories/android/"/>
           
         </display>
     </data>

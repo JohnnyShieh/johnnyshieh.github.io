@@ -1,0 +1,1173 @@
+<!doctype html>
+
+
+
+
+<html class="theme-next pisces" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta http-equiv="Content-Language" content="zh-cn">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+  <meta name="google-site-verification" content="r1Es2KSXuS6zYdab4rZeEA6X-pEwRwyT4x89S7a4EHE">
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+  <link href="http://images.johnnyshieh.me/lib/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="http://images.johnnyshieh.me/fonts/font.css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+  
+
+<link href="http://images.johnnyshieh.me/lib/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="http://images.johnnyshieh.me/css/main.css?v=5.1.1" rel="stylesheet" type="text/css">
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1">
+
+
+
+  
+    <link rel="apple-touch-icon-precomposed" sizes="57x57" href="/apple-touch-icon-57x57.png">
+  
+    <link rel="apple-touch-icon-precomposed" sizes="120x120" href="/apple-touch-icon-120x120.png">
+  
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="/apple-touch-icon-152x152.png">
+  
+
+
+
+
+
+
+<meta name="description" content="dagger.android 扩展库的使用及原理">
+<meta name="keywords" content="google, dagger, dagger 2, component, android, multibinding, Johnny, Shieh, Johnny Shieh, johnny shieh blog, ">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Dagger 2 完全解析（六），dagger.android 扩展库的使用">
+<meta property="og:url" content="http://johnnyshieh.me/posts/dagger-use-of-dagger-dot-android/index.html">
+<meta property="og:site_name" content="Johnny Shieh">
+<meta property="og:description" content="dagger.android 扩展库的使用及原理">
+<meta property="og:image" content="http://images.johnnyshieh.me/gank_dependency.jpg">
+<meta property="og:image" content="http://images.johnnyshieh.me/gank_di_toc.png">
+<meta property="og:updated_time" content="2018-02-24T07:46:18.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Dagger 2 完全解析（六），dagger.android 扩展库的使用">
+<meta name="twitter:description" content="dagger.android 扩展库的使用及原理">
+<meta name="twitter:image" content="http://images.johnnyshieh.me/gank_dependency.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"right","display":"always","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: false,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: 'QK028ACQPB',
+      apiKey: '4e4a5ec0318356434aed6a3aa5aea209',
+      indexName: 'blog',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"搜索文章","hits_empty":"找不到与您搜索的 ${query} 相符的文章，请尝试其他关键字","hits_stats":"找到 ${hits} 条搜索结果，用时 ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://johnnyshieh.me/posts/dagger-use-of-dagger-dot-android/">
+
+
+
+
+
+  <title>Dagger 2 完全解析（六），dagger.android 扩展库的使用 | Johnny Shieh</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?43cea51223ad3b7bc740196aab48d664";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Johnny Shieh</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">人如果没有梦想，跟咸鱼有什么分别</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-books">
+          <a href="/books" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br>
+            
+            读书
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-friends">
+          <a href="/friends" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-users"></i> <br>
+            
+            小伙伴
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  
+  <div class="algolia-popup popup search-popup">
+    <div class="algolia-search">
+      <div class="algolia-search-input-icon">
+        <i class="fa fa-search"></i>
+      </div>
+      <div class="algolia-search-input" id="algolia-search-input"></div>
+    </div>
+
+    <div class="algolia-results">
+      <div id="algolia-stats"></div>
+      <div id="algolia-hits"></div>
+      <div id="algolia-pagination" class="algolia-pagination"></div>
+    </div>
+
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+  </div>
+
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://johnnyshieh.me/posts/dagger-use-of-dagger-dot-android/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Johnny Shieh">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Johnny Shieh">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Dagger 2 完全解析（六），dagger.android 扩展库的使用</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-02-23T14:32:00+08:00">
+                2018-02-23
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/android/" itemprop="url" rel="index">
+                    <span itemprop="name">Android</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+              <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-comment-o"></i>
+              </span>
+              
+                <a href="/posts/dagger-use-of-dagger-dot-android/#SOHUCS" itemprop="discussionUrl">
+                  <span id="changyan_count_unit" class="post-comments-count hc-comment-count" data-xid="posts/dagger-use-of-dagger-dot-android/" itemprop="commentsCount"></span>
+                </a>
+              
+            
+          
+
+          
+          
+             <span id="/posts/dagger-use-of-dagger-dot-android/" class="leancloud_visitors" data-flag-title="Dagger 2 完全解析（六），dagger.android 扩展库的使用">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </span></div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>Dagger 2 完全解析系列：</p>
+<p><a href="http://johnnyshieh.me/posts/dagger-basic/">Dagger 2 完全解析（一），Dagger 2 的基本使用与原理</a></p>
+<p><a href="http://johnnyshieh.me/posts/dagger-advance/">Dagger 2 完全解析（二），进阶使用 Lazy、Qualifier、Scope 等</a></p>
+<p><a href="http://johnnyshieh.me/posts/dagger-subcomponent/">Dagger 2 完全解析（三），Component 的组织关系与 SubComponent</a></p>
+<p><a href="http://johnnyshieh.me/posts/dagger-use-in-android/">Dagger 2 完全解析（四），Android 中使用 Dagger 2</a></p>
+<p><a href="http://johnnyshieh.me/posts/dagger-use-in-kotlin/">Dagger 2 完全解析（五），Kotlin 中使用 Dagger 2</a></p>
+<p><a href="http://johnnyshieh.me/posts/dagger-use-of-dagger-dot-android/">Dagger 2 完全解析（六），dagger.android 扩展库的使用</a></p>
+<blockquote>
+<p>本系列文章是基于 Google Dagger 2.11-rc2 版本</p>
+</blockquote>
+<p>在项目中使用了 dagger.android 扩展库后，体验到了其可以简化 Dagger 2 在 Android 项目中的使用，所以该系列的最后一篇文章解析 dagger.android 扩展库的使用及原理。本文以个人写的 <a href="https://github.com/JohnnyShieh/Gank/tree/kotlin" target="_blank" rel="external">Gank 项目</a> 为例，逐步分析 dagger.android 扩展库的使用。</p>
+<p>注：本文代码语言为 Kotlin。</p>
+<h2 id="1-Gank-项目中原来的-Dagger-2-依赖注入逻辑"><a href="#1-Gank-项目中原来的-Dagger-2-依赖注入逻辑" class="headerlink" title="1. Gank 项目中原来的 Dagger 2 依赖注入逻辑"></a>1. Gank 项目中原来的 Dagger 2 依赖注入逻辑</h2><p>Gank 项目中依赖关系比较简单，主要是提供一个单例的 GankService 依赖用于拉取 API 接口。依赖关系图如下：</p>
+<a id="more"></a>
+<p><img src="http://images.johnnyshieh.me/gank_dependency.jpg" alt=""></p>
+<p>其中 AppComponent 持有单例的 GankService 依赖，三个 Activity 对应三个 SubComponent 继承自 AppComponent，六个 Fragment 对应六个 SubComponent 继承自 MainActivityComponent。</p>
+<p>相应的 Dagger 2 类结构如下：</p>
+<p><img src="http://images.johnnyshieh.me/gank_di_toc.png" alt=""></p>
+<p>AppModule 提供 GankService 依赖，ActivityBindModule 定义三个 Activity 对应的 SubComponent 的继承关系，FragemntBindModule 定义六个 Fragment 对应的 SubComponent 的继承关系。</p>
+<h3 id="1-1-继承关系的代码实现"><a href="#1-1-继承关系的代码实现" class="headerlink" title="1.1 继承关系的代码实现"></a>1.1 继承关系的代码实现</h3><p>继承关系的实现需要：（1）在 parent Component 依赖的 Module 中的<code>subcomponents</code>加上 SubComponent 的 class；（2）在 parent Component 中提供返回 SubComponent.Builder 的接口用以创建 SubComponent。</p>
+<p>ActivityBindModule 和 FragemntBindModule 对应上面的第一步，下面看看 AppComponent 和 MainActivityComponent 两个关键 Component 的实现：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div></pre></td><td class="code"><pre><div class="line">@Singleton</div><div class="line">@Component(modules = [AppModule::class, ActivityBindModule::class])</div><div class="line">interface AppComponent &#123;</div><div class="line"></div><div class="line">    val appContext: Context</div><div class="line"></div><div class="line">    fun mainActivityComponent(): MainActivityComponent.Builder</div><div class="line"></div><div class="line">    fun pictureActivityComponent(): PictureActivityComponent.Builder</div><div class="line"></div><div class="line">    fun searchActivityComponent(): SearchActivityComponent.Builder</div><div class="line">&#125;</div><div class="line"></div><div class="line">@ActivityScope</div><div class="line">@Subcomponent(modules = [FragmentBindModule::class])</div><div class="line">interface MainActivityComponent &#123;</div><div class="line"></div><div class="line">    @Subcomponent.Builder</div><div class="line">    interface Builder &#123;</div><div class="line"></div><div class="line">        @BindsInstance</div><div class="line">        fun activity(activity: Activity): Builder</div><div class="line"></div><div class="line">        fun build(): MainActivityComponent</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    fun welfareFragmentComponent(): WelfareFragmentComponent.Builder</div><div class="line"></div><div class="line">    fun todayGankFragmentComponent(): TodayGankFragmentComponent.Builder</div><div class="line"></div><div class="line">    fun androidFragmentComponent(): AndroidFragmentComponent.Builder</div><div class="line"></div><div class="line">    fun iosFragmentComponent(): IOSFragmentComponent.Builder</div><div class="line"></div><div class="line">    fun frontEndFragmentComponent(): FrontEndFragmentComponent.Builder</div><div class="line"></div><div class="line">    fun videoFragmentComponent(): VideoFramentComponent.Builder</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="1-2-Component-依赖注入的实现"><a href="#1-2-Component-依赖注入的实现" class="headerlink" title="1.2 Component 依赖注入的实现"></a>1.2 Component 依赖注入的实现</h3><p>先看 AppComponent 的创建过程：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">class GankApp : Application() &#123;</div><div class="line"></div><div class="line">    lateinit var appComponent: AppComponent</div><div class="line"></div><div class="line">    override fun onCreate() &#123;</div><div class="line">        super.onCreate()</div><div class="line">        ...</div><div class="line">        initInjector()</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    private fun initInjector() &#123;</div><div class="line">        appComponent = DaggerAppComponent.builder()</div><div class="line">                .appModule(AppModule(this))</div><div class="line">                .build()</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>再看 SearchActivity 中的注入实现：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">class SearchActivity : BaseActivity() &#123;</div><div class="line"></div><div class="line">    override fun onCreate(savedInstanceState: Bundle?) &#123;</div><div class="line">        super.onCreate(savedInstanceState)</div><div class="line">        ...</div><div class="line">        initInjector()</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    private fun initInjector() &#123;</div><div class="line">        (application as GankApp).appComponent</div><div class="line">            .searchActivityComponent()</div><div class="line">            .activity(this)</div><div class="line">            .build()</div><div class="line">            .inject(this)</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>上面的实现有下面几个问题：</p>
+<ul>
+<li><p>每个需要注入依赖的页面 Activity 或 Fragment 都需要创建一个 Component 类。</p>
+</li>
+<li><p>继承关系中第二步实现，每个 SubComponent 都需要在 parent componenet 声明对应的返回对应的 SubComponent.Builder 的接口</p>
+</li>
+<li><p>在 Activity 或 Fragment 中注入依赖时，都必须知道其对应的注入器（Component）的类型，这有悖于依赖注入的原则：被注入的类不应该知道依赖注入的任何细节。</p>
+</li>
+</ul>
+<h2 id="2-dagger-android-扩展库的使用"><a href="#2-dagger-android-扩展库的使用" class="headerlink" title="2. dagger.android 扩展库的使用"></a>2. dagger.android 扩展库的使用</h2><p>dagger.android 扩展库就是为了解决上述问题而产生的，简化 Dagger 2 在 Android 的使用。</p>
+<h3 id="2-1-引入-dagger-android-扩展库"><a href="#2-1-引入-dagger-android-扩展库" class="headerlink" title="2.1 引入 dagger.android 扩展库"></a>2.1 引入 dagger.android 扩展库</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">// dagger 2</div><div class="line">implementation <span class="string">"com.google.dagger:dagger:<span class="variable">$dagger_version</span>"</span></div><div class="line">kapt <span class="string">"com.google.dagger:dagger-compiler:<span class="variable">$dagger_version</span>"</span></div><div class="line"></div><div class="line">// dagger.android</div><div class="line">implementation <span class="string">"com.google.dagger:dagger-android:<span class="variable">$dagger_version</span>"</span></div><div class="line">implementation <span class="string">"com.google.dagger:dagger-android-support:<span class="variable">$dagger_version</span>"</span></div><div class="line">kapt <span class="string">"com.google.dagger:dagger-android-processor:<span class="variable">$dagger_version</span>"</span></div></pre></td></tr></table></figure>
+<p>从上面可以看出 dagger.android 扩展库有单独的注解处理器 dagger-android-processor。</p>
+<h3 id="2-2-注入-Activity-中的依赖"><a href="#2-2-注入-Activity-中的依赖" class="headerlink" title="2.2 注入 Activity 中的依赖"></a>2.2 注入 Activity 中的依赖</h3><p>以 SearchActivity 为例，说明 dagger.android 的使用：</p>
+<p>1.在 AppComponent 中安装 AndroidInjectionModule，确保包含四大组件和 Fragment 的注入器类型。</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">@Singleton</div><div class="line">@Component(modules = [AppModule::class, AndroidInjectionModule::class])</div><div class="line">interface AppComponent &#123; ... &#125;</div></pre></td></tr></table></figure>
+<p>2.Activity 对应的 SubComponent 实现 AndroidInjector<xxactivity> 接口，对应的 @Subcomponent.Builder 继承 AndroidInjector.Builder<xxactivity>。</xxactivity></xxactivity></p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">@ActivityScope</div><div class="line">@Subcomponent</div><div class="line">interface SearchActivitySubcomponent : AndroidInjector&lt;SearchActivity&gt; &#123;</div><div class="line">    @Subcomponent.Builder</div><div class="line">    abstract class Builder : AndroidInjector.Builder&lt;SearchActivity&gt;()</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>3.在定义 SubComponent 后，添加一个 ActivityBindModule 用来绑定 subcomponent builder，并把该 module 安装到 AppComponent 中。</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">@Module(subcomponents = [SearchActivitySubcomponent::class])</div><div class="line">abstract class ActivityBindModule &#123;</div><div class="line">    @Binds</div><div class="line">    @IntoMap</div><div class="line">    @ActivityKey(SearchActivity::class)</div><div class="line">    abstract fun bindAndroidInjectorFactory(</div><div class="line">            builder: SearchActivitySubcomponent.Builder): AndroidInjector.Factory&lt;out Activity&gt;</div><div class="line">&#125;</div><div class="line"></div><div class="line">@Singleton</div><div class="line">@Component(modules = [AppModule::class, AndroidInjectionModule::class, ActivityBindModule::class])</div><div class="line">interface AppComponent &#123; ... &#125;</div></pre></td></tr></table></figure>
+<blockquote>
+<p>如果 SubComponent 和其 Builder 没有其他方法或没有继承其他类型，可以使用 @ContributesAndroidInjector 注解简化第二步和第三步，在一个抽象 Module 中添加一个使用 @ContributesAndroidInjector 注解标记的返回具体的 Activity 类型的抽象方法，还可以在 ContributesAndroidInjector 注解中标明 SubComponent 需要安装的 module。如果 SubComponent 需要作用域，只需要标记在该方法上即可。</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Module</span></div><div class="line"><span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">ActivityBindModule</span> </span>&#123;</div><div class="line">    <span class="meta">@ActivityScope</span></div><div class="line">    <span class="meta">@ContributesAndroidInjector</span></div><div class="line">    <span class="function"><span class="keyword">abstract</span> fun <span class="title">searchActivityInjector</span><span class="params">()</span>: SearchActivity</span></div><div class="line">&#125;</div><div class="line"></div><div class="line">@Singleton</div><div class="line">@<span class="title">Component</span><span class="params">(modules = [AppModule::class, AndroidInjectionModule::class, ActivityBindModule::class])</span></div><div class="line">interface AppComponent &#123; ... &#125;</div></pre></td></tr></table></figure>
+<p>4.Application 类实现 HasActivityInjector 接口，并且注入一个 DispatchingAndroidInjector<activity> 类型的依赖作为 activityInjector() 方法的返回值。</activity></p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">class GankApp : Application(), HasActivityInjector &#123;</div><div class="line"></div><div class="line">    @Inject</div><div class="line">    lateinit var dispatchingActivityInjector: DispatchingAndroidInjector&lt;Activity&gt;</div><div class="line"></div><div class="line">    override fun onCreate() &#123;</div><div class="line">        super.onCreate()</div><div class="line">        DaggerAppComponent.builder()</div><div class="line">                .appModule(AppModule(this))</div><div class="line">                .build()</div><div class="line">                .inject(this)</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    override fun activityInjector() = dispatchingActivityInjector</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>5.最后在 onCreate)() 方法中，在 <code>super.onCreate()</code> 之前调用 <code>AndroidInjection.inject(this)</code>。</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">class SearchActivity : BaseActivity() &#123;</div><div class="line"></div><div class="line">    override fun onCreate(savedInstanceState: Bundle?) &#123;</div><div class="line">        AndroidInjection.inject(this)</div><div class="line">        super.onCreate(savedInstanceState)</div><div class="line"></div><div class="line">        ...</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>使用 dagger.android 后 Activity 对应的 SubComponent 的定义简化如下：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">@Module</div><div class="line">abstract class ActivityBindModule &#123;</div><div class="line">    @ActivityScope</div><div class="line">    @ContributesAndroidInjector(modules = [FragmentBindModule::class])</div><div class="line">    abstract fun mainActivityInjector(): MainActivity</div><div class="line"></div><div class="line">    @ActivityScope</div><div class="line">    @ContributesAndroidInjector</div><div class="line">    abstract fun pictureActivityInjector(): PictureActivity</div><div class="line"></div><div class="line">    @ActivityScope</div><div class="line">    @ContributesAndroidInjector</div><div class="line">    abstract fun searchActivityInjector(): SearchActivity</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>其中 @ContributesAndroidInjector 注解可以解决之前的两个问题，不需要手动创建每一个 SubComponent，也不用在 parent componenet 声明对应的返回对应的 SubComponent.Builder 的接口，以后添加 SubComponent 只需要添加一个 ContributesAndroidInjector 抽象方法。</p>
+<p>然后使用<code>AndroidInjection.inject(this)</code> 来简化注入依赖的过程，隐藏注入依赖的细节。</p>
+<p>注入 Fragment 和其他三大组件也是类似，只是 ContributesAndroidInjector 抽象方法的返回值变了，HasActivityInjector 接口换做 HasFragmentInjector 等接口。</p>
+<h2 id="3-dagger-android-扩展库的原理"><a href="#3-dagger-android-扩展库的原理" class="headerlink" title="3. dagger.android 扩展库的原理"></a>3. dagger.android 扩展库的原理</h2><h3 id="3-1-ContributesAndroidInjector-原理"><a href="#3-1-ContributesAndroidInjector-原理" class="headerlink" title="3.1 @ContributesAndroidInjector 原理"></a>3.1 @ContributesAndroidInjector 原理</h3><p>在上面使用 dagger.android 扩展库注入 Activity 中依赖时，其中第二步定义 SubComponent 和第三步添加一个 SubComponent.Builder 的绑定到 Map 中，这两步可以用 ContributesAndroidInjector 抽象方法简化。其实只是 dagger.android 的注解处理器根据 ContributesAndroidInjector 抽象方法在编译时完成了这两步的代码，编译完后的代码逻辑其实是一样。</p>
+<p>看上面 SearchActivity 的例子，ContributesAndroidInjector 抽象方法为：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Module</span></div><div class="line"><span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">ActivityBindModule</span> </span>&#123;</div><div class="line">    <span class="meta">@ActivityScope</span></div><div class="line">    <span class="meta">@ContributesAndroidInjector</span></div><div class="line">    <span class="function"><span class="keyword">abstract</span> fun <span class="title">searchActivityInjector</span><span class="params">()</span>: SearchActivity</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>在编译后会生成一个 ActivityBindModule_SearchActivityInjector 类：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Module</span>(subcomponents = ActivityBindModule_SearchActivityInjector.SearchActivitySubcomponent.class)</div><div class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">ActivityBindModule_SearchActivityInjector</span> </span>&#123;</div><div class="line">  <span class="function"><span class="keyword">private</span> <span class="title">ActivityBindModule_SearchActivityInjector</span><span class="params">()</span> </span>&#123;&#125;</div><div class="line"></div><div class="line">  <span class="meta">@Binds</span></div><div class="line">  <span class="meta">@IntoMap</span></div><div class="line">  <span class="meta">@ActivityKey</span>(SearchActivity.class)</div><div class="line">  <span class="keyword">abstract</span> AndroidInjector.Factory&lt;? extends Activity&gt; bindAndroidInjectorFactory(</div><div class="line">      SearchActivitySubcomponent.Builder builder);</div><div class="line">  <span class="comment">// 第三步添加一个 SubComponent.Builder 的绑定到 Map 中</span></div><div class="line"></div><div class="line">  <span class="meta">@Subcomponent</span></div><div class="line">  <span class="meta">@ActivityScope</span></div><div class="line">  <span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">SearchActivitySubcomponent</span> <span class="keyword">extends</span> <span class="title">AndroidInjector</span>&lt;<span class="title">SearchActivity</span>&gt; </span>&#123;</div><div class="line">    <span class="comment">// 第二步定义 SubComponent</span></div><div class="line">    <span class="meta">@Subcomponent</span>.Builder</div><div class="line">    <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">Builder</span> <span class="keyword">extends</span> <span class="title">AndroidInjector</span>.<span class="title">Builder</span>&lt;<span class="title">SearchActivity</span>&gt; </span>&#123;&#125;</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>所以 @ContributesAndroidInjector 原理是利用注解处理器减少手动 coding 的代码量。</p>
+<h3 id="3-2-AndroidInjection-inject-this-的原理"><a href="#3-2-AndroidInjection-inject-this-的原理" class="headerlink" title="3.2 AndroidInjection.inject(this) 的原理"></a>3.2 AndroidInjection.inject(this) 的原理</h3><p>dagger.android 扩展库可以使用一行代码<code>AndroidInjection.inject(this)</code>完成依赖注入的过程，这背后是如何实现的呢？</p>
+<p>先看该方法的关键源码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">inject</span><span class="params">(Activity activity)</span> </span>&#123;</div><div class="line">    ...</div><div class="line">    <span class="comment">// 调用 application 的 activityInjector() 方法获取到 dispatchingActivityInjector 对象</span></div><div class="line">    AndroidInjector&lt;Activity&gt; activityInjector =</div><div class="line">        ((HasActivityInjector) application).activityInjector();</div><div class="line">    ...</div><div class="line">    <span class="comment">// 使用 dispatchingActivityInjector 对象注入 activity 所需的依赖</span></div><div class="line">    activityInjector.inject(activity);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>接着看 DispatchingAndroidInjector 的 inject() 方法的逻辑：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="keyword">final</span> <span class="class"><span class="keyword">class</span> <span class="title">DispatchingAndroidInjector</span>&lt;<span class="title">T</span>&gt; <span class="keyword">implements</span> <span class="title">AndroidInjector</span>&lt;<span class="title">T</span>&gt; </span>&#123;</div><div class="line"></div><div class="line">  <span class="keyword">private</span> <span class="keyword">final</span> Map&lt;Class&lt;? extends T&gt;, Provider&lt;AndroidInjector.Factory&lt;? extends T&gt;&gt;&gt;</div><div class="line">    injectorFactories;</div><div class="line"></div><div class="line">  <span class="meta">@Inject</span></div><div class="line">  DispatchingAndroidInjector(</div><div class="line">      Map&lt;Class&lt;? extends T&gt;, Provider&lt;AndroidInjector.Factory&lt;? extends T&gt;&gt;&gt; injectorFactories) &#123;</div><div class="line">    <span class="keyword">this</span>.injectorFactories = injectorFactories;</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="meta">@Override</span></div><div class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">inject</span><span class="params">(T instance)</span> </span>&#123;</div><div class="line">    <span class="comment">// 在 maybeInject 中完成注入</span></div><div class="line">    <span class="keyword">boolean</span> wasInjected = maybeInject(instance);</div><div class="line">    <span class="keyword">if</span> (!wasInjected) &#123;</div><div class="line">      <span class="keyword">throw</span> <span class="keyword">new</span> IllegalArgumentException(errorMessageSuggestions(instance));</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">maybeInject</span><span class="params">(T instance)</span> </span>&#123;</div><div class="line">    <span class="comment">// 根据 activity 的类型获取到对应的 AndroidInjector.Factory 的 Provider，</span></div><div class="line">    <span class="comment">// 其实就是 SubComponent.Builder，因为第二步中定义的 SubComponent.Builder 继承了 AndroidInjector.Factory</span></div><div class="line">    Provider&lt;AndroidInjector.Factory&lt;? extends T&gt;&gt; factoryProvider =</div><div class="line">        injectorFactories.get(instance.getClass());</div><div class="line">    <span class="keyword">if</span> (factoryProvider == <span class="keyword">null</span>) &#123;</div><div class="line">      <span class="keyword">return</span> <span class="keyword">false</span>;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@SuppressWarnings</span>(<span class="string">"unchecked"</span>)</div><div class="line">    AndroidInjector.Factory&lt;T&gt; factory = (AndroidInjector.Factory&lt;T&gt;) factoryProvider.get();</div><div class="line">    <span class="comment">// 获取到 AndroidInjector.Factory</span></div><div class="line">    <span class="keyword">try</span> &#123;</div><div class="line">      <span class="comment">// 根据 AndroidInjector.Factory 创建 AndroidInjector，即创建 SubComponent</span></div><div class="line">      AndroidInjector&lt;T&gt; injector =</div><div class="line">          checkNotNull(</div><div class="line">              factory.create(instance),</div><div class="line">              <span class="string">"%s.create(I) should not return null."</span>,</div><div class="line">              factory.getClass().getCanonicalName());</div><div class="line"></div><div class="line">      injector.inject(instance);</div><div class="line">      <span class="keyword">return</span> <span class="keyword">true</span>;</div><div class="line">    &#125; <span class="keyword">catch</span> (ClassCastException e) &#123;</div><div class="line">      ...</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line">  ...</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>上面的逻辑简单的来说就是根据 activity 的类型获取相应的 SubComponent.Builder，然后创建其 SubComponent，最后使用 SubComponent 完成依赖注入工作。</p>
+<p>现在再回过头来看第三步添加一个 SubComponent.Builder 的绑定到 Map 中，是添加到 AndroidInjectionModule 的 multibinging 中。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Module</span></div><div class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">AndroidInjectionModule</span> </span>&#123;</div><div class="line">  <span class="meta">@Multibinds</span></div><div class="line">  <span class="keyword">abstract</span> Map&lt;Class&lt;? extends Activity&gt;, AndroidInjector.Factory&lt;? extends Activity&gt;&gt;</div><div class="line">      activityInjectorFactories();</div><div class="line">  ...</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>然后才能实现 DispatchingAndroidInjector<activity> 的注入过程，Application 需要实现 HasActivityInjector 接口，也是为了方便获取 dispatchingActivityInjector 对象，这样就隐藏了注入器的类型，通过 Activity 的类型获取对应的 SubComponent 完成注入。</activity></p>
+<h2 id="4-总结"><a href="#4-总结" class="headerlink" title="4. 总结"></a>4. 总结</h2><p>dagger.android 扩展库可以极大地简化在 Android 项目中使用 Dagger 2 的过程，但是还是有些限制，SubComponent.Builder 不能自定义 @BindsInstance 方法，SubCompoennt 的 Module 不能有含参数的构造函数，否则<code>AndroidInjection.inject(this)</code>在创建 SubComponent 时无法成功。</p>
+<p>在使用过 dagger.android 扩展库一段时间后，个人认为其设计非常优雅，简化了 SubComponent 的定义过程和依赖注入的过程，使得开发者可以专注于 Module 管理依赖对象，所以建议大家在 Android 项目中使用。</p>
+<p>最后 Dagger 2 系列文章也到此结束了（Dagger 2 关于单元测试的部分放到 Kotlin 下单元测试的系列中），希望对大家有所帮助。</p>
+<p><strong>参考资料：</strong></p>
+<ul>
+<li><p><a href="https://google.github.io/dagger/android.html" target="_blank" rel="external">Dagger 2 官网的 Dagger &amp; Android 文档</a></p>
+</li>
+<li><p><a href="https://google.github.io/dagger/multibindings" target="_blank" rel="external">Dagger 2 官网的 Multibindings 文档</a></p>
+</li>
+</ul>
+      
+    </div>
+
+    
+    <section data-mpa-template-id="95" class="mpa-template" data-mpa-color="#ffffff">
+      <section style="margin-top: 20px;display: -webkit-box;display: flex;-webkit-box-pack: center;justify-content: center;-webkit-box-align: center;align-items: center" data-mid="t22">
+        <section style="text-align: center;line-height: 30px" data-mid="">
+          <section style="display: inline-block;float: left;width: 95px;height: 2px;background: -webkit-linear-gradient(right, #141414, #f0f0f0);background: linear-gradient(to left, #141414, #f0f0f0);-webkit-transform: translate(0px, 12px);-ms-transform: translate(0px, 12px);transform: translate(0px, 12px)" data-mid="" data-contenteditable="false">
+          </section>
+          <section style="float: left;width: 4px;height: 4px;border-radius: 50%;padding: 3px;background-color: #b1b1b1;text-align: center;-webkit-transform: translate(0px, 8px);-ms-transform: translate(0px, 8px);transform: translate(0px, 8px)" data-mid="" data-contenteditable="false">
+            <section style="width: 5px;height: 5px;border-radius: 50%;background-color: #141414" data-mid="">
+            </section>
+          </section>
+          <section style="float: left;min-width: 50px;padding: 0 10px 0 10px;font-size: 16px;color: #4f4f4f;text-align: center;line-height: 30px" data-mid="">END</section>
+          <section style="float: left;padding: 3px;width: 4px;height: 4px;border-radius: 50%;background-color: #b1b1b1;text-align: center;-webkit-transform: translate(0px, 9px);-ms-transform: translate(0px, 9px);transform: translate(0px, 9px)" data-mid="" data-contenteditable="false">
+            <section style="width: 5px;height: 5px;border-radius: 50%;background-color: #141414" data-mid="">
+            </section>
+          </section>
+          <section style="display: inline-block;float: left;width: 95px;height: 2px;background: -webkit-linear-gradient(left, #141414, #f0f0f0);background: linear-gradient(to right, #141414, #f0f0f0);-webkit-transform: translate(-1px, 14px);-ms-transform: translate(-1px, 14px);transform: translate(-1px, 14px)" data-mid="" data-contenteditable="false">
+          </section>
+        </section>
+      </section>
+    </section>
+    
+
+    <div>
+      
+        
+<div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
+    <img id="wechat_subscriber_qcode" src="/uploads/wechat_qcode.jpg" alt="Johnny Shieh wechat" style="width: 200px; max-width: 100%">
+    <div>我的公众号，不只有技术，还有咖啡和彩蛋！</div>
+</div>
+
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/android/" rel="tag"># android</a>
+          
+            <a href="/tags/java/" rel="tag"># java</a>
+          
+            <a href="/tags/dagger/" rel="tag"># dagger</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/posts/summary-of-2017/" rel="next" title="2017 年终总结">
+                <i class="fa fa-chevron-left"></i> 2017 年终总结
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="SOHUCS" sid="posts/dagger-use-of-dagger-dot-android/"></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image" src="/uploads/avatar.png" alt="Johnny Shieh">
+          <p class="site-author-name" itemprop="name">Johnny Shieh</p>
+           
+              <p class="site-description motion-element" itemprop="description">我本微末，心向天空</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">63</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">12</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">39</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/JohnnyShieh" rel="external nofollow" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/johnnyshieh17" rel="external nofollow" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  Weibo
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="mailto:JohnnyShieh17@gmail.com" rel="external nofollow" target="_blank" title="Gmail">
+                  
+                    <i class="fa fa-fw fa-envelope"></i>
+                  
+                  Gmail
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.jianshu.com/u/763027594c0b" rel="external nofollow" target="_blank" title="简书">
+                  
+                    <i class="fa fa-fw fa-book"></i>
+                  
+                  简书
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        <!--<div style="margin: 20px 0 20px 0; height: 1px; background: #eee"></div> 
+<div id="hot-series">
+    <ul class="sidebar-nav" style="margin-bottom: 0;">
+        <li>热门系列</li>
+    </ul>
+    <ul class="series-posts" style="font-size: 14px; padding-left: 10px; list-style: none; text-align: left;">
+        <li><span><a href="http://johnnyshieh.me/tags/dagger/">Dagger 完全解析</a></span>（5）</li>
+         <li><span><a href="http://johnnyshieh.me/categories/AspectJ/">AspectJ in Android</a></span>（3）</li>
+        <li><span><a href="http://johnnyshieh.me/categories/unit-test/">Kotlin 写 Android 单元测试</a>（4）</span></li>
+    </ul>
+</div>
+-->
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-Gank-项目中原来的-Dagger-2-依赖注入逻辑"><span class="nav-text">1. Gank 项目中原来的 Dagger 2 依赖注入逻辑</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-继承关系的代码实现"><span class="nav-text">1.1 继承关系的代码实现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-Component-依赖注入的实现"><span class="nav-text">1.2 Component 依赖注入的实现</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-dagger-android-扩展库的使用"><span class="nav-text">2. dagger.android 扩展库的使用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-引入-dagger-android-扩展库"><span class="nav-text">2.1 引入 dagger.android 扩展库</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-注入-Activity-中的依赖"><span class="nav-text">2.2 注入 Activity 中的依赖</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-dagger-android-扩展库的原理"><span class="nav-text">3. dagger.android 扩展库的原理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-ContributesAndroidInjector-原理"><span class="nav-text">3.1 @ContributesAndroidInjector 原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-AndroidInjection-inject-this-的原理"><span class="nav-text">3.2 AndroidInjection.inject(this) 的原理</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-总结"><span class="nav-text">4. 总结</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+      <div style="margin: 20px 0 20px 0; height: 1px; background: #eee"></div> 
+<div id="hot-series">
+    <ul class="sidebar-nav" style="margin-bottom: 0">
+        <li>热门系列</li>
+    </ul>
+    <ul class="series-posts" style="font-size: 14px; padding-left: 10px; list-style: none; text-align: left">
+        <li><span><a href="http://johnnyshieh.me/tags/dagger/">Dagger 完全解析</a></span>（5）</li>
+         <li><span><a href="http://johnnyshieh.me/categories/AspectJ/">AspectJ in Android</a></span>（3）</li>
+        <li><span><a href="http://johnnyshieh.me/categories/unit-test/">Kotlin 写 Android 单元测试</a>（4）</span></li>
+    </ul>
+</div>
+
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy;  2015 - 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Johnny Shieh</span>
+</div>
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>访客数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>总访问量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="http://images.johnnyshieh.me/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.1"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+  
+    <script type="text/javascript">
+    (function(){
+      var appid = 'cyt8KwhJ1';
+      var conf = 'prod_651756cd8d701505ffbb60e416929831';
+      var width = window.innerWidth || document.documentElement.clientWidth;
+      if (width < 960) {
+      window.document.write('<script id="changyan_mobile_js" charset="utf-8" type="text/javascript" src="https://changyan.sohu.com/upload/mobile/wap-js/changyan_mobile.js?client_id=' + appid + '&conf=' + conf + '"><\/script>'); } else { var loadJs=function(d,a){var c=document.getElementsByTagName("head")[0]||document.head||document.documentElement;var b=document.createElement("script");b.setAttribute("type","text/javascript");b.setAttribute("charset","UTF-8");b.setAttribute("src",d);if(typeof a==="function"){if(window.attachEvent){b.onreadystatechange=function(){var e=b.readyState;if(e==="loaded"||e==="complete"){b.onreadystatechange=null;a()}}}else{b.onload=a}}c.appendChild(b)};loadJs("https://changyan.sohu.com/upload/changyan.js",function(){
+        window.changyan.api.config({appid:appid,conf:conf})});
+      }
+    })();
+    </script>
+    <script type="text/javascript" src="https://assets.changyan.sohu.com/upload/plugins/plugins.count.js"></script>
+
+
+
+  
+
+
+
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/algolia-instant-search/instantsearch.min.css">
+
+  
+  
+  <script src="/lib/algolia-instant-search/instantsearch.min.js"></script>
+  
+
+  <script src="/js/src/algolia-search.js?v=5.1.1"></script>
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("n55tIxEzsDxW0BEFhehOkP2K-gzGzoHsz", "TwYjARitxhv7iOhbg7k2a9xB");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

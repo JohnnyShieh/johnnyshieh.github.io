@@ -114,7 +114,7 @@
 <meta property="og:url" content="http://johnnyshieh.me/posts/dagger-use-in-kotlin/index.html">
 <meta property="og:site_name" content="Johnny Shieh">
 <meta property="og:description" content="Dagger 2 完全解析系列文章第五篇，介绍 Kotlin 语言中如何使用 Dagger 2">
-<meta property="og:updated_time" content="2017-06-27T03:50:55.000Z">
+<meta property="og:updated_time" content="2018-02-24T07:47:41.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Dagger 2 完全解析（五），Kotlin 中使用 Dagger 2">
 <meta name="twitter:description" content="Dagger 2 完全解析系列文章第五篇，介绍 Kotlin 语言中如何使用 Dagger 2">
@@ -472,12 +472,13 @@
 <p><a href="http://johnnyshieh.me/posts/dagger-subcomponent/">Dagger 2 完全解析（三），Component 的组织关系与 SubComponent</a></p>
 <p><a href="http://johnnyshieh.me/posts/dagger-use-in-android/">Dagger 2 完全解析（四），Android 中使用 Dagger 2</a></p>
 <p><a href="http://johnnyshieh.me/posts/dagger-use-in-kotlin/">Dagger 2 完全解析（五），Kotlin 中使用 Dagger 2</a></p>
+<p><a href="http://johnnyshieh.me/posts/dagger-use-of-dagger-dot-android/">Dagger 2 完全解析（六），dagger.android 扩展库的使用</a></p>
 <blockquote>
 <p>本系列文章是基于 Google Dagger 2.11-rc2 版本</p>
 </blockquote>
 <p>Google I/O 2017 大会上宣布 Kotlin 成为 Android 开发一级语言，kotlin 语言作为 Google 的亲儿子，前途一片光明，而且 Kotlin 加入了很多现代语言特性。最近把我之前写的一个开源项目重构为 Kotlin 版本 – <a href="https://github.com/JohnnyShieh/Gank/tree/kotlin" target="_blank" rel="external">Kotlin 版本的 Gank app</a>，以此来学习 kotlin 语言。其中在 Kotlin 语言中使用 Dagger 2 的写法与 Java 中有些变化，所以写下这篇文章记录下如何在 Kotlin 语言中使用 Dagger 2。</p>
 <blockquote>
-<p>本文中的 Kotlin 版本为 1.1.2-5</p>
+<p>本文中的 Kotlin 版本为 1.2.10</p>
 </blockquote>
 <h2 id="Dagger-2-依赖"><a href="#Dagger-2-依赖" class="headerlink" title="Dagger 2 依赖"></a>Dagger 2 依赖</h2><p>引入方式与之前有所区别，Dagger 2 根据注解在编译时生成静态代码，所以需要注解处理器，而 Kotlin 中注解处理工具为 <a href="http://kotlinlang.org/docs/reference/kapt.html" target="_blank" rel="external">Kotlin Annotatino processing tool</a>（kapt）。</p>
 <a id="more"></a>
@@ -490,8 +491,7 @@
 <ul>
 <li>标注成员属性，确定需要注入的依赖</li>
 </ul>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 标注 setter</span></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Man</span> </span>&#123;</div><div class="line">    lateinit var car: Car</div><div class="line">        <span class="meta">@Inject</span> set</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>直接标注属性<code>@Inject lateinit var car: Car</code>，编译时会报错</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 标注 setter</span></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Man</span> </span>&#123;</div><div class="line">    <span class="meta">@Inject</span></div><div class="line">    lateinit var car: Car</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <h2 id="Module-和-Component"><a href="#Module-和-Component" class="headerlink" title="Module 和 Component"></a>Module 和 Component</h2><p>Module 和 Component 的写法和 Java 一样，只是 Kotlin 语法不一样</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Module</span></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">CarModule</span> </span>&#123;</div><div class="line">    <span class="meta">@Provides</span></div><div class="line">    <span class="function">fun <span class="title">provideCar</span><span class="params">()</span> </span>= Car()</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="meta">@Component</span>(modules = arrayOf(CarModule::<span class="class"><span class="keyword">class</span>))</span></div><div class="line"><span class="title">interface</span> <span class="title">ManComponent</span> &#123;</div><div class="line">    <span class="function">fun <span class="title">inject</span><span class="params">(man: Man)</span></span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <h2 id="Scope-作用域"><a href="#Scope-作用域" class="headerlink" title="Scope 作用域"></a>Scope 作用域</h2><p>自定义的作用域的语法也变了，下面是常见的两个自定义 Scope：</p>
@@ -657,7 +657,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">62</span>
+                <span class="site-state-item-count">63</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>

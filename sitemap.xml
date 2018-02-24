@@ -2,6 +2,55 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://johnnyshieh.me/posts/dagger-use-in-kotlin/</loc>
+    
+    <lastmod>2018-02-24T07:47:41.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://johnnyshieh.me/posts/dagger-subcomponent/</loc>
+    
+    <lastmod>2018-02-24T07:47:27.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://johnnyshieh.me/posts/dagger-advance/</loc>
+    
+    <lastmod>2018-02-24T07:47:18.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://johnnyshieh.me/posts/dagger-basic/</loc>
+    
+    <lastmod>2018-02-24T07:47:07.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://johnnyshieh.me/posts/dagger-use-in-android/</loc>
+    
+    <lastmod>2018-02-24T07:46:57.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://johnnyshieh.me/posts/dagger-use-of-dagger-dot-android/</loc>
+    
+    <lastmod>2018-02-24T07:46:18.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://johnnyshieh.me/about/index.html</loc>
+    
+    <lastmod>2018-02-24T07:33:30.000Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://johnnyshieh.me/posts/summary-of-2017/</loc>
     
     <lastmod>2018-01-02T11:56:01.000Z</lastmod>
@@ -121,30 +170,9 @@
   </url>
   
   <url>
-    <loc>http://johnnyshieh.me/about/index.html</loc>
-    
-    <lastmod>2017-08-09T08:28:48.000Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>http://johnnyshieh.me/posts/rxbus-rxjava2/</loc>
     
     <lastmod>2017-08-09T08:26:47.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://johnnyshieh.me/posts/dagger-subcomponent/</loc>
-    
-    <lastmod>2017-08-03T03:58:07.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://johnnyshieh.me/posts/dagger-advance/</loc>
-    
-    <lastmod>2017-08-02T03:15:36.000Z</lastmod>
     
   </url>
   
@@ -194,20 +222,6 @@
     <loc>http://johnnyshieh.me/posts/how-hashmap-work/</loc>
     
     <lastmod>2017-08-02T03:12:52.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://johnnyshieh.me/posts/dagger-use-in-android/</loc>
-    
-    <lastmod>2017-08-02T03:12:44.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://johnnyshieh.me/posts/dagger-basic/</loc>
-    
-    <lastmod>2017-08-02T03:12:29.000Z</lastmod>
     
   </url>
   
@@ -313,13 +327,6 @@
     <loc>http://johnnyshieh.me/posts/java-proxy-pattern/</loc>
     
     <lastmod>2017-06-29T11:29:40.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://johnnyshieh.me/posts/dagger-use-in-kotlin/</loc>
-    
-    <lastmod>2017-06-27T03:50:55.000Z</lastmod>
     
   </url>
   
