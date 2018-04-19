@@ -1,0 +1,1255 @@
+<!doctype html>
+
+
+
+
+<html class="theme-next pisces" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta http-equiv="Content-Language" content="zh-cn">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+  <meta name="google-site-verification" content="r1Es2KSXuS6zYdab4rZeEA6X-pEwRwyT4x89S7a4EHE">
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+  <link href="http://images.johnnyshieh.me/lib/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="http://images.johnnyshieh.me/fonts/font.css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+  
+
+<link href="http://images.johnnyshieh.me/lib/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="http://images.johnnyshieh.me/css/main.css?v=5.1.1" rel="stylesheet" type="text/css">
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1">
+
+
+
+  
+    <link rel="apple-touch-icon-precomposed" sizes="57x57" href="/apple-touch-icon-57x57.png">
+  
+    <link rel="apple-touch-icon-precomposed" sizes="120x120" href="/apple-touch-icon-120x120.png">
+  
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="/apple-touch-icon-152x152.png">
+  
+
+
+
+
+
+
+<meta name="description" content="Kotlin Coroutines 完全解析系列文章的第一篇，简单介绍协程的好处，以及一些协程的基本概念">
+<meta name="keywords" content="Kotlin, Coroutines, 协程, Johnny, Shieh, Johnny Shieh, johnny shieh blog, ">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Kotlin Coroutines(协程) 完全解析（一），协程简介">
+<meta property="og:url" content="http://johnnyshieh.me/posts/kotlin-coroutine-introduction/index.html">
+<meta property="og:site_name" content="Johnny Shieh">
+<meta property="og:description" content="Kotlin Coroutines 完全解析系列文章的第一篇，简单介绍协程的好处，以及一些协程的基本概念">
+<meta property="og:updated_time" content="2018-04-19T11:50:45.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Kotlin Coroutines(协程) 完全解析（一），协程简介">
+<meta name="twitter:description" content="Kotlin Coroutines 完全解析系列文章的第一篇，简单介绍协程的好处，以及一些协程的基本概念">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"right","display":"always","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: false,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: 'QK028ACQPB',
+      apiKey: '4e4a5ec0318356434aed6a3aa5aea209',
+      indexName: 'blog',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"搜索文章","hits_empty":"找不到与您搜索的 ${query} 相符的文章，请尝试其他关键字","hits_stats":"找到 ${hits} 条搜索结果，用时 ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://johnnyshieh.me/posts/kotlin-coroutine-introduction/">
+
+
+
+
+
+  <title>Kotlin Coroutines(协程) 完全解析（一），协程简介 | Johnny Shieh</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?43cea51223ad3b7bc740196aab48d664";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Johnny Shieh</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">人如果没有梦想，跟咸鱼有什么分别</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-books">
+          <a href="/books" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br>
+            
+            读书
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-friends">
+          <a href="/friends" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-users"></i> <br>
+            
+            小伙伴
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  
+  <div class="algolia-popup popup search-popup">
+    <div class="algolia-search">
+      <div class="algolia-search-input-icon">
+        <i class="fa fa-search"></i>
+      </div>
+      <div class="algolia-search-input" id="algolia-search-input"></div>
+    </div>
+
+    <div class="algolia-results">
+      <div id="algolia-stats"></div>
+      <div id="algolia-hits"></div>
+      <div id="algolia-pagination" class="algolia-pagination"></div>
+    </div>
+
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+  </div>
+
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://johnnyshieh.me/posts/kotlin-coroutine-introduction/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Johnny Shieh">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Johnny Shieh">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Kotlin Coroutines(协程) 完全解析（一），协程简介</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-17T15:58:37+08:00">
+                2018-04-17
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/kotlin/" itemprop="url" rel="index">
+                    <span itemprop="name">Kotlin</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+              <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-comment-o"></i>
+              </span>
+              
+                <a href="/posts/kotlin-coroutine-introduction/#SOHUCS" itemprop="discussionUrl">
+                  <span id="changyan_count_unit" class="post-comments-count hc-comment-count" data-xid="posts/kotlin-coroutine-introduction/" itemprop="commentsCount"></span>
+                </a>
+              
+            
+          
+
+          
+          
+             <span id="/posts/kotlin-coroutine-introduction/" class="leancloud_visitors" data-flag-title="Kotlin Coroutines(协程) 完全解析（一），协程简介">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </span></div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>本文基于 Kotlin v1.2.31，Kotlin-Coroutines v0.22.5</p>
+</blockquote>
+<p>Kotlin 中引入 Coroutine(协程) 的概念，可以帮助编写异步代码，目前还是试验性的。国内详细介绍协程的资料比较少，所以我打算写 Kotlin Coroutines(协程) 完全解析的系列文章，希望可以帮助大家更好地理解协程。这是系列文章的第一篇，简单介绍协程的特点和一些基本概念。协程主要的目的是简化异步编程，那么先从为什么需要协程来编写异步代码开始。</p>
+<h3 id="1-为什么需要协程？"><a href="#1-为什么需要协程？" class="headerlink" title="1. 为什么需要协程？"></a>1. 为什么需要协程？</h3><p>异步编程中最为常见的场景是：在后台线程执行一个复杂任务，下一个任务依赖于上一个任务的执行结果，所以必须等待上一个任务执行完成后才能开始执行。看下面代码中的三个函数，后两个函数都依赖于前一个函数的执行结果。</p>
+<a id="more"></a>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">fun</span> <span class="title">requestToken</span><span class="params">()</span></span>: Token &#123;</div><div class="line">    <span class="comment">// makes request for a token &amp; waits</span></div><div class="line">    <span class="keyword">return</span> token <span class="comment">// returns result when received </span></div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">fun</span> <span class="title">createPost</span><span class="params">(token: <span class="type">Token</span>, item: <span class="type">Item</span>)</span></span>: Post &#123;</div><div class="line">    <span class="comment">// sends item to the server &amp; waits</span></div><div class="line">    <span class="keyword">return</span> post <span class="comment">// returns resulting post </span></div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">fun</span> <span class="title">processPost</span><span class="params">(post: <span class="type">Post</span>)</span></span> &#123;</div><div class="line">    <span class="comment">// does some local processing of result</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>三个函数中的操作都是耗时操作，因此不能直接在 UI 线程中运行，而且后两个函数都依赖于前一个函数的执行结果，三个任务不能并行运行，该如何解决这个问题呢？</p>
+<h4 id="1-1-回调"><a href="#1-1-回调" class="headerlink" title="1.1 回调"></a>1.1 回调</h4><p>常见的做法是使用回调，把之后需要执行的任务封装为回调。</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">fun</span> <span class="title">requestTokenAsync</span><span class="params">(cb: (<span class="type">Token</span>)</span></span> -&gt; <span class="built_in">Unit</span>) &#123; ... &#125;</div><div class="line"><span class="function"><span class="keyword">fun</span> <span class="title">createPostAsync</span><span class="params">(token: <span class="type">Token</span>, item: <span class="type">Item</span>, cb: (<span class="type">Post</span>)</span></span> -&gt; <span class="built_in">Unit</span>) &#123; ... &#125;</div><div class="line"><span class="function"><span class="keyword">fun</span> <span class="title">processPost</span><span class="params">(post: <span class="type">Post</span>)</span></span> &#123; ... &#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">fun</span> <span class="title">postItem</span><span class="params">(item: <span class="type">Item</span>)</span></span> &#123;</div><div class="line">    requestTokenAsync &#123; token -&gt;</div><div class="line">        createPostAsync(token, item) &#123; post -&gt;</div><div class="line">            processPost(post)</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>回调在只有两个任务的场景是非常简单实用的，很多网络请求框架的 onSuccess Listener 就是使用回调，但是在三个以上任务的场景中就会出现多层回调嵌套的问题，而且不方便处理异常。</p>
+<h4 id="1-2-Future"><a href="#1-2-Future" class="headerlink" title="1.2 Future"></a>1.2 Future</h4><p>Java 8 引入的 CompletableFuture 可以将多个任务串联起来，可以避免多层嵌套的问题。</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">fun</span> <span class="title">requestTokenAsync</span><span class="params">()</span></span>: CompletableFuture&lt;Token&gt; &#123; ... &#125;</div><div class="line"><span class="function"><span class="keyword">fun</span> <span class="title">createPostAsync</span><span class="params">(token: <span class="type">Token</span>, item: <span class="type">Item</span>)</span></span>: CompletableFuture&lt;Post&gt; &#123; ... &#125;</div><div class="line"><span class="function"><span class="keyword">fun</span> <span class="title">processPost</span><span class="params">(post: <span class="type">Post</span>)</span></span> &#123; ... &#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">fun</span> <span class="title">postItem</span><span class="params">(item: <span class="type">Item</span>)</span></span> &#123;</div><div class="line">    requestTokenAsync()</div><div class="line">            .thenCompose &#123; token -&gt; createPostAsync(token, item) &#125;</div><div class="line">            .thenAccept &#123; post -&gt; processPost(post) &#125;</div><div class="line">            .exceptionally &#123; e -&gt;</div><div class="line">                e.printStackTrace()</div><div class="line">                <span class="literal">null</span></div><div class="line">            &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>上面代码中使用连接符串联起三个任务，最后的<code>exceptionally</code>方法还可以统一处理异常情况，但是只能在 Java 8 以上才能使用。</p>
+<h4 id="1-3-Rx-编程"><a href="#1-3-Rx-编程" class="headerlink" title="1.3 Rx 编程"></a>1.3 Rx 编程</h4><p>CompletableFuture 的方式有点类似 Rx 系列的链式调用，这也是目前大多数推荐的做法。</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">fun</span> <span class="title">requestToken</span><span class="params">()</span></span>: Token &#123; ... &#125;</div><div class="line"><span class="function"><span class="keyword">fun</span> <span class="title">createPost</span><span class="params">(token: <span class="type">Token</span>, item: <span class="type">Item</span>)</span></span>: Post &#123; ... &#125;</div><div class="line"><span class="function"><span class="keyword">fun</span> <span class="title">processPost</span><span class="params">(post: <span class="type">Post</span>)</span></span> &#123; ... &#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">fun</span> <span class="title">postItem</span><span class="params">(item: <span class="type">Item</span>)</span></span> &#123;</div><div class="line">    Single.fromCallable &#123; requestToken() &#125;</div><div class="line">            .map &#123; token -&gt; createPost(token, item) &#125;</div><div class="line">            .subscribe(</div><div class="line">                    &#123; post -&gt; processPost(post) &#125;, <span class="comment">// onSuccess</span></div><div class="line">                    &#123; e -&gt; e.printStackTrace() &#125; <span class="comment">// onError</span></div><div class="line">            )</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>RxJava 丰富的操作符、简便的线程调度、异常处理使得大多数数满意，我也如此，但是还没有更简洁易读的写法呢？</p>
+<h4 id="1-4-协程"><a href="#1-4-协程" class="headerlink" title="1.4 协程"></a>1.4 协程</h4><p>下面是使用 Kotlin 协程的代码：</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">suspend <span class="function"><span class="keyword">fun</span> <span class="title">requestToken</span><span class="params">()</span></span>: Token &#123; ... &#125;   <span class="comment">// 挂起函数</span></div><div class="line">suspend <span class="function"><span class="keyword">fun</span> <span class="title">createPost</span><span class="params">(token: <span class="type">Token</span>, item: <span class="type">Item</span>)</span></span>: Post &#123; ... &#125;  <span class="comment">// 挂起函数</span></div><div class="line"><span class="function"><span class="keyword">fun</span> <span class="title">processPost</span><span class="params">(post: <span class="type">Post</span>)</span></span> &#123; ... &#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">fun</span> <span class="title">postItem</span><span class="params">(item: <span class="type">Item</span>)</span></span> &#123;</div><div class="line">    launch &#123;</div><div class="line">        <span class="keyword">val</span> token = requestToken()</div><div class="line">        <span class="keyword">val</span> post = createPost(token, item)</div><div class="line">        processPost(post)</div><div class="line">        <span class="comment">// 需要异常处理，直接加上 try/catch 语句即可</span></div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>使用协程后的代码非常简洁，以顺序的方式书写异步代码，不会阻塞当前 UI 线程，错误处理也和平常代码一样简单。</p>
+<h3 id="2-协程是什么"><a href="#2-协程是什么" class="headerlink" title="2. 协程是什么"></a>2. 协程是什么</h3><h4 id="2-1-Gradle-引入"><a href="#2-1-Gradle-引入" class="headerlink" title="2.1 Gradle 引入"></a>2.1 Gradle 引入</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">dependencies &#123;</div><div class="line">    // Kotlin</div><div class="line">    compile <span class="string">"org.jetbrains.kotlin:kotlin-stdlib-jdk8:<span class="variable">$kotlin_version</span>"</span></div><div class="line"></div><div class="line">    // Kotlin Coroutines</div><div class="line">    compile <span class="string">'org.jetbrains.kotlinx:kotlinx-coroutines-core:0.22.5'</span></div><div class="line">&#125;</div><div class="line"></div><div class="line">kotlin &#123;</div><div class="line">    experimental &#123;</div><div class="line">        coroutines <span class="string">'enable'</span>     // avoid compiler reports a warning every time when we use the experimental coroutines</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="2-2-协程的定义"><a href="#2-2-协程的定义" class="headerlink" title="2.2 协程的定义"></a>2.2 协程的定义</h4><p>先看官方文档的描述：</p>
+<blockquote>
+<p>协程通过将复杂性放入库来简化异步编程。程序的逻辑可以在协程中顺序地表达，而底层库会为我们解决其异步性。该库可以将用户代码的相关部分包装为回调、订阅相关事件、在不同线程（甚至不同机器）上调度执行，而代码则保持如同顺序执行一样简单。</p>
+</blockquote>
+<p>协程的开发人员 Roman Elizarov 是这样描述协程的：<strong>协程就像非常轻量级的线程</strong>。线程是由系统调度的，线程切换或线程阻塞的开销都比较大。而协程依赖于线程，但是协程挂起时不需要阻塞线程，几乎是无代价的，协程是由开发者控制的。所以<strong>协程也像用户态的线程</strong>，非常轻量级，一个线程中可以创建任意个协程。</p>
+<p>总而言之：协程可以简化异步编程，可以顺序地表达程序，协程也提供了一种避免阻塞线程并用更廉价、更可控的操作替代线程阻塞的方法 – 协程挂起。</p>
+<h3 id="3-协程的基本概念"><a href="#3-协程的基本概念" class="headerlink" title="3. 协程的基本概念"></a>3. 协程的基本概念</h3><p>下面通过上面协程的例子来介绍协程中的一些基本概念：</p>
+<h4 id="3-1-挂起函数"><a href="#3-1-挂起函数" class="headerlink" title="3.1 挂起函数"></a>3.1 挂起函数</h4><figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">suspend <span class="function"><span class="keyword">fun</span> <span class="title">requestToken</span><span class="params">()</span></span>: Token &#123; ... &#125;   <span class="comment">// 挂起函数</span></div><div class="line">suspend <span class="function"><span class="keyword">fun</span> <span class="title">createPost</span><span class="params">(token: <span class="type">Token</span>, item: <span class="type">Item</span>)</span></span>: Post &#123; ... &#125;  <span class="comment">// 挂起函数</span></div><div class="line"><span class="function"><span class="keyword">fun</span> <span class="title">processPost</span><span class="params">(post: <span class="type">Post</span>)</span></span> &#123; ... &#125;</div></pre></td></tr></table></figure>
+<p><code>requestToken</code>和<code>createPost</code>函数前面有<code>suspend</code>修饰符标记，这表示两个函数都是挂起函数。挂起函数能够以与普通函数相同的方式获取参数和返回值，但是调用函数可能挂起协程（如果相关调用的结果已经可用，库可以决定继续进行而不挂起），<strong>挂起函数挂起协程时，不会阻塞协程所在的线程</strong>。挂起函数执行完成后会恢复协程，后面的代码才会继续执行。但是挂起函数只能在协程中或其他挂起函数中调用。事实上，要启动协程，至少要有一个挂起函数，它通常是一个挂起 lambda 表达式。所以<code>suspend</code>修饰符可以标记普通函数、扩展函数和 lambda 表达式。</p>
+<p>挂起函数只能在协程中或其他挂起函数中调用，上面例子中<code>launch</code>函数就创建了一个协程。</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">fun</span> <span class="title">postItem</span><span class="params">(item: <span class="type">Item</span>)</span></span> &#123;</div><div class="line">    launch &#123; <span class="comment">// 创建一个新协程</span></div><div class="line">        <span class="keyword">val</span> token = requestToken()</div><div class="line">        <span class="keyword">val</span> post = createPost(token, item)</div><div class="line">        processPost(post)</div><div class="line">        <span class="comment">// 需要异常处理，直接加上 try/catch 语句即可</span></div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><code>launch</code>函数：</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> actual <span class="function"><span class="keyword">fun</span> <span class="title">launch</span><span class="params">(</span></span></div><div class="line">    context: <span class="type">CoroutineContext</span> = DefaultDispatcher,</div><div class="line">    start: <span class="type">CoroutineStart</span> = CoroutineStart.DEFAULT,</div><div class="line">    parent: <span class="type">Job</span>? = <span class="literal">null</span>,</div><div class="line">    block: <span class="type">suspend</span> <span class="type">CoroutineScope</span>.() -&gt; <span class="built_in">Unit</span></div><div class="line">): Job</div></pre></td></tr></table></figure>
+<p>从上面函数定义中可以看到协程的一些重要的概念：CoroutineContext、CoroutineDispatcher、Job，下面来一一介绍这些概念。</p>
+<h4 id="3-1-CoroutineContext"><a href="#3-1-CoroutineContext" class="headerlink" title="3.1 CoroutineContext"></a>3.1 CoroutineContext</h4><p>CoroutineContext，协程上下文，是一些元素的集合，主要包括 Job 和 CoroutineDispatcher 元素，可以代表一个协程的场景。</p>
+<p>EmptyCoroutineContext 表示一个空的协程上下文。</p>
+<h4 id="3-2-CoroutineDispatcher"><a href="#3-2-CoroutineDispatcher" class="headerlink" title="3.2 CoroutineDispatcher"></a>3.2 CoroutineDispatcher</h4><p>CoroutineDispatcher，协程调度器，决定协程所在的线程或线程池。它可以指定协程运行于特定的一个线程、一个线程池或者不指定任何线程（这样协程就会运行于当前线程）。<code>coroutines-core</code>中 CoroutineDispatcher 有两种标准实现 CommonPool 和 Unconfined，Unconfined 就是不指定线程。</p>
+<p><code>launch</code>函数定义中的<code>DefaultDispatcher</code>实际上就是<code>CommonPool</code>，<code>CommonPool</code>是一个协程调度器，其指定的线程为共有的线程池。而且 CoroutineDispatcher 实现了 CoroutineContext 接口，所以才能直接指定<code>context: CoroutineContext = DefaultDispatcher</code>，实际上，协程上下文中的元素都实现了 CoroutineContext 接口。</p>
+<h4 id="3-3-Job-amp-Deferred"><a href="#3-3-Job-amp-Deferred" class="headerlink" title="3.3 Job &amp; Deferred"></a>3.3 Job &amp; Deferred</h4><p>Job，任务，封装了协程中需要执行的代码逻辑。Job 可以取消并且有简单生命周期，它有三种状态：</p>
+<table>
+<thead>
+<tr>
+<th><strong>State</strong></th>
+<th>[isActive]</th>
+<th>[isCompleted]</th>
+<th>[isCancelled]</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><em>New</em> (optional initial state)</td>
+<td><code>false</code></td>
+<td><code>false</code></td>
+<td><code>false</code></td>
+</tr>
+<tr>
+<td><em>Active</em> (default initial state)</td>
+<td><code>true</code></td>
+<td><code>false</code></td>
+<td><code>false</code></td>
+</tr>
+<tr>
+<td><em>Completing</em> (optional transient state)</td>
+<td><code>true</code></td>
+<td><code>false</code></td>
+<td><code>false</code></td>
+</tr>
+<tr>
+<td><em>Cancelling</em> (optional transient state)</td>
+<td><code>false</code></td>
+<td><code>false</code></td>
+<td><code>true</code></td>
+</tr>
+<tr>
+<td><em>Cancelled</em> (final state)</td>
+<td><code>false</code></td>
+<td><code>true</code></td>
+<td><code>true</code></td>
+</tr>
+<tr>
+<td><em>Completed</em> (final state)</td>
+<td><code>false</code></td>
+<td><code>true</code></td>
+<td><code>false</code></td>
+</tr>
+</tbody>
+</table>
+<p>Job 完成时是没有返回值的，如果需要返回值的话，应该使用 Deferred，它是 Job 的子类<code>public actual interface Deferred&lt;out T&gt; : Job</code>。Deferred 额外有一种状态 isCompletedExceptionally：</p>
+<table>
+<thead>
+<tr>
+<th><strong>State</strong></th>
+<th>[isActive]</th>
+<th>[isCompleted]</th>
+<th>[isCompletedExceptionally]</th>
+<th>[isCancelled]</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><em>New</em> (optional initial state)</td>
+<td><code>false</code></td>
+<td><code>false</code></td>
+<td><code>false</code></td>
+<td><code>false</code></td>
+</tr>
+<tr>
+<td><em>Active</em> (default initial state)</td>
+<td><code>true</code></td>
+<td><code>false</code></td>
+<td><code>false</code></td>
+<td><code>false</code></td>
+</tr>
+<tr>
+<td><em>Completing</em> (optional transient state)</td>
+<td><code>true</code></td>
+<td><code>false</code></td>
+<td><code>false</code></td>
+<td><code>false</code></td>
+</tr>
+<tr>
+<td><em>Cancelling</em> (optional transient state)</td>
+<td><code>false</code></td>
+<td><code>false</code></td>
+<td><code>false</code></td>
+<td><code>true</code></td>
+</tr>
+<tr>
+<td><em>Cancelled</em> (final state)</td>
+<td><code>false</code></td>
+<td><code>true</code></td>
+<td><code>true</code></td>
+<td><code>true</code></td>
+</tr>
+<tr>
+<td><em>Resolved</em>  (final state)</td>
+<td><code>false</code></td>
+<td><code>true</code></td>
+<td><code>false</code></td>
+<td><code>false</code></td>
+</tr>
+<tr>
+<td><em>Failed</em>    (final state)</td>
+<td><code>false</code></td>
+<td><code>true</code></td>
+<td><code>true</code></td>
+<td><code>false</code></td>
+</tr>
+</tbody>
+</table>
+<h4 id="3-4-Coroutine-builders"><a href="#3-4-Coroutine-builders" class="headerlink" title="3.4 Coroutine builders"></a>3.4 Coroutine builders</h4><p><code>launch</code>函数属于协程构建器 Coroutine builders，Kotlin 中还有其他几种 Builders，负责创建协程。</p>
+<h5 id="3-4-1-launch"><a href="#3-4-1-launch" class="headerlink" title="3.4.1 launch {}"></a>3.4.1 launch {}</h5><p><code>launch {}</code> 是最常用的 Coroutine builders，不阻塞当前线程，在后台创建一个新协程，也可以指定协程调度器，例如在 Android 中常用的<code>launch(UI) {}</code>。</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">fun</span> <span class="title">postItem</span><span class="params">(item: <span class="type">Item</span>)</span></span> &#123;</div><div class="line">    launch(UI) &#123; <span class="comment">// 在 UI 线程创建一个新协程</span></div><div class="line">        <span class="keyword">val</span> token = requestToken()</div><div class="line">        <span class="keyword">val</span> post = createPost(token, item)</div><div class="line">        processPost(post)</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h5 id="3-4-2-runBlocking"><a href="#3-4-2-runBlocking" class="headerlink" title="3.4.2 runBlocking {}"></a>3.4.2 runBlocking {}</h5><p><code>runBlocking {}</code>是创建一个新的协程同时阻塞当前线程，直到协程结束。这个不应该在协程中使用，主要是为<code>main</code>函数和测试设计的。</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">fun</span> <span class="title">main</span><span class="params">(args: <span class="type">Array</span>&lt;<span class="type">String</span>&gt;)</span></span> = runBlocking&lt;<span class="built_in">Unit</span>&gt; &#123; <span class="comment">// start main coroutine</span></div><div class="line">    launch &#123; <span class="comment">// launch new coroutine in background and continue</span></div><div class="line">        delay(<span class="number">1000</span>L)</div><div class="line">        println(<span class="string">"World!"</span>)</div><div class="line">    &#125;</div><div class="line">    println(<span class="string">"Hello,"</span>) <span class="comment">// main coroutine continues here immediately</span></div><div class="line">    delay(<span class="number">2000</span>L)      <span class="comment">// delaying for 2 seconds to keep JVM alive</span></div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyTest</span> </span>&#123;</div><div class="line">    <span class="meta">@Test</span></div><div class="line">    <span class="function"><span class="keyword">fun</span> <span class="title">testMySuspendingFunction</span><span class="params">()</span></span> = runBlocking&lt;<span class="built_in">Unit</span>&gt; &#123;</div><div class="line">        <span class="comment">// here we can use suspending functions using any assertion style that we like</span></div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h5 id="3-4-3-withContext"><a href="#3-4-3-withContext" class="headerlink" title="3.4.3 withContext {}"></a>3.4.3 withContext {}</h5><p><code>withContext {}</code>不会创建新的协程，在指定协程上运行挂起代码块，并挂起该协程直至代码块运行完成。</p>
+<h5 id="3-4-4-async"><a href="#3-4-4-async" class="headerlink" title="3.4.4 async {}"></a>3.4.4 async {}</h5><p><code>async {}</code>可以实现与 launch builder 一样的效果，在后台创建一个新协程，唯一的区别是它有返回值，因为<code>async {}</code>返回的是 Deferred 类型。</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">fun</span> <span class="title">main</span><span class="params">(args: <span class="type">Array</span>&lt;<span class="type">String</span>&gt;)</span></span> = runBlocking&lt;<span class="built_in">Unit</span>&gt; &#123; <span class="comment">// start main coroutine</span></div><div class="line">    <span class="keyword">val</span> time = measureTimeMillis &#123;</div><div class="line">        <span class="keyword">val</span> one = async &#123; doSomethingUsefulOne() &#125;  <span class="comment">// start async one coroutine without suspend main coroutine</span></div><div class="line">        <span class="keyword">val</span> two = async &#123; doSomethingUsefulTwo() &#125;  <span class="comment">// start async two coroutine without suspend main coroutine</span></div><div class="line">        println(<span class="string">"The answer is <span class="subst">$&#123;one.await() + two.await()&#125;</span>"</span>) <span class="comment">// suspend main coroutine for waiting two async coroutines to finish</span></div><div class="line">    &#125;</div><div class="line">    println(<span class="string">"Completed in <span class="subst">$time</span> ms"</span>)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>获取<code>async {}</code>的返回值需要通过<code>await()</code>函数，它也是是个挂起函数，调用时会挂起当前协程直到 async 中代码执行完并返回某个值。</p>
+<h3 id="4-小结"><a href="#4-小结" class="headerlink" title="4. 小结"></a>4. 小结</h3><p>Kotlin 协程可以极大地简化异步编程，期待它正式发布的一天。虽然刚开始接触的时候学习比较吃力，但是接触过一段时间相信绝对会爱上它。建议大家也去浏览下面推荐的资料，可以更快地了解协程的大概。</p>
+<p><strong>推荐阅读：</strong></p>
+<ul>
+<li><p><a href="https://www.youtube.com/watch?v=_hfBv0a09Jc" target="_blank" rel="external">Introduction to Coroutines</a>(Roman Elizarov at KotlinConf 2017, <a href="https://www.slideshare.net/elizarov/introduction-to-coroutines-kotlinconf-2017" target="_blank" rel="external">slides</a>)</p>
+</li>
+<li><p><a href="http://kotlinlang.org/docs/reference/coroutines.html" target="_blank" rel="external">Kotlin Coroutines doc</a></p>
+</li>
+<li><p><a href="https://github.com/Kotlin/kotlinx.coroutines/blob/master/coroutines-guide.md" target="_blank" rel="external">Guide to kotlinx.coroutines by example</a></p>
+</li>
+</ul>
+      
+    </div>
+
+    
+    <section data-mpa-template-id="95" class="mpa-template" data-mpa-color="#ffffff">
+      <section style="margin-top: 20px;display: -webkit-box;display: flex;-webkit-box-pack: center;justify-content: center;-webkit-box-align: center;align-items: center" data-mid="t22">
+        <section style="text-align: center;line-height: 30px" data-mid="">
+          <section style="display: inline-block;float: left;width: 95px;height: 2px;background: -webkit-linear-gradient(right, #141414, #f0f0f0);background: linear-gradient(to left, #141414, #f0f0f0);-webkit-transform: translate(0px, 12px);-ms-transform: translate(0px, 12px);transform: translate(0px, 12px)" data-mid="" data-contenteditable="false">
+          </section>
+          <section style="float: left;width: 4px;height: 4px;border-radius: 50%;padding: 3px;background-color: #b1b1b1;text-align: center;-webkit-transform: translate(0px, 8px);-ms-transform: translate(0px, 8px);transform: translate(0px, 8px)" data-mid="" data-contenteditable="false">
+            <section style="width: 5px;height: 5px;border-radius: 50%;background-color: #141414" data-mid="">
+            </section>
+          </section>
+          <section style="float: left;min-width: 50px;padding: 0 10px 0 10px;font-size: 16px;color: #4f4f4f;text-align: center;line-height: 30px" data-mid="">END</section>
+          <section style="float: left;padding: 3px;width: 4px;height: 4px;border-radius: 50%;background-color: #b1b1b1;text-align: center;-webkit-transform: translate(0px, 9px);-ms-transform: translate(0px, 9px);transform: translate(0px, 9px)" data-mid="" data-contenteditable="false">
+            <section style="width: 5px;height: 5px;border-radius: 50%;background-color: #141414" data-mid="">
+            </section>
+          </section>
+          <section style="display: inline-block;float: left;width: 95px;height: 2px;background: -webkit-linear-gradient(left, #141414, #f0f0f0);background: linear-gradient(to right, #141414, #f0f0f0);-webkit-transform: translate(-1px, 14px);-ms-transform: translate(-1px, 14px);transform: translate(-1px, 14px)" data-mid="" data-contenteditable="false">
+          </section>
+        </section>
+      </section>
+    </section>
+    
+
+    <div>
+      
+        
+<div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
+    <img id="wechat_subscriber_qcode" src="/uploads/wechat_qcode.jpg" alt="Johnny Shieh wechat" style="width: 200px; max-width: 100%">
+    <div>我的公众号，不只有技术，还有咖啡和彩蛋！</div>
+</div>
+
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/kotlin/" rel="tag"># kotlin</a>
+          
+            <a href="/tags/coroutines/" rel="tag"># coroutines</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/posts/android-transition-animation/" rel="next" title="[译] Android Transition Animation 过渡动画解析">
+                <i class="fa fa-chevron-left"></i> [译] Android Transition Animation 过渡动画解析
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="SOHUCS" sid="posts/kotlin-coroutine-introduction/"></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image" src="/uploads/avatar.png" alt="Johnny Shieh">
+          <p class="site-author-name" itemprop="name">Johnny Shieh</p>
+           
+              <p class="site-description motion-element" itemprop="description">我本微末，心向天空</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">65</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">12</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">40</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/JohnnyShieh" rel="external nofollow" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/johnnyshieh17" rel="external nofollow" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  Weibo
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="mailto:JohnnyShieh17@gmail.com" rel="external nofollow" target="_blank" title="Gmail">
+                  
+                    <i class="fa fa-fw fa-envelope"></i>
+                  
+                  Gmail
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.jianshu.com/u/763027594c0b" rel="external nofollow" target="_blank" title="简书">
+                  
+                    <i class="fa fa-fw fa-book"></i>
+                  
+                  简书
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        <!--<div style="margin: 20px 0 20px 0; height: 1px; background: #eee"></div> 
+<div id="hot-series">
+    <ul class="sidebar-nav" style="margin-bottom: 0;">
+        <li>热门系列</li>
+    </ul>
+    <ul class="series-posts" style="font-size: 14px; padding-left: 10px; list-style: none; text-align: left;">
+        <li><span><a href="http://johnnyshieh.me/tags/dagger/">Dagger 完全解析</a></span>（6）</li>
+         <li><span><a href="http://johnnyshieh.me/categories/AspectJ/">AspectJ in Android</a></span>（3）</li>
+        <li><span><a href="http://johnnyshieh.me/categories/unit-test/">Kotlin 写 Android 单元测试</a>（4）</span></li>
+    </ul>
+</div>
+-->
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-为什么需要协程？"><span class="nav-text">1. 为什么需要协程？</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-1-回调"><span class="nav-text">1.1 回调</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-2-Future"><span class="nav-text">1.2 Future</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-3-Rx-编程"><span class="nav-text">1.3 Rx 编程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-4-协程"><span class="nav-text">1.4 协程</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-协程是什么"><span class="nav-text">2. 协程是什么</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-1-Gradle-引入"><span class="nav-text">2.1 Gradle 引入</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-协程的定义"><span class="nav-text">2.2 协程的定义</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-协程的基本概念"><span class="nav-text">3. 协程的基本概念</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#3-1-挂起函数"><span class="nav-text">3.1 挂起函数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-1-CoroutineContext"><span class="nav-text">3.1 CoroutineContext</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-2-CoroutineDispatcher"><span class="nav-text">3.2 CoroutineDispatcher</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-3-Job-amp-Deferred"><span class="nav-text">3.3 Job & Deferred</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-4-Coroutine-builders"><span class="nav-text">3.4 Coroutine builders</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#3-4-1-launch"><span class="nav-text">3.4.1 launch {}</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-4-2-runBlocking"><span class="nav-text">3.4.2 runBlocking {}</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-4-3-withContext"><span class="nav-text">3.4.3 withContext {}</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-4-4-async"><span class="nav-text">3.4.4 async {}</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-小结"><span class="nav-text">4. 小结</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+      <div style="margin: 20px 0 20px 0; height: 1px; background: #eee"></div> 
+<div id="hot-series">
+    <ul class="sidebar-nav" style="margin-bottom: 0">
+        <li>热门系列</li>
+    </ul>
+    <ul class="series-posts" style="font-size: 14px; padding-left: 10px; list-style: none; text-align: left">
+        <li><span><a href="http://johnnyshieh.me/tags/dagger/">Dagger 完全解析</a></span>（6）</li>
+         <li><span><a href="http://johnnyshieh.me/categories/AspectJ/">AspectJ in Android</a></span>（3）</li>
+        <li><span><a href="http://johnnyshieh.me/categories/unit-test/">Kotlin 写 Android 单元测试</a>（4）</span></li>
+    </ul>
+</div>
+
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy;  2015 - 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Johnny Shieh</span>
+</div>
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>访客数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>总访问量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="http://images.johnnyshieh.me/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.1"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+  
+    <script type="text/javascript">
+    (function(){
+      var appid = 'cyt8KwhJ1';
+      var conf = 'prod_651756cd8d701505ffbb60e416929831';
+      var width = window.innerWidth || document.documentElement.clientWidth;
+      if (width < 960) {
+      window.document.write('<script id="changyan_mobile_js" charset="utf-8" type="text/javascript" src="https://changyan.sohu.com/upload/mobile/wap-js/changyan_mobile.js?client_id=' + appid + '&conf=' + conf + '"><\/script>'); } else { var loadJs=function(d,a){var c=document.getElementsByTagName("head")[0]||document.head||document.documentElement;var b=document.createElement("script");b.setAttribute("type","text/javascript");b.setAttribute("charset","UTF-8");b.setAttribute("src",d);if(typeof a==="function"){if(window.attachEvent){b.onreadystatechange=function(){var e=b.readyState;if(e==="loaded"||e==="complete"){b.onreadystatechange=null;a()}}}else{b.onload=a}}c.appendChild(b)};loadJs("https://changyan.sohu.com/upload/changyan.js",function(){
+        window.changyan.api.config({appid:appid,conf:conf})});
+      }
+    })();
+    </script>
+    <script type="text/javascript" src="https://assets.changyan.sohu.com/upload/plugins/plugins.count.js"></script>
+
+
+
+  
+
+
+
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/algolia-instant-search/instantsearch.min.css">
+
+  
+  
+  <script src="/lib/algolia-instant-search/instantsearch.min.js"></script>
+  
+
+  <script src="/js/src/algolia-search.js?v=5.1.1"></script>
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("n55tIxEzsDxW0BEFhehOkP2K-gzGzoHsz", "TwYjARitxhv7iOhbg7k2a9xB");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  
+
+  
+
+</body>
+</html>
