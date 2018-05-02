@@ -4,6 +4,26 @@
 
     
   <url>
+    <loc>http://johnnyshieh.me/posts/java-generics/</loc>
+    <lastmod>2018-05-02T10:53:13.000Z</lastmod>
+    <data>
+        <display>
+        <title>Java 泛型</title>
+        <pubTime>2018-04-27T08:07:56.000Z</pubTime>
+        
+        <tag>java</tag>
+         
+         
+           
+             
+              <breadCrumb title="Java" url="http://johnnyshieh.me/categories/java/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://johnnyshieh.me/posts/kotlin-coroutine-introduction/</loc>
     <lastmod>2018-04-19T11:50:45.000Z</lastmod>
     <data>
@@ -57,13 +77,13 @@
         <title>Dagger 2 完全解析（五），Kotlin 中使用 Dagger 2</title>
         <pubTime>2017-06-19T09:17:04.000Z</pubTime>
         
+        <tag>kotlin</tag>
+         
         <tag>android</tag>
          
         <tag>java</tag>
          
         <tag>dagger</tag>
-         
-        <tag>kotlin</tag>
          
          
            
@@ -1002,9 +1022,9 @@
         <title>Kotlin 中延迟初始化的非空属性，如何避免使用不必要的 !! 操作符</title>
         <pubTime>2017-06-22T08:52:50.000Z</pubTime>
         
-        <tag>android</tag>
-         
         <tag>kotlin</tag>
+         
+        <tag>android</tag>
          
          
            

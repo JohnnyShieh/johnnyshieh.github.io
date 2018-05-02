@@ -355,6 +355,185 @@
   
 
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://johnnyshieh.me/posts/android-handler-memory-leak/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Johnny Shieh">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Johnny Shieh">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/posts/android-handler-memory-leak/" itemprop="url">[译] Android 中由 Handler 和内部类引起的内存泄漏</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-09-03T00:00:00+08:00">
+                2015-09-03
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/android/" itemprop="url" rel="index">
+                    <span itemprop="name">Android</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+              <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-comment-o"></i>
+              </span>
+              
+                <a href="/posts/android-handler-memory-leak/#SOHUCS" itemprop="discussionUrl">
+                  <span id="sourceId::posts/android-handler-memory-leak/" class="cy_cmt_count" data-xid="posts/android-handler-memory-leak/" itemprop="commentsCount"></span>
+                </a>
+              
+            
+          
+
+          
+          
+             <span id="/posts/android-handler-memory-leak/" class="leancloud_visitors" data-flag-title="[译] Android 中由 Handler 和内部类引起的内存泄漏">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </span></div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p><strong>原文链接：</strong><a href="http://www.androiddesignpatterns.com/2013/01/inner-class-handler-memory-leak.html" target="_blank" rel="external">How to Leak a Context: Handlers &amp; Inner Classes</a>    </p>
+<p> <strong>作者：</strong><a href="https://plus.google.com/+AlexLockwood/posts" target="_blank" rel="external">Alex Lockwood</a></p>
+<h2 id="泄露场景"><a href="#泄露场景" class="headerlink" title="泄露场景"></a>泄露场景</h2><p>在 Android 中我们经常用 Handler 来处理异步消息，把非主线程的操作结果放在主线程中更新 UI。请思考一下下面的代码有没有问题：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SampleActivity</span> <span class="keyword">extends</span> <span class="title">Activity</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="keyword">private</span> <span class="keyword">final</span> Handler mLeakyHandler = <span class="keyword">new</span> Handler() &#123;</div><div class="line">        <span class="meta">@Override</span></div><div class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">handleMessage</span><span class="params">(Message msg)</span> </span>&#123;</div><div class="line">        <span class="comment">// ... </span></div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>虽然看起来好像没什么问题，但是这段代码可能引起内存泄露。Android Lint 工具会给出以下警告：</p>
+<blockquote>
+<p>In Android, Handler classes should be static or leaks might occur, Messages enqueued on the application thread’s MessageQueue also retain their target Handler. If the Handler is an inner class, its outer class will be retained as well. To avoid leaking the outer class, declare the Handler as a static nested class with a WeakReference to its outer class</p>
+</blockquote>
+<p>但是什么东西泄漏了，内存泄漏怎么发生的我们还是不清楚。接下来我们慢慢分析泄漏的原因：</p>
+<ol>
+<li><p>当一个 Android 应用启动时，框架会分配到一个 Looper 实例给应用的主线程。这个 Looper 的主要工作就是处理一个接着一个的消息对象。在 Android 中，所有 Android 框架的事件（比如 Activity 的生命周期方法的调用和按钮的点击等）都是放到消息中，然后加入到 Looper 要处理的消息队列中，由 Looper 依次处理。主线程的 Looper 的生命周期和应用的一样长。</p>
+</li>
+<li><p>当在主线程中初始化一个 Handler 时，它就会关联到 Looper 的消息队列。发送到消息队列的消息本身就持有 Handler 的引用，只有这样 Looper 在处理这个条消息的时候才能调用 Handler#handleMessage(Message) 处理消息。</p>
+</li>
+<li><p>在 Java 中，非静态的内部类和匿名内部类都会隐式地持有其外部类的引用，而静态的内部类则不会。</p>
+</li>
+</ol>
+<p>上面的代码还是很难察觉哪里会导致内存泄漏，那么再看看下面这个例子：</p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/posts/android-handler-memory-leak/" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://johnnyshieh.me/posts/how-hashmap-work/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1013,190 +1192,11 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://johnnyshieh.me/posts/java-reflection/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Johnny Shieh">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Johnny Shieh">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/posts/java-reflection/" itemprop="url">Java 反射机制</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-01-30T00:00:00+08:00">
-                2015-01-30
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/java/" itemprop="url" rel="index">
-                    <span itemprop="name">Java</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-              <span class="post-meta-divider">|</span>
-              <span class="post-meta-item-icon">
-                <i class="fa fa-comment-o"></i>
-              </span>
-              
-                <a href="/posts/java-reflection/#SOHUCS" itemprop="discussionUrl">
-                  <span id="sourceId::posts/java-reflection/" class="cy_cmt_count" data-xid="posts/java-reflection/" itemprop="commentsCount"></span>
-                </a>
-              
-            
-          
-
-          
-          
-             <span id="/posts/java-reflection/" class="leancloud_visitors" data-flag-title="Java 反射机制">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数 </span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </span></div>
-      </header>
-    
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h2 id="什么是反射？"><a href="#什么是反射？" class="headerlink" title="什么是反射？"></a>什么是反射？</h2><p>Java 的反射机制可以使得程序在 Java 运行时能够检测、访问并且修改编译时完全未知的 classes，这个概念很容易和内省混淆。下面是 WiKi 上对这两个概念给出的定义：</p>
-<p><strong>反射</strong>（Reflection）：反射是指计算机程序在运行时可以访问、检测和修改它本身状态或行为的一种能力。<br><strong>内省</strong>（Introspection）：内省是指计算机程序在运行检查对象类型的一种能力，通常也可以称作<strong>运行时类型检查</strong>。</p>
-<p>从上面的定义可以看出，相对于内省，反射更进一步。例如，Java 具有反射特性，而 C++ 不具有反射特性只具有内省特性。</p>
-<h2 id="反射有什么用途？"><a href="#反射有什么用途？" class="headerlink" title="反射有什么用途？"></a>反射有什么用途？</h2><p>反射主要提供以下功能：</p>
-<ol>
-<li><p>在运行时检查对象的类型</p>
-</li>
-<li><p>在运行时新建类的实例</p>
-</li>
-<li><p>在运行时检测对象一个类的成员变量和方法</p>
-</li>
-<li><p>在运行时调用对象的任意方法</p>
-</li>
-<li><p>在运行时修改构造函数、成员变量和方法的访问权限</p>
-</li>
-<li><p>等等</p>
-</li>
-</ol>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/posts/java-reflection/" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/10/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/10/">10</a><span class="page-number current">11</span><a class="page-number" href="/page/12/">12</a><a class="page-number" href="/page/13/">13</a><a class="extend next" rel="next" href="/page/12/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/page/10/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/10/">10</a><span class="page-number current">11</span><a class="page-number" href="/page/12/">12</a><span class="space">&hellip;</span><a class="page-number" href="/page/14/">14</a><a class="extend next" rel="next" href="/page/12/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1239,7 +1239,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">65</span>
+                <span class="site-state-item-count">66</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
