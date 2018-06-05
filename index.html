@@ -355,6 +355,180 @@
   
 
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://johnnyshieh.me/posts/download-android-source/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Johnny Shieh">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Johnny Shieh">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/posts/download-android-source/" itemprop="url">Mac 中下载阅读 Android 源码</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-06-05T16:19:44+08:00">
+                2018-06-05
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/android/" itemprop="url" rel="index">
+                    <span itemprop="name">Android</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+              <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-comment-o"></i>
+              </span>
+              
+                <a href="/posts/download-android-source/#SOHUCS" itemprop="discussionUrl">
+                  <span id="sourceId::posts/download-android-source/" class="cy_cmt_count" data-xid="posts/download-android-source/" itemprop="commentsCount"></span>
+                </a>
+              
+            
+          
+
+          
+          
+             <span id="/posts/download-android-source/" class="leancloud_visitors" data-flag-title="Mac 中下载阅读 Android 源码">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </span></div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="1-Mac-中下载-Android-源码"><a href="#1-Mac-中下载-Android-源码" class="headerlink" title="1. Mac 中下载 Android 源码"></a>1. Mac 中下载 Android 源码</h3><blockquote>
+<p>准备工作：创建区分大小写的 APFS 宗卷</p>
+</blockquote>
+<p>国内使用 Android Source 官方的下载方式有点慢，所以通常建议使用国内的 AOSP 镜像，一般是<a href="https://lug.ustc.edu.cn/wiki/mirrors/help/aosp" target="_blank" rel="external">中科大的镜像</a>或者<a href="https://mirrors.tuna.tsinghua.edu.cn/help/AOSP/" target="_blank" rel="external">清华大学的镜像</a>，本文使用的是清华大学的镜像。</p>
+<p>先下载 repo 工具：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">mkdir ~/bin</div><div class="line">PATH=~/bin:<span class="variable">$PATH</span></div><div class="line">curl https://storage.googleapis.com/git-repo-downloads/repo &gt; ~/bin/repo</div><div class="line">chmod a+x ~/bin/repo</div></pre></td></tr></table></figure>
+<p>然后有两种下载方式，分别适合不同场景。</p>
+<h4 id="1-1-下载最新版本的源码"><a href="#1-1-下载最新版本的源码" class="headerlink" title="1.1 下载最新版本的源码"></a>1.1 下载最新版本的源码</h4><p>如果需要下载最新版本的源码，建议使用镜像中的每月初始化包。先下载初始化包，其中包含了<code>.repo</code>目录，然后解压再<code>repo sync</code> 一次就完成了。</p>
+<p>推荐使用 axel 工具下载，速度快，支持断点续传。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 下载初始化包</span></div><div class="line">axel -n 3 https://mirrors.tuna.tsinghua.edu.cn/aosp-monthly/aosp-latest.tar</div><div class="line"></div><div class="line"><span class="comment"># 解压得到 aosp 目录</span></div><div class="line">tar xvf aosp-latest.tar</div><div class="line"></div><div class="line"><span class="built_in">cd</span> aosp</div><div class="line"></div><div class="line"><span class="comment"># 同步一次</span></div><div class="line">repo sync</div><div class="line"><span class="comment"># 或 repo sync -l 仅 checkout .repo 中的代码</span></div></pre></td></tr></table></figure>
+<h4 id="1-2-下载具体某版本的源码"><a href="#1-2-下载具体某版本的源码" class="headerlink" title="1.2 下载具体某版本的源码"></a>1.2 下载具体某版本的源码</h4><p>如果需要下载具体某版本的源码，使用官方的方式，不过下载源替换成清华大学镜像的地址。具体 Android 版本见<a href="https://source.android.com/source/build-numbers.html#source-code-tags-and-builds" target="_blank" rel="external">列表</a></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 建立工作目录</span></div><div class="line">mkdir WORKING_DIRECTORY</div><div class="line"><span class="built_in">cd</span> WORKING_DIRECTORY</div><div class="line"></div><div class="line"><span class="comment"># 初始化仓库</span></div><div class="line">repo init -u https://aosp.tuna.tsinghua.edu.cn/platform/manifest -b android-4.0.1_r1 --depth=1</div><div class="line"></div><div class="line"><span class="comment"># 只同步当前分支代码</span></div><div class="line">repo sync -c</div></pre></td></tr></table></figure>
+<p>这种方式下载下来的代码会小很多，推荐这种方式。</p>
+<h3 id="2-导入-Android-源码到-Android-Studio-中阅读"><a href="#2-导入-Android-源码到-Android-Studio-中阅读" class="headerlink" title="2. 导入 Android 源码到 Android Studio 中阅读"></a>2. 导入 Android 源码到 Android Studio 中阅读</h3><p>Mac 下无法使用 Source Insight，所以我是使用 Android Studio 来阅读的，Android 源码中已经提供了导入到 Eclipse 和 Android Studio 的配置，需要使用<code>development/tools/idegen.sh</code>工具。</p>
+<p>因为我只想阅读 Android 源码，不需要编译，所以使用其他人编译好的<a href="https://github.com/dxjia/common-tools/tree/master/read_aosp_through_intellij" target="_blank" rel="external">idegen.jar</a>。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 复制到指定目录</span></div><div class="line">mv idegen.jar aosp/out/host/darwin-x86/framework/</div><div class="line"></div><div class="line"><span class="comment"># 在默认终端中运行 idegen.sh，因为 sh 只支持 bash</span></div><div class="line">development/tools/idegen/idegen.sh</div></pre></td></tr></table></figure>
+<p>然后在 aosp 目录可以看到<code>android.ipr</code>和<code>android.iml</code>文件，接下来编辑<code>android.iml</code>文件，把不需要导入的项目注释掉，节省导入时间。</p>
+<p>最后在 Android Studio 中打开<code>android.ipr</code>即可。</p>
+          
+        
+      
+    </div>
+
+    
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://johnnyshieh.me/posts/java-generics/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1030,169 +1204,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://johnnyshieh.me/posts/summary-of-2017/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Johnny Shieh">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Johnny Shieh">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/posts/summary-of-2017/" itemprop="url">2017 年终总结</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-31T19:42:40+08:00">
-                2017-12-31
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/essay/" itemprop="url" rel="index">
-                    <span itemprop="name">随笔</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-              <span class="post-meta-divider">|</span>
-              <span class="post-meta-item-icon">
-                <i class="fa fa-comment-o"></i>
-              </span>
-              
-                <a href="/posts/summary-of-2017/#SOHUCS" itemprop="discussionUrl">
-                  <span id="sourceId::posts/summary-of-2017/" class="cy_cmt_count" data-xid="posts/summary-of-2017/" itemprop="commentsCount"></span>
-                </a>
-              
-            
-          
-
-          
-          
-             <span id="/posts/summary-of-2017/" class="leancloud_visitors" data-flag-title="2017 年终总结">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数 </span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </span></div>
-      </header>
-    
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>365 天，250 个工作日，又这样匆匆过去了，我的 24 岁也成了过去式。总的来说，我的 2017 是充实而又孤单的一年。</p>
-<p>工作上感觉比较充实，5 月份买了 johnnyshieh.me 域名，到年底半年多的时间访客数从零到六千多，一年中写了 29 篇文章，包括三个系列文章。基本每两周就会写一篇技术博客，而且开始写了三个系列文章，逐步记录了自己学习 Dagger 2 依赖注入、AspectJ 切面编程、单元测试的过程。工作上重构代码时实践了自己私下学习的 <a href="https://github.com/JohnnyShieh/RxFlux" target="_blank" rel="external">RxFlux</a> 架构单向数据流分层架构，经过时间检验效果还不错。</p>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/posts/summary-of-2017/" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -1246,7 +1257,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">66</span>
+                <span class="site-state-item-count">67</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>

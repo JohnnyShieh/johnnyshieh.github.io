@@ -4,8 +4,28 @@
 
     
   <url>
+    <loc>http://johnnyshieh.me/posts/download-android-source/</loc>
+    <lastmod>2018-06-05T12:39:39.000Z</lastmod>
+    <data>
+        <display>
+        <title>Mac 中下载阅读 Android 源码</title>
+        <pubTime>2018-06-05T08:19:44.000Z</pubTime>
+        
+        <tag>android</tag>
+         
+         
+           
+             
+              <breadCrumb title="Android" url="http://johnnyshieh.me/categories/android/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://johnnyshieh.me/posts/java-generics/</loc>
-    <lastmod>2018-05-02T10:58:52.000Z</lastmod>
+    <lastmod>2018-05-03T09:17:34.000Z</lastmod>
     <data>
         <display>
         <title>Java 泛型</title>
