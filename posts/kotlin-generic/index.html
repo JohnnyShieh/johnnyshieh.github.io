@@ -1,0 +1,1212 @@
+<!doctype html>
+
+
+
+
+<html class="theme-next pisces" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta http-equiv="Content-Language" content="zh-cn">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+  <meta name="google-site-verification" content="r1Es2KSXuS6zYdab4rZeEA6X-pEwRwyT4x89S7a4EHE">
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+  <link href="http://images.johnnyshieh.me/lib/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="http://images.johnnyshieh.me/fonts/font.css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+  
+
+<link href="http://images.johnnyshieh.me/lib/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="http://images.johnnyshieh.me/css/main.css?v=5.1.1" rel="stylesheet" type="text/css">
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1">
+
+
+
+  
+    <link rel="apple-touch-icon-precomposed" sizes="57x57" href="/apple-touch-icon-57x57.png">
+  
+    <link rel="apple-touch-icon-precomposed" sizes="120x120" href="/apple-touch-icon-120x120.png">
+  
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="/apple-touch-icon-152x152.png">
+  
+
+
+
+
+
+
+<meta name="description" content="建议先阅读我的上一篇文章 – Java 泛型  和 Java 泛型一样，Kotlin 泛型也是 Kotlin 语言中较难理解的一个部分。Kotlin 泛型的本质也是参数化类型，并且提供了编译时强类型检查，实际上也是伪泛型，和 Java 泛型类型一样。这篇文章将介绍 Kotlin 泛型里中的重要概念，以及与 Java 泛型的对比。 1. 泛型类型与泛型函数Kotlin 下泛型类型与泛型函数的写法，">
+<meta name="keywords" content="Kotlin, Java, 泛型, generic, reified, Johnny, Shieh, Johnny Shieh, johnny shieh blog, ">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Kotlin 泛型 VS Java 泛型">
+<meta property="og:url" content="http://johnnyshieh.me/posts/kotlin-generic/index.html">
+<meta property="og:site_name" content="Johnny Shieh">
+<meta property="og:description" content="建议先阅读我的上一篇文章 – Java 泛型  和 Java 泛型一样，Kotlin 泛型也是 Kotlin 语言中较难理解的一个部分。Kotlin 泛型的本质也是参数化类型，并且提供了编译时强类型检查，实际上也是伪泛型，和 Java 泛型类型一样。这篇文章将介绍 Kotlin 泛型里中的重要概念，以及与 Java 泛型的对比。 1. 泛型类型与泛型函数Kotlin 下泛型类型与泛型函数的写法，">
+<meta property="og:updated_time" content="2018-06-08T09:47:25.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Kotlin 泛型 VS Java 泛型">
+<meta name="twitter:description" content="建议先阅读我的上一篇文章 – Java 泛型  和 Java 泛型一样，Kotlin 泛型也是 Kotlin 语言中较难理解的一个部分。Kotlin 泛型的本质也是参数化类型，并且提供了编译时强类型检查，实际上也是伪泛型，和 Java 泛型类型一样。这篇文章将介绍 Kotlin 泛型里中的重要概念，以及与 Java 泛型的对比。 1. 泛型类型与泛型函数Kotlin 下泛型类型与泛型函数的写法，">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"right","display":"always","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: false,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: 'QK028ACQPB',
+      apiKey: '4e4a5ec0318356434aed6a3aa5aea209',
+      indexName: 'blog',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"搜索文章","hits_empty":"找不到与您搜索的 ${query} 相符的文章，请尝试其他关键字","hits_stats":"找到 ${hits} 条搜索结果，用时 ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://johnnyshieh.me/posts/kotlin-generic/">
+
+
+
+
+
+  <title>Kotlin 泛型 VS Java 泛型 | Johnny Shieh</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?43cea51223ad3b7bc740196aab48d664";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Johnny Shieh</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">人如果没有梦想，跟咸鱼有什么分别</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-books">
+          <a href="/books" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br>
+            
+            读书
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-friends">
+          <a href="/friends" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-users"></i> <br>
+            
+            小伙伴
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  
+  <div class="algolia-popup popup search-popup">
+    <div class="algolia-search">
+      <div class="algolia-search-input-icon">
+        <i class="fa fa-search"></i>
+      </div>
+      <div class="algolia-search-input" id="algolia-search-input"></div>
+    </div>
+
+    <div class="algolia-results">
+      <div id="algolia-stats"></div>
+      <div id="algolia-hits"></div>
+      <div id="algolia-pagination" class="algolia-pagination"></div>
+    </div>
+
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+  </div>
+
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://johnnyshieh.me/posts/kotlin-generic/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Johnny Shieh">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Johnny Shieh">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Kotlin 泛型 VS Java 泛型</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-05-03T19:06:06+08:00">
+                2018-05-03
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/kotlin/" itemprop="url" rel="index">
+                    <span itemprop="name">Kotlin</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+              <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-comment-o"></i>
+              </span>
+              
+                <a href="/posts/kotlin-generic/#SOHUCS" itemprop="discussionUrl">
+                  <span id="changyan_count_unit" class="post-comments-count hc-comment-count" data-xid="posts/kotlin-generic/" itemprop="commentsCount"></span>
+                </a>
+              
+            
+          
+
+          
+          
+             <span id="/posts/kotlin-generic/" class="leancloud_visitors" data-flag-title="Kotlin 泛型 VS Java 泛型">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </span></div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>建议先阅读我的上一篇文章 – <a href="http://johnnyshieh.me/posts/java-generics/">Java 泛型</a></p>
+</blockquote>
+<p>和 Java 泛型一样，Kotlin 泛型也是 Kotlin 语言中较难理解的一个部分。Kotlin 泛型的本质也是参数化类型，并且提供了编译时强类型检查，实际上也是伪泛型，和 Java 泛型类型一样。这篇文章将介绍 Kotlin 泛型里中的重要概念，以及与 Java 泛型的对比。</p>
+<h3 id="1-泛型类型与泛型函数"><a href="#1-泛型类型与泛型函数" class="headerlink" title="1. 泛型类型与泛型函数"></a>1. 泛型类型与泛型函数</h3><p>Kotlin 下泛型类型与泛型函数的写法，与 Java 差不多，直接看下面的例子：</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 泛型类型</span></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Box</span>&lt;<span class="type">T</span>&gt; </span>&#123;</div><div class="line">    <span class="keyword">var</span> t: T? = <span class="literal">null</span></div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// 泛型函数，类型参数在函数名之前</span></div><div class="line"><span class="keyword">object</span> Util &#123;</div><div class="line">    <span class="function"><span class="keyword">fun</span> <span class="type">&lt;K, V&gt;</span> <span class="title">compare</span><span class="params">(p1: <span class="type">Pair</span>&lt;<span class="type">K</span>, V&gt;, p2: <span class="type">Pair</span>&lt;<span class="type">K</span>, V&gt;)</span></span>: <span class="built_in">Boolean</span> &#123;</div><div class="line">         <span class="keyword">return</span> p1.first == p1.first &amp;&amp; p2.second == p2.second</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<a id="more"></a>
+<p>Kotlin 中泛型的类型参数如果可以推断出来，例如从构造函数的参数或者其他途径，允许省略类型参数：</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">val</span> p1 = Pair(<span class="number">1</span>, <span class="string">"1"</span>)</div><div class="line"><span class="keyword">val</span> p2 = Pair(<span class="number">2</span>, <span class="string">"2"</span>)</div><div class="line">Util.compare(p1, p2)</div></pre></td></tr></table></figure>
+<p>通过 Tools -&gt; Kotlin -&gt; Show Kotlin Bytecode, 然后点击字节码上面的 Decompile 出 Java 代码可以看出与 Java 泛型的原理是一样的，都进行了类型擦除。</p>
+<h3 id="2-泛型约束"><a href="#2-泛型约束" class="headerlink" title="2. 泛型约束"></a>2. 泛型约束</h3><p>Java 中可以通过有界类型参数来限制参数类型的边界，Kotlin 下泛型约束也可以限制参数类型的上界：</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">fun</span> <span class="type">&lt;T: Comparable&lt;T&gt;</span>&gt; <span class="title">compare</span><span class="params">(t1: <span class="type">T</span>, t2: <span class="type">T</span>)</span></span> = t1.compareTo(t2)</div></pre></td></tr></table></figure>
+<p>默认的上界是<code>Any?</code>，是可空类型，如果确定为非空类型的话，应该使用<code>&lt;T: Any&gt;</code>。</p>
+<p>泛型约束中的尖括号中只能指定一个上界，如果需要多个上界，需要一个单独的 where 子句：</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">fun</span> <span class="type">&lt;T&gt;</span> <span class="title">cloneWhenGreater</span><span class="params">(list: <span class="type">List</span>&lt;<span class="type">T</span>&gt;, threshold: <span class="type">T</span>)</span></span>: List&lt;Any&gt;</div><div class="line">        where T : Comparable&lt;T&gt;,</div><div class="line">              T : CharSequence &#123;</div><div class="line">    <span class="keyword">return</span> list.filter &#123; it &gt; threshold &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="3-使用处型变：类型投影"><a href="#3-使用处型变：类型投影" class="headerlink" title="3. 使用处型变：类型投影"></a>3. 使用处型变：类型投影</h3><p>在 Java 泛型的通配符中有一个“Producer Extends, Consumer Super”原则，简称 PECS 原则：只读类型使用上界通配符<code>? extends T</code>，只写类型使用下界通配符<code>? super T</code>。Kotlin 中提供了类似功能的两个操作符<code>out</code>和<code>in</code>，分别生产和消费。</p>
+<p>先看<code>_Collection.kt</code>中一个扩展函数：</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="keyword">operator</span> <span class="function"><span class="keyword">fun</span> <span class="type">&lt;T&gt;</span> Collection<span class="type">&lt;T&gt;</span>.<span class="title">plus</span><span class="params">(elements: <span class="type">Array</span>&lt;<span class="type">out</span> <span class="type">T</span>&gt;)</span></span>: List&lt;T&gt;</div><div class="line"></div><div class="line"><span class="comment">// list 为 ArrayList&lt;Number&gt; 类型</span></div><div class="line"><span class="keyword">val</span> list = arrayListOf&lt;Number&gt;(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>)</div><div class="line"><span class="comment">// array 为 Array&lt;Float&gt; 类型</span></div><div class="line"><span class="keyword">val</span> array = arrayOf(<span class="number">1</span>f, <span class="number">2</span>f)</div><div class="line"><span class="keyword">val</span> list1: List&lt;Number&gt; = list.plus(array)</div></pre></td></tr></table></figure>
+<p>所以<code>Array&lt;out T&gt;</code>相当于 Java 中的<code>Array&lt;? extends T&gt;</code>，而<code>Array&lt;in T&gt;</code>相当于 Java 中的<code>Array&lt;? super T&gt;</code>，out 表示生产，用于只读类型，in 表示消费，用于只写类型。</p>
+<p>类型投影和 Java 的上界通配符和下界通配符一样，只能用于参数、属性、局部变量或返回值的类型，但是不能用于泛型类型和泛型函数声明的类型，所以称之使用处型变。</p>
+<h3 id="4-声明处型变"><a href="#4-声明处型变" class="headerlink" title="4. 声明处型变"></a>4. 声明处型变</h3><p>与 Java 有界通配符不能用于泛型声明时使用不同的是，Kotlin 中<code>out</code>和<code>in</code>两个型变注解还可以用于泛型声明时，更加灵活。下面通过 Java 和 Kotlin 中对 Collection 的定义来分析：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// Java 中 Collection 的定义，元素是可读写的</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">Collection</span>&lt;<span class="title">E</span>&gt; <span class="keyword">extends</span> <span class="title">Iterable</span>&lt;<span class="title">E</span>&gt; </span>&#123; ... &#125;</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">List</span>&lt;<span class="title">E</span>&gt; <span class="keyword">extends</span> <span class="title">Collection</span>&lt;<span class="title">E</span>&gt; </span>&#123; ... &#125;</div><div class="line"></div><div class="line"><span class="comment">// Collections 的 copy 方法</span></div><div class="line"><span class="keyword">public</span> <span class="keyword">static</span> &lt;T&gt; <span class="function"><span class="keyword">void</span> <span class="title">copy</span><span class="params">(List&lt;? <span class="keyword">super</span> T&gt; dest, List&lt;? extends T&gt; src)</span> </span>&#123; ... &#125;</div><div class="line"></div><div class="line"><span class="comment">// 但是下面声明在 Java 中是不允许的</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">IllegalList</span>&lt;? <span class="keyword">extends</span> <span class="title">T</span>&gt; <span class="keyword">extends</span> <span class="title">Collection</span>&lt;<span class="title">E</span>&gt; </span>&#123; ... &#125;</div></pre></td></tr></table></figure>
+<p>但是 Kotlin 中可以通过声明处型变（型变的概念在后面会详细解释）定义只读的集合：</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// A generic collection of elements. Methods in this interface support only read-only access to the collection</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">Collection</span>&lt;<span class="type">out E</span>&gt; : <span class="type">Iterable</span>&lt;<span class="type">E</span>&gt;</span></div><div class="line"></div><div class="line"><span class="comment">// A generic collection of elements that supports adding and removing elements.</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">MutableCollection</span>&lt;<span class="type">E</span>&gt; : <span class="type">Collection</span>&lt;<span class="type">E</span>&gt;, <span class="type">MutableIterable</span>&lt;<span class="type">E</span>&gt;</span></div></pre></td></tr></table></figure>
+<p><code>Collection&lt;out E&gt;</code>使得 Collection 里面的元素是只读的，也使得 <code>Collection&lt;Number&gt;</code> 是 <code>Collection&lt;Int&gt;</code> 的父类，在 Kotlin 中称 Collection 的元素类型是协变的。对于协变的类型，通常不允许泛型类型作为函数的传入参数。</p>
+<p><code>in</code>型变注解可以使得元素类型是逆变的，只能被消费，与协变相反，通常不允许泛型类型作为函数的返回值，看<code>Comparable</code>的定义：</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">Comparable</span>&lt;<span class="type">in T</span>&gt; </span>&#123;</div><div class="line">    <span class="keyword">public</span> <span class="keyword">operator</span> <span class="function"><span class="keyword">fun</span> <span class="title">compareTo</span><span class="params">(other: <span class="type">T</span>)</span></span>: <span class="built_in">Int</span></div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">fun</span> <span class="title">demo</span><span class="params">(x: <span class="type">Comparable</span>&lt;<span class="type">Number</span>&gt;)</span></span> &#123;</div><div class="line">    <span class="comment">// 1.0 类型为 Double，是 Number 的子类型</span></div><div class="line">    x.compareTo(<span class="number">1.0</span>)</div><div class="line">    <span class="comment">// 因为 Comparable 只能被消费，所以可以赋值给 Comoparable&lt;Double&gt; 的变量</span></div><div class="line">    <span class="keyword">val</span> y: Comparable&lt;<span class="built_in">Double</span>&gt; = x</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="4-1-UnsafeVariance-注解"><a href="#4-1-UnsafeVariance-注解" class="headerlink" title="4.1 UnsafeVariance 注解"></a>4.1 UnsafeVariance 注解</h4><p>上面提到过对于协变的类型，通常不允许泛型类型作为函数的传入参数，对于逆变类型，通常不允许泛型类型作为函数的返回值，但是有时我们可以通过<code>@UnsafeVariance</code> 注解告诉 Kotlin 编译器：“我保证不会干坏事”，例如 Collection 的 contains 函数：</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">Collection</span>&lt;<span class="type">out E</span>&gt; : <span class="type">Iterable</span>&lt;<span class="type">E</span>&gt; </span>&#123;</div><div class="line">    ...</div><div class="line">    <span class="keyword">public</span> <span class="keyword">operator</span> <span class="function"><span class="keyword">fun</span> <span class="title">contains</span><span class="params">(element: @<span class="type">UnsafeVariance</span> <span class="type">E</span>)</span></span>: <span class="built_in">Boolean</span></div><div class="line">    ...</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="5-星投影"><a href="#5-星投影" class="headerlink" title="5. 星投影"></a>5. 星投影</h3><p>使用泛型的过程中，如果参数类型未知时，在 Java 中可以使用原始类型（Raw Types），但是 Java 的原始类型是类型不安全的：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">ArrayList&lt;String&gt; list = <span class="keyword">new</span> ArrayList&lt;&gt;(<span class="number">5</span>);</div><div class="line"></div><div class="line">ArrayList unkownList = list;</div><div class="line">Object first = unkownList.get(<span class="number">0</span>);</div><div class="line">unkownList.add(<span class="number">1</span>);  <span class="comment">// warning: Unchecked call to 'add(E)'</span></div><div class="line">unkownList.add(<span class="string">"1"</span>); <span class="comment">// warning: Unchecked call to 'add(E)'</span></div></pre></td></tr></table></figure>
+<p>而在 Kotlin 中，在参数类型未知时，可以用星投影来安全的使用泛型：</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">val</span> list = ArrayList&lt;<span class="built_in">Int</span>&gt;(<span class="number">5</span>)</div><div class="line"><span class="keyword">val</span> unkownList: ArrayList&lt;*&gt; = list</div><div class="line"><span class="keyword">val</span> first: Any = unkownList[<span class="number">0</span>]</div><div class="line">unkownList.add(<span class="number">1</span>)  <span class="comment">// error</span></div><div class="line">unkownList.add(<span class="string">"1"</span>) <span class="comment">// error</span></div></pre></td></tr></table></figure>
+<p>对于<code>ArrayList&lt;*&gt;</code>来说，因为不知道具体的参数类型，对于<code>add(e E)</code>这种不安全的操作，Kotlin 编译器会直接报错，比 Java 的原始类型更安全。</p>
+<p>Kotlin 中具体的星投影语法如下：</p>
+<ul>
+<li><p>对于<code>Foo&lt;out T&gt;</code>，其中<code>T</code>是一个具有上界<code>TUpper</code>的协变类型参数，<code>Foo&lt;*&gt;</code>等价于<code>Foo&lt;out TUpper&gt;</code>。这意味着当<code>T</code>未知时，你可以安全地从<code>Foo&lt;*&gt;</code>读取<code>TUpper</code>的值。</p>
+</li>
+<li><p>对于<code>Foo&lt;in T&gt;</code>，其中<code>T</code>是一个逆变类型参数，<code>Foo&lt;*&gt;</code>等价于<code>Foo&lt;in Nothing&gt;</code>。这意味着当<code>T</code>未知时，没有什么可以以安全的方式写入<code>Foo&lt;*&gt;</code>。</p>
+</li>
+<li><p>对于<code>Foo&lt;T&gt;</code>，其中<code>T</code>是一个具有<code>TUpper</code>的不型变类型参数，<code>Foo&lt;*&gt;</code>对于读取值时等价于<code>Foo&lt;out TUpper&gt;</code>，而对于写值时等价于<code>Foo&lt;in Nothing&gt;</code>。</p>
+</li>
+</ul>
+<p>如果泛型类型具有多个类型参数，则每个类型参数都可以单独投影。例如，如果类型被声明为<code>interface Function&lt;in T, out U&gt;</code>，我们可以想象以下星投影：</p>
+<ul>
+<li><p><code>Function&lt;*, String&gt;</code>表示<code>Function&lt;in Nothing, String&gt;</code></p>
+</li>
+<li><p><code>Function&lt;Int, *&gt;</code>表示<code>Function&lt;Int, out Any?&gt;</code></p>
+</li>
+<li><p><code>Function&lt;*, *&gt;</code>表示<code>Function&lt;in Nothing, out Any?&gt;</code></p>
+</li>
+</ul>
+<h3 id="6-型变的概念"><a href="#6-型变的概念" class="headerlink" title="6. 型变的概念"></a>6. 型变的概念</h3><p>在上面提到过使用处型变和声明处型变，那具体型变指什么呢？型变：是否允许对参数类型进行子类型转换。例如在 Java 中<code>List&lt;Integer&gt;</code>与<code>List&lt;Number&gt;</code>没有直接的类型关系，就是说 Java 中的泛型是不可以直接型变的。</p>
+<p>为了提高代码的灵活性，Java 中可以通配符在使用时实现型变，例如<code>void addNumbers(List&lt;? super Number&gt; list)</code>方法中可以传<code>List&lt;Integer&gt;</code>，<code>List&lt;Integer&gt;</code>是<code>List&lt;? super Number&gt;</code>的子类型，而 Integer 也是 Number 的子类型，这也称之为协变。另外，<code>List&lt;Number&gt;</code>是<code>List&lt;? super Integer&gt;</code>的子类型，和 Integer 与 Number 之间的类型关系相反，称之为逆变。</p>
+<p>Kotlin 中<code>out</code>和<code>in</code>操作符可以更简洁地实现 Java 的使用处型变，而且还支持声明处型变，这也使得 Kotlin 中的泛型是可以直接型变的。</p>
+<p>Kotlin 下协变：<code>interface List&lt;out E&gt;</code>，<code>List&lt;Int&gt;</code>是<code>`List&lt;Number&gt;</code>的子类型。</p>
+<p>Kotlin 下逆变：<code>interface Comparable&lt;in T&gt;</code>，<code>Comparable&lt;Double&gt;</code>是<code>Comparable&lt;Number&gt;</code>的父类型。</p>
+<h3 id="7-具体化的类型参数"><a href="#7-具体化的类型参数" class="headerlink" title="7. 具体化的类型参数"></a>7. 具体化的类型参数</h3><p>Kotlin 与 Java 中泛型都会进行类型擦除，泛型的具体类型在运行时是未知的，例如在解析 json 字符串时：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> &lt;T&gt; <span class="function">T <span class="title">fromJson</span><span class="params">(String json, Class&lt;T&gt; classOfT)</span> <span class="keyword">throws</span> JsonSyntaxException </span>&#123; ... &#125;</div></pre></td></tr></table></figure>
+<p>还必须传泛型的 Class 类型，不能直接使用<code>T.class</code>获取类型，除非使用反射。</p>
+<p>而在 Kotlin 中可以使用<code>reified</code>修饰符将内联函数的泛型类型当作具体的类型来使用，不需要再额外传一个 class 对象：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">inline fun &lt;reified T&gt; Gson.fromJson(json: String): T? &#123;</div><div class="line">    <span class="keyword">return</span> fromJson(json, T::<span class="class"><span class="keyword">class</span>.<span class="title">java</span>)</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>对于具体化的类型参数，可以当做一个普通的类型一样，<code>as</code>和<code>!as</code>操作符也可以使用。因为 Kotlin 编译器会把内联函数的代码插入到调用者的地方，所以可以在编译期就确定泛型的类型。需要注意的是，Kotlin 中的<code>reified</code>的内联函数不能被 Java 代码调用。</p>
+<h3 id="8-小结"><a href="#8-小结" class="headerlink" title="8. 小结"></a>8. 小结</h3><p>回顾 Kotlin 和 Java 中的泛型，Kotlin 泛型扩展了 Java 中的泛型，添加了使用处型变和更安全的星投影，还支持具体化的类型参数。我整理了下面表格对比两者：</p>
+<table>
+<thead>
+<tr>
+<th>Java 泛型</th>
+<th>Java 中代码示例</th>
+<th>Kotlin 中代码示例</th>
+<th>Kotlin 泛型</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>泛型类型</td>
+<td><code>class Box&lt;T&gt;</code></td>
+<td><code>class Box&lt;T&gt;</code></td>
+<td>泛型类型</td>
+</tr>
+<tr>
+<td>泛型方法</td>
+<td><code>&lt;K, V&gt; boolean method(Pair&lt;K, V&gt; p)</code></td>
+<td><code>fun &lt;K, V&gt; function(p: Pair&lt;K, V&gt;)</code></td>
+<td>泛型函数</td>
+</tr>
+<tr>
+<td>有界类型参数</td>
+<td><code>class Box&lt;T extends Comparable&lt;T&gt;</code></td>
+<td><code>class Box&lt;T : Comparable&lt;T&gt;&gt;</code></td>
+<td>泛型约束</td>
+</tr>
+<tr>
+<td>上界通配符</td>
+<td><code>void sumOfList(List&lt;? extends Number&gt; list)</code></td>
+<td><code>fun sumOfList(list: List&lt;out Number&gt;)</code></td>
+<td>使用处协变</td>
+</tr>
+<tr>
+<td>下界通配符</td>
+<td><code>void addNumbers(List&lt;? super Integer&gt; list)</code></td>
+<td><code>fun addNumbers(list: List&lt;in Int&gt;)</code></td>
+<td>使用处逆变</td>
+</tr>
+<tr>
+<td>无</td>
+<td>无</td>
+<td><code>interface Collection&lt;out E&gt; : Iterable&lt;E&gt;</code></td>
+<td>声明处协变</td>
+</tr>
+<tr>
+<td>无</td>
+<td>无</td>
+<td><code>interface Comparable&lt;in T&gt;</code></td>
+<td>声明处逆变</td>
+</tr>
+<tr>
+<td>原始类型</td>
+<td><code>ArrayList unkownList = new ArrayList&lt;String&gt;(5)</code></td>
+<td><code>val unkownList: ArrayList&lt;*&gt; = ArrayList&lt;Int&gt;(5)</code></td>
+<td>星投影</td>
+</tr>
+</tbody>
+</table>
+<p>总的来说，Kotlin 泛型更加简洁安全，但是和 Java 一样都是有类型擦除的，都属于编译时泛型。</p>
+      
+    </div>
+
+    
+    <section data-mpa-template-id="95" class="mpa-template" data-mpa-color="#ffffff">
+      <section style="margin-top: 20px;display: -webkit-box;display: flex;-webkit-box-pack: center;justify-content: center;-webkit-box-align: center;align-items: center" data-mid="t22">
+        <section style="text-align: center;line-height: 30px" data-mid="">
+          <section style="display: inline-block;float: left;width: 95px;height: 2px;background: -webkit-linear-gradient(right, #141414, #f0f0f0);background: linear-gradient(to left, #141414, #f0f0f0);-webkit-transform: translate(0px, 12px);-ms-transform: translate(0px, 12px);transform: translate(0px, 12px)" data-mid="" data-contenteditable="false">
+          </section>
+          <section style="float: left;width: 4px;height: 4px;border-radius: 50%;padding: 3px;background-color: #b1b1b1;text-align: center;-webkit-transform: translate(0px, 8px);-ms-transform: translate(0px, 8px);transform: translate(0px, 8px)" data-mid="" data-contenteditable="false">
+            <section style="width: 5px;height: 5px;border-radius: 50%;background-color: #141414" data-mid="">
+            </section>
+          </section>
+          <section style="float: left;min-width: 50px;padding: 0 10px 0 10px;font-size: 16px;color: #4f4f4f;text-align: center;line-height: 30px" data-mid="">END</section>
+          <section style="float: left;padding: 3px;width: 4px;height: 4px;border-radius: 50%;background-color: #b1b1b1;text-align: center;-webkit-transform: translate(0px, 9px);-ms-transform: translate(0px, 9px);transform: translate(0px, 9px)" data-mid="" data-contenteditable="false">
+            <section style="width: 5px;height: 5px;border-radius: 50%;background-color: #141414" data-mid="">
+            </section>
+          </section>
+          <section style="display: inline-block;float: left;width: 95px;height: 2px;background: -webkit-linear-gradient(left, #141414, #f0f0f0);background: linear-gradient(to right, #141414, #f0f0f0);-webkit-transform: translate(-1px, 14px);-ms-transform: translate(-1px, 14px);transform: translate(-1px, 14px)" data-mid="" data-contenteditable="false">
+          </section>
+        </section>
+      </section>
+    </section>
+    
+
+    <div>
+      
+        
+<div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
+    <img id="wechat_subscriber_qcode" src="/uploads/wechat_qcode.jpg" alt="Johnny Shieh wechat" style="width: 200px; max-width: 100%">
+    <div>我的公众号，不只有技术，还有咖啡和彩蛋！</div>
+</div>
+
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/kotlin/" rel="tag"># kotlin</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/posts/java-generics/" rel="next" title="Java 泛型">
+                <i class="fa fa-chevron-left"></i> Java 泛型
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/posts/download-android-source/" rel="prev" title="Mac 中下载阅读 Android 源码">
+                Mac 中下载阅读 Android 源码 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="SOHUCS" sid="posts/kotlin-generic/"></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image" src="/uploads/avatar.png" alt="Johnny Shieh">
+          <p class="site-author-name" itemprop="name">Johnny Shieh</p>
+           
+              <p class="site-description motion-element" itemprop="description">我本微末，心向天空</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">68</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">12</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">40</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/JohnnyShieh" rel="external nofollow" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/johnnyshieh17" rel="external nofollow" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  Weibo
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="mailto:JohnnyShieh17@gmail.com" rel="external nofollow" target="_blank" title="Gmail">
+                  
+                    <i class="fa fa-fw fa-envelope"></i>
+                  
+                  Gmail
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.jianshu.com/u/763027594c0b" rel="external nofollow" target="_blank" title="简书">
+                  
+                    <i class="fa fa-fw fa-book"></i>
+                  
+                  简书
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        <!--<div style="margin: 20px 0 20px 0; height: 1px; background: #eee"></div> 
+<div id="hot-series">
+    <ul class="sidebar-nav" style="margin-bottom: 0;">
+        <li>热门系列</li>
+    </ul>
+    <ul class="series-posts" style="font-size: 14px; padding-left: 10px; list-style: none; text-align: left;">
+        <li><span><a href="http://johnnyshieh.me/tags/dagger/">Dagger 完全解析</a></span>（6）</li>
+         <li><span><a href="http://johnnyshieh.me/categories/AspectJ/">AspectJ in Android</a></span>（3）</li>
+        <li><span><a href="http://johnnyshieh.me/categories/unit-test/">Kotlin 写 Android 单元测试</a>（4）</span></li>
+    </ul>
+</div>
+-->
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-泛型类型与泛型函数"><span class="nav-text">1. 泛型类型与泛型函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-泛型约束"><span class="nav-text">2. 泛型约束</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-使用处型变：类型投影"><span class="nav-text">3. 使用处型变：类型投影</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-声明处型变"><span class="nav-text">4. 声明处型变</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#4-1-UnsafeVariance-注解"><span class="nav-text">4.1 UnsafeVariance 注解</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-星投影"><span class="nav-text">5. 星投影</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-型变的概念"><span class="nav-text">6. 型变的概念</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-具体化的类型参数"><span class="nav-text">7. 具体化的类型参数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#8-小结"><span class="nav-text">8. 小结</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+      <div style="margin: 20px 0 20px 0; height: 1px; background: #eee"></div> 
+<div id="hot-series">
+    <ul class="sidebar-nav" style="margin-bottom: 0">
+        <li>热门系列</li>
+    </ul>
+    <ul class="series-posts" style="font-size: 14px; padding-left: 10px; list-style: none; text-align: left">
+        <li><span><a href="http://johnnyshieh.me/tags/dagger/">Dagger 完全解析</a></span>（6）</li>
+         <li><span><a href="http://johnnyshieh.me/categories/AspectJ/">AspectJ in Android</a></span>（3）</li>
+        <li><span><a href="http://johnnyshieh.me/categories/unit-test/">Kotlin 写 Android 单元测试</a>（4）</span></li>
+    </ul>
+</div>
+
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy;  2015 - 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Johnny Shieh</span>
+</div>
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>访客数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>总访问量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="http://images.johnnyshieh.me/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.1"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+  
+    <script type="text/javascript">
+    (function(){
+      var appid = 'cyt8KwhJ1';
+      var conf = 'prod_651756cd8d701505ffbb60e416929831';
+      var width = window.innerWidth || document.documentElement.clientWidth;
+      if (width < 960) {
+      window.document.write('<script id="changyan_mobile_js" charset="utf-8" type="text/javascript" src="https://changyan.sohu.com/upload/mobile/wap-js/changyan_mobile.js?client_id=' + appid + '&conf=' + conf + '"><\/script>'); } else { var loadJs=function(d,a){var c=document.getElementsByTagName("head")[0]||document.head||document.documentElement;var b=document.createElement("script");b.setAttribute("type","text/javascript");b.setAttribute("charset","UTF-8");b.setAttribute("src",d);if(typeof a==="function"){if(window.attachEvent){b.onreadystatechange=function(){var e=b.readyState;if(e==="loaded"||e==="complete"){b.onreadystatechange=null;a()}}}else{b.onload=a}}c.appendChild(b)};loadJs("https://changyan.sohu.com/upload/changyan.js",function(){
+        window.changyan.api.config({appid:appid,conf:conf})});
+      }
+    })();
+    </script>
+    <script type="text/javascript" src="https://assets.changyan.sohu.com/upload/plugins/plugins.count.js"></script>
+
+
+
+  
+
+
+
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/algolia-instant-search/instantsearch.min.css">
+
+  
+  
+  <script src="/lib/algolia-instant-search/instantsearch.min.js"></script>
+  
+
+  <script src="/js/src/algolia-search.js?v=5.1.1"></script>
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("n55tIxEzsDxW0BEFhehOkP2K-gzGzoHsz", "TwYjARitxhv7iOhbg7k2a9xB");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

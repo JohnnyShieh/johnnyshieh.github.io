@@ -355,6 +355,176 @@
   
 
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://johnnyshieh.me/posts/android-develop-tips-and-tricks/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Johnny Shieh">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Johnny Shieh">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/posts/android-develop-tips-and-tricks/" itemprop="url">Android 开发过程中的坑和小技巧</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-06-12T16:34:25+08:00">
+                2016-06-12
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/android/" itemprop="url" rel="index">
+                    <span itemprop="name">Android</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+              <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-comment-o"></i>
+              </span>
+              
+                <a href="/posts/android-develop-tips-and-tricks/#SOHUCS" itemprop="discussionUrl">
+                  <span id="sourceId::posts/android-develop-tips-and-tricks/" class="cy_cmt_count" data-xid="posts/android-develop-tips-and-tricks/" itemprop="commentsCount"></span>
+                </a>
+              
+            
+          
+
+          
+          
+             <span id="/posts/android-develop-tips-and-tricks/" class="leancloud_visitors" data-flag-title="Android 开发过程中的坑和小技巧">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </span></div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h2 id="空指针问题"><a href="#空指针问题" class="headerlink" title="空指针问题"></a>空指针问题</h2><p>NullPointerException 绝对是开发人员遇到最多的问题，也是 Android 开发过程中一个大坑，总是在你意料不到的时候出现。要解决这个问题，关键地方不要吝啬 if 语句，需要在用到某一对象的时候多想想有没什么可能会导致对象没有初始化或者被指向为<code>null</code>，下面是一些比较有代表性的例子：</p>
+<ul>
+<li>Fragment的Handler 中调用 getActivity()，需要判空和判断 activity 是否销毁</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">MyHandler</span> <span class="keyword">extends</span> <span class="title">Handler</span> </span>&#123;</div><div class="line">    ...</div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">handleMessage</span><span class="params">(Message msg)</span> </span>&#123;</div><div class="line">        <span class="comment">// 需要判空</span></div><div class="line">        <span class="keyword">if</span>(<span class="keyword">null</span> != mFragment.getActivity() &amp;&amp; !mFragment.getActivity().isDestroyed()) &#123;</div><div class="line">            <span class="comment">// TODO</span></div><div class="line">        &#125;</div><div class="line">    &#125;    </div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<ul>
+<li>使用 Cursor 时没有判空，没有在 finally 代码块中关闭</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">Cursor cursor = <span class="keyword">null</span>;</div><div class="line"><span class="keyword">try</span> &#123;</div><div class="line">    cursor = contentResolver.query(uri, <span class="keyword">null</span>, selection, selectionArgs, <span class="keyword">null</span>);</div><div class="line">    <span class="comment">// cursor可能为空</span></div><div class="line">    <span class="keyword">if</span>(<span class="keyword">null</span> != cursor &amp;&amp; cursor.moveToFirst()) &#123;</div><div class="line">        <span class="comment">// TODO</span></div><div class="line">    &#125;</div><div class="line">&#125; <span class="keyword">catch</span> (Exception e) &#123;</div><div class="line">    e.printStackTrace();</div><div class="line">&#125; <span class="keyword">finally</span> &#123;</div><div class="line">    <span class="keyword">if</span> (<span class="keyword">null</span> != cursor) &#123;</div><div class="line">        cursor.close();</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/posts/android-develop-tips-and-tricks/" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://johnnyshieh.me/posts/volleyex-ttl/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1025,187 +1195,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://johnnyshieh.me/posts/ubuntu14.04-tutorial/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Johnny Shieh">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Johnny Shieh">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/posts/ubuntu14.04-tutorial/" itemprop="url">如何优雅地使用 Ubuntu 14.04 LTS</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-12-26T00:00:00+08:00">
-                2015-12-26
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/ubuntu/" itemprop="url" rel="index">
-                    <span itemprop="name">Ubuntu</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-              <span class="post-meta-divider">|</span>
-              <span class="post-meta-item-icon">
-                <i class="fa fa-comment-o"></i>
-              </span>
-              
-                <a href="/posts/ubuntu14.04-tutorial/#SOHUCS" itemprop="discussionUrl">
-                  <span id="sourceId::posts/ubuntu14.04-tutorial/" class="cy_cmt_count" data-xid="posts/ubuntu14.04-tutorial/" itemprop="commentsCount"></span>
-                </a>
-              
-            
-          
-
-          
-          
-             <span id="/posts/ubuntu14.04-tutorial/" class="leancloud_visitors" data-flag-title="如何优雅地使用 Ubuntu 14.04 LTS">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数 </span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </span></div>
-      </header>
-    
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>最近在折腾我的本本 Lenovo I1000，本来想安装 Windows 系统，但是安装 win7 和 win8 中途都出现了文件损坏的问题，就索性用 U 盘安装了 Ubuntu 14.04 系统。之前在 2012 年就开始尝试过 12.04 版本,感觉用来开发还是不错的,因为玩游戏上 QQ 都不太方便，所以少了很多干扰. 不过安装完系统后需要做一些优化，才能让自己用的更加顺手。</p>
-<p>建议安装的时候先选择中文语言，在 language-support 更新语言包再切换到 English，这样中文编码的问题可以少一点.</p>
-<p>这里先给给出我的电脑配置:</p>
-<p>机型: Lenovo I1000 (联想小新出色版)</p>
-<p>显卡: Intel 集成显卡</p>
-<p>系统: Ubuntu 14.04 64 位</p>
-<p>声卡: High Definition Audio</p>
-<p>语言: English</p>
-<p>下面把自己体验的 Ubuntu 14.04 的优化方案整理一下，以防下次折腾的时候四处 Google，也希望对大家有些帮助。</p>
-<p>下面的命令中有的是用<code>sudo</code>有的是用<code>gksudo</code>，而<code>gksudo</code>需要先通过<code>sudo apt-get install gksu</code>安装后才能使用。</p>
-<p>简单说明一下两者的区别:</p>
-<p>sudo: 用来执行命令行 (CLI) 程序，是当前用户的 home 目录</p>
-<p>gksudo: 用来执行图形的 (GUI) 程序，是 root 用户的 home 目录</p>
-<h2 id="Dash-关闭在线搜索建议"><a href="#Dash-关闭在线搜索建议" class="headerlink" title="Dash 关闭在线搜索建议"></a>Dash 关闭在线搜索建议</h2><p>在 Dash 搜索内容的时候会显示在线搜索建议，显然这个完全没有必要，很影响体验。</p>
-<p>可以在系统的 System Settings &gt; Security &amp; Privacy &gt; Search 中去掉 Include online search results 的选项。</p>
-<p>然后可以 Dash App 下禁用很多不需要的 Dash Plugins，提高运行速度.</p>
-<h2 id="解决-gedit-中文乱码"><a href="#解决-gedit-中文乱码" class="headerlink" title="解决 gedit 中文乱码"></a>解决 gedit 中文乱码</h2><p>一般情况都是用 gedit 编辑文本文件，gedit 可以设置显示行数和高亮当前行,但是 gedit 对中文字符集的支持不是很好，有时会出现乱码的情况。</p>
-<p>可以在终端输入下面命令，添加中文编码</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">gsettings <span class="built_in">set</span> org.gnome.gedit.preferences.encodings auto-detected <span class="string">"['GB18030', 'GB2312', 'GBK', 'UTF-8', 'BIG5', 'CURRENT', 'UTF-16']"</span></div><div class="line">gsettings <span class="built_in">set</span> org.gnome.gedit.preferences.encodings shown-in-menu <span class="string">"['GB18030', 'GB2312', 'GBK', 'UTF-8', 'BIG5', 'CURRENT', 'UTF-16']"</span></div></pre></td></tr></table></figure>
-<p>也通过 dconf-editor 编辑修改，需要先安装 dconf-tools。</p>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/posts/ubuntu14.04-tutorial/" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -1253,7 +1242,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">67</span>
+                <span class="site-state-item-count">68</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>

@@ -355,6 +355,180 @@
   
 
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://johnnyshieh.me/posts/dagger-use-of-dagger-dot-android/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Johnny Shieh">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Johnny Shieh">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/posts/dagger-use-of-dagger-dot-android/" itemprop="url">Dagger 2 完全解析（六），dagger.android 扩展库的使用</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-02-23T14:32:00+08:00">
+                2018-02-23
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/android/" itemprop="url" rel="index">
+                    <span itemprop="name">Android</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+              <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-comment-o"></i>
+              </span>
+              
+                <a href="/posts/dagger-use-of-dagger-dot-android/#SOHUCS" itemprop="discussionUrl">
+                  <span id="sourceId::posts/dagger-use-of-dagger-dot-android/" class="cy_cmt_count" data-xid="posts/dagger-use-of-dagger-dot-android/" itemprop="commentsCount"></span>
+                </a>
+              
+            
+          
+
+          
+          
+             <span id="/posts/dagger-use-of-dagger-dot-android/" class="leancloud_visitors" data-flag-title="Dagger 2 完全解析（六），dagger.android 扩展库的使用">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </span></div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>Dagger 2 完全解析系列：</p>
+<p><a href="http://johnnyshieh.me/posts/dagger-basic/">Dagger 2 完全解析（一），Dagger 2 的基本使用与原理</a></p>
+<p><a href="http://johnnyshieh.me/posts/dagger-advance/">Dagger 2 完全解析（二），进阶使用 Lazy、Qualifier、Scope 等</a></p>
+<p><a href="http://johnnyshieh.me/posts/dagger-subcomponent/">Dagger 2 完全解析（三），Component 的组织关系与 SubComponent</a></p>
+<p><a href="http://johnnyshieh.me/posts/dagger-use-in-android/">Dagger 2 完全解析（四），Android 中使用 Dagger 2</a></p>
+<p><a href="http://johnnyshieh.me/posts/dagger-use-in-kotlin/">Dagger 2 完全解析（五），Kotlin 中使用 Dagger 2</a></p>
+<p><a href="http://johnnyshieh.me/posts/dagger-use-of-dagger-dot-android/">Dagger 2 完全解析（六），dagger.android 扩展库的使用</a></p>
+<blockquote>
+<p>本系列文章是基于 Google Dagger 2.11-rc2 版本</p>
+</blockquote>
+<p>在项目中使用了 dagger.android 扩展库后，体验到了其可以简化 Dagger 2 在 Android 项目中的使用，所以该系列的最后一篇文章解析 dagger.android 扩展库的使用及原理。本文以个人写的 <a href="https://github.com/JohnnyShieh/Gank/tree/kotlin" target="_blank" rel="external">Gank 项目</a> 为例，逐步分析 dagger.android 扩展库的使用。</p>
+<p>注：本文代码语言为 Kotlin。</p>
+<h2 id="1-Gank-项目中原来的-Dagger-2-依赖注入逻辑"><a href="#1-Gank-项目中原来的-Dagger-2-依赖注入逻辑" class="headerlink" title="1. Gank 项目中原来的 Dagger 2 依赖注入逻辑"></a>1. Gank 项目中原来的 Dagger 2 依赖注入逻辑</h2><p>Gank 项目中依赖关系比较简单，主要是提供一个单例的 GankService 依赖用于拉取 API 接口。依赖关系图如下：</p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/posts/dagger-use-of-dagger-dot-android/" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://johnnyshieh.me/posts/summary-of-2017/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1049,175 +1223,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://johnnyshieh.me/posts/interview-linked-list/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Johnny Shieh">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Johnny Shieh">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/posts/interview-linked-list/" itemprop="url">面试精选之链表问题集锦</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-24T10:40:49+08:00">
-                2017-11-24
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/interview/" itemprop="url" rel="index">
-                    <span itemprop="name">面试精选</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-              <span class="post-meta-divider">|</span>
-              <span class="post-meta-item-icon">
-                <i class="fa fa-comment-o"></i>
-              </span>
-              
-                <a href="/posts/interview-linked-list/#SOHUCS" itemprop="discussionUrl">
-                  <span id="sourceId::posts/interview-linked-list/" class="cy_cmt_count" data-xid="posts/interview-linked-list/" itemprop="commentsCount"></span>
-                </a>
-              
-            
-          
-
-          
-          
-             <span id="/posts/interview-linked-list/" class="leancloud_visitors" data-flag-title="面试精选之链表问题集锦">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数 </span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </span></div>
-      </header>
-    
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>链表问题是面试过程中经常被问到的一部分，很考查编程功底。最近刷了 LeetCode 上链表部分的面试题，我总结了一些有代表性的链表问题。</p>
-<p>本文使用的是 Java 语言，下面是所用到的链表节点的定义：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ListNode</span> </span>&#123;</div><div class="line">    <span class="keyword">int</span> val;</div><div class="line">    ListNode next;</div><div class="line"></div><div class="line">    ListNode(<span class="keyword">int</span> x) &#123;</div><div class="line">        val = x;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<h2 id="1-在-O-1-时间删除链表节点"><a href="#1-在-O-1-时间删除链表节点" class="headerlink" title="1. 在 O(1) 时间删除链表节点"></a>1. 在 O(1) 时间删除链表节点</h2><p><a href="https://leetcode.com/problems/delete-node-in-a-linked-list/description/" target="_blank" rel="external">LeetCode 237. Delete Node in a Linked List</a></p>
-<p><strong>题目描述：</strong>给定单链表中需要删除的节点（不是尾节点），在 O(1) 时间删除该节点。</p>
-<p><strong>分析：</strong>本题与《编程之美》上的「从无头单链表中删除节点」类似。主要思想都是「狸猫换太子」，即用下一个节点数据覆盖要删除的节点，然后删除下一个节点。但是如果节点是尾节点时，该方法就行不通了。</p>
-<p>代码如下：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 在 O(1) 时间从无头单链表中删除节点</span></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">deleteNode</span><span class="params">(ListNode node)</span> </span>&#123;</div><div class="line">    <span class="comment">// 不能为空，不能为尾节点</span></div><div class="line">    <span class="keyword">if</span> (<span class="keyword">null</span> == node || <span class="keyword">null</span> == node.next) &#123;</div><div class="line">        <span class="keyword">return</span>;</div><div class="line">    &#125;</div><div class="line">    node.val = node.next.val;</div><div class="line">    node.next = node.next.next;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/posts/interview-linked-list/" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -1265,7 +1270,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">67</span>
+                <span class="site-state-item-count">68</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>

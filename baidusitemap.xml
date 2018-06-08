@@ -4,8 +4,28 @@
 
     
   <url>
+    <loc>http://johnnyshieh.me/posts/kotlin-generic/</loc>
+    <lastmod>2018-06-08T09:47:25.000Z</lastmod>
+    <data>
+        <display>
+        <title>Kotlin 泛型 VS Java 泛型</title>
+        <pubTime>2018-05-03T11:06:06.000Z</pubTime>
+        
+        <tag>kotlin</tag>
+         
+         
+           
+             
+              <breadCrumb title="Kotlin" url="http://johnnyshieh.me/categories/kotlin/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://johnnyshieh.me/posts/download-android-source/</loc>
-    <lastmod>2018-06-05T12:39:39.000Z</lastmod>
+    <lastmod>2018-06-06T01:51:00.000Z</lastmod>
     <data>
         <display>
         <title>Mac 中下载阅读 Android 源码</title>
