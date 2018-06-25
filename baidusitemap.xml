@@ -4,6 +4,48 @@
 
     
   <url>
+    <loc>http://johnnyshieh.me/posts/cocoscreator-js-java-call-each-other/</loc>
+    <lastmod>2018-06-25T11:54:36.000Z</lastmod>
+    <data>
+        <display>
+        <title>CocosCreator 中 JS 与 Java 互相调用</title>
+        <pubTime>2018-06-25T10:43:16.000Z</pubTime>
+        
+        <tag>CocosCreator</tag>
+         
+        <tag>Java</tag>
+         
+         
+           
+             
+              <breadCrumb title="Cocos" url="http://johnnyshieh.me/categories/Cocos/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://johnnyshieh.me/posts/java-generics/</loc>
+    <lastmod>2018-06-11T03:13:43.000Z</lastmod>
+    <data>
+        <display>
+        <title>Java 泛型</title>
+        <pubTime>2018-04-27T08:07:56.000Z</pubTime>
+        
+        <tag>java</tag>
+         
+         
+           
+             
+              <breadCrumb title="Java" url="http://johnnyshieh.me/categories/java/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://johnnyshieh.me/posts/kotlin-generic/</loc>
     <lastmod>2018-06-08T09:47:25.000Z</lastmod>
     <data>
@@ -37,26 +79,6 @@
            
              
               <breadCrumb title="Android" url="http://johnnyshieh.me/categories/android/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://johnnyshieh.me/posts/java-generics/</loc>
-    <lastmod>2018-05-03T09:17:34.000Z</lastmod>
-    <data>
-        <display>
-        <title>Java 泛型</title>
-        <pubTime>2018-04-27T08:07:56.000Z</pubTime>
-        
-        <tag>java</tag>
-         
-         
-           
-             
-              <breadCrumb title="Java" url="http://johnnyshieh.me/categories/java/"/>
           
         </display>
     </data>

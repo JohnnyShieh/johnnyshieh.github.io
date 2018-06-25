@@ -118,7 +118,7 @@
 <meta property="og:image" content="http://images.johnnyshieh.me/generics-2.gif">
 <meta property="og:image" content="http://images.johnnyshieh.me/generics-3.gif">
 <meta property="og:image" content="http://images.johnnyshieh.me/generics-4.gif">
-<meta property="og:updated_time" content="2018-05-03T09:17:34.000Z">
+<meta property="og:updated_time" content="2018-06-11T03:13:43.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Java 泛型">
 <meta name="twitter:description" content="介绍 Java 泛型的原理及使用">
@@ -582,7 +582,7 @@
 <li><p>生成桥接方法来保持泛型类型的多态性。</p>
 </li>
 </ul>
-<h4 id="5-1-参数化类型替换"><a href="#5-1-参数化类型替换" class="headerlink" title="5.1 参数化类型替换"></a>5.1 参数化类型替换</h4><p>对于无解参数化类型，类型擦除时会替换为 Object。</p>
+<h4 id="5-1-参数化类型替换"><a href="#5-1-参数化类型替换" class="headerlink" title="5.1 参数化类型替换"></a>5.1 参数化类型替换</h4><p>对于无界参数化类型，类型擦除时会替换为 Object。</p>
 <p>下面看单链表中节点类：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Node</span>&lt;<span class="title">T</span>&gt; </span>&#123;</div><div class="line"></div><div class="line">    <span class="keyword">private</span> T data;</div><div class="line">    <span class="keyword">private</span> Node&lt;T&gt; next;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Node</span><span class="params">(T data, Node&lt;T&gt; next)</span> </span>&#123;</div><div class="line">        <span class="keyword">this</span>.data = data;</div><div class="line">        <span class="keyword">this</span>.next = next;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> T <span class="title">getData</span><span class="params">()</span> </span>&#123; <span class="keyword">return</span> data; &#125;</div><div class="line">    <span class="comment">// ...</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>经过类型擦除后：</p>
@@ -789,7 +789,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">68</span>
+                <span class="site-state-item-count">69</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -800,7 +800,7 @@
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">12</span>
+                <span class="site-state-item-count">13</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -811,7 +811,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">40</span>
+                <span class="site-state-item-count">42</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>

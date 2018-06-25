@@ -2,6 +2,20 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://johnnyshieh.me/posts/cocoscreator-js-java-call-each-other/</loc>
+    
+    <lastmod>2018-06-25T11:54:36.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://johnnyshieh.me/posts/java-generics/</loc>
+    
+    <lastmod>2018-06-11T03:13:43.000Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://johnnyshieh.me/posts/kotlin-generic/</loc>
     
     <lastmod>2018-06-08T09:47:25.000Z</lastmod>
@@ -12,13 +26,6 @@
     <loc>http://johnnyshieh.me/posts/download-android-source/</loc>
     
     <lastmod>2018-06-06T01:51:00.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://johnnyshieh.me/posts/java-generics/</loc>
-    
-    <lastmod>2018-05-03T09:17:34.000Z</lastmod>
     
   </url>
   
