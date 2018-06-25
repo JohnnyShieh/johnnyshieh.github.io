@@ -466,54 +466,17 @@
 
       
         
-          
-            <p>最近项目是使用 CocosCreator 开发的一款小游戏，有些功能需要调用 Android 原生代码，这涉及到 CocosCreator 中 JS 与 Java 的互相调用问题，本文记录互相调用时的方式和注意事项。</p>
+          <p>最近项目是使用 CocosCreator 开发的一款小游戏，有些功能需要调用 Android 原生代码，这涉及到 CocosCreator 中 JS 与 Java 的互相调用问题，本文记录互相调用时的方式和注意事项。</p>
 <h3 id="1-JS-调用-Java-方法"><a href="#1-JS-调用-Java-方法" class="headerlink" title="1. JS 调用 Java 方法"></a>1. JS 调用 Java 方法</h3><p>在 CocosCreator 下 JS 调用 Java/Objective-C 的格式都是：</p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> o = jsb.reflection.callStaticMethod(className, methodName, methodSignature, parameters...)</div></pre></td></tr></table></figure>
 <p>JS 只能调用 Java 中的静态方法，需要传入类名、方法名、方法签名、方法参数，并且可以获得返回值。</p>
-<p><strong>类名</strong></p>
-<p>类名必须是包含 Java 包路径的完整类名，而且用斜线<code>/</code>代替点<code>.</code>，例如<code>com.johnny.test.WxApiHelper</code>应该传入<code>com/johnny/test/WxApiHelper</code>。</p>
-<p><strong>方法名</strong></p>
-<p>方法名很简单，就是方法本来的名字。</p>
-<p><strong>方法签名</strong></p>
-<p>方法签名有点复杂，最简单的方法签名是<code>()V</code>，它表示一个没有参数也没有返回值的方法。括号里的符号表示参数类型，括号后面的符号表示返回值类型。因为 Java 是允许函数重载的，可以有多个方法名相同但是参数返回值不同的方法，方法签名正是用来帮助区分这些相同名字的方法的。</p>
-<p>目前 Cocos Creator 中支持的 Java 类型签名有下面 4 种：</p>
-<table>
-<thead>
-<tr>
-<th><strong>Java 类型</strong></th>
-<th><strong>签名</strong></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>int</td>
-<td>I</td>
-</tr>
-<tr>
-<td>float</td>
-<td>F</td>
-</tr>
-<tr>
-<td>boolean</td>
-<td>Z</td>
-</tr>
-<tr>
-<td>String</td>
-<td>Ljava/lang/String;</td>
-</tr>
-</tbody>
-</table>
-<p>如果是其他类型的话，可以考虑转换为 JSON 字符串。</p>
-<p><strong>参数</strong></p>
-<p>参数可以是 0 个或任意多个，直接使用 JS 中的 number，bool 和 string 就可以。</p>
-<p>注意，如果 JS 调用 Java 过程中，需要更新 UI 元素，更新的部分代码需要运行在 UI 线程中<code>Activity.runOnUiThread(Runnable)</code>，因为 JS 调用 Java 的过程不是运行在 UI 线程中的。</p>
-<h3 id="2-Java-调用-JS-函数"><a href="#2-Java-调用-JS-函数" class="headerlink" title="2. Java 调用 JS 函数"></a>2. Java 调用 JS 函数</h3><p>有时候还需要在 Java 中回调 JS 函数，例如微信登录成功后回调给 JS 函数，目前的方式是用<code>Cocos2dxJavascriptJavaBridge</code>的静态方法<code>evalString()</code>。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// cc.wxcb 是挂在 cc 的一个对象</span></div><div class="line">Cocos2dxJavascriptJavaBridge.evalString(<span class="string">"cc.wxcb.onLoginResp('"</span>+ authResp.token +<span class="string">"')"</span>);</div></pre></td></tr></table></figure>
-<p>所传参数只支持 JS 中的 number，bool 和 string。</p>
-<p>但是需要注意的是 Java 回调 JS 时，一定要运行在 GL 线程中：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">activity.runOnGLThread(<span class="keyword">new</span> Runnable() &#123;</div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</div><div class="line">        Cocos2dxJavascriptJavaBridge.evalString(<span class="string">"cc.wxcb.onLoginResp('"</span>+ authResp.token +<span class="string">"')"</span>);</div><div class="line">    &#125;</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
-          
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/posts/cocoscreator-js-java-call-each-other/" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>

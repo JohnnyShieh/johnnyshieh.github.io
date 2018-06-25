@@ -114,7 +114,7 @@
 <meta property="og:url" content="http://johnnyshieh.me/posts/cocoscreator-js-java-call-each-other/index.html">
 <meta property="og:site_name" content="Johnny Shieh">
 <meta property="og:description" content="在 CocosCreator 中 JS 如何调用调用 Java 代码，以及 Java 如何回调 JS 代码">
-<meta property="og:updated_time" content="2018-06-25T11:54:36.000Z">
+<meta property="og:updated_time" content="2018-06-25T11:56:57.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="CocosCreator 中 JS 与 Java 互相调用">
 <meta name="twitter:description" content="在 CocosCreator 中 JS 如何调用调用 Java 代码，以及 Java 如何回调 JS 代码">
@@ -470,6 +470,7 @@
 <h3 id="1-JS-调用-Java-方法"><a href="#1-JS-调用-Java-方法" class="headerlink" title="1. JS 调用 Java 方法"></a>1. JS 调用 Java 方法</h3><p>在 CocosCreator 下 JS 调用 Java/Objective-C 的格式都是：</p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> o = jsb.reflection.callStaticMethod(className, methodName, methodSignature, parameters...)</div></pre></td></tr></table></figure>
 <p>JS 只能调用 Java 中的静态方法，需要传入类名、方法名、方法签名、方法参数，并且可以获得返回值。</p>
+<a id="more"></a>
 <p><strong>类名</strong></p>
 <p>类名必须是包含 Java 包路径的完整类名，而且用斜线<code>/</code>代替点<code>.</code>，例如<code>com.johnny.test.WxApiHelper</code>应该传入<code>com/johnny/test/WxApiHelper</code>。</p>
 <p><strong>方法名</strong></p>
