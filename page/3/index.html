@@ -355,6 +355,175 @@
   
 
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://johnnyshieh.me/posts/unit-test-robolectric-android-on-jvm/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Johnny Shieh">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Johnny Shieh">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/posts/unit-test-robolectric-android-on-jvm/" itemprop="url">Kotlin 写 Android 单元测试（四），Robolectric 在 JVM 上测试安卓相关代码</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-15T15:18:30+08:00">
+                2017-12-15
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/unit-test/" itemprop="url" rel="index">
+                    <span itemprop="name">单元测试</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+              <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-comment-o"></i>
+              </span>
+              
+                <a href="/posts/unit-test-robolectric-android-on-jvm/#SOHUCS" itemprop="discussionUrl">
+                  <span id="sourceId::posts/unit-test-robolectric-android-on-jvm/" class="cy_cmt_count" data-xid="posts/unit-test-robolectric-android-on-jvm/" itemprop="commentsCount"></span>
+                </a>
+              
+            
+          
+
+          
+          
+             <span id="/posts/unit-test-robolectric-android-on-jvm/" class="leancloud_visitors" data-flag-title="Kotlin 写 Android 单元测试（四），Robolectric 在 JVM 上测试安卓相关代码">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </span></div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>Kotlin 写 Android 单元测试系列文章：</p>
+<p><a href="http://johnnyshieh.me/posts/unit-test-what-and-why-in-kotlin/">Kotlin 写 Android 单元测试（一），单元测试是什么以及为什么需要</a></p>
+<p><a href="http://johnnyshieh.me/posts/unit-test-junit4-and-kotlin-test/">Kotlin 写 Android 单元测试（二），JUnit 4 测试框架和 kotlin.test 库的使用</a></p>
+<p><a href="http://johnnyshieh.me/posts/unit-test-mockito-2-in-kotlin/">Kotlin 写 Android 单元测试（三），Mockito mocking 框架的使用</a></p>
+<p><a href="http://johnnyshieh.me/posts/unit-test-robolectric-android-on-jvm/">Kotlin 写 Android 单元测试（四），Robolectric 在 JVM 上测试安卓相关代码</a></p>
+<p>未完待续…</p>
+<p>通过前面几篇文章，我们知道可以使用 JUnit 4 和 Mockito 测试框架来测试纯 Java 业务逻辑，但是无法在 JVM 上测试 Android 相关代码。因为 Android 代码需要运行在 Android 平台的虚拟机 Dalvik 或 ART 上，不能直接在 Java 虚拟机（JVM）上直接运行。而我们用 Android Studio 编写 Android 代码时只需要下载 JDK 和 Android SDK，在项目的<code>External Libraries</code>可以看到编译所需要的 Android API，实际上就是 android.jar，这样 Android 代码就能正常开发编译了。</p>
+<p>但是 android.jar 里的类只是个壳，里面的方法都是<code>throw RuntimeException(&quot;stub!!&quot;);</code>，所以在 Android Studio 中可以正常开发编译，但是在 JDK 中 JVM 下运行的话会抛 RuntimeException。我们的 app 代码能在 Dalvik 或 ART 上运行，可以运行是因为它们把 android.jar 里面替换为 Android 的系统实现，所以才能正常运行。</p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/posts/unit-test-robolectric-android-on-jvm/" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://johnnyshieh.me/posts/unit-test-mockito-2-in-kotlin/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1017,178 +1186,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://johnnyshieh.me/posts/aspectj-in-android-usage/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Johnny Shieh">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Johnny Shieh">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/posts/aspectj-in-android-usage/" itemprop="url">AspectJ in Android （三），AspectJ 两种用法以及常见问题</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-20T15:35:00+08:00">
-                2017-09-20
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/AspectJ/" itemprop="url" rel="index">
-                    <span itemprop="name">AspectJ</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-              <span class="post-meta-divider">|</span>
-              <span class="post-meta-item-icon">
-                <i class="fa fa-comment-o"></i>
-              </span>
-              
-                <a href="/posts/aspectj-in-android-usage/#SOHUCS" itemprop="discussionUrl">
-                  <span id="sourceId::posts/aspectj-in-android-usage/" class="cy_cmt_count" data-xid="posts/aspectj-in-android-usage/" itemprop="commentsCount"></span>
-                </a>
-              
-            
-          
-
-          
-          
-             <span id="/posts/aspectj-in-android-usage/" class="leancloud_visitors" data-flag-title="AspectJ in Android （三），AspectJ 两种用法以及常见问题">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数 </span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </span></div>
-      </header>
-    
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>AspectJ in Android 系列：</p>
-<p><a href="http://johnnyshieh.me/posts/aspectj-in-android-basic/">AspectJ in Android （一），AspectJ 基础概念</a></p>
-<p><a href="http://johnnyshieh.me/posts/aspectj-grammar/">AspectJ in Android （二），AspectJ 语法</a></p>
-<p><a href="http://johnnyshieh.me/posts/aspectj-in-android-usage/">AspectJ in Android （三），AspectJ 两种用法以及常见问题</a></p>
-<p>前面两篇文章介绍了 AspectJ 的基础概念以及基于注解开发方式的语法，这篇文章总结了 AspectJ 的两种用法和 android-aspectjx 插件的常见问题。</p>
-<h2 id="AspectJ-的两种用法"><a href="#AspectJ-的两种用法" class="headerlink" title="AspectJ 的两种用法"></a>AspectJ 的两种用法</h2><p>我觉得以 Pointcut 切入点作为区分，AspectJ 有两种用法：（1）用自定义注解修饰切入点，精确控制切入点，属于侵入式；（2）不需要在切入点代码中做任何修改，属于非侵入式。</p>
-<h3 id="侵入式"><a href="#侵入式" class="headerlink" title="侵入式"></a>侵入式</h3><p>侵入式用法，一般会使用自定义注解，以此作为选择切入点的规则。</p>
-<p>下面以 JakeWharton 大神的 <a href="https://github.com/JakeWharton/hugo" target="_blank" rel="external">hugo</a> 为例，分析自定义注解 AOP 的使用。hugo 是用于在开发环境中打印方法调用信息的，只会打印注解修饰的方法。</p>
-<p>首先看下新增的自定义注解：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Target</span>(&#123;TYPE, METHOD, CONSTRUCTOR&#125;) <span class="meta">@Retention</span>(CLASS)</div><div class="line"><span class="keyword">public</span> <span class="meta">@interface</span> DebugLog &#123;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>上面定义了<code>@DebugLog</code>注解，可以修饰类、接口、方法和构造函数，可在 Class 文件中保留，编译期可用。更多关于 Java 注解的内容，请看之前的文章 <a href="http://johnnyshieh.me/posts/annotation-basic/">探索注解之注解的基本概念</a>。</p>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/posts/aspectj-in-android-usage/" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -1236,7 +1233,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">69</span>
+                <span class="site-state-item-count">70</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>

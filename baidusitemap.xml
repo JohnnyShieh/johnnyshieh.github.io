@@ -4,6 +4,50 @@
 
     
   <url>
+    <loc>http://johnnyshieh.me/posts/kotlin-coroutine-deep-diving/</loc>
+    <lastmod>2018-10-29T11:42:09.000Z</lastmod>
+    <data>
+        <display>
+        <title>Kotlin Coroutines(协程) 完全解析（二），深入理解协程与协程挂起</title>
+        <pubTime>2018-07-03T07:58:37.000Z</pubTime>
+        
+        <tag>kotlin</tag>
+         
+        <tag>coroutines</tag>
+         
+         
+           
+             
+              <breadCrumb title="Kotlin" url="http://johnnyshieh.me/categories/kotlin/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://johnnyshieh.me/posts/kotlin-coroutine-introduction/</loc>
+    <lastmod>2018-10-25T03:15:00.000Z</lastmod>
+    <data>
+        <display>
+        <title>Kotlin Coroutines(协程) 完全解析（一），协程简介</title>
+        <pubTime>2018-04-17T07:58:37.000Z</pubTime>
+        
+        <tag>kotlin</tag>
+         
+        <tag>coroutines</tag>
+         
+         
+           
+             
+              <breadCrumb title="Kotlin" url="http://johnnyshieh.me/categories/kotlin/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://johnnyshieh.me/posts/cocoscreator-js-java-call-each-other/</loc>
     <lastmod>2018-06-25T11:56:57.000Z</lastmod>
     <data>
@@ -86,28 +130,6 @@
 
     
   <url>
-    <loc>http://johnnyshieh.me/posts/kotlin-coroutine-introduction/</loc>
-    <lastmod>2018-04-19T11:50:45.000Z</lastmod>
-    <data>
-        <display>
-        <title>Kotlin Coroutines(协程) 完全解析（一），协程简介</title>
-        <pubTime>2018-04-17T07:58:37.000Z</pubTime>
-        
-        <tag>kotlin</tag>
-         
-        <tag>coroutines</tag>
-         
-         
-           
-             
-              <breadCrumb title="Kotlin" url="http://johnnyshieh.me/categories/kotlin/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
     <loc>http://johnnyshieh.me/posts/android-transition-animation/</loc>
     <lastmod>2018-04-04T09:58:40.000Z</lastmod>
     <data>
@@ -139,13 +161,13 @@
         <title>Dagger 2 完全解析（五），Kotlin 中使用 Dagger 2</title>
         <pubTime>2017-06-19T09:17:04.000Z</pubTime>
         
-        <tag>kotlin</tag>
-         
         <tag>android</tag>
          
         <tag>java</tag>
          
         <tag>dagger</tag>
+         
+        <tag>kotlin</tag>
          
          
            
@@ -1084,9 +1106,9 @@
         <title>Kotlin 中延迟初始化的非空属性，如何避免使用不必要的 !! 操作符</title>
         <pubTime>2017-06-22T08:52:50.000Z</pubTime>
         
-        <tag>kotlin</tag>
-         
         <tag>android</tag>
+         
+        <tag>kotlin</tag>
          
          
            

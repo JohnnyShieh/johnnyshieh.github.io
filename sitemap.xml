@@ -2,6 +2,20 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://johnnyshieh.me/posts/kotlin-coroutine-deep-diving/</loc>
+    
+    <lastmod>2018-10-29T11:42:09.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://johnnyshieh.me/posts/kotlin-coroutine-introduction/</loc>
+    
+    <lastmod>2018-10-25T03:15:00.000Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://johnnyshieh.me/posts/cocoscreator-js-java-call-each-other/</loc>
     
     <lastmod>2018-06-25T11:56:57.000Z</lastmod>
@@ -26,13 +40,6 @@
     <loc>http://johnnyshieh.me/posts/download-android-source/</loc>
     
     <lastmod>2018-06-06T01:51:00.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://johnnyshieh.me/posts/kotlin-coroutine-introduction/</loc>
-    
-    <lastmod>2018-04-19T11:50:45.000Z</lastmod>
     
   </url>
   

@@ -1,0 +1,1171 @@
+<!doctype html>
+
+
+
+
+<html class="theme-next pisces" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta http-equiv="Content-Language" content="zh-cn">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+  <meta name="google-site-verification" content="r1Es2KSXuS6zYdab4rZeEA6X-pEwRwyT4x89S7a4EHE">
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+  <link href="http://images.johnnyshieh.me/lib/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="http://images.johnnyshieh.me/fonts/font.css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+  
+
+<link href="http://images.johnnyshieh.me/lib/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="http://images.johnnyshieh.me/css/main.css?v=5.1.1" rel="stylesheet" type="text/css">
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1">
+
+
+
+  
+    <link rel="apple-touch-icon-precomposed" sizes="57x57" href="/apple-touch-icon-57x57.png">
+  
+    <link rel="apple-touch-icon-precomposed" sizes="120x120" href="/apple-touch-icon-120x120.png">
+  
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="/apple-touch-icon-152x152.png">
+  
+
+
+
+
+
+
+<meta name="description" content="Kotlin Coroutines(协程) 完全解析系列： Kotlin Coroutines(协程) 完全解析（一），协程简介 Kotlin Coroutines(协程) 完全解析（二），深入理解协程的挂起、恢复与调度  本文基于 Kotlin v1.3.0-rc-146，Kotlin-Coroutines v1.0.0-RC1  前面一篇文章协程简介，简单介绍了协程的一些基本概念以及其简化异步">
+<meta name="keywords" content="Kotlin, Coroutines, 协程, Johnny, Shieh, Johnny Shieh, johnny shieh blog, ">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Kotlin Coroutines(协程) 完全解析（二），深入理解协程与协程挂起">
+<meta property="og:url" content="http://johnnyshieh.me/posts/kotlin-coroutine-deep-diving/index.html">
+<meta property="og:site_name" content="Johnny Shieh">
+<meta property="og:description" content="Kotlin Coroutines(协程) 完全解析系列： Kotlin Coroutines(协程) 完全解析（一），协程简介 Kotlin Coroutines(协程) 完全解析（二），深入理解协程的挂起、恢复与调度  本文基于 Kotlin v1.3.0-rc-146，Kotlin-Coroutines v1.0.0-RC1  前面一篇文章协程简介，简单介绍了协程的一些基本概念以及其简化异步">
+<meta property="og:image" content="http://images.johnnyshieh.me/coroutine_continuation.png">
+<meta property="og:image" content="http://images.johnnyshieh.me/coroutine_flow.jpg">
+<meta property="og:updated_time" content="2018-10-29T11:42:09.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Kotlin Coroutines(协程) 完全解析（二），深入理解协程与协程挂起">
+<meta name="twitter:description" content="Kotlin Coroutines(协程) 完全解析系列： Kotlin Coroutines(协程) 完全解析（一），协程简介 Kotlin Coroutines(协程) 完全解析（二），深入理解协程的挂起、恢复与调度  本文基于 Kotlin v1.3.0-rc-146，Kotlin-Coroutines v1.0.0-RC1  前面一篇文章协程简介，简单介绍了协程的一些基本概念以及其简化异步">
+<meta name="twitter:image" content="http://images.johnnyshieh.me/coroutine_continuation.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"right","display":"always","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: false,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: 'QK028ACQPB',
+      apiKey: '4e4a5ec0318356434aed6a3aa5aea209',
+      indexName: 'blog',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"搜索文章","hits_empty":"找不到与您搜索的 ${query} 相符的文章，请尝试其他关键字","hits_stats":"找到 ${hits} 条搜索结果，用时 ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://johnnyshieh.me/posts/kotlin-coroutine-deep-diving/">
+
+
+
+
+
+  <title>Kotlin Coroutines(协程) 完全解析（二），深入理解协程与协程挂起 | Johnny Shieh</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?43cea51223ad3b7bc740196aab48d664";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Johnny Shieh</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">人如果没有梦想，跟咸鱼有什么分别</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-books">
+          <a href="/books" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br>
+            
+            读书
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-friends">
+          <a href="/friends" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-users"></i> <br>
+            
+            小伙伴
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  
+  <div class="algolia-popup popup search-popup">
+    <div class="algolia-search">
+      <div class="algolia-search-input-icon">
+        <i class="fa fa-search"></i>
+      </div>
+      <div class="algolia-search-input" id="algolia-search-input"></div>
+    </div>
+
+    <div class="algolia-results">
+      <div id="algolia-stats"></div>
+      <div id="algolia-hits"></div>
+      <div id="algolia-pagination" class="algolia-pagination"></div>
+    </div>
+
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+  </div>
+
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://johnnyshieh.me/posts/kotlin-coroutine-deep-diving/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Johnny Shieh">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Johnny Shieh">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Kotlin Coroutines(协程) 完全解析（二），深入理解协程与协程挂起</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-03T15:58:37+08:00">
+                2018-07-03
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/kotlin/" itemprop="url" rel="index">
+                    <span itemprop="name">Kotlin</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+              <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-comment-o"></i>
+              </span>
+              
+                <a href="/posts/kotlin-coroutine-deep-diving/#SOHUCS" itemprop="discussionUrl">
+                  <span id="changyan_count_unit" class="post-comments-count hc-comment-count" data-xid="posts/kotlin-coroutine-deep-diving/" itemprop="commentsCount"></span>
+                </a>
+              
+            
+          
+
+          
+          
+             <span id="/posts/kotlin-coroutine-deep-diving/" class="leancloud_visitors" data-flag-title="Kotlin Coroutines(协程) 完全解析（二），深入理解协程与协程挂起">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </span></div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>Kotlin Coroutines(协程) 完全解析系列：</p>
+<p><a href="http://johnnyshieh.me/posts/kotlin-coroutine-introduction/">Kotlin Coroutines(协程) 完全解析（一），协程简介</a></p>
+<p><a href="http://johnnyshieh.me/posts/kotlin-coroutine-deep-diving/">Kotlin Coroutines(协程) 完全解析（二），深入理解协程的挂起、恢复与调度</a></p>
+<blockquote>
+<p>本文基于 Kotlin v1.3.0-rc-146，Kotlin-Coroutines v1.0.0-RC1</p>
+</blockquote>
+<p>前面一篇文章协程简介，简单介绍了协程的一些基本概念以及其简化异步编程的优势，但是协程与线程有什么区别，协程的挂起与恢复是如何实现的，还有协程运行在哪个线程上，依然不是很清楚。这篇文章将分析协程的实现原理，一步步揭开协程的面纱。先来看看协程中最关键的挂起函数的实现原理：</p>
+<h3 id="1-挂起函数的工作原理"><a href="#1-挂起函数的工作原理" class="headerlink" title="1. 挂起函数的工作原理"></a>1. 挂起函数的工作原理</h3><p>协程的内部实现使用了 Kotlin 编译器的一些编译技术，当挂起函数调用时，背后大致细节如下：</p>
+<p>挂起函数或挂起 lambda 表达式调用时，都有一个隐式的参数额外传入，这个参数是<code>Continuation</code>类型，封装了协程恢复后的执行的代码逻辑。</p>
+<p>用前文中的一个挂起函数为例：</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">suspend <span class="function"><span class="keyword">fun</span> <span class="title">requestToken</span><span class="params">()</span></span>: Token &#123; ... &#125;</div></pre></td></tr></table></figure>
+<p>实际上在 JVM 中更像下面这样：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="function">Object <span class="title">requestToken</span><span class="params">(Continuation&lt;Token&gt; cont)</span> </span>&#123; ... &#125;</div></pre></td></tr></table></figure>
+<a id="more"></a>
+<p><code>Continuation</code>的定义如下，类似于一个通用的回调接口：</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * Interface representing a continuation after a suspension point that returns value of type `T`.</div><div class="line"> */</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">Continuation</span>&lt;<span class="type">in T</span>&gt; </span>&#123;</div><div class="line">    <span class="comment">/**</span></div><div class="line">     * Context of the coroutine that corresponds to this continuation.</div><div class="line">     */</div><div class="line">    <span class="keyword">public</span> <span class="keyword">val</span> context: CoroutineContext</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line">     * Resumes the execution of the corresponding coroutine passing successful or failed [result] as the</div><div class="line">     * return value of the last suspension point.</div><div class="line">     */</div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">fun</span> <span class="title">resumeWith</span><span class="params">(result: <span class="type">Result</span>&lt;<span class="type">T</span>&gt;)</span></span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>现在再看之前<code>postItem</code>函数：</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">suspend <span class="function"><span class="keyword">fun</span> <span class="title">requestToken</span><span class="params">()</span></span>: Token &#123; ... &#125;   <span class="comment">// 挂起函数</span></div><div class="line">suspend <span class="function"><span class="keyword">fun</span> <span class="title">createPost</span><span class="params">(token: <span class="type">Token</span>, item: <span class="type">Item</span>)</span></span>: Post &#123; ... &#125;  <span class="comment">// 挂起函数</span></div><div class="line"><span class="function"><span class="keyword">fun</span> <span class="title">processPost</span><span class="params">(post: <span class="type">Post</span>)</span></span> &#123; ... &#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">fun</span> <span class="title">postItem</span><span class="params">(item: <span class="type">Item</span>)</span></span> &#123;</div><div class="line">    GlobalScope.launch &#123;</div><div class="line">        <span class="keyword">val</span> token = requestToken()</div><div class="line">        <span class="keyword">val</span> post = createPost(token, item)</div><div class="line">        processPost(post)</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>然而，协程内部实现不是使用普通回调的形式，而是使用状态机来处理不同的挂起点，大致的 CPS(Continuation Passing Style) 代码为：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 编译后生成的内部类大致如下</span></div><div class="line"><span class="keyword">final</span> <span class="class"><span class="keyword">class</span> <span class="title">postItem</span>$1 <span class="keyword">extends</span> <span class="title">SuspendLambda</span> ... </span>&#123;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">final</span> Object <span class="title">invokeSuspend</span><span class="params">(Object result)</span> </span>&#123;</div><div class="line">        ...</div><div class="line">        <span class="keyword">switch</span> (<span class="keyword">this</span>.label) &#123;</div><div class="line">            <span class="keyword">case</span> <span class="number">0</span>:</div><div class="line">                <span class="keyword">this</span>.label = <span class="number">1</span>;</div><div class="line">                token = requestToken(<span class="keyword">this</span>)</div><div class="line">                <span class="keyword">break</span>;</div><div class="line">            <span class="keyword">case</span> <span class="number">1</span>:</div><div class="line">                <span class="keyword">this</span>.label = <span class="number">2</span>;</div><div class="line">                Token token = result;</div><div class="line">                post = createPost(token, <span class="keyword">this</span>.item, <span class="keyword">this</span>)</div><div class="line">                <span class="keyword">break</span>;</div><div class="line">            <span class="keyword">case</span> <span class="number">2</span>:</div><div class="line">                Post post = result;</div><div class="line">                processPost(post)</div><div class="line">                <span class="keyword">break</span>;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>上面代码中每一个挂起点和初始挂起点对应的 Continuation 都会转化为一种状态，协程恢复只是跳转到下一种状态中。挂起函数将执行过程分为多个 Continuation 片段，并且利用状态机的方式保证各个片段是顺序执行的。</p>
+<p><img src="http://images.johnnyshieh.me/coroutine_continuation.png" alt=""></p>
+<h4 id="1-1-挂起函数可能会挂起协程"><a href="#1-1-挂起函数可能会挂起协程" class="headerlink" title="1.1 挂起函数可能会挂起协程"></a>1.1 挂起函数可能会挂起协程</h4><p>挂起函数使用 CPS style 的代码来挂起协程，保证挂起点后面的代码只能在挂起函数执行完后才能执行，所以挂起函数保证了协程内的顺序执行顺序。</p>
+<p>在多个协程的情况下，挂起函数的作用更加明显：</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">fun</span> <span class="title">postItem</span><span class="params">(item: <span class="type">Item</span>)</span></span> &#123;</div><div class="line">    GlobalScope.launch &#123;</div><div class="line">        <span class="comment">// async &#123; requestToken() &#125; 新建一个协程，可能在另一个线程运行</span></div><div class="line">        <span class="comment">// 但是 await() 是挂起函数，当前协程执行逻辑卡在第一个分支，第一种状态，当 async 的协程执行完后恢复当前协程，才会切换到下一个分支</span></div><div class="line">        <span class="keyword">val</span> token = async &#123; requestToken() &#125;.await()</div><div class="line">        <span class="comment">// 在第二个分支状态中，又新建一个协程，使用 await 挂起函数将之后代码作为 Continuation 放倒下一个分支状态，直到 async 协程执行完</span></div><div class="line">        <span class="keyword">val</span> post = aync &#123; createPost(token, item) &#125;.await()</div><div class="line">        <span class="comment">// 最后一个分支状态，直接在当前协程处理</span></div><div class="line">        processPost(post)</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>上面的例子中，<code>await()</code>挂起函数挂起当前协程，直到异步协程完成执行，但是这里并没有<strong>阻塞线程</strong>，是使用状态机的控制逻辑来实现。而且挂起函数可以保证挂起点之后的代码一定在挂起点前代码执行完成后才会执行，挂起函数保证顺序执行，所以异步逻辑也可以用顺序的代码顺序来编写。</p>
+<p>注意挂起函数不一定会挂起协程，如果相关调用的结果已经可用，库可以决定继续进行而不挂起，例如<code>async { requestToken() }</code>的返回值<code>Deferred</code>的结果已经可用时，<code>await()</code>挂起函数可以直接返回结果，不用再挂起协程。</p>
+<h4 id="1-2-挂起函数不会阻塞线程"><a href="#1-2-挂起函数不会阻塞线程" class="headerlink" title="1.2 挂起函数不会阻塞线程"></a>1.2 挂起函数不会阻塞线程</h4><p>挂起函数挂起协程，并不会阻塞协程所在的线程，例如协程的<code>delay()</code>挂起函数会暂停协程一定时间，并不会阻塞协程所在线程，但是<code>Thread.sleep()</code>函数会阻塞线程。</p>
+<p>看下面一个例子，两个协程运行在同一线程上：</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">fun</span> <span class="title">main</span><span class="params">(args: <span class="type">Array</span>&lt;<span class="type">String</span>&gt;)</span></span> &#123;</div><div class="line">    <span class="comment">// 创建一个单线程的协程调度器，下面两个协程都运行在这同一线程上</span></div><div class="line">    <span class="keyword">val</span> coroutineDispatcher = newSingleThreadContext(<span class="string">"ctx"</span>)</div><div class="line">    <span class="comment">// 启动协程 1</span></div><div class="line">    GlobalScope.launch(coroutineDispatcher) &#123;</div><div class="line">        println(<span class="string">"the first coroutine"</span>)</div><div class="line">        delay(<span class="number">200</span>)</div><div class="line">        println(<span class="string">"the first coroutine"</span>)</div><div class="line">    &#125;</div><div class="line">    <span class="comment">// 启动协程 2</span></div><div class="line">    GlobalScope.launch(coroutineDispatcher) &#123;</div><div class="line">        println(<span class="string">"the second coroutine"</span>)</div><div class="line">        delay(<span class="number">100</span>)</div><div class="line">        println(<span class="string">"the second coroutine"</span>)</div><div class="line">    &#125;</div><div class="line">    <span class="comment">// 保证 main 线程存活，确保上面两个协程运行完成</span></div><div class="line">    Thread.sleep(<span class="number">500</span>)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>运行结果为：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">the first coroutine</div><div class="line">the second coroutine</div><div class="line">the second coroutine</div><div class="line">the first coroutine</div></pre></td></tr></table></figure>
+<p>从上面结果可以看出，当协程 1 暂停 200 ms 时，线程并没有阻塞，而是执行协程 2 的代码，然后在 200 ms 时间到后，继续执行协程 1 的逻辑。所以挂起函数并不会阻塞线程，这样可以节省线程资源，协程挂起时，线程可以继续执行其他逻辑。</p>
+<h4 id="1-3-挂起函数恢复协程后运行在哪个线程"><a href="#1-3-挂起函数恢复协程后运行在哪个线程" class="headerlink" title="1.3 挂起函数恢复协程后运行在哪个线程"></a>1.3 挂起函数恢复协程后运行在哪个线程</h4><p>协程的所属的线程调度在前一篇文章《协程简介》中有提到过，主要是由协程的<code>CoroutineDispatcher</code>控制，<code>CoroutineDispatcher</code>可以指定协程运行在某一特定线程上、运作在线程池中或者不指定所运行的线程。所以协程调度器可以分为<code>Confined dispatcher</code>和<code>Unconfined dispatcher</code>，<code>Dispatchers.Default</code>、<code>Dispatchers.IO</code>和<code>Dispatchers.Main</code>属于<code>Confined dispatcher</code>，都指定了协程所运行的线程或线程池，挂起函数恢复后协程也是运行在指定的线程或线程池上的，而<code>Dispatchers.Unconfined</code>属于<code>Unconfined dispatcher</code>，协程启动并运行在 Caller Thread 上，但是只是在第一个挂起点之前是这样的，挂起恢复后运行在哪个线程完全由所调用的挂起函数决定。</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">fun</span> <span class="title">main</span><span class="params">(args: <span class="type">Array</span>&lt;<span class="type">String</span>&gt;)</span></span> = runBlocking&lt;<span class="built_in">Unit</span>&gt; &#123;</div><div class="line">    launch &#123; <span class="comment">// 默认继承 parent coroutine 的 CoroutineDispatcher，指定运行在 main 线程</span></div><div class="line">        println(<span class="string">"main runBlocking: I'm working in thread <span class="subst">$&#123;Thread.currentThread().name&#125;</span>"</span>)</div><div class="line">        delay(<span class="number">100</span>)</div><div class="line">        println(<span class="string">"main runBlocking: After delay in thread <span class="subst">$&#123;Thread.currentThread().name&#125;</span>"</span>)</div><div class="line">    &#125;</div><div class="line">    launch(Dispatchers.Unconfined) &#123;</div><div class="line">        println(<span class="string">"Unconfined      : I'm working in thread <span class="subst">$&#123;Thread.currentThread().name&#125;</span>"</span>)</div><div class="line">        delay(<span class="number">100</span>)</div><div class="line">        println(<span class="string">"Unconfined      : After delay in thread <span class="subst">$&#123;Thread.currentThread().name&#125;</span>"</span>)</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>输出如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">Unconfined      : I<span class="string">'m working in thread main</span></div><div class="line">main runBlocking: I'm working <span class="keyword">in</span> thread main</div><div class="line">Unconfined      : After delay <span class="keyword">in</span> thread kotlinx.coroutines.DefaultExecutor</div><div class="line">main runBlocking: After delay <span class="keyword">in</span> thread main</div></pre></td></tr></table></figure>
+<p>上面第三行输出，经过<code>delay</code>挂起函数后，使用<code>Dispatchers.Unconfined</code>的协程挂起恢复后依然在<code>delay</code>函数使用的<code>DefaultExecutor</code>上。</p>
+<h3 id="2-协程深入解析"><a href="#2-协程深入解析" class="headerlink" title="2. 协程深入解析"></a>2. 协程深入解析</h3><p>上面更多地是通过 demo 的方式说明挂起函数函数的一些特性，但是协程的创建、启动、恢复、线程调度、协程切换是如何实现的呢，还是不清楚，下面结合源码详细地解析协程。</p>
+<h4 id="2-1-协程的创建与启动"><a href="#2-1-协程的创建与启动" class="headerlink" title="2.1 协程的创建与启动"></a>2.1 协程的创建与启动</h4><p>先从新建一个协程开始分析协程的创建，最常见的协程创建方式为<code>CoroutineScope.launch {}</code>，关键源码如下：</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">fun</span> CoroutineScope.<span class="title">launch</span><span class="params">(</span></span></div><div class="line">    context: <span class="type">CoroutineContext</span> = EmptyCoroutineContext,</div><div class="line">    start: <span class="type">CoroutineStart</span> = CoroutineStart.DEFAULT,</div><div class="line">    block: <span class="type">suspend</span> <span class="type">CoroutineScope</span>.() -&gt; <span class="built_in">Unit</span></div><div class="line">): Job &#123;</div><div class="line">    ...</div><div class="line">    coroutine.start(start, coroutine, block)</div><div class="line">    <span class="keyword">return</span> coroutine</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><code>coroutine.start(start, coroutine, block)</code>默认情况下会走到<code>startCoroutineCancellable</code>，最终会调用到<code>createCoroutineUnintercepted</code>。</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * Creates unintercepted coroutine without receiver and with result type [T].</div><div class="line"> * This function creates a new, fresh instance of suspendable computation every time it is invoked.</div><div class="line"> *</div><div class="line"> * To start executing the created coroutine, invoke `resume(Unit)` on the returned [Continuation] instance.</div><div class="line"> * The [completion] continuation is invoked when coroutine completes with result or exception.</div><div class="line"> ...</div><div class="line"> */</div><div class="line"> <span class="keyword">public</span> actual <span class="function"><span class="keyword">fun</span> <span class="type">&lt;T&gt;</span> <span class="params">(suspend ()</span></span> -&gt; T).createCoroutineUnintercepted(</div><div class="line">    completion: Continuation&lt;T&gt;</div><div class="line">): Continuation&lt;<span class="built_in">Unit</span>&gt; &#123; ... &#125;</div></pre></td></tr></table></figure>
+<p>重点注意该方法的注释，创建一个协程，创建了一个新的可挂起计算，通过调用<code>resume(Unit)</code>启动该协程。而且返回值为<code>Continuation</code>，<code>Continuation</code>提供了<code>resumeWith</code>恢复协程的接口，用以实现协程恢复，<code>Continuation</code>封装了协程的代码运行逻辑和恢复接口。</p>
+<p>再看之前协程代码编译生成的内部类<code>final class postItem$1 extends SuspendLambda ...</code>，协程的计算逻辑封装在<code>invokeSuspend</code>方法中，而<code>SuspendLambda</code>的继承关系为 SuspendLambda -&gt; ContinuationImpl -&gt; BaseContinuationImpl -&gt; Continuation，其中<code>BaseContinuationImpl</code> 部分关键源码如下：</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">internal</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">BaseContinuationImpl</span></span>(...) &#123;</div><div class="line">    <span class="comment">// 实现 Continuation 的 resumeWith，并且是 final 的，不可被重写</span></div><div class="line">    <span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">resumeWith</span><span class="params">(result: <span class="type">Result</span>&lt;<span class="type">Any</span>?&gt;)</span></span> &#123;</div><div class="line">        ...</div><div class="line">        <span class="keyword">val</span> outcome = invokeSuspend(param)</div><div class="line">        ...</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">// 由编译生成的协程相关类来实现，例如 postItem$1</span></div><div class="line">    <span class="keyword">protected</span> <span class="keyword">abstract</span> <span class="function"><span class="keyword">fun</span> <span class="title">invokeSuspend</span><span class="params">(result: <span class="type">Result</span>&lt;<span class="type">Any</span>?&gt;)</span></span>: Any?</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>而这部分与之前的分析也是吻合的，启动协程流程是<code>resume(Unit)</code>-&gt;<code>resumeWith()</code>-&gt;<code>invokeSuspend()</code>，协程的挂起通过<code>suspend</code>挂起函数实现，协程的恢复通过<code>Continuation.resumeWith</code>实现。</p>
+<h4 id="2-2-协程的线程调度"><a href="#2-2-协程的线程调度" class="headerlink" title="2.2 协程的线程调度"></a>2.2 协程的线程调度</h4><p>协程的线程调度是通过拦截器实现的，前面提到了协程启动调用到了<code>startCoroutineCancellable</code>，该方法实现为：</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">internal</span> <span class="function"><span class="keyword">fun</span> <span class="type">&lt;T&gt;</span> <span class="params">(suspend ()</span></span> -&gt; T).startCoroutineCancellable(completion: Continuation&lt;T&gt;) =</div><div class="line">    createCoroutineUnintercepted(completion).intercepted().resumeCancellable(<span class="built_in">Unit</span>)</div><div class="line"><span class="comment">// createCoroutineUnintercepted(completion) 会创建一个新的协程，返回值类型为 Continuation</span></div><div class="line"><span class="comment">// intercepted() 是给 Continuation 加上 ContinuationInterceptor 拦截器，也是线程调度的关键</span></div><div class="line"><span class="comment">// resumeCancellable(Unit) 最终将调用 resume(Unit) 启动协程</span></div></pre></td></tr></table></figure>
+<p>再看<code>intercepted()</code>的具体实现：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line">public actual fun &lt;T&gt; Continuation&lt;T&gt;.intercepted(): Continuation&lt;T&gt; =</div><div class="line">    (this as? ContinuationImpl)?.intercepted() ?: this</div><div class="line">// ContinuationImpl 是 SuspendLambda 的父类</div><div class="line"></div><div class="line">internal abstract class ContinuationImpl(...) : BaseContinuationImpl(completion) &#123;</div><div class="line">    @Transient</div><div class="line">    private var intercepted: Continuation&lt;Any?&gt;? = null</div><div class="line"></div><div class="line">    public fun intercepted(): Continuation&lt;Any?&gt; =</div><div class="line">        intercepted</div><div class="line">            ?: (context[ContinuationInterceptor]?.interceptContinuation(this) ?: this)</div><div class="line">                .also &#123; intercepted = it &#125;</div><div class="line">    // intercepted() 方法关键是 context[ContinuationInterceptor]?.interceptContinuation(this)</div><div class="line">    // context[ContinuationInterceptor] 就是协程的 CoroutineDispatcher</div><div class="line">&#125;</div><div class="line"></div><div class="line">public abstract class CoroutineDispatcher :</div><div class="line">    AbstractCoroutineContextElement(ContinuationInterceptor), ContinuationInterceptor &#123;</div><div class="line">    /**</div><div class="line">     * Returns continuation that wraps the original [continuation], thus intercepting all resumptions.</div><div class="line">     */</div><div class="line">    public final override fun &lt;T&gt; interceptContinuation(continuation: Continuation&lt;T&gt;): Continuation&lt;T&gt; =</div><div class="line">        DispatchedContinuation(this, continuation)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>所以<code>intercepted()</code>最终会使用协程的<code>CoroutineDispatcher</code>的<code>interceptContinuation</code>方法包装原来的 Continuation，拦截所有的协程运行操作。</p>
+<p><code>DispatchedContinuation</code>拦截了协程的启动和恢复，分别是<code>resumeCancellable(Unit)</code>和重写的<code>resumeWith(Result)</code>：</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">internal</span> <span class="class"><span class="keyword">class</span> <span class="title">DispatchedContinuation</span>&lt;<span class="type">in T</span>&gt;</span>(</div><div class="line">    <span class="meta">@JvmField</span> <span class="keyword">val</span> dispatcher: CoroutineDispatcher,</div><div class="line">    <span class="meta">@JvmField</span> <span class="keyword">val</span> continuation: Continuation&lt;T&gt;</div><div class="line">) : Continuation&lt;T&gt; <span class="keyword">by</span> continuation, DispatchedTask&lt;T&gt; &#123;</div><div class="line">    <span class="keyword">inline</span> <span class="function"><span class="keyword">fun</span> <span class="title">resumeCancellable</span><span class="params">(value: <span class="type">T</span>)</span></span> &#123;</div><div class="line">        <span class="comment">// 判断是否需要线程调度</span></div><div class="line">        <span class="keyword">if</span> (dispatcher.isDispatchNeeded(context)) &#123;</div><div class="line">            ...</div><div class="line">            <span class="comment">// 将协程的运算分发到另一个线程</span></div><div class="line">            dispatcher.dispatch(context, <span class="keyword">this</span>)</div><div class="line">        &#125; <span class="keyword">else</span> &#123;</div><div class="line">            ...</div><div class="line">            <span class="comment">// 如果不需要调度，直接在当前线程执行协程运算</span></div><div class="line">            resumeUndispatched(value)</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">resumeWith</span><span class="params">(result: <span class="type">Result</span>&lt;<span class="type">T</span>&gt;)</span></span> &#123;</div><div class="line">        <span class="comment">// 判断是否需要线程调度</span></div><div class="line">        <span class="keyword">if</span> (dispatcher.isDispatchNeeded(context)) &#123;</div><div class="line">            ...</div><div class="line">            <span class="comment">// 将协程的运算分发到另一个线程</span></div><div class="line">            dispatcher.dispatch(context, <span class="keyword">this</span>)</div><div class="line">        &#125; <span class="keyword">else</span> &#123;</div><div class="line">            ...</div><div class="line">            <span class="comment">// 如果不需要调度，直接在当前线程执行协程运算</span></div><div class="line">            continuation.resumeWith(result)</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">internal</span> <span class="class"><span class="keyword">interface</span> <span class="title">DispatchedTask</span>&lt;<span class="type">in T</span>&gt; : <span class="type">Runnable &#123;</span></span></div><div class="line">    <span class="keyword">public</span> <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">run</span><span class="params">()</span></span> &#123;</div><div class="line">        ...</div><div class="line">        <span class="comment">// 封装了 continuation.resume 逻辑</span></div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>继续跟踪<code>newSingleThreadContext()</code>、<code>Dispatchers.IO</code>等<code>dispatch</code>方法的实现，发现其实都调用了<code>Executor.execute(Runnable)</code>方法，而<code>Dispatchers.Unconfined</code>的实现更简单，关键在于<code>isDispatchNeeded()</code>返回为<code>false</code>。</p>
+<h4 id="2-3-协程的挂起和恢复"><a href="#2-3-协程的挂起和恢复" class="headerlink" title="2.3 协程的挂起和恢复"></a>2.3 协程的挂起和恢复</h4><p>Kotlin 编译器会生成继承自<code>SuspendLambda</code>的子类，协程的真正运算逻辑都在<code>invokeSuspend</code>中。但是协程挂起的具体实现是如何呢？先看下面示例代码：</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">fun</span> <span class="title">main</span><span class="params">(args: <span class="type">Array</span>&lt;<span class="type">String</span>&gt;)</span></span> = runBlocking&lt;<span class="built_in">Unit</span>&gt; &#123; <span class="comment">// 新建并启动 blocking 协程，运行在 main 线程上，等待所有子协程运行完成后才会结束</span></div><div class="line">    launch(Dispatchers.Unconfined) &#123; <span class="comment">// 新建并启动 launch 协程，没有指定所运行线程，一开始运行在调用者所在的 main 线程上</span></div><div class="line">        println(<span class="string">"<span class="subst">$&#123;Thread.currentThread().name&#125;</span> : launch start"</span>)</div><div class="line">        async(Dispatchers.Default) &#123; <span class="comment">// 新建并启动 async 协程，运行在 Dispatchers.Default 的线程池中</span></div><div class="line">            println(<span class="string">"<span class="subst">$&#123;Thread.currentThread().name&#125;</span> : async start"</span>)</div><div class="line">            delay(<span class="number">100</span>)  <span class="comment">// 挂起 async 协程 100 ms</span></div><div class="line">            println(<span class="string">"<span class="subst">$&#123;Thread.currentThread().name&#125;</span> : async end"</span>)</div><div class="line">        &#125;.await() <span class="comment">// 挂起 launch 协程，直到 async 协程结束</span></div><div class="line">        println(<span class="string">"<span class="subst">$&#123;Thread.currentThread().name&#125;</span> : launch end"</span>)</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>其中 launch 协程编译生成的 SuspendLambda 子类的<code>invokeSuspend</code>方法如下：</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="keyword">final</span> Object invokeSuspend(<span class="meta">@NotNull</span> Object result) &#123;</div><div class="line">    Object coroutine_suspended = IntrinsicsKt.getCOROUTINE_SUSPENDED();</div><div class="line">    switch (<span class="keyword">this</span>.label) &#123;</div><div class="line">        case <span class="number">0</span>:</div><div class="line">            ...</div><div class="line">            System.<span class="keyword">out</span>.println(stringBuilder.append(currentThread.getName()).append(<span class="string">" : launch start"</span>).toString());</div><div class="line">            <span class="comment">// 新建并启动 async 协程 </span></div><div class="line">            Deferred async$<span class="keyword">default</span> = BuildersKt.async$<span class="keyword">default</span>(coroutineScope, (CoroutineContext) Dispatchers.getDefault(), <span class="literal">null</span>, (Function2) new <span class="number">1</span>(<span class="literal">null</span>), <span class="number">2</span>, <span class="literal">null</span>);</div><div class="line">            <span class="keyword">this</span>.label = <span class="number">1</span>;</div><div class="line">            <span class="comment">// 调用 await() 挂起函数</span></div><div class="line">            <span class="keyword">if</span> (async$<span class="keyword">default</span>.await(<span class="keyword">this</span>) == coroutine_suspended) &#123;</div><div class="line">                <span class="keyword">return</span> coroutine_suspended;</div><div class="line">            &#125;</div><div class="line">            <span class="keyword">break</span>;</div><div class="line">        case <span class="number">1</span>:</div><div class="line">            <span class="keyword">if</span> (result instanceof Failure) &#123;</div><div class="line">                <span class="keyword">throw</span> ((Failure) result).exception;</div><div class="line">            &#125;</div><div class="line">            <span class="comment">// 恢复协程后再执行一次 resumeWith()，然后无异常的话执行最后的 println()</span></div><div class="line">            <span class="keyword">break</span>;</div><div class="line">        <span class="keyword">default</span>:</div><div class="line">            <span class="keyword">throw</span> new IllegalStateException(<span class="string">"call to 'resume' before 'invoke' with coroutine"</span>);</div><div class="line">    &#125;</div><div class="line">    ...</div><div class="line">    System.<span class="keyword">out</span>.println(stringBuilder2.append(currentThread2.getName()).append(<span class="string">" : launch end"</span>).toString());</div><div class="line">    <span class="keyword">return</span> <span class="built_in">Unit</span>.INSTANCE;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>上面代码中 launch 协程挂起的关键在于<code>async$default.await(this) == coroutine_suspended</code>，如果此时 async 线程未执行完成，<code>await()</code>返回为<code>IntrinsicsKt.getCOROUTINE_SUSPENDED()</code>，就会 return，launch 协程的<code>invokeSuspend</code>方法执行完成，协程所在线程继续往下运行，此时 launch 线程处于挂起状态。所以协程挂起就是协程挂起点之前逻辑执行完成，协程的运算关键方法<code>resumeWith()</code>执行完成，线程继续执行往下执行其他逻辑。</p>
+<p>协程挂起有三点需要注意的：</p>
+<ul>
+<li><p>启动其他协程并不会挂起当前协程，所以<code>launch</code>和<code>async</code>启动线程时，除非新协程运行在当前线程，则当前协程只能在新协程运行完成后继续执行，否则当前协程都会马上继续运行。</p>
+</li>
+<li><p>协程挂起并不会阻塞线程，因为协程挂起时相当于执行完协程的方法，线程继续执行其他之后的逻辑。</p>
+</li>
+<li><p>挂起函数并一定都会挂起协程，例如<code>await()</code>挂起函数如果返回值不等于<code>IntrinsicsKt.getCOROUTINE_SUSPENDED()</code>，则协程继续执行挂起点之后逻辑。</p>
+</li>
+</ul>
+<p>下面继续分析<code>await()</code>的实现原理，它的实现中关键是调用了<code>JobSupport.awaitSuspend()</code>方法：</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">private</span> suspend <span class="function"><span class="keyword">fun</span> <span class="title">awaitSuspend</span><span class="params">()</span></span>: Any? = suspendCoroutineUninterceptedOrReturn &#123; uCont -&gt;</div><div class="line">    <span class="comment">/*</span></div><div class="line">        * Custom code here, so that parent coroutine that is using await</div><div class="line">        * on its child deferred (async) coroutine would throw the exception that this child had</div><div class="line">        * thrown and not a JobCancellationException.</div><div class="line">        */</div><div class="line">    <span class="keyword">val</span> cont = AwaitContinuation(uCont.intercepted(), <span class="keyword">this</span>)</div><div class="line">    cont.initCancellability()</div><div class="line">    invokeOnCompletion(ResumeAwaitOnCompletion(<span class="keyword">this</span>, cont).asHandler)</div><div class="line">    cont.getResult()</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">private</span> <span class="class"><span class="keyword">class</span> <span class="title">ResumeAwaitOnCompletion</span>&lt;<span class="type">T</span>&gt;</span>(</div><div class="line">    job: JobSupport,</div><div class="line">    <span class="keyword">private</span> <span class="keyword">val</span> continuation: AbstractContinuation&lt;T&gt;</div><div class="line">) : JobNode&lt;JobSupport&gt;(job) &#123;</div><div class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">invoke</span><span class="params">(cause: <span class="type">Throwable</span>?)</span></span> &#123;</div><div class="line">        <span class="keyword">val</span> state = job.state</div><div class="line">        check(state !<span class="keyword">is</span> Incomplete)</div><div class="line">        <span class="keyword">if</span> (state <span class="keyword">is</span> CompletedExceptionally) &#123;</div><div class="line">            <span class="comment">// Resume with exception in atomic way to preserve exception</span></div><div class="line">            continuation.resumeWithExceptionMode(state.cause, MODE_ATOMIC_DEFAULT)</div><div class="line">        &#125; <span class="keyword">else</span> &#123;</div><div class="line">            <span class="comment">// Resuming with value in a cancellable way (AwaitContinuation is configured for this mode).</span></div><div class="line">            <span class="meta">@Suppress(<span class="meta-string">"UNCHECKED_CAST"</span>)</span></div><div class="line">            continuation.resume(state <span class="keyword">as</span> T)</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">toString</span><span class="params">()</span></span> = <span class="string">"ResumeAwaitOnCompletion[<span class="subst">$continuation</span>]"</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>上面源码中<code>ResumeAwaitOnCompletion</code>的<code>invoke</code>方法的逻辑就是调用<code>continuation.resume(state as T)</code>恢复协程。<code>invokeOnCompletion</code>函数里面是如何实现 async 协程完成后自动恢复之前协程的呢，源码实现有些复杂，因为很多边界情况处理就不全部展开，其中最关键的逻辑如下：</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// handler 就是 ResumeAwaitOnCompletion 的实例，将 handler 作为节点</span></div><div class="line"><span class="keyword">val</span> node = nodeCache ?: makeNode(handler, onCancelling).also &#123; nodeCache = it &#125;</div><div class="line"><span class="comment">// 将 node 节点添加到 state.list 中</span></div><div class="line"><span class="keyword">if</span> (!addLastAtomic(state, list, node)) <span class="keyword">return</span><span class="symbol">@loopOnState</span> <span class="comment">// retry</span></div></pre></td></tr></table></figure>
+<p>接下来我断点调试 launch 协程恢复的过程，从 async 协程的<code>SuspendLambda</code>的子类的<code>completion.resumeWith(outcome)</code> -&gt; <code>AbstractCoroutine.resumeWith(result)</code> ..-&gt; <code>JobSupport.tryFinalizeSimpleState()</code> -&gt; <code>JobSupport.completeStateFinalization()</code> -&gt; <code>state.list?.notifyCompletion(cause)</code> -&gt; <code>node.invoke</code>，最后 handler 节点里面通过调用<code>resume(result)</code>恢复协程。</p>
+<p>而这过程中有两个<code>final</code>的<code>resumeWith</code> 方法，一个是<code>SuspendLambda</code>的父类<code>BaseContinuationImpl</code>的，我们再来详细分析一篇:</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">internal</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">BaseContinuationImpl</span></span>(</div><div class="line">    <span class="keyword">public</span> <span class="keyword">val</span> completion: Continuation&lt;Any?&gt;?</div><div class="line">) : Continuation&lt;Any?&gt;, CoroutineStackFrame, Serializable &#123;</div><div class="line">    <span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">resumeWith</span><span class="params">(result: <span class="type">Result</span>&lt;<span class="type">Any</span>?&gt;)</span></span> &#123;</div><div class="line">        ...</div><div class="line">        <span class="keyword">var</span> param = result</div><div class="line">        <span class="keyword">while</span> (<span class="literal">true</span>) &#123;</div><div class="line">            with(current) &#123;</div><div class="line">                <span class="keyword">val</span> completion = completion!!</div><div class="line">                <span class="keyword">val</span> outcome: Result&lt;Any?&gt; =</div><div class="line">                    <span class="keyword">try</span> &#123;</div><div class="line">                        <span class="comment">// 调用 invokeSuspend 方法执行，执行协程的真正运算逻辑</span></div><div class="line">                        <span class="keyword">val</span> outcome = invokeSuspend(param)</div><div class="line">                        <span class="comment">// 协程挂起时 invokeSuspend 才会返回 COROUTINE_SUSPENDED，所以协程挂起时，其实只是协程的 resumeWith 运行逻辑执行完成，再次调用 resumeWith 时，协程挂起点之后的逻辑才能继续执行</span></div><div class="line">                        <span class="keyword">if</span> (outcome === COROUTINE_SUSPENDED) <span class="keyword">return</span></div><div class="line">                        Result.success(outcome)</div><div class="line">                    &#125; <span class="keyword">catch</span> (exception: Throwable) &#123;</div><div class="line">                        Result.failure(exception)</div><div class="line">                    &#125;</div><div class="line">                releaseIntercepted() <span class="comment">// this state machine instance is terminating</span></div><div class="line">                <span class="comment">// 这里可以看出 Continuation 其实分为两类，一种是 BaseContinuationImpl，封装了协程的真正运算逻辑</span></div><div class="line">                <span class="keyword">if</span> (completion <span class="keyword">is</span> BaseContinuationImpl) &#123;</div><div class="line">                    <span class="comment">// unrolling recursion via loop</span></div><div class="line">                    current = completion</div><div class="line">                    param = outcome</div><div class="line">                &#125; <span class="keyword">else</span> &#123;</div><div class="line">                    <span class="comment">// 断点时发现 completion 是 DeferredCoroutine 实例，这里实际调用的是其父类 AbstractCoroutine 的 resumeWith 方法</span></div><div class="line">                    completion.resumeWith(outcome)</div><div class="line">                    <span class="keyword">return</span></div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>接下来再来看另外一类 Continuation，AbstractCoroutine 的<code>resumeWith</code>实现：</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">AbstractCoroutine</span>&lt;<span class="type">in T</span>&gt;</span>(</div><div class="line">    <span class="meta">@JvmField</span></div><div class="line">    <span class="keyword">protected</span> <span class="keyword">val</span> parentContext: CoroutineContext,</div><div class="line">    active: <span class="built_in">Boolean</span> = <span class="literal">true</span></div><div class="line">) : JobSupport(active), Job, Continuation&lt;T&gt;, CoroutineScope &#123;</div><div class="line">    <span class="comment">/**</span></div><div class="line">     * Completes execution of this with coroutine with the specified result.</div><div class="line">     */</div><div class="line">    <span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">resumeWith</span><span class="params">(result: <span class="type">Result</span>&lt;<span class="type">T</span>&gt;)</span></span> &#123;</div><div class="line">        <span class="comment">// makeCompletingOnce 大致实现是修改协程状态，如果需要的话还会将结果返回给调用者协程，并恢复调用者协程</span></div><div class="line">        makeCompletingOnce(result.toState(), defaultResumeMode)</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>所以其中一类 Continuation <code>BaseContinuationImpl</code>的<code>resumeWith</code>封装了协程的运算逻辑，用以协程的启动和恢复；而另一类 Continuation <code>AbstractCoroutine</code>，主要是负责维护协程的状态和管理，它的<code>resumeWith</code>则是完成协程，恢复调用者协程。</p>
+<h4 id="2-4-协程的三层包装"><a href="#2-4-协程的三层包装" class="headerlink" title="2.4 协程的三层包装"></a>2.4 协程的三层包装</h4><p>常用的<code>launch</code>和<code>async</code>返回的<code>Job</code>、<code>Deferred</code>，里面封装了协程状态，提供了取消协程接口，而它们的实例都是继承自<code>AbstractCoroutine</code>，它是协程的第一层包装。第二层包装是编译器生成的<code>SuspendLambda</code>的子类，封装了协程的真正运算逻辑，继承自<code>BaseContinuationImpl</code>，其中<code>completion</code>属性就是协程的第一层包装。第三层包装是前面分析协程的线程调度时提到的<code>DispatchedContinuation</code>，封装了线程调度逻辑，包含了协程的第二层包装。三层包装都实现了<code>Continuation</code>接口，通过代理模式将协程的各层包装组合在一起，每层负责不同的功能。</p>
+<p>下面是协程运行的流程图：</p>
+<p><img src="http://images.johnnyshieh.me/coroutine_flow.jpg" alt=""></p>
+<h3 id="3-小结"><a href="#3-小结" class="headerlink" title="3. 小结"></a>3. 小结</h3><p>经过以上解析之后，再来看协程就是一段可以挂起和恢复执行的运算逻辑，而协程的挂起是通过挂起函数实现的，挂起函数用状态机的方式用挂起点将协程的运算逻辑拆分为不同的片段，每次运行协程执行的不同的逻辑片段。所以协程有两个很大的好处：一是简化异步编程，支持异步返回；而是挂起不阻塞线程，提供线程利用率。</p>
+      
+    </div>
+
+    
+    <section data-mpa-template-id="95" class="mpa-template" data-mpa-color="#ffffff">
+      <section style="margin-top: 20px;display: -webkit-box;display: flex;-webkit-box-pack: center;justify-content: center;-webkit-box-align: center;align-items: center" data-mid="t22">
+        <section style="text-align: center;line-height: 30px" data-mid="">
+          <section style="display: inline-block;float: left;width: 95px;height: 2px;background: -webkit-linear-gradient(right, #141414, #f0f0f0);background: linear-gradient(to left, #141414, #f0f0f0);-webkit-transform: translate(0px, 12px);-ms-transform: translate(0px, 12px);transform: translate(0px, 12px)" data-mid="" data-contenteditable="false">
+          </section>
+          <section style="float: left;width: 4px;height: 4px;border-radius: 50%;padding: 3px;background-color: #b1b1b1;text-align: center;-webkit-transform: translate(0px, 8px);-ms-transform: translate(0px, 8px);transform: translate(0px, 8px)" data-mid="" data-contenteditable="false">
+            <section style="width: 5px;height: 5px;border-radius: 50%;background-color: #141414" data-mid="">
+            </section>
+          </section>
+          <section style="float: left;min-width: 50px;padding: 0 10px 0 10px;font-size: 16px;color: #4f4f4f;text-align: center;line-height: 30px" data-mid="">END</section>
+          <section style="float: left;padding: 3px;width: 4px;height: 4px;border-radius: 50%;background-color: #b1b1b1;text-align: center;-webkit-transform: translate(0px, 9px);-ms-transform: translate(0px, 9px);transform: translate(0px, 9px)" data-mid="" data-contenteditable="false">
+            <section style="width: 5px;height: 5px;border-radius: 50%;background-color: #141414" data-mid="">
+            </section>
+          </section>
+          <section style="display: inline-block;float: left;width: 95px;height: 2px;background: -webkit-linear-gradient(left, #141414, #f0f0f0);background: linear-gradient(to right, #141414, #f0f0f0);-webkit-transform: translate(-1px, 14px);-ms-transform: translate(-1px, 14px);transform: translate(-1px, 14px)" data-mid="" data-contenteditable="false">
+          </section>
+        </section>
+      </section>
+    </section>
+    
+
+    <div>
+      
+        
+<div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
+    <img id="wechat_subscriber_qcode" src="/uploads/wechat_qcode.jpg" alt="Johnny Shieh wechat" style="width: 200px; max-width: 100%">
+    <div>我的公众号，不只有技术，还有咖啡和彩蛋！</div>
+</div>
+
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/kotlin/" rel="tag"># kotlin</a>
+          
+            <a href="/tags/coroutines/" rel="tag"># coroutines</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/posts/cocoscreator-js-java-call-each-other/" rel="next" title="CocosCreator 中 JS 与 Java 互相调用">
+                <i class="fa fa-chevron-left"></i> CocosCreator 中 JS 与 Java 互相调用
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="SOHUCS" sid="posts/kotlin-coroutine-deep-diving/"></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image" src="/uploads/avatar.png" alt="Johnny Shieh">
+          <p class="site-author-name" itemprop="name">Johnny Shieh</p>
+           
+              <p class="site-description motion-element" itemprop="description">我本微末，心向天空</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">70</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">13</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">42</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/JohnnyShieh" rel="external nofollow" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/johnnyshieh17" rel="external nofollow" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  Weibo
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="mailto:JohnnyShieh17@gmail.com" rel="external nofollow" target="_blank" title="Gmail">
+                  
+                    <i class="fa fa-fw fa-envelope"></i>
+                  
+                  Gmail
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.jianshu.com/u/763027594c0b" rel="external nofollow" target="_blank" title="简书">
+                  
+                    <i class="fa fa-fw fa-book"></i>
+                  
+                  简书
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        <!--<div style="margin: 20px 0 20px 0; height: 1px; background: #eee"></div> 
+<div id="hot-series">
+    <ul class="sidebar-nav" style="margin-bottom: 0;">
+        <li>热门系列</li>
+    </ul>
+    <ul class="series-posts" style="font-size: 14px; padding-left: 10px; list-style: none; text-align: left;">
+        <li><span><a href="http://johnnyshieh.me/tags/dagger/">Dagger 完全解析</a></span>（6）</li>
+         <li><span><a href="http://johnnyshieh.me/categories/AspectJ/">AspectJ in Android</a></span>（3）</li>
+        <li><span><a href="http://johnnyshieh.me/categories/unit-test/">Kotlin 写 Android 单元测试</a>（4）</span></li>
+    </ul>
+</div>
+-->
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-挂起函数的工作原理"><span class="nav-text">1. 挂起函数的工作原理</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-1-挂起函数可能会挂起协程"><span class="nav-text">1.1 挂起函数可能会挂起协程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-2-挂起函数不会阻塞线程"><span class="nav-text">1.2 挂起函数不会阻塞线程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-3-挂起函数恢复协程后运行在哪个线程"><span class="nav-text">1.3 挂起函数恢复协程后运行在哪个线程</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-协程深入解析"><span class="nav-text">2. 协程深入解析</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-1-协程的创建与启动"><span class="nav-text">2.1 协程的创建与启动</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-协程的线程调度"><span class="nav-text">2.2 协程的线程调度</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3-协程的挂起和恢复"><span class="nav-text">2.3 协程的挂起和恢复</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-4-协程的三层包装"><span class="nav-text">2.4 协程的三层包装</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-小结"><span class="nav-text">3. 小结</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+      <div style="margin: 20px 0 20px 0; height: 1px; background: #eee"></div> 
+<div id="hot-series">
+    <ul class="sidebar-nav" style="margin-bottom: 0">
+        <li>热门系列</li>
+    </ul>
+    <ul class="series-posts" style="font-size: 14px; padding-left: 10px; list-style: none; text-align: left">
+        <li><span><a href="http://johnnyshieh.me/tags/dagger/">Dagger 完全解析</a></span>（6）</li>
+         <li><span><a href="http://johnnyshieh.me/categories/AspectJ/">AspectJ in Android</a></span>（3）</li>
+        <li><span><a href="http://johnnyshieh.me/categories/unit-test/">Kotlin 写 Android 单元测试</a>（4）</span></li>
+    </ul>
+</div>
+
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy;  2015 - 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Johnny Shieh</span>
+</div>
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>访客数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>总访问量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="http://images.johnnyshieh.me/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.1"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+  
+    <script type="text/javascript">
+    (function(){
+      var appid = 'cyt8KwhJ1';
+      var conf = 'prod_651756cd8d701505ffbb60e416929831';
+      var width = window.innerWidth || document.documentElement.clientWidth;
+      if (width < 960) {
+      window.document.write('<script id="changyan_mobile_js" charset="utf-8" type="text/javascript" src="https://changyan.sohu.com/upload/mobile/wap-js/changyan_mobile.js?client_id=' + appid + '&conf=' + conf + '"><\/script>'); } else { var loadJs=function(d,a){var c=document.getElementsByTagName("head")[0]||document.head||document.documentElement;var b=document.createElement("script");b.setAttribute("type","text/javascript");b.setAttribute("charset","UTF-8");b.setAttribute("src",d);if(typeof a==="function"){if(window.attachEvent){b.onreadystatechange=function(){var e=b.readyState;if(e==="loaded"||e==="complete"){b.onreadystatechange=null;a()}}}else{b.onload=a}}c.appendChild(b)};loadJs("https://changyan.sohu.com/upload/changyan.js",function(){
+        window.changyan.api.config({appid:appid,conf:conf})});
+      }
+    })();
+    </script>
+    <script type="text/javascript" src="https://assets.changyan.sohu.com/upload/plugins/plugins.count.js"></script>
+
+
+
+  
+
+
+
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/algolia-instant-search/instantsearch.min.css">
+
+  
+  
+  <script src="/lib/algolia-instant-search/instantsearch.min.js"></script>
+  
+
+  <script src="/js/src/algolia-search.js?v=5.1.1"></script>
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("n55tIxEzsDxW0BEFhehOkP2K-gzGzoHsz", "TwYjARitxhv7iOhbg7k2a9xB");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  
+
+  
+
+</body>
+</html>
