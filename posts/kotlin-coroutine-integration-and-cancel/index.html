@@ -1,0 +1,1159 @@
+<!doctype html>
+
+
+
+
+<html class="theme-next pisces" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta http-equiv="Content-Language" content="zh-cn">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+  <meta name="google-site-verification" content="r1Es2KSXuS6zYdab4rZeEA6X-pEwRwyT4x89S7a4EHE">
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+  <link href="http://images.johnnyshieh.me/lib/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="http://images.johnnyshieh.me/fonts/font.css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+  
+
+<link href="http://images.johnnyshieh.me/lib/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="http://images.johnnyshieh.me/css/main.css?v=5.1.1" rel="stylesheet" type="text/css">
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1">
+
+
+
+  
+    <link rel="apple-touch-icon-precomposed" sizes="57x57" href="/apple-touch-icon-57x57.png">
+  
+    <link rel="apple-touch-icon-precomposed" sizes="120x120" href="/apple-touch-icon-120x120.png">
+  
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="/apple-touch-icon-152x152.png">
+  
+
+
+
+
+
+
+<meta name="description" content="Kotlin Coroutines 完全解析系列文章的第三篇，介绍如何将异步回调封装为挂起函数，分析协程间的父子关系和如何取消协程">
+<meta name="keywords" content="Kotlin, Coroutines, 协程, Callback, Parent, Child, Cancel, 取消, Johnny, Shieh, Johnny Shieh, johnny shieh blog, ">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Kotlin Coroutines(协程) 完全解析（三），封装异步回调、协程间关系及协程的取消">
+<meta property="og:url" content="http://johnnyshieh.me/posts/kotlin-coroutine-integration-and-cancel/index.html">
+<meta property="og:site_name" content="Johnny Shieh">
+<meta property="og:description" content="Kotlin Coroutines 完全解析系列文章的第三篇，介绍如何将异步回调封装为挂起函数，分析协程间的父子关系和如何取消协程">
+<meta property="og:updated_time" content="2018-11-16T09:52:07.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Kotlin Coroutines(协程) 完全解析（三），封装异步回调、协程间关系及协程的取消">
+<meta name="twitter:description" content="Kotlin Coroutines 完全解析系列文章的第三篇，介绍如何将异步回调封装为挂起函数，分析协程间的父子关系和如何取消协程">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"right","display":"always","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: false,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: 'QK028ACQPB',
+      apiKey: '4e4a5ec0318356434aed6a3aa5aea209',
+      indexName: 'blog',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"搜索文章","hits_empty":"找不到与您搜索的 ${query} 相符的文章，请尝试其他关键字","hits_stats":"找到 ${hits} 条搜索结果，用时 ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://johnnyshieh.me/posts/kotlin-coroutine-integration-and-cancel/">
+
+
+
+
+
+  <title>Kotlin Coroutines(协程) 完全解析（三），封装异步回调、协程间关系及协程的取消 | Johnny Shieh</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?43cea51223ad3b7bc740196aab48d664";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Johnny Shieh</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">人如果没有梦想，跟咸鱼有什么分别</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-books">
+          <a href="/books" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br>
+            
+            读书
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-friends">
+          <a href="/friends" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-users"></i> <br>
+            
+            小伙伴
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  
+  <div class="algolia-popup popup search-popup">
+    <div class="algolia-search">
+      <div class="algolia-search-input-icon">
+        <i class="fa fa-search"></i>
+      </div>
+      <div class="algolia-search-input" id="algolia-search-input"></div>
+    </div>
+
+    <div class="algolia-results">
+      <div id="algolia-stats"></div>
+      <div id="algolia-hits"></div>
+      <div id="algolia-pagination" class="algolia-pagination"></div>
+    </div>
+
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+  </div>
+
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://johnnyshieh.me/posts/kotlin-coroutine-integration-and-cancel/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Johnny Shieh">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Johnny Shieh">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Kotlin Coroutines(协程) 完全解析（三），封装异步回调、协程间关系及协程的取消</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-11-14T16:30:29+08:00">
+                2018-11-14
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/kotlin/" itemprop="url" rel="index">
+                    <span itemprop="name">Kotlin</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+              <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-comment-o"></i>
+              </span>
+              
+                <a href="/posts/kotlin-coroutine-integration-and-cancel/#SOHUCS" itemprop="discussionUrl">
+                  <span id="changyan_count_unit" class="post-comments-count hc-comment-count" data-xid="posts/kotlin-coroutine-integration-and-cancel/" itemprop="commentsCount"></span>
+                </a>
+              
+            
+          
+
+          
+          
+             <span id="/posts/kotlin-coroutine-integration-and-cancel/" class="leancloud_visitors" data-flag-title="Kotlin Coroutines(协程) 完全解析（三），封装异步回调、协程间关系及协程的取消">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </span></div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>Kotlin Coroutines(协程) 完全解析系列：</p>
+<p><a href="http://johnnyshieh.me/posts/kotlin-coroutine-introduction/">Kotlin Coroutines(协程) 完全解析（一），协程简介</a></p>
+<p><a href="http://johnnyshieh.me/posts/kotlin-coroutine-deep-diving/">Kotlin Coroutines(协程) 完全解析（二），深入理解协程的挂起、恢复与调度</a></p>
+<p><a href="http://johnnyshieh.me/posts/kotlin-coroutine-integration-and-cancel/">Kotlin Coroutines(协程) 完全解析（三），封装异步回调、协程间关系及协程的取消</a></p>
+<blockquote>
+<p>本文基于 Kotlin v1.3.0-rc-146，Kotlin-Coroutines v1.0.0-RC1</p>
+</blockquote>
+<p>前面两篇文章解析了挂起函数通过状态机来实现，协程的本质就是有三层包装的<code>Continuation</code>，这篇文章进一步解析协程的运用。主要介绍如何将异步回调封装为挂起函数，解析协程之间的关系以及协程的取消。</p>
+<h3 id="1-封装异步回调为挂起函数"><a href="#1-封装异步回调为挂起函数" class="headerlink" title="1. 封装异步回调为挂起函数"></a>1. 封装异步回调为挂起函数</h3><p>在异步编程中，回调是非常常见的写法，那么如何将回调转换为协程中的挂起函数呢？可以通过两个挂起函数<code>suspendCoroutine{}</code>或<code>suspendCancellableCoroutine{}</code>，下面看如何将 OkHttp 的网络请求转换为挂起函数。</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">suspend <span class="function"><span class="keyword">fun</span> <span class="type">&lt;T&gt;</span> Call<span class="type">&lt;T&gt;</span>.<span class="title">await</span><span class="params">()</span></span>: T = suspendCoroutine &#123; cont -&gt;</div><div class="line">    enqueue(<span class="keyword">object</span> : Callback&lt;T&gt; &#123;</div><div class="line">        <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">onResponse</span><span class="params">(call: <span class="type">Call</span>&lt;<span class="type">T</span>&gt;, response: <span class="type">Response</span>&lt;<span class="type">T</span>&gt;)</span></span> &#123; </div><div class="line">            <span class="keyword">if</span> (response.isSuccessful) &#123;</div><div class="line">                cont.resume(response.body()!!)</div><div class="line">            &#125; <span class="keyword">else</span> &#123;</div><div class="line">                cont.resumeWithException(ErrorResponse(response))</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">onFailure</span><span class="params">(call: <span class="type">Call</span>&lt;<span class="type">T</span>&gt;, t: <span class="type">Throwable</span>)</span></span> &#123; </div><div class="line">            cont.resumeWithException(t)</div><div class="line">        &#125; </div><div class="line">    &#125;)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<a id="more"></a>
+<p>上面的<code>await()</code>的扩展函数调用时，首先会挂起当前协程，然后执行<code>enqueue</code>将网络请求放入队列中，当请求成功时，通过<code>cont.resume(response.body()!!)</code>来恢复之前的协程。</p>
+<p>再来看下<code>suspendCoroutine{}</code>和<code>suspendCancellableCoroutine{}</code>的定义：</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> suspend <span class="keyword">inline</span> <span class="function"><span class="keyword">fun</span> <span class="type">&lt;T&gt;</span> <span class="title">suspendCoroutine</span><span class="params">(<span class="keyword">crossinline</span> block: (<span class="type">Continuation</span>&lt;<span class="type">T</span>&gt;)</span></span> -&gt; <span class="built_in">Unit</span>): T =</div><div class="line">    suspendCoroutineUninterceptedOrReturn &#123; c: Continuation&lt;T&gt; -&gt;</div><div class="line">        <span class="keyword">val</span> safe = SafeContinuation(c.intercepted())</div><div class="line">        block(safe)</div><div class="line">        safe.getOrThrow()</div><div class="line">    &#125;</div><div class="line"></div><div class="line"><span class="keyword">public</span> suspend <span class="keyword">inline</span> <span class="function"><span class="keyword">fun</span> <span class="type">&lt;T&gt;</span> <span class="title">suspendCancellableCoroutine</span><span class="params">(</span></span></div><div class="line">    <span class="keyword">crossinline</span> block: (<span class="type">CancellableContinuation</span>&lt;<span class="type">T</span>&gt;) -&gt; <span class="built_in">Unit</span></div><div class="line">): T =</div><div class="line">    suspendCoroutineUninterceptedOrReturn &#123; uCont -&gt;</div><div class="line">        <span class="keyword">val</span> cancellable = CancellableContinuationImpl(uCont.intercepted(), resumeMode = MODE_CANCELLABLE)</div><div class="line">        <span class="comment">// 和 suspendCoroutine 的区别就在这里，如果协程已经被取消或者已完成，就会抛出 CancellationException 异常</span></div><div class="line">        cancellable.initCancellability()</div><div class="line">        block(cancellable)</div><div class="line">        cancellable.getResult()</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+<p>它们的关键实现都是调用<code>suspendCoroutineUninterceptedOrReturn()</code>函数，它的作用是获取当前协程的实例，并且挂起当前协程或者不挂起直接返回结果。</p>
+<p>协程中还有两个常见的挂起函数使用到了<code>suspendCoroutineUninterceptedOrReturn()</code>函数，分别是<code>delay()</code>和<code>yield()</code>。</p>
+<h4 id="1-1-delay-的实现"><a href="#1-1-delay-的实现" class="headerlink" title="1.1 delay 的实现"></a>1.1 delay 的实现</h4><figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> suspend <span class="function"><span class="keyword">fun</span> <span class="title">delay</span><span class="params">(timeMillis: <span class="type">Long</span>)</span></span> &#123;</div><div class="line">    <span class="keyword">if</span> (timeMillis &lt;= <span class="number">0</span>) <span class="keyword">return</span> <span class="comment">// don't delay</span></div><div class="line">    <span class="keyword">return</span> suspendCancellableCoroutine <span class="symbol">sc@</span> &#123; cont: CancellableContinuation&lt;<span class="built_in">Unit</span>&gt; -&gt;</div><div class="line">        cont.context.delay.scheduleResumeAfterDelay(timeMillis, cont)</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">/** Returns [Delay] implementation of the given context */</span></div><div class="line"><span class="keyword">internal</span> <span class="keyword">val</span> CoroutineContext.delay: Delay <span class="keyword">get</span>() = <span class="keyword">get</span>(ContinuationInterceptor) <span class="keyword">as</span>? Delay ?: DefaultDelay</div><div class="line"></div><div class="line"><span class="keyword">internal</span> actual <span class="keyword">val</span> DefaultDelay: Delay = DefaultExecutor</div></pre></td></tr></table></figure>
+<p>delay 使用<code>suspendCancellableCoroutine</code>挂起协程，而协程恢复的一般情况下是关键在<code>DefaultExecutor.scheduleResumeAfterDelay()</code>，其中实现是<code>schedule(DelayedResumeTask(timeMillis, continuation))</code>，其中的关键逻辑是将 DelayedResumeTask 放到 DefaultExecutor 的队列最后，在延迟的时间到达就会执行 DelayedResumeTask，那么该 task 里面的实现是什么：</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">run</span><span class="params">()</span></span> &#123;</div><div class="line">    <span class="comment">// 直接在调用者线程恢复协程</span></div><div class="line">    with(cont) &#123; resumeUndispatched(<span class="built_in">Unit</span>) &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="1-2-yield-的实现"><a href="#1-2-yield-的实现" class="headerlink" title="1.2 yield 的实现"></a>1.2 yield 的实现</h4><p><code>yield()</code>的作用是挂起当前协程，然后将协程分发到 Dispatcher 的队列，这样可以让该协程所在线程或线程池可以运行其他协程逻辑，然后在 Dispatcher 空闲的时候继续执行原来协程。简单的来说就是让出自己的执行权，给其他协程使用，当其他协程执行完成或也让出执行权时，一开始的协程可以恢复继续运行。</p>
+<p>看下面的代码示例：</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">fun</span> <span class="title">main</span><span class="params">(args: <span class="type">Array</span>&lt;<span class="type">String</span>&gt;)</span></span> = runBlocking&lt;<span class="built_in">Unit</span>&gt; &#123;</div><div class="line">    launch &#123;</div><div class="line">        repeat(<span class="number">3</span>) &#123;</div><div class="line">            println(<span class="string">"job1 repeat <span class="subst">$it</span> times"</span>)</div><div class="line">            yield()</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    launch &#123;</div><div class="line">        repeat(<span class="number">3</span>) &#123;</div><div class="line">            println(<span class="string">"job2 repeat <span class="subst">$it</span> times"</span>)</div><div class="line">            yield()</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>通过<code>yield()</code>实现 job1 和 job2 两个协程交替运行，输出如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">job1 repeat 0 <span class="built_in">times</span></div><div class="line">job2 repeat 0 <span class="built_in">times</span></div><div class="line">job1 repeat 1 <span class="built_in">times</span></div><div class="line">job2 repeat 1 <span class="built_in">times</span></div><div class="line">job1 repeat 2 <span class="built_in">times</span></div><div class="line">job2 repeat 2 <span class="built_in">times</span></div></pre></td></tr></table></figure>
+<p>现在来看其实现：</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> suspend <span class="function"><span class="keyword">fun</span> <span class="title">yield</span><span class="params">()</span></span>: <span class="built_in">Unit</span> = suspendCoroutineUninterceptedOrReturn <span class="symbol">sc@</span> &#123; uCont -&gt;</div><div class="line">    <span class="keyword">val</span> context = uCont.context</div><div class="line">    <span class="comment">// 检测协程是否已经取消或者完成，如果是的话抛出 CancellationException</span></div><div class="line">    context.checkCompletion()</div><div class="line">    <span class="comment">// 如果协程没有线程调度器，或者像 Dispatchers.Unconfined 一样没有进行调度，则直接返回</span></div><div class="line">    <span class="keyword">val</span> cont = uCont.intercepted() <span class="keyword">as</span>? DispatchedContinuation&lt;<span class="built_in">Unit</span>&gt; ?: <span class="keyword">return</span><span class="symbol">@sc</span> <span class="built_in">Unit</span></div><div class="line">    <span class="keyword">if</span> (!cont.dispatcher.isDispatchNeeded(context)) <span class="keyword">return</span><span class="symbol">@sc</span> <span class="built_in">Unit</span></div><div class="line">    <span class="comment">// dispatchYield(Unit) 最终会调用到 dispatcher.dispatch(context, block) 将协程分发到调度器队列中，这样线程可以执行其他协程</span></div><div class="line">    cont.dispatchYield(<span class="built_in">Unit</span>)</div><div class="line">    COROUTINE_SUSPENDED</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>所以注意到，<code>yield()</code>需要依赖协程的线程调度器，而调度器再次执行该协程时，在第二篇中有讲过会调用<code>resume</code>来恢复协程运行。</p>
+<p>现在来看封装异步逻辑为挂起函数的关键是用<code>suspendCoroutineUninterceptedOrReturn</code>函数包装，然后在异步逻辑完成时调用<code>resume</code>手动恢复协程。</p>
+<h3 id="2-协程之间的关系"><a href="#2-协程之间的关系" class="headerlink" title="2. 协程之间的关系"></a>2. 协程之间的关系</h3><p>官方文档中有提到协程之间可能存在父子关系，取消父协程时，也会取消所有子协程。在<code>Job</code>的源码中有这样一段话描述协程间父子关系：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">* A parent-child relation has the following effect:</div><div class="line">*</div><div class="line">* * Cancellation of parent with [cancel] <span class="function">or its exceptional <span class="title">completion</span> <span class="params">(failure)</span></span></div><div class="line">*   immediately cancels all its children.</div><div class="line">* * Parent cannot complete until all its children are complete. Parent waits <span class="keyword">for</span> all its children to</div><div class="line">*   complete in _completing_ or _cancelling_ state.</div><div class="line">* * Uncaught exception in a child, by <span class="keyword">default</span>, cancels parent. In particular, <span class="keyword">this</span> applies to</div><div class="line">*   children created with [launch][CoroutineScope.launch] coroutine builder. Note, that</div><div class="line">*   [async][CoroutineScope.async] and other future-like</div><div class="line">*   coroutine builders <span class="keyword">do</span> not have uncaught exceptions by definition, since all their exceptions are</div><div class="line">*   caught and are encapsulated in their result.</div></pre></td></tr></table></figure>
+<p>所以协程间父子关系有三种影响：</p>
+<ul>
+<li><p>父协程手动调用<code>cancel()</code>或者异常结束，会立即取消它的所有子协程。</p>
+</li>
+<li><p>父协程必须等待所有子协程完成（处于完成或者取消状态）才能完成。</p>
+</li>
+<li><p>子协程抛出未捕获的异常时，默认情况下会取消其父协程。</p>
+</li>
+</ul>
+<p>下面先来看看协程是如何建立父子关系的，<code>launch</code>和<code>async</code>新建协程时，首先都是<code>newCoroutineContext(context)</code>新建协程的 CoroutineContext 上下文，下面看其具体细节：</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> actual <span class="function"><span class="keyword">fun</span> CoroutineScope.<span class="title">newCoroutineContext</span><span class="params">(context: <span class="type">CoroutineContext</span>)</span></span>: CoroutineContext &#123;</div><div class="line">    <span class="comment">// 新协程继承了原来 CoroutineScope 的 coroutineContext </span></div><div class="line">    <span class="keyword">val</span> combined = coroutineContext + context</div><div class="line">    <span class="keyword">val</span> debug = <span class="keyword">if</span> (DEBUG) combined + CoroutineId(COROUTINE_ID.incrementAndGet()) <span class="keyword">else</span> combined</div><div class="line">    <span class="comment">// 当新协程没有指定线程调度器时，会默认使用 Dispatchers.Default</span></div><div class="line">    <span class="keyword">return</span> <span class="keyword">if</span> (combined !== Dispatchers.Default &amp;&amp; combined[ContinuationInterceptor] == <span class="literal">null</span>)</div><div class="line">        debug + Dispatchers.Default <span class="keyword">else</span> debug</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>所以新的协程的 CoroutineContext 都继承了原来 CoroutineScope 的 coroutineContext，然后<code>launch</code>和<code>async</code>新建协程最后都会调用<code>start(start: CoroutineStart, receiver: R, block: suspend R.() -&gt; T)</code>，里面第一行是<code>initParentJob()</code>，通过注释可以知道就是这个函数建立父子关系的，下面看其实现细节：</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// AbstractCoroutine.kt</span></div><div class="line"><span class="keyword">internal</span> <span class="function"><span class="keyword">fun</span> <span class="title">initParentJob</span><span class="params">()</span></span> &#123;</div><div class="line">    initParentJobInternal(parentContext[Job])</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// JobSupport.kt</span></div><div class="line"><span class="keyword">internal</span> <span class="function"><span class="keyword">fun</span> <span class="title">initParentJobInternal</span><span class="params">(parent: <span class="type">Job</span>?)</span></span> &#123;</div><div class="line">    check(parentHandle == <span class="literal">null</span>)</div><div class="line">    <span class="keyword">if</span> (parent == <span class="literal">null</span>) &#123;</div><div class="line">        parentHandle = NonDisposableHandle</div><div class="line">        <span class="keyword">return</span></div><div class="line">    &#125;</div><div class="line">    parent.start() <span class="comment">// make sure the parent is started</span></div><div class="line">    <span class="meta">@Suppress(<span class="meta-string">"DEPRECATION"</span>)</span></div><div class="line">    <span class="comment">// 关键在于 parent.attachChild(this)</span></div><div class="line">    <span class="keyword">val</span> handle = parent.attachChild(<span class="keyword">this</span>)</div><div class="line">    parentHandle = handle</div><div class="line">    <span class="comment">// now check our state _after_ registering (see tryFinalizeSimpleState order of actions)</span></div><div class="line">    <span class="keyword">if</span> (isCompleted) &#123;</div><div class="line">        handle.dispose()</div><div class="line">        parentHandle = NonDisposableHandle <span class="comment">// release it just in case, to aid GC</span></div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>这里需要注意的是<code>GlobalScope</code>和普通协程的<code>CoroutineScope</code>的区别，<code>GlobalScope</code>的 Job 是为空的，<code>GlobalScope.launch{}</code>和<code>GlobalScope.async{}</code>新建的协程是没有父协程的。</p>
+<p>下面继续看<code>attachChild</code>的实现：</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">attachChild</span><span class="params">(child: <span class="type">ChildJob</span>)</span></span>: ChildHandle &#123;</div><div class="line">    <span class="keyword">return</span> invokeOnCompletion(onCancelling = <span class="literal">true</span>, handler = ChildHandleNode(<span class="keyword">this</span>, child).asHandler) <span class="keyword">as</span> ChildHandle</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><code>invokeOnCompletion()</code>函数在前一篇解析 Deferred.await() 中有提到，关键是将 handler 节点添加到父协程 state.list 的末尾。</p>
+<h4 id="2-1-父协程手动调用cancel-或者异常结束，会立即取消它的所有子协程"><a href="#2-1-父协程手动调用cancel-或者异常结束，会立即取消它的所有子协程" class="headerlink" title="2.1 父协程手动调用cancel()或者异常结束，会立即取消它的所有子协程"></a>2.1 父协程手动调用<code>cancel()</code>或者异常结束，会立即取消它的所有子协程</h4><p>跟踪父协程的<code>cancel()</code>调用过程，其中关键过程为 cancel() -&gt; cancel(null) -&gt; cancelImpl(null) -&gt; makeCancelling(null) -&gt; tryMakeCancelling(state, causeException) -&gt; notifyCancelling(list, rootCause)，下面继续分析<code>notifyCancelling(list, rootCause)</code>的实现：</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// JobSupport.kt</span></div><div class="line"><span class="keyword">private</span> <span class="function"><span class="keyword">fun</span> <span class="title">notifyCancelling</span><span class="params">(list: <span class="type">NodeList</span>, cause: <span class="type">Throwable</span>)</span></span> &#123;</div><div class="line">    <span class="comment">// first cancel our own children</span></div><div class="line">    onCancellation(cause)</div><div class="line">    <span class="comment">// 这里会调用所有子协程绑定的 ChildHandleNode.invoke(cause) -&gt; childJob.parentCancelled(parentJob) 来取消所有子协程</span></div><div class="line">    notifyHandlers&lt;JobCancellingNode&lt;*&gt;&gt;(list, cause)</div><div class="line">    <span class="comment">// then cancel parent</span></div><div class="line">    <span class="comment">// cancelParent(cause) 不一定会取消父协程，cancel() 时不会取消父协程，因为此时产生 cause 的是 JobCancellationException，属于 CancellationException</span></div><div class="line">    cancelParent(cause) <span class="comment">// tentative cancellation -- does not matter if there is no parent</span></div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">parentCancelled</span><span class="params">(parentJob: <span class="type">ParentJob</span>)</span></span> &#123;</div><div class="line">    <span class="comment">// 父协程取消时，子协程会通过 parentCancelled 来取消自己</span></div><div class="line">    cancelImpl(parentJob)</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">private</span> <span class="function"><span class="keyword">fun</span> <span class="title">cancelParent</span><span class="params">(cause: <span class="type">Throwable</span>)</span></span>: <span class="built_in">Boolean</span> &#123;</div><div class="line">    <span class="comment">// CancellationException is considered "normal" and parent is not cancelled when child produces it.</span></div><div class="line">    <span class="comment">// This allow parent to cancel its children (normally) without being cancelled itself, unless</span></div><div class="line">    <span class="comment">// child crashes and produce some other exception during its completion.</span></div><div class="line">    <span class="keyword">if</span> (cause <span class="keyword">is</span> CancellationException) <span class="keyword">return</span> <span class="literal">true</span></div><div class="line">    <span class="keyword">if</span> (!cancelsParent) <span class="keyword">return</span> <span class="literal">false</span></div><div class="line">    <span class="comment">// 当 cancelsParent 为 true, 且子线程抛出未捕获的异常时，默认情况下 childCancelled() 会取消其父协程。</span></div><div class="line">    <span class="keyword">return</span> parentHandle?.childCancelled(cause) == <span class="literal">true</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="2-2-父协程必须等待所有子协程完成（处于完成或者取消状态）才能完成"><a href="#2-2-父协程必须等待所有子协程完成（处于完成或者取消状态）才能完成" class="headerlink" title="2.2 父协程必须等待所有子协程完成（处于完成或者取消状态）才能完成"></a>2.2 父协程必须等待所有子协程完成（处于完成或者取消状态）才能完成</h4><p>前一篇文章有提到协程的完成通过<code>AbstractCoroutine.resumeWith(result)</code>实现，调用过程为 makeCompletingOnce(result.toState(), defaultResumeMode) -&gt; tryMakeCompleting()，其中关键源码如下：</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// JobSupport.kt</span></div><div class="line"><span class="keyword">private</span> <span class="function"><span class="keyword">fun</span> <span class="title">tryMakeCompleting</span><span class="params">(state: <span class="type">Any</span>?, proposedUpdate: <span class="type">Any</span>?, mode: <span class="type">Int</span>)</span></span>: <span class="built_in">Int</span> &#123;</div><div class="line">    ...</div><div class="line">    <span class="comment">// now wait for children</span></div><div class="line">    <span class="keyword">val</span> child = firstChild(state)</div><div class="line">    <span class="comment">// 等待子协程完成</span></div><div class="line">    <span class="keyword">if</span> (child != <span class="literal">null</span> &amp;&amp; tryWaitForChild(finishing, child, proposedUpdate))</div><div class="line">        <span class="keyword">return</span> COMPLETING_WAITING_CHILDREN</div><div class="line">    <span class="comment">// otherwise -- we have not children left (all were already cancelled?)</span></div><div class="line">    <span class="keyword">if</span> (tryFinalizeFinishingState(finishing, proposedUpdate, mode))</div><div class="line">        <span class="keyword">return</span> COMPLETING_COMPLETED</div><div class="line">    <span class="comment">// otherwise retry</span></div><div class="line">    <span class="keyword">return</span> COMPLETING_RETRY</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">private</span> tailrec <span class="function"><span class="keyword">fun</span> <span class="title">tryWaitForChild</span><span class="params">(state: <span class="type">Finishing</span>, child: <span class="type">ChildHandleNode</span>, proposedUpdate: <span class="type">Any</span>?)</span></span>: <span class="built_in">Boolean</span> &#123;</div><div class="line">    <span class="comment">// 添加 ChildCompletion 节点到子协程的 state.list 末尾，当子协程完成时会调用 ChildCompletion.invoke()</span></div><div class="line">    <span class="keyword">val</span> handle = child.childJob.invokeOnCompletion(</div><div class="line">        invokeImmediately = <span class="literal">false</span>,</div><div class="line">        handler = ChildCompletion(<span class="keyword">this</span>, state, child, proposedUpdate).asHandler</div><div class="line">    )</div><div class="line">    <span class="keyword">if</span> (handle !== NonDisposableHandle) <span class="keyword">return</span> <span class="literal">true</span> <span class="comment">// child is not complete and we've started waiting for it</span></div><div class="line">    <span class="comment">// 循环设置所有其他子协程</span></div><div class="line">    <span class="keyword">val</span> nextChild = child.nextChild() ?: <span class="keyword">return</span> <span class="literal">false</span></div><div class="line">    <span class="keyword">return</span> tryWaitForChild(state, nextChild, proposedUpdate)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><code>tryWaitForChild()</code>也是通过<code>invokeOnCompletion()</code>添加节点到子协程的 state.list 中，当子协程完成时会调用 ChildCompletion.invoke(）：</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// ChildCompletion class</span></div><div class="line"><span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">invoke</span><span class="params">(cause: <span class="type">Throwable</span>?)</span></span> &#123;</div><div class="line">    parent.continueCompleting(state, child, proposedUpdate)</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">private</span> <span class="function"><span class="keyword">fun</span> <span class="title">continueCompleting</span><span class="params">(state: <span class="type">Finishing</span>, lastChild: <span class="type">ChildHandleNode</span>, proposedUpdate: <span class="type">Any</span>?)</span></span> &#123;</div><div class="line">    require(<span class="keyword">this</span>.state === state) <span class="comment">// consistency check -- it cannot change while we are waiting for children</span></div><div class="line">    <span class="comment">// figure out if we need to wait for next child</span></div><div class="line">    <span class="keyword">val</span> waitChild = lastChild.nextChild()</div><div class="line">    <span class="comment">// try wait for next child</span></div><div class="line">    <span class="keyword">if</span> (waitChild != <span class="literal">null</span> &amp;&amp; tryWaitForChild(state, waitChild, proposedUpdate)) <span class="keyword">return</span> <span class="comment">// waiting for next child</span></div><div class="line">    <span class="comment">// no more children to wait -- try update state</span></div><div class="line">    <span class="comment">// 当所有子协程都完成时，才会 tryFinalizeFinishingState() 完成自己</span></div><div class="line">    <span class="keyword">if</span> (tryFinalizeFinishingState(state, proposedUpdate, MODE_ATOMIC_DEFAULT)) <span class="keyword">return</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="2-3-子协程抛出未捕获的异常时，默认情况下会取消其父协程。"><a href="#2-3-子协程抛出未捕获的异常时，默认情况下会取消其父协程。" class="headerlink" title="2.3 子协程抛出未捕获的异常时，默认情况下会取消其父协程。"></a>2.3 子协程抛出未捕获的异常时，默认情况下会取消其父协程。</h4><p>子线程抛出未捕获的异常时，后续的处理会如何呢？在前一篇解析中协程的运算在第二层包装 BaseContinuationImpl 中，我们再看一次：</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">internal</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">BaseContinuationImpl</span></span>(</div><div class="line">    <span class="keyword">public</span> <span class="keyword">val</span> completion: Continuation&lt;Any?&gt;?</div><div class="line">) : Continuation&lt;Any?&gt;, CoroutineStackFrame, Serializable &#123;</div><div class="line">    <span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">resumeWith</span><span class="params">(result: <span class="type">Result</span>&lt;<span class="type">Any</span>?&gt;)</span></span> &#123;</div><div class="line">        ...</div><div class="line">        <span class="keyword">var</span> param = result</div><div class="line">        <span class="keyword">while</span> (<span class="literal">true</span>) &#123;</div><div class="line">            with(current) &#123;</div><div class="line">                <span class="keyword">val</span> completion = completion!!</div><div class="line">                <span class="keyword">val</span> outcome: Result&lt;Any?&gt; =</div><div class="line">                    <span class="keyword">try</span> &#123;</div><div class="line">                        <span class="comment">// 调用 invokeSuspend 方法执行，执行协程的真正运算逻辑</span></div><div class="line">                        <span class="keyword">val</span> outcome = invokeSuspend(param)</div><div class="line">                        <span class="keyword">if</span> (outcome === COROUTINE_SUSPENDED) <span class="keyword">return</span></div><div class="line">                        Result.success(outcome)</div><div class="line">                    &#125; <span class="keyword">catch</span> (exception: Throwable) &#123;</div><div class="line">                        <span class="comment">// 协程抛出未捕获的异常，会在这里被拦截，然后作为结果完成协程</span></div><div class="line">                        Result.failure(exception)</div><div class="line">                    &#125;</div><div class="line">                releaseIntercepted() <span class="comment">// this state machine instance is terminating</span></div><div class="line">                <span class="keyword">if</span> (completion <span class="keyword">is</span> BaseContinuationImpl) &#123;</div><div class="line">                    <span class="comment">// unrolling recursion via loop</span></div><div class="line">                    current = completion</div><div class="line">                    param = outcome</div><div class="line">                &#125; <span class="keyword">else</span> &#123;</div><div class="line">                    <span class="comment">// 协程的状态修改在 AbstractCoroutine.resumeWith() 中</span></div><div class="line">                    completion.resumeWith(outcome)</div><div class="line">                    <span class="keyword">return</span></div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>所以协程有未捕获的异常中，会在第二层包装中的<code>resumeWith()</code>捕获到，然后调用第一层包装 AbstractCoroutine.resumeWith() 来取消当前协程，处理过程为 AbstractCoroutine.resumeWith(Result.failure(exception)) -&gt; JobSupport.makeCompletingOnce(CompletedExceptionally(exception), defaultResumeMode) -&gt; tryMakeCompleting(state, CompletedExceptionally(exception), defaultResumeMode) -&gt; notifyCancelling(list, exception) -&gt; cancelParent(exception)，所以出现未捕获的异常时，和手动调用<code>cancel()</code>一样会调用到 notifyCancelling(list, exception) 来取消当前协程，和手动调用<code>cancel()</code>的区别在于 exception 不是 CancellationException。</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">private</span> <span class="function"><span class="keyword">fun</span> <span class="title">cancelParent</span><span class="params">(cause: <span class="type">Throwable</span>)</span></span>: <span class="built_in">Boolean</span> &#123;</div><div class="line">    <span class="comment">// CancellationException is considered "normal" and parent is not cancelled when child produces it.</span></div><div class="line">    <span class="comment">// This allow parent to cancel its children (normally) without being cancelled itself, unless</span></div><div class="line">    <span class="comment">// child crashes and produce some other exception during its completion.</span></div><div class="line">    <span class="keyword">if</span> (cause <span class="keyword">is</span> CancellationException) <span class="keyword">return</span> <span class="literal">true</span></div><div class="line">    <span class="keyword">if</span> (!cancelsParent) <span class="keyword">return</span> <span class="literal">false</span></div><div class="line">    <span class="comment">// launch 和 async 新建的协程的 cancelsParent 都为 true， 所以子线程抛出未捕获的异常时，默认情况下 childCancelled() 会取消其父协程。</span></div><div class="line">    <span class="keyword">return</span> parentHandle?.childCancelled(cause) == <span class="literal">true</span></div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// 默认情况下 childCancelled() 会取消取消协程</span></div><div class="line"><span class="keyword">public</span> <span class="keyword">open</span> <span class="function"><span class="keyword">fun</span> <span class="title">childCancelled</span><span class="params">(cause: <span class="type">Throwable</span>)</span></span>: <span class="built_in">Boolean</span> =</div><div class="line">    cancelImpl(cause) &amp;&amp; handlesException</div></pre></td></tr></table></figure>
+<h3 id="3-协程的取消"><a href="#3-协程的取消" class="headerlink" title="3. 协程的取消"></a>3. 协程的取消</h3><p>前面分析协程父子关系中的取消协程时，可以知道协程的取消只是在协程的第一层包装中 AbstractCoroutine 中修改协程的状态，并没有影响到第二层包装中 BaseContinuationImpl 中协程的实际运算逻辑。所以协程的取消只是状态的变化，并不会取消协程的实际运算逻辑，看下面的代码示例：</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">fun</span> <span class="title">main</span><span class="params">(args: <span class="type">Array</span>&lt;<span class="type">String</span>&gt;)</span></span> = runBlocking &#123;</div><div class="line">    <span class="keyword">val</span> job1 = launch(Dispatchers.Default) &#123;</div><div class="line">        repeat(<span class="number">5</span>) &#123;</div><div class="line">            println(<span class="string">"job1 sleep <span class="subst">$&#123;it + <span class="number">1</span>&#125;</span> times"</span>)</div><div class="line">            delay(<span class="number">500</span>)</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    delay(<span class="number">700</span>)</div><div class="line">    job1.cancel()</div><div class="line"></div><div class="line">    <span class="keyword">val</span> job2 = launch(Dispatchers.Default) &#123;</div><div class="line">        <span class="keyword">var</span> nextPrintTime = <span class="number">0</span>L</div><div class="line">        <span class="keyword">var</span> i = <span class="number">1</span></div><div class="line">        <span class="keyword">while</span> (i &lt;= <span class="number">3</span>) &#123;</div><div class="line">            <span class="keyword">val</span> currentTime = System.currentTimeMillis()</div><div class="line">            <span class="keyword">if</span> (currentTime &gt;= nextPrintTime) &#123;</div><div class="line">                println(<span class="string">"job2 sleep <span class="subst">$&#123;i++&#125;</span> ..."</span>)</div><div class="line">                nextPrintTime = currentTime + <span class="number">500</span>L</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    delay(<span class="number">700</span>)</div><div class="line">    job2.cancel()</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>输出结果如下：</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">job1 sleep <span class="number">1</span> times</div><div class="line">job1 sleep <span class="number">2</span> times</div><div class="line">job2 sleep <span class="number">1</span> ...</div><div class="line">job2 sleep <span class="number">2</span> ...</div><div class="line">job2 sleep <span class="number">3</span> ...</div></pre></td></tr></table></figure>
+<p>上面代码中 job1 取消后，<code>delay()</code>会检测协程是否已取消，所以 job1 之后的运算就结束了；而 job2 取消后，没有检测协程状态的逻辑，都是计算逻辑，所以 job2 的运算逻辑还是会继续运行。</p>
+<p>所以为了可以及时取消协程的运算逻辑，可以检测协程的状态，使用<code>isActive</code>来判断，上面示例中可以将<code>while(i &lt;= 3)</code>替换为<code>while(isActive)</code>。</p>
+<h3 id="4-小结"><a href="#4-小结" class="headerlink" title="4. 小结"></a>4. 小结</h3><p>最后总结下本文的内容，封装异步代码为挂起函数其实非常简单，只需要用<code>suspendCoroutine{}</code>或<code>suspendCancellableCoroutine{}</code>，还要异步逻辑完成用<code>resume()</code>或<code>resumeWithException</code>来恢复协程。</p>
+<p>新建协程时需要协程间关系，<code>GlobalScope.launch{}</code>和<code>GlobalScope.async{}</code>新建的协程是没有父协程的，而在协程中使用<code>launch{}</code>和<code>aysnc{}</code>一般都是子协程。对于父子协程需要注意下面三种关系：</p>
+<ul>
+<li><p>父协程手动调用<code>cancel()</code>或者异常结束，会立即取消它的所有子协程。</p>
+</li>
+<li><p>父协程必须等待所有子协程完成（处于完成或者取消状态）才能完成。</p>
+</li>
+<li><p>子协程抛出未捕获的异常时，默认情况下会取消其父协程。</p>
+</li>
+</ul>
+<p>对于协程的取消，<code>cancel()</code>只是将协程的状态修改为已取消状态，并不能取消协程的运算逻辑，协程库中很多挂起函数都会检测协程状态，如果想及时取消协程的运算，最好使用<code>isActive</code>判断协程状态。</p>
+      
+    </div>
+
+    
+    <section data-mpa-template-id="95" class="mpa-template" data-mpa-color="#ffffff">
+      <section style="margin-top: 20px;display: -webkit-box;display: flex;-webkit-box-pack: center;justify-content: center;-webkit-box-align: center;align-items: center" data-mid="t22">
+        <section style="text-align: center;line-height: 30px" data-mid="">
+          <section style="display: inline-block;float: left;width: 95px;height: 2px;background: -webkit-linear-gradient(right, #141414, #f0f0f0);background: linear-gradient(to left, #141414, #f0f0f0);-webkit-transform: translate(0px, 12px);-ms-transform: translate(0px, 12px);transform: translate(0px, 12px)" data-mid="" data-contenteditable="false">
+          </section>
+          <section style="float: left;width: 4px;height: 4px;border-radius: 50%;padding: 3px;background-color: #b1b1b1;text-align: center;-webkit-transform: translate(0px, 8px);-ms-transform: translate(0px, 8px);transform: translate(0px, 8px)" data-mid="" data-contenteditable="false">
+            <section style="width: 5px;height: 5px;border-radius: 50%;background-color: #141414" data-mid="">
+            </section>
+          </section>
+          <section style="float: left;min-width: 50px;padding: 0 10px 0 10px;font-size: 16px;color: #4f4f4f;text-align: center;line-height: 30px" data-mid="">END</section>
+          <section style="float: left;padding: 3px;width: 4px;height: 4px;border-radius: 50%;background-color: #b1b1b1;text-align: center;-webkit-transform: translate(0px, 9px);-ms-transform: translate(0px, 9px);transform: translate(0px, 9px)" data-mid="" data-contenteditable="false">
+            <section style="width: 5px;height: 5px;border-radius: 50%;background-color: #141414" data-mid="">
+            </section>
+          </section>
+          <section style="display: inline-block;float: left;width: 95px;height: 2px;background: -webkit-linear-gradient(left, #141414, #f0f0f0);background: linear-gradient(to right, #141414, #f0f0f0);-webkit-transform: translate(-1px, 14px);-ms-transform: translate(-1px, 14px);transform: translate(-1px, 14px)" data-mid="" data-contenteditable="false">
+          </section>
+        </section>
+      </section>
+    </section>
+    
+
+    <div>
+      
+        
+<div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
+    <img id="wechat_subscriber_qcode" src="/uploads/wechat_qcode.jpg" alt="Johnny Shieh wechat" style="width: 200px; max-width: 100%">
+    <div>我的公众号，不只有技术，还有咖啡和彩蛋！</div>
+</div>
+
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/kotlin/" rel="tag"># kotlin</a>
+          
+            <a href="/tags/coroutines/" rel="tag"># coroutines</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/posts/kotlin-coroutine-deep-diving/" rel="next" title="Kotlin Coroutines(协程) 完全解析（二），深入理解协程的挂起、恢复与调度">
+                <i class="fa fa-chevron-left"></i> Kotlin Coroutines(协程) 完全解析（二），深入理解协程的挂起、恢复与调度
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="SOHUCS" sid="posts/kotlin-coroutine-integration-and-cancel/"></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image" src="/uploads/avatar.png" alt="Johnny Shieh">
+          <p class="site-author-name" itemprop="name">Johnny Shieh</p>
+           
+              <p class="site-description motion-element" itemprop="description">我本微末，心向天空</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">71</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">13</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">42</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/JohnnyShieh" rel="external nofollow" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/johnnyshieh17" rel="external nofollow" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  Weibo
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="mailto:JohnnyShieh17@gmail.com" rel="external nofollow" target="_blank" title="Gmail">
+                  
+                    <i class="fa fa-fw fa-envelope"></i>
+                  
+                  Gmail
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.jianshu.com/u/763027594c0b" rel="external nofollow" target="_blank" title="简书">
+                  
+                    <i class="fa fa-fw fa-book"></i>
+                  
+                  简书
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        <!--<div style="margin: 20px 0 20px 0; height: 1px; background: #eee"></div> 
+<div id="hot-series">
+    <ul class="sidebar-nav" style="margin-bottom: 0;">
+        <li>热门系列</li>
+    </ul>
+    <ul class="series-posts" style="font-size: 14px; padding-left: 10px; list-style: none; text-align: left;">
+        <li><span><a href="http://johnnyshieh.me/tags/dagger/">Dagger 完全解析</a></span>（6）</li>
+         <li><span><a href="http://johnnyshieh.me/categories/AspectJ/">AspectJ in Android</a></span>（3）</li>
+        <li><span><a href="http://johnnyshieh.me/categories/unit-test/">Kotlin 写 Android 单元测试</a>（4）</span></li>
+    </ul>
+</div>
+-->
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-封装异步回调为挂起函数"><span class="nav-text">1. 封装异步回调为挂起函数</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-1-delay-的实现"><span class="nav-text">1.1 delay 的实现</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-2-yield-的实现"><span class="nav-text">1.2 yield 的实现</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-协程之间的关系"><span class="nav-text">2. 协程之间的关系</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-1-父协程手动调用cancel-或者异常结束，会立即取消它的所有子协程"><span class="nav-text">2.1 父协程手动调用cancel()或者异常结束，会立即取消它的所有子协程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-父协程必须等待所有子协程完成（处于完成或者取消状态）才能完成"><span class="nav-text">2.2 父协程必须等待所有子协程完成（处于完成或者取消状态）才能完成</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3-子协程抛出未捕获的异常时，默认情况下会取消其父协程。"><span class="nav-text">2.3 子协程抛出未捕获的异常时，默认情况下会取消其父协程。</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-协程的取消"><span class="nav-text">3. 协程的取消</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-小结"><span class="nav-text">4. 小结</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+      <div style="margin: 20px 0 20px 0; height: 1px; background: #eee"></div> 
+<div id="hot-series">
+    <ul class="sidebar-nav" style="margin-bottom: 0">
+        <li>热门系列</li>
+    </ul>
+    <ul class="series-posts" style="font-size: 14px; padding-left: 10px; list-style: none; text-align: left">
+        <li><span><a href="http://johnnyshieh.me/tags/dagger/">Dagger 完全解析</a></span>（6）</li>
+         <li><span><a href="http://johnnyshieh.me/categories/AspectJ/">AspectJ in Android</a></span>（3）</li>
+        <li><span><a href="http://johnnyshieh.me/categories/unit-test/">Kotlin 写 Android 单元测试</a>（4）</span></li>
+    </ul>
+</div>
+
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy;  2015 - 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Johnny Shieh</span>
+</div>
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>访客数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>总访问量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="http://images.johnnyshieh.me/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.1"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+  
+    <script type="text/javascript">
+    (function(){
+      var appid = 'cyt8KwhJ1';
+      var conf = 'prod_651756cd8d701505ffbb60e416929831';
+      var width = window.innerWidth || document.documentElement.clientWidth;
+      if (width < 960) {
+      window.document.write('<script id="changyan_mobile_js" charset="utf-8" type="text/javascript" src="https://changyan.sohu.com/upload/mobile/wap-js/changyan_mobile.js?client_id=' + appid + '&conf=' + conf + '"><\/script>'); } else { var loadJs=function(d,a){var c=document.getElementsByTagName("head")[0]||document.head||document.documentElement;var b=document.createElement("script");b.setAttribute("type","text/javascript");b.setAttribute("charset","UTF-8");b.setAttribute("src",d);if(typeof a==="function"){if(window.attachEvent){b.onreadystatechange=function(){var e=b.readyState;if(e==="loaded"||e==="complete"){b.onreadystatechange=null;a()}}}else{b.onload=a}}c.appendChild(b)};loadJs("https://changyan.sohu.com/upload/changyan.js",function(){
+        window.changyan.api.config({appid:appid,conf:conf})});
+      }
+    })();
+    </script>
+    <script type="text/javascript" src="https://assets.changyan.sohu.com/upload/plugins/plugins.count.js"></script>
+
+
+
+  
+
+
+
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/algolia-instant-search/instantsearch.min.css">
+
+  
+  
+  <script src="/lib/algolia-instant-search/instantsearch.min.js"></script>
+  
+
+  <script src="/js/src/algolia-search.js?v=5.1.1"></script>
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("n55tIxEzsDxW0BEFhehOkP2K-gzGzoHsz", "TwYjARitxhv7iOhbg7k2a9xB");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

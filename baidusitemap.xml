@@ -4,12 +4,12 @@
 
     
   <url>
-    <loc>http://johnnyshieh.me/posts/kotlin-coroutine-deep-diving/</loc>
-    <lastmod>2018-10-29T11:46:04.000Z</lastmod>
+    <loc>http://johnnyshieh.me/posts/kotlin-coroutine-integration-and-cancel/</loc>
+    <lastmod>2018-11-16T09:52:07.000Z</lastmod>
     <data>
         <display>
-        <title>Kotlin Coroutines(协程) 完全解析（二），深入理解协程的挂起、恢复与调度</title>
-        <pubTime>2018-07-03T07:58:37.000Z</pubTime>
+        <title>Kotlin Coroutines(协程) 完全解析（三），封装异步回调、协程间关系及协程的取消</title>
+        <pubTime>2018-11-14T08:30:29.000Z</pubTime>
         
         <tag>kotlin</tag>
          
@@ -27,11 +27,33 @@
     
   <url>
     <loc>http://johnnyshieh.me/posts/kotlin-coroutine-introduction/</loc>
-    <lastmod>2018-10-25T03:15:00.000Z</lastmod>
+    <lastmod>2018-11-16T09:50:38.000Z</lastmod>
     <data>
         <display>
         <title>Kotlin Coroutines(协程) 完全解析（一），协程简介</title>
         <pubTime>2018-04-17T07:58:37.000Z</pubTime>
+        
+        <tag>kotlin</tag>
+         
+        <tag>coroutines</tag>
+         
+         
+           
+             
+              <breadCrumb title="Kotlin" url="http://johnnyshieh.me/categories/kotlin/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://johnnyshieh.me/posts/kotlin-coroutine-deep-diving/</loc>
+    <lastmod>2018-11-16T09:50:26.000Z</lastmod>
+    <data>
+        <display>
+        <title>Kotlin Coroutines(协程) 完全解析（二），深入理解协程的挂起、恢复与调度</title>
+        <pubTime>2018-07-03T07:58:37.000Z</pubTime>
         
         <tag>kotlin</tag>
          

@@ -107,19 +107,19 @@
 
 
 
-<meta name="description" content="Kotlin Coroutines(协程) 完全解析系列： Kotlin Coroutines(协程) 完全解析（一），协程简介 Kotlin Coroutines(协程) 完全解析（二），深入理解协程的挂起、恢复与调度  本文基于 Kotlin v1.3.0-rc-146，Kotlin-Coroutines v1.0.0-RC1  前面一篇文章协程简介，简单介绍了协程的一些基本概念以及其简化异步">
-<meta name="keywords" content="Kotlin, Coroutines, 协程, Johnny, Shieh, Johnny Shieh, johnny shieh blog, ">
+<meta name="description" content="Kotlin Coroutines 完全解析系列文章的第二篇，深入解析挂起函数的原理，协程的挂起、恢复和调度">
+<meta name="keywords" content="Kotlin, Coroutines, 协程, suspend, Continuation, Johnny, Shieh, Johnny Shieh, johnny shieh blog, ">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Kotlin Coroutines(协程) 完全解析（二），深入理解协程的挂起、恢复与调度">
 <meta property="og:url" content="http://johnnyshieh.me/posts/kotlin-coroutine-deep-diving/index.html">
 <meta property="og:site_name" content="Johnny Shieh">
-<meta property="og:description" content="Kotlin Coroutines(协程) 完全解析系列： Kotlin Coroutines(协程) 完全解析（一），协程简介 Kotlin Coroutines(协程) 完全解析（二），深入理解协程的挂起、恢复与调度  本文基于 Kotlin v1.3.0-rc-146，Kotlin-Coroutines v1.0.0-RC1  前面一篇文章协程简介，简单介绍了协程的一些基本概念以及其简化异步">
+<meta property="og:description" content="Kotlin Coroutines 完全解析系列文章的第二篇，深入解析挂起函数的原理，协程的挂起、恢复和调度">
 <meta property="og:image" content="http://images.johnnyshieh.me/coroutine_continuation.png">
 <meta property="og:image" content="http://images.johnnyshieh.me/coroutine_flow.jpg">
-<meta property="og:updated_time" content="2018-10-29T11:46:04.000Z">
+<meta property="og:updated_time" content="2018-11-16T09:50:26.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Kotlin Coroutines(协程) 完全解析（二），深入理解协程的挂起、恢复与调度">
-<meta name="twitter:description" content="Kotlin Coroutines(协程) 完全解析系列： Kotlin Coroutines(协程) 完全解析（一），协程简介 Kotlin Coroutines(协程) 完全解析（二），深入理解协程的挂起、恢复与调度  本文基于 Kotlin v1.3.0-rc-146，Kotlin-Coroutines v1.0.0-RC1  前面一篇文章协程简介，简单介绍了协程的一些基本概念以及其简化异步">
+<meta name="twitter:description" content="Kotlin Coroutines 完全解析系列文章的第二篇，深入解析挂起函数的原理，协程的挂起、恢复和调度">
 <meta name="twitter:image" content="http://images.johnnyshieh.me/coroutine_continuation.png">
 
 
@@ -472,6 +472,7 @@
         <p>Kotlin Coroutines(协程) 完全解析系列：</p>
 <p><a href="http://johnnyshieh.me/posts/kotlin-coroutine-introduction/">Kotlin Coroutines(协程) 完全解析（一），协程简介</a></p>
 <p><a href="http://johnnyshieh.me/posts/kotlin-coroutine-deep-diving/">Kotlin Coroutines(协程) 完全解析（二），深入理解协程的挂起、恢复与调度</a></p>
+<p><a href="http://johnnyshieh.me/posts/kotlin-coroutine-integration-and-cancel/">Kotlin Coroutines(协程) 完全解析（三），封装异步回调、协程间关系及协程的取消</a></p>
 <blockquote>
 <p>本文基于 Kotlin v1.3.0-rc-146，Kotlin-Coroutines v1.0.0-RC1</p>
 </blockquote>
@@ -632,6 +633,10 @@
 
           <div class="post-nav-prev post-nav-item">
             
+              <a href="/posts/kotlin-coroutine-integration-and-cancel/" rel="prev" title="Kotlin Coroutines(协程) 完全解析（三），封装异步回调、协程间关系及协程的取消">
+                Kotlin Coroutines(协程) 完全解析（三），封装异步回调、协程间关系及协程的取消 <i class="fa fa-chevron-right"></i>
+              </a>
+            
           </div>
         </div>
       
@@ -702,7 +707,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">70</span>
+                <span class="site-state-item-count">71</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
