@@ -1,0 +1,1147 @@
+<!doctype html>
+
+
+
+
+<html class="theme-next pisces" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta http-equiv="Content-Language" content="zh-cn">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+  <meta name="google-site-verification" content="r1Es2KSXuS6zYdab4rZeEA6X-pEwRwyT4x89S7a4EHE">
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+  <link href="http://images.johnnyshieh.me/lib/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="http://images.johnnyshieh.me/fonts/font.css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+  
+
+<link href="http://images.johnnyshieh.me/lib/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="http://images.johnnyshieh.me/css/main.css?v=5.1.1" rel="stylesheet" type="text/css">
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1">
+
+
+
+  
+    <link rel="apple-touch-icon-precomposed" sizes="57x57" href="/apple-touch-icon-57x57.png">
+  
+    <link rel="apple-touch-icon-precomposed" sizes="120x120" href="/apple-touch-icon-120x120.png">
+  
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="/apple-touch-icon-152x152.png">
+  
+
+
+
+
+
+
+<meta name="description" content="Kotlin Coroutines 完全解析系列文章的第四篇，解析协程中异常的传播，自定义未捕获异常处理，以及如何防止子协程的异常影响父协程">
+<meta name="keywords" content="Kotlin, Coroutines, 协程, Exception, 异常, supervisor, SupervisorJob, Johnny, Shieh, Johnny Shieh, johnny shieh blog, ">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Kotlin Coroutines(协程) 完全解析（四），协程的异常处理">
+<meta property="og:url" content="http://johnnyshieh.me/posts/kotlin-coroutine-exception-handling/index.html">
+<meta property="og:site_name" content="Johnny Shieh">
+<meta property="og:description" content="Kotlin Coroutines 完全解析系列文章的第四篇，解析协程中异常的传播，自定义未捕获异常处理，以及如何防止子协程的异常影响父协程">
+<meta property="og:updated_time" content="2019-01-09T08:55:36.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Kotlin Coroutines(协程) 完全解析（四），协程的异常处理">
+<meta name="twitter:description" content="Kotlin Coroutines 完全解析系列文章的第四篇，解析协程中异常的传播，自定义未捕获异常处理，以及如何防止子协程的异常影响父协程">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"right","display":"always","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: false,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: 'QK028ACQPB',
+      apiKey: '4e4a5ec0318356434aed6a3aa5aea209',
+      indexName: 'blog',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"搜索文章","hits_empty":"找不到与您搜索的 ${query} 相符的文章，请尝试其他关键字","hits_stats":"找到 ${hits} 条搜索结果，用时 ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://johnnyshieh.me/posts/kotlin-coroutine-exception-handling/">
+
+
+
+
+
+  <title>Kotlin Coroutines(协程) 完全解析（四），协程的异常处理 | Johnny Shieh</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?43cea51223ad3b7bc740196aab48d664";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Johnny Shieh</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">人如果没有梦想，跟咸鱼有什么分别</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-books">
+          <a href="/books" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br>
+            
+            读书
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-friends">
+          <a href="/friends" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-users"></i> <br>
+            
+            小伙伴
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  
+  <div class="algolia-popup popup search-popup">
+    <div class="algolia-search">
+      <div class="algolia-search-input-icon">
+        <i class="fa fa-search"></i>
+      </div>
+      <div class="algolia-search-input" id="algolia-search-input"></div>
+    </div>
+
+    <div class="algolia-results">
+      <div id="algolia-stats"></div>
+      <div id="algolia-hits"></div>
+      <div id="algolia-pagination" class="algolia-pagination"></div>
+    </div>
+
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+  </div>
+
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://johnnyshieh.me/posts/kotlin-coroutine-exception-handling/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Johnny Shieh">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Johnny Shieh">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Kotlin Coroutines(协程) 完全解析（四），协程的异常处理</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-01-07T12:13:22+08:00">
+                2019-01-07
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/kotlin/" itemprop="url" rel="index">
+                    <span itemprop="name">Kotlin</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+              <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-comment-o"></i>
+              </span>
+              
+                <a href="/posts/kotlin-coroutine-exception-handling/#SOHUCS" itemprop="discussionUrl">
+                  <span id="changyan_count_unit" class="post-comments-count hc-comment-count" data-xid="posts/kotlin-coroutine-exception-handling/" itemprop="commentsCount"></span>
+                </a>
+              
+            
+          
+
+          
+          
+             <span id="/posts/kotlin-coroutine-exception-handling/" class="leancloud_visitors" data-flag-title="Kotlin Coroutines(协程) 完全解析（四），协程的异常处理">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </span></div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>Kotlin Coroutines(协程) 完全解析系列：</p>
+<p><a href="http://johnnyshieh.me/posts/kotlin-coroutine-introduction/">Kotlin Coroutines(协程) 完全解析（一），协程简介</a></p>
+<p><a href="http://johnnyshieh.me/posts/kotlin-coroutine-deep-diving/">Kotlin Coroutines(协程) 完全解析（二），深入理解协程的挂起、恢复与调度</a></p>
+<p><a href="http://johnnyshieh.me/posts/kotlin-coroutine-integration-and-cancel/">Kotlin Coroutines(协程) 完全解析（三），封装异步回调、协程间关系及协程的取消</a></p>
+<p><a href="http://johnnyshieh.me/posts/kotlin-coroutine-exception-handling/">Kotlin Coroutines(协程) 完全解析（四），协程的异常处理</a></p>
+<p><a href="http://johnnyshieh.me/posts/kotlin-coroutine-concurrency/">Kotlin Coroutines(协程) 完全解析（五），协程的并发</a></p>
+<blockquote>
+<p>本文基于 Kotlin v1.3.0-rc-146，Kotlin-Coroutines v1.0.0-RC1</p>
+</blockquote>
+<p>在上一篇文章中提到子协程抛出未捕获的异常时默认会取消其父协程，而抛出<code>CancellationException</code>却会当作正常的协程结束不会取消其父协程。本文来详细解析协程中的异常处理，抛出未捕获异常后协程结束后运行会不会崩溃，可以拦截协程的未捕获异常吗，如何让子协程的异常不影响父协程。</p>
+<p>Kotlin 官网文档中有关于协程异常处理的文章，里面的内容本文就不再重复，所以读者们先阅读官方文档：</p>
+<p><a href="https://kotlinlang.org/docs/reference/coroutines/exception-handling.html" target="_blank" rel="external">Coroutine Exception handling</a></p>
+<p><a href="https://www.kotlincn.net/docs/reference/coroutines/exception-handling.html" target="_blank" rel="external">协程的异常处理（官方文档中文版）</a></p>
+<p>看完官方文档后，可能还是会有一些疑问：</p>
+<p><code>launch</code>式协程的未捕获异常为什么会自动传播到父协程，为什么对异常只是在控制台打印而已？</p>
+<p><code>async</code>式协程的未捕获异常为什么需要依赖用户来最终消耗异常？</p>
+<p>自定义的<code>CoroutineExceptionHandler</code>的是如何生效的？</p>
+<p>异常的聚合是怎么处理的？</p>
+<p><code>SupervisorJob</code>和<code>supervisorScope</code>实现异常单向传播的原理是什么？</p>
+<p>这些疑问在本文逐步解析协程中异常处理的流程时，会一一解答。</p>
+<a id="more"></a>
+<h3 id="1-协程中异常处理的流程"><a href="#1-协程中异常处理的流程" class="headerlink" title="1. 协程中异常处理的流程"></a>1. 协程中异常处理的流程</h3><p>从抛出异常的地方开始跟踪协程中异常处理的流程，抛出异常时一般都在协程的运算逻辑中。而在第二篇<a href="http://johnnyshieh.me/posts/kotlin-coroutine-deep-diving/">深入理解协程的挂起、恢复与调度</a>中提到在协程的三层包装中，运算逻辑在第二层<code>BaseContinuationImpl</code>的<code>resumeWith()</code>函数中的<code>invokeSuspend</code>运行，所以再来看一次：</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">internal</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">BaseContinuationImpl</span></span>(</div><div class="line">    <span class="keyword">public</span> <span class="keyword">val</span> completion: Continuation&lt;Any?&gt;?</div><div class="line">) : Continuation&lt;Any?&gt;, CoroutineStackFrame, Serializable &#123;</div><div class="line">    <span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">resumeWith</span><span class="params">(result: <span class="type">Result</span>&lt;<span class="type">Any</span>?&gt;)</span></span> &#123;</div><div class="line">        ...</div><div class="line">        <span class="keyword">var</span> param = result</div><div class="line">        <span class="keyword">while</span> (<span class="literal">true</span>) &#123;</div><div class="line">            with(current) &#123;</div><div class="line">                <span class="keyword">val</span> completion = completion!!</div><div class="line">                <span class="keyword">val</span> outcome: Result&lt;Any?&gt; =</div><div class="line">                    <span class="keyword">try</span> &#123;</div><div class="line">                        <span class="comment">// 调用 invokeSuspend 方法执行，执行协程的真正运算逻辑</span></div><div class="line">                        <span class="keyword">val</span> outcome = invokeSuspend(param)</div><div class="line">                        <span class="comment">// 协程挂起时 invokeSuspend 才会返回 COROUTINE_SUSPENDED，所以协程挂起时，其实只是协程的 resumeWith 运行逻辑执行完成，再次调用 resumeWith 时，协程挂起点之后的逻辑才能继续执行</span></div><div class="line">                        <span class="keyword">if</span> (outcome === COROUTINE_SUSPENDED) <span class="keyword">return</span></div><div class="line">                        Result.success(outcome)</div><div class="line">                    &#125; <span class="keyword">catch</span> (exception: Throwable) &#123;</div><div class="line">                        <span class="comment">// 注意这个 catch 语句，其实协程运算中所有异常都会在这里被捕获，然后作为一种运算结果</span></div><div class="line">                        Result.failure(exception)</div><div class="line">                    &#125;</div><div class="line">                releaseIntercepted() <span class="comment">// this state machine instance is terminating</span></div><div class="line">                <span class="keyword">if</span> (completion <span class="keyword">is</span> BaseContinuationImpl) &#123;</div><div class="line">                    <span class="comment">// unrolling recursion via loop</span></div><div class="line">                    current = completion</div><div class="line">                    param = outcome</div><div class="line">                &#125; <span class="keyword">else</span> &#123;</div><div class="line">                    <span class="comment">// 这里实际调用的是其父类 AbstractCoroutine 的 resumeWith 方法，当捕获到异常时，调用 resumeWith(Result.failure(exception)) 更新协程状态</span></div><div class="line">                    completion.resumeWith(outcome)</div><div class="line">                    <span class="keyword">return</span></div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>从上面源码的<code>try {} catch {}</code>语句来看，首先<strong>协程运算过程中所有未捕获异常其实都会在第二层包装中被捕获</strong>，然后会通过<code>AbstractCoroutine.resumeWith(Result.failure(exception))</code>进入到第三层包装中，所以协程的第三层包装不仅维护协程的状态，还处理协程运算中的未捕获异常。这在第三篇分析子协程抛出未捕获异常，默认情况会取消其父线程时也提到过。</p>
+<p>继续跟踪 AbstractCoroutine.resumeWith(Result.failure(exception)) -&gt; JobSupport.makeCompletingOnce(CompletedExceptionally(exception), defaultResumeMode) -&gt; JobSupport.tryMakeCompleting(state, CompletedExceptionally(exception), defaultResumeMode)，在最后<code>tryMakeCompleting()</code>过程中部分关键代码：</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">private</span> <span class="function"><span class="keyword">fun</span> <span class="title">tryMakeCompleting</span><span class="params">(state: <span class="type">Any</span>?, proposedUpdate: <span class="type">Any</span>?, mode: <span class="type">Int</span>)</span></span>: <span class="built_in">Int</span> &#123;</div><div class="line">    ...</div><div class="line">    <span class="comment">// process cancelling notification here -- it cancels all the children _before_ we start to to wait them (sic!!!)</span></div><div class="line"><span class="comment">// 该情景下，notifyRootCause 的值为 exception</span></div><div class="line">    notifyRootCause?.let &#123; notifyCancelling(list, it) &#125;</div><div class="line">    <span class="comment">// now wait for children</span></div><div class="line">    <span class="keyword">val</span> child = firstChild(state)</div><div class="line">    <span class="keyword">if</span> (child != <span class="literal">null</span> &amp;&amp; tryWaitForChild(finishing, child, proposedUpdate))</div><div class="line">        <span class="keyword">return</span> COMPLETING_WAITING_CHILDREN</div><div class="line">    <span class="comment">// otherwise -- we have not children left (all were already cancelled?)</span></div><div class="line"><span class="comment">// 已取消所有子协程后，更新该协程的最终状态</span></div><div class="line">    <span class="keyword">if</span> (tryFinalizeFinishingState(finishing, proposedUpdate, mode))</div><div class="line">        <span class="keyword">return</span> COMPLETING_COMPLETED</div><div class="line">    <span class="comment">// otherwise retry</span></div><div class="line">    <span class="keyword">return</span> COMPLETING_RETRY</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>先看<code>notifyCancelling(state.list, exception)</code>函数：</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">private</span> <span class="function"><span class="keyword">fun</span> <span class="title">notifyCancelling</span><span class="params">(list: <span class="type">NodeList</span>, cause: <span class="type">Throwable</span>)</span></span> &#123;</div><div class="line">    <span class="comment">// first cancel our own children</span></div><div class="line">    onCancellation(cause)</div><div class="line"><span class="comment">// 这里会调用 handle 节点的 invoke() 方法取消子协程，具体点就是调用 childJob.parentCancelled(job) 取消子协程</span></div><div class="line">    notifyHandlers&lt;JobCancellingNode&lt;*&gt;&gt;(list, cause)</div><div class="line">    <span class="comment">// then cancel parent</span></div><div class="line"><span class="comment">// 然后可能会取消父协程</span></div><div class="line">    cancelParent(cause) <span class="comment">// tentative cancellation -- does not matter if there is no parent</span></div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">private</span> <span class="function"><span class="keyword">fun</span> <span class="title">cancelParent</span><span class="params">(cause: <span class="type">Throwable</span>)</span></span>: <span class="built_in">Boolean</span> &#123;</div><div class="line">    <span class="comment">// CancellationException is considered "normal" and parent is not cancelled when child produces it.</span></div><div class="line">    <span class="comment">// This allow parent to cancel its children (normally) without being cancelled itself, unless</span></div><div class="line">    <span class="comment">// child crashes and produce some other exception during its completion.</span></div><div class="line"><span class="comment">// CancellationException 是正常的协程结束行为，手动抛出 CancellationException 也不会取消父协程</span></div><div class="line">    <span class="keyword">if</span> (cause <span class="keyword">is</span> CancellationException) <span class="keyword">return</span> <span class="literal">true</span></div><div class="line"><span class="comment">// cancelsParent 属性也可以决定出现异常时是否取消父协程，不过一般该属性都为 true</span></div><div class="line">    <span class="keyword">if</span> (!cancelsParent) <span class="keyword">return</span> <span class="literal">false</span></div><div class="line"><span class="comment">// parentHandle?.childCancelled(cause) 最后会通过调用 parentJob.childCancelled(cause) 取消父协程</span></div><div class="line">    <span class="keyword">return</span> parentHandle?.childCancelled(cause) == <span class="literal">true</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>所以<strong>出现未捕获异常时，首先会取消所有子协程，然后可能会取消父协程。</strong>而有些情况下并不会取消父协程，一是当异常属于 CancellationException 时，而是使用<code>SupervisorJob</code>和<code>supervisorScope</code>时，子协程出现未捕获异常时也不会影响父协程，它们的原理是重写 childCancelled() 为<code>override fun childCancelled(cause: Throwable): Boolean = false</code>。</p>
+<p><code>launch</code>式协程和<code>async</code>式协程都会自动向上传播异常，取消父协程。</p>
+<p>接下来再看<code>tryFinalizeFinishingState</code>的实现：</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">private</span> <span class="function"><span class="keyword">fun</span> <span class="title">tryFinalizeFinishingState</span><span class="params">(state: <span class="type">Finishing</span>, proposedUpdate: <span class="type">Any</span>?, mode: <span class="type">Int</span>)</span></span>: <span class="built_in">Boolean</span> &#123;</div><div class="line">    ...</div><div class="line"><span class="comment">// proposedException 即前面未捕获的异常</span></div><div class="line">    <span class="keyword">val</span> proposedException = (proposedUpdate <span class="keyword">as</span>? CompletedExceptionally)?.cause</div><div class="line">    <span class="comment">// Create the final exception and seal the state so that no more exceptions can be added</span></div><div class="line">    <span class="keyword">var</span> suppressed = <span class="literal">false</span></div><div class="line">    <span class="keyword">val</span> finalException = synchronized(state) &#123;</div><div class="line">        <span class="keyword">val</span> exceptions = state.sealLocked(proposedException)</div><div class="line">        <span class="keyword">val</span> finalCause = getFinalRootCause(state, exceptions)</div><div class="line">        <span class="comment">// Report suppressed exceptions if initial cause doesn't match final cause (due to JCE unwrapping)</span></div><div class="line"><span class="comment">// 如果在处理异常过程还有其他异常，这里通过 finalCause.addSuppressedThrowable(exception) 的方式记录下来</span></div><div class="line">        <span class="keyword">if</span> (finalCause != <span class="literal">null</span>) suppressed = suppressExceptions(finalCause, exceptions) || finalCause !== state.rootCause</div><div class="line">        finalCause</div><div class="line">    &#125;</div><div class="line">    ...</div><div class="line">    <span class="comment">// Now handle exception if parent can't handle it</span></div><div class="line"><span class="comment">// 如果 finalException 不是 CancellationException，而且有父协程且不为 SupervisorJob 和 supervisorScope，cancelParent(finalException) 都返回 true</span></div><div class="line"><span class="comment">// 也就是说一般情况下出现未捕获的异常，一般会传递到最根部的协程，由最顶端的协程去处理</span></div><div class="line">    <span class="keyword">if</span> (finalException != <span class="literal">null</span> &amp;&amp; !cancelParent(finalException)) &#123;</div><div class="line">        handleJobException(finalException)</div><div class="line">    &#125;</div><div class="line">    ...</div><div class="line">    <span class="comment">// And process all post-completion actions</span></div><div class="line">    completeStateFinalization(state, finalState, mode, suppressed)</div><div class="line">    <span class="keyword">return</span> <span class="literal">true</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>上面代码中<code>if (finalException != null &amp;&amp; !cancelParent(finalException))</code>语句可以看出，除非是 SupervisorJob 和 supervisorScope，一般协程出现未捕获异常时，不仅会取消父协程，一步步取消到最根部的协程，而且最后还由最根部的协程（Root Coroutine）处理协程。下面继续看处理异常的<code>handleJobException</code>的实现：</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// JobSupport</span></div><div class="line"><span class="keyword">protected</span> <span class="keyword">open</span> <span class="function"><span class="keyword">fun</span> <span class="title">handleJobException</span><span class="params">(exception: <span class="type">Throwable</span>)</span></span> &#123;&#125;</div><div class="line"></div><div class="line"><span class="comment">// Builders.common.kt</span></div><div class="line"><span class="keyword">private</span> <span class="keyword">open</span> <span class="class"><span class="keyword">class</span> <span class="title">StandaloneCoroutine</span></span>(</div><div class="line">    parentContext: CoroutineContext,</div><div class="line">    active: <span class="built_in">Boolean</span></div><div class="line">) : AbstractCoroutine&lt;<span class="built_in">Unit</span>&gt;(parentContext, active) &#123;</div><div class="line">    <span class="keyword">override</span> <span class="keyword">val</span> cancelsParent: <span class="built_in">Boolean</span> <span class="keyword">get</span>() = <span class="literal">true</span></div><div class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">handleJobException</span><span class="params">(exception: <span class="type">Throwable</span>)</span></span> = handleExceptionViaHandler(parentContext, exception)</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// Actor</span></div><div class="line"><span class="keyword">private</span> <span class="keyword">open</span> <span class="class"><span class="keyword">class</span> <span class="title">ActorCoroutine</span>&lt;<span class="type">E</span>&gt;</span>(</div><div class="line">    ...</div><div class="line">) : ChannelCoroutine&lt;E&gt;(parentContext, channel, active), ActorScope&lt;E&gt; &#123;</div><div class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">onCancellation</span><span class="params">(cause: <span class="type">Throwable</span>?)</span></span> &#123;</div><div class="line">        _channel.cancel(cause)</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">override</span> <span class="keyword">val</span> cancelsParent: <span class="built_in">Boolean</span> <span class="keyword">get</span>() = <span class="literal">true</span></div><div class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">handleJobException</span><span class="params">(exception: <span class="type">Throwable</span>)</span></span> = handleExceptionViaHandler(parentContext, exception)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>默认的<code>handleJobException</code>的实现为空，所以如果 Root Coroutine 为<code>async</code>式协程，不会有任何异常打印操作，也不会 crash，但是为<code>launch</code>式协程或者<code>actor</code>式协程的话，会调用<code>handleExceptionViaHandler()</code>处理异常。</p>
+<p>下面接着看<code>handleExceptionViaHandler()</code>的实现：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div></pre></td><td class="code"><pre><div class="line">internal fun handleExceptionViaHandler(context: CoroutineContext, exception: Throwable) &#123;</div><div class="line">    // Invoke exception handler from the context if present</div><div class="line">    try &#123;</div><div class="line">        context[CoroutineExceptionHandler]?.let &#123;</div><div class="line">            it.handleException(context, exception)</div><div class="line">// 如果协程有自定义 CoroutineExceptionHandler，则只调用 handler.handleException() 就返回</div><div class="line">            return</div><div class="line">        &#125;</div><div class="line">    &#125; catch (t: Throwable) &#123;</div><div class="line">        handleCoroutineExceptionImpl(context, handlerException(exception, t))</div><div class="line">        return</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    // If handler is not present in the context or exception was thrown, fallback to the global handler</div><div class="line">// 如果没有自定义 CoroutineExceptionHandler，</div><div class="line">    handleCoroutineExceptionImpl(context, exception)</div><div class="line">&#125;</div><div class="line"></div><div class="line">internal actual fun handleCoroutineExceptionImpl(context: CoroutineContext, exception: Throwable) &#123;</div><div class="line">    // use additional extension handlers</div><div class="line">// 在 Android 中，还会有 uncaughtExceptionPreHandler 作为额外的 handlers</div><div class="line">    for (handler in handlers) &#123;</div><div class="line">        try &#123;</div><div class="line">            handler.handleException(context, exception)</div><div class="line">        &#125; catch (t: Throwable) &#123;</div><div class="line">            // Use thread&apos;s handler if custom handler failed to handle exception</div><div class="line">            val currentThread = Thread.currentThread()</div><div class="line">            currentThread.uncaughtExceptionHandler.uncaughtException(currentThread, handlerException(exception, t))</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    // use thread&apos;s handler</div><div class="line">    val currentThread = Thread.currentThread()</div><div class="line">// 调用当前线程的 uncaughtExceptionHandler 处理异常</div><div class="line">    currentThread.uncaughtExceptionHandler.uncaughtException(currentThread, exception)</div><div class="line">&#125;</div><div class="line"></div><div class="line">// Thread.java</div><div class="line">public UncaughtExceptionHandler getUncaughtExceptionHandler() &#123;</div><div class="line">// 当前线程没有定义 uncaughtExceptionHandler，会返回线程组作为 Thread.UncaughtExceptionHandler</div><div class="line">    return uncaughtExceptionHandler != null ?</div><div class="line">        uncaughtExceptionHandler : group;</div><div class="line">&#125;</div><div class="line"></div><div class="line">// ThreadGroup.java</div><div class="line">public void uncaughtException(Thread t, Throwable e) &#123;</div><div class="line">    if (parent != null) &#123;</div><div class="line">        parent.uncaughtException(t, e);</div><div class="line">    &#125; else &#123;</div><div class="line">        Thread.UncaughtExceptionHandler ueh =</div><div class="line">            Thread.getDefaultUncaughtExceptionHandler();</div><div class="line">// 优先使用线程通用的 DefaultUncaughtExceptionHandler，如果也没有的话，则在控制台打印异常堆栈信息</div><div class="line">        if (ueh != null) &#123;</div><div class="line">            ueh.uncaughtException(t, e);</div><div class="line">        &#125; else if (!(e instanceof ThreadDeath)) &#123;</div><div class="line">            System.err.print(&quot;Exception in thread \&quot;&quot;</div><div class="line">                                + t.getName() + &quot;\&quot; &quot;);</div><div class="line">            e.printStackTrace(System.err);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>所以默认情况下，<code>launch</code>式协程对未捕获的异常只是打印异常堆栈信息，如果在 Android 中还会调用<code>uncaughtExceptionPreHandler</code>处理异常。但是如果使用了 CoroutineExceptionHandler 的话，只会使用自定义的 CoroutineExceptionHandler 处理异常。</p>
+<p>到这里协程的异常处理流程就走完了，但是还有一个问题还没解答，<code>async</code>式协程的未捕获异常只会导致取消自己和取消父协程，又是如何依赖用户来最终消耗异常呢？</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">fun</span> <span class="title">main</span><span class="params">(args: <span class="type">Array</span>&lt;<span class="type">String</span>&gt;)</span></span> = runBlocking&lt;<span class="built_in">Unit</span>&gt; &#123;</div><div class="line">    <span class="keyword">val</span> deferred = GlobalScope.async &#123;</div><div class="line">        println(<span class="string">"Throwing exception from async"</span>)</div><div class="line">        <span class="keyword">throw</span> IndexOutOfBoundsException()</div><div class="line">    &#125;</div><div class="line"><span class="comment">// await() 恢复调用者协程时会重写抛出异常</span></div><div class="line">    deferred.await()</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>看看反编译的 class 文件就明白了：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">final</span> Object <span class="title">invokeSuspend</span><span class="params">(@NotNull Object result)</span> </span>&#123;</div><div class="line">    Object coroutine_suspended = IntrinsicsKt.getCOROUTINE_SUSPENDED();</div><div class="line">    Deferred deferred;</div><div class="line">    <span class="keyword">switch</span> (<span class="keyword">this</span>.label) &#123;</div><div class="line">        <span class="keyword">case</span> <span class="number">0</span>:</div><div class="line">            <span class="keyword">if</span> (result <span class="keyword">instanceof</span> Failure) &#123;</div><div class="line">                <span class="keyword">throw</span> ((Failure) result).exception;</div><div class="line">            &#125;</div><div class="line">            CoroutineScope coroutineScope = <span class="keyword">this</span>.p$;</div><div class="line"><span class="comment">// 创建并启动一个新的 async 协程</span></div><div class="line">            deferred = BuildersKt.async$<span class="keyword">default</span>((CoroutineScope) GlobalScope.INSTANCE, <span class="keyword">null</span>, <span class="keyword">null</span>, (Function2) <span class="keyword">new</span> <span class="number">1</span>(<span class="keyword">null</span>), <span class="number">3</span>, <span class="keyword">null</span>);</div><div class="line">            <span class="keyword">this</span>.L$<span class="number">0</span> = deferred;</div><div class="line">            <span class="keyword">this</span>.label = <span class="number">1</span>;</div><div class="line"><span class="comment">// await() 挂起函数挂起当前协程，等待 async 协程的结果</span></div><div class="line">            <span class="keyword">if</span> (deferred.await(<span class="keyword">this</span>) == coroutine_suspended) &#123;</div><div class="line">                <span class="keyword">return</span> coroutine_suspended;</div><div class="line">            &#125;</div><div class="line">            <span class="keyword">break</span>;</div><div class="line">        <span class="keyword">case</span> <span class="number">1</span>:</div><div class="line">            deferred = (Deferred) <span class="keyword">this</span>.L$<span class="number">0</span>;</div><div class="line"><span class="comment">// async 协程恢复当前协程时，传递进来的结果是 CompletedExceptionally(IndexOutOfBoundsException())</span></div><div class="line">            <span class="keyword">if</span> (result <span class="keyword">instanceof</span> Failure) &#123;</div><div class="line"><span class="comment">// 在当前协程重新抛出 IndexOutOfBoundsException 异常</span></div><div class="line">                <span class="keyword">throw</span> ((Failure) result).exception;</div><div class="line">            &#125;</div><div class="line">            <span class="keyword">break</span>;</div><div class="line">        <span class="keyword">default</span>:</div><div class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> IllegalStateException(<span class="string">"call to 'resume' before 'invoke' with coroutine"</span>);</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> Unit.INSTANCE;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>所以<code>async</code>式协程只有通过<code>await()</code>将异常重新抛出，不过可以可以通过<code>try { deffered.await() } catch () { ... }</code>来捕获异常。</p>
+<h3 id="2-小结"><a href="#2-小结" class="headerlink" title="2. 小结"></a>2. 小结</h3><p>分析完协程的异常处理流程，其中需要注意的问题有下面这些：</p>
+<ul>
+<li><p>抛出 CancellationException 或者调用<code>cancel()</code>只会取消当前协程和子协程，不会取消父协程，也不会其他例如打印堆栈信息等的异常处理操作。</p>
+</li>
+<li><p>抛出未捕获的非 CancellationException 异常会取消子协程和自己，也会取消父协程，一直取消 root 协程，异常也会由 root 协程处理。</p>
+</li>
+<li><p>如果使用了 SupervisorJob 或 supervisorScope，子协程抛出未捕获的非 CancellationException 异常不会取消父协程，异常也会由子协程自己处理。</p>
+</li>
+<li><p><code>launch</code>式协程和<code>actor</code>式协程默认处理异常的方式只是打印堆栈信息，可以自定义 CoroutineExceptionHandler 来处理异常。</p>
+</li>
+<li><p><code>async</code>式协程本身不会处理异常，自定义 CoroutineExceptionHandler 也无效，但是会在<code>await()</code>恢复调用者协程时重新抛出异常。</p>
+</li>
+</ul>
+      
+    </div>
+
+    
+    <section data-mpa-template-id="95" class="mpa-template" data-mpa-color="#ffffff">
+      <section style="margin-top: 20px;display: -webkit-box;display: flex;-webkit-box-pack: center;justify-content: center;-webkit-box-align: center;align-items: center" data-mid="t22">
+        <section style="text-align: center;line-height: 30px" data-mid="">
+          <section style="display: inline-block;float: left;width: 95px;height: 2px;background: -webkit-linear-gradient(right, #141414, #f0f0f0);background: linear-gradient(to left, #141414, #f0f0f0);-webkit-transform: translate(0px, 12px);-ms-transform: translate(0px, 12px);transform: translate(0px, 12px)" data-mid="" data-contenteditable="false">
+          </section>
+          <section style="float: left;width: 4px;height: 4px;border-radius: 50%;padding: 3px;background-color: #b1b1b1;text-align: center;-webkit-transform: translate(0px, 8px);-ms-transform: translate(0px, 8px);transform: translate(0px, 8px)" data-mid="" data-contenteditable="false">
+            <section style="width: 5px;height: 5px;border-radius: 50%;background-color: #141414" data-mid="">
+            </section>
+          </section>
+          <section style="float: left;min-width: 50px;padding: 0 10px 0 10px;font-size: 16px;color: #4f4f4f;text-align: center;line-height: 30px" data-mid="">END</section>
+          <section style="float: left;padding: 3px;width: 4px;height: 4px;border-radius: 50%;background-color: #b1b1b1;text-align: center;-webkit-transform: translate(0px, 9px);-ms-transform: translate(0px, 9px);transform: translate(0px, 9px)" data-mid="" data-contenteditable="false">
+            <section style="width: 5px;height: 5px;border-radius: 50%;background-color: #141414" data-mid="">
+            </section>
+          </section>
+          <section style="display: inline-block;float: left;width: 95px;height: 2px;background: -webkit-linear-gradient(left, #141414, #f0f0f0);background: linear-gradient(to right, #141414, #f0f0f0);-webkit-transform: translate(-1px, 14px);-ms-transform: translate(-1px, 14px);transform: translate(-1px, 14px)" data-mid="" data-contenteditable="false">
+          </section>
+        </section>
+      </section>
+    </section>
+    
+
+    <div>
+      
+        
+<div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
+    <img id="wechat_subscriber_qcode" src="/uploads/wechat_qcode.jpg" alt="Johnny Shieh wechat" style="width: 200px; max-width: 100%">
+    <div>我的公众号，不只有技术，还有咖啡和彩蛋！</div>
+</div>
+
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/kotlin/" rel="tag"># kotlin</a>
+          
+            <a href="/tags/coroutines/" rel="tag"># coroutines</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/posts/kotlin-coroutine-integration-and-cancel/" rel="next" title="Kotlin Coroutines(协程) 完全解析（三），封装异步回调、协程间关系及协程的取消">
+                <i class="fa fa-chevron-left"></i> Kotlin Coroutines(协程) 完全解析（三），封装异步回调、协程间关系及协程的取消
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/posts/kotlin-coroutine-concurrency/" rel="prev" title="Kotlin Coroutines(协程) 完全解析（五），协程的并发">
+                Kotlin Coroutines(协程) 完全解析（五），协程的并发 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="SOHUCS" sid="posts/kotlin-coroutine-exception-handling/"></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image" src="/uploads/avatar.png" alt="Johnny Shieh">
+          <p class="site-author-name" itemprop="name">Johnny Shieh</p>
+           
+              <p class="site-description motion-element" itemprop="description">我本微末，心向天空</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">73</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">13</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">42</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/JohnnyShieh" rel="external nofollow" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/johnnyshieh17" rel="external nofollow" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  Weibo
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="mailto:JohnnyShieh17@gmail.com" rel="external nofollow" target="_blank" title="Gmail">
+                  
+                    <i class="fa fa-fw fa-envelope"></i>
+                  
+                  Gmail
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.jianshu.com/u/763027594c0b" rel="external nofollow" target="_blank" title="简书">
+                  
+                    <i class="fa fa-fw fa-book"></i>
+                  
+                  简书
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        <!--<div style="margin: 20px 0 20px 0; height: 1px; background: #eee"></div> 
+<div id="hot-series">
+    <ul class="sidebar-nav" style="margin-bottom: 0;">
+        <li>热门系列</li>
+    </ul>
+    <ul class="series-posts" style="font-size: 14px; padding-left: 10px; list-style: none; text-align: left;">
+        <li><span><a href="http://johnnyshieh.me/tags/dagger/">Dagger 完全解析</a></span>（6）</li>
+        <li><span><a href="http://johnnyshieh.me/categories/AspectJ/">AspectJ in Android</a></span>（3）</li>
+        <li><span><a href="http://johnnyshieh.me/categories/unit-test/">Kotlin 写 Android 单元测试</a>（4）</span></li>
+        <li><span><a href="http://johnnyshieh.me/tags/coroutines/">Kotlin Coroutines(协程) 完全解析</a>（4）</span></li>
+    </ul>
+</div>
+-->
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-协程中异常处理的流程"><span class="nav-text">1. 协程中异常处理的流程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-小结"><span class="nav-text">2. 小结</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+      <div style="margin: 20px 0 20px 0; height: 1px; background: #eee"></div> 
+<div id="hot-series">
+    <ul class="sidebar-nav" style="margin-bottom: 0">
+        <li>热门系列</li>
+    </ul>
+    <ul class="series-posts" style="font-size: 14px; padding-left: 10px; list-style: none; text-align: left">
+        <li><span><a href="http://johnnyshieh.me/tags/dagger/">Dagger 完全解析</a></span>（6）</li>
+        <li><span><a href="http://johnnyshieh.me/categories/AspectJ/">AspectJ in Android</a></span>（3）</li>
+        <li><span><a href="http://johnnyshieh.me/categories/unit-test/">Kotlin 写 Android 单元测试</a>（4）</span></li>
+        <li><span><a href="http://johnnyshieh.me/tags/coroutines/">Kotlin Coroutines(协程) 完全解析</a>（4）</span></li>
+    </ul>
+</div>
+
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy;  2015 - 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Johnny Shieh</span>
+</div>
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>访客数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>总访问量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="http://images.johnnyshieh.me/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.1"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+  
+    <script type="text/javascript">
+    (function(){
+      var appid = 'cyt8KwhJ1';
+      var conf = 'prod_651756cd8d701505ffbb60e416929831';
+      var width = window.innerWidth || document.documentElement.clientWidth;
+      if (width < 960) {
+      window.document.write('<script id="changyan_mobile_js" charset="utf-8" type="text/javascript" src="https://changyan.sohu.com/upload/mobile/wap-js/changyan_mobile.js?client_id=' + appid + '&conf=' + conf + '"><\/script>'); } else { var loadJs=function(d,a){var c=document.getElementsByTagName("head")[0]||document.head||document.documentElement;var b=document.createElement("script");b.setAttribute("type","text/javascript");b.setAttribute("charset","UTF-8");b.setAttribute("src",d);if(typeof a==="function"){if(window.attachEvent){b.onreadystatechange=function(){var e=b.readyState;if(e==="loaded"||e==="complete"){b.onreadystatechange=null;a()}}}else{b.onload=a}}c.appendChild(b)};loadJs("https://changyan.sohu.com/upload/changyan.js",function(){
+        window.changyan.api.config({appid:appid,conf:conf})});
+      }
+    })();
+    </script>
+    <script type="text/javascript" src="https://assets.changyan.sohu.com/upload/plugins/plugins.count.js"></script>
+
+
+
+  
+
+
+
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/algolia-instant-search/instantsearch.min.css">
+
+  
+  
+  <script src="/lib/algolia-instant-search/instantsearch.min.js"></script>
+  
+
+  <script src="/js/src/algolia-search.js?v=5.1.1"></script>
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("n55tIxEzsDxW0BEFhehOkP2K-gzGzoHsz", "TwYjARitxhv7iOhbg7k2a9xB");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

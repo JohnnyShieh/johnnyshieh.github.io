@@ -114,7 +114,7 @@
 <meta property="og:url" content="http://johnnyshieh.me/posts/kotlin-coroutine-integration-and-cancel/index.html">
 <meta property="og:site_name" content="Johnny Shieh">
 <meta property="og:description" content="Kotlin Coroutines 完全解析系列文章的第三篇，介绍如何将异步回调封装为挂起函数，分析协程间的父子关系和如何取消协程">
-<meta property="og:updated_time" content="2018-11-16T09:52:07.000Z">
+<meta property="og:updated_time" content="2019-01-08T09:16:12.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Kotlin Coroutines(协程) 完全解析（三），封装异步回调、协程间关系及协程的取消">
 <meta name="twitter:description" content="Kotlin Coroutines 完全解析系列文章的第三篇，介绍如何将异步回调封装为挂起函数，分析协程间的父子关系和如何取消协程">
@@ -470,6 +470,8 @@
 <p><a href="http://johnnyshieh.me/posts/kotlin-coroutine-introduction/">Kotlin Coroutines(协程) 完全解析（一），协程简介</a></p>
 <p><a href="http://johnnyshieh.me/posts/kotlin-coroutine-deep-diving/">Kotlin Coroutines(协程) 完全解析（二），深入理解协程的挂起、恢复与调度</a></p>
 <p><a href="http://johnnyshieh.me/posts/kotlin-coroutine-integration-and-cancel/">Kotlin Coroutines(协程) 完全解析（三），封装异步回调、协程间关系及协程的取消</a></p>
+<p><a href="http://johnnyshieh.me/posts/kotlin-coroutine-exception-handling/">Kotlin Coroutines(协程) 完全解析（四），协程的异常处理</a></p>
+<p><a href="http://johnnyshieh.me/posts/kotlin-coroutine-concurrency/">Kotlin Coroutines(协程) 完全解析（五），协程的并发</a></p>
 <blockquote>
 <p>本文基于 Kotlin v1.3.0-rc-146，Kotlin-Coroutines v1.0.0-RC1</p>
 </blockquote>
@@ -529,6 +531,14 @@
 <figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">job1 sleep <span class="number">1</span> times</div><div class="line">job1 sleep <span class="number">2</span> times</div><div class="line">job2 sleep <span class="number">1</span> ...</div><div class="line">job2 sleep <span class="number">2</span> ...</div><div class="line">job2 sleep <span class="number">3</span> ...</div></pre></td></tr></table></figure>
 <p>上面代码中 job1 取消后，<code>delay()</code>会检测协程是否已取消，所以 job1 之后的运算就结束了；而 job2 取消后，没有检测协程状态的逻辑，都是计算逻辑，所以 job2 的运算逻辑还是会继续运行。</p>
 <p>所以为了可以及时取消协程的运算逻辑，可以检测协程的状态，使用<code>isActive</code>来判断，上面示例中可以将<code>while(i &lt;= 3)</code>替换为<code>while(isActive)</code>。</p>
+<h4 id="3-1-运行不能取消的代码块"><a href="#3-1-运行不能取消的代码块" class="headerlink" title="3.1 运行不能取消的代码块"></a>3.1 运行不能取消的代码块</h4><p>当手动取消协程后，像<code>delay()</code>这样的可取消挂起函数会在检测到已取消状态时，抛出 CancellationException 异常，然后退出协程。此时可以使用<code>try { ... } finally { ... }</code>表达式或<code>&lt;T : Closeable?, R&gt; T.use {}</code>函数执行终结动作或关闭资源。</p>
+<p>但是如果在<code>finally</code>块中调用自定义的或系统的可取消挂起函数，都会再次抛出 CancellationException 异常。通常我们在<code>finally</code>块中关闭一个文件，取消一个任务或者关闭一个通信通道都是非阻塞，并且不会调用任何挂起函数。当需要挂起一个被取消的协程时，可以将代码包装在<code>withContext(NonCancellable) { ... }</code>中。</p>
+<h4 id="3-2-超时取消"><a href="#3-2-超时取消" class="headerlink" title="3.2 超时取消"></a>3.2 超时取消</h4><p>实际上大多数时候取消一个协程的理由是因为超时。协程库中已经提供来<code>withTimeout() { ... }</code>挂起函数来实现在超时后自动取消协程。它会在超时后抛出<code>TimeoutCancellationException</code>，它是 CancellationException 的子类，它是协程结束的正常原因，不会打印堆栈跟踪信息，更详细的原因见下一篇解析<a href="http://johnnyshieh.me/posts/kotlin-coroutine-exception-handling/">Kotlin Coroutines(协程) 完全解析（四），协程的异常处理</a>。如果在取消后需要执行一些关闭资源的操作可以使用前面提到的<code>try { ... } finally { ... }</code>表达式。</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">try</span> &#123;</div><div class="line">    withTimeout(<span class="number">1300</span>L) &#123;</div><div class="line">        repeat(<span class="number">1000</span>) &#123; i -&gt;</div><div class="line">                println(<span class="string">"I'm sleeping <span class="subst">$i</span> ..."</span>)</div><div class="line">            delay(<span class="number">500</span>L)</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125; <span class="keyword">finally</span> &#123;</div><div class="line">    println(<span class="string">"I'm running finally"</span>)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>还有一个<code>withTimeoutOrNull() { ... }</code>挂起函数在超时后返回<code>null</code>，而不是抛出一个异常：</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">val</span> result = withTimeoutOrNull(<span class="number">1300</span>L) &#123;</div><div class="line">    repeat(<span class="number">1000</span>) &#123; i -&gt;</div><div class="line">            println(<span class="string">"I'm sleeping <span class="subst">$i</span> ..."</span>)</div><div class="line">        delay(<span class="number">500</span>L)</div><div class="line">    &#125;</div><div class="line">    <span class="string">"Done"</span> <span class="comment">// 在它运行得到结果之前取消它</span></div><div class="line">&#125;</div><div class="line">println(<span class="string">"Result is <span class="subst">$result</span>"</span>)</div></pre></td></tr></table></figure>
+<p>上面代码运行输出如下，不再抛出异常：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">I&apos;m sleeping 0 ...</div><div class="line">I&apos;m sleeping 1 ...</div><div class="line">I&apos;m sleeping 2 ...</div><div class="line">Result is null</div></pre></td></tr></table></figure>
 <h3 id="4-小结"><a href="#4-小结" class="headerlink" title="4. 小结"></a>4. 小结</h3><p>最后总结下本文的内容，封装异步代码为挂起函数其实非常简单，只需要用<code>suspendCoroutine{}</code>或<code>suspendCancellableCoroutine{}</code>，还要异步逻辑完成用<code>resume()</code>或<code>resumeWithException</code>来恢复协程。</p>
 <p>新建协程时需要协程间关系，<code>GlobalScope.launch{}</code>和<code>GlobalScope.async{}</code>新建的协程是没有父协程的，而在协程中使用<code>launch{}</code>和<code>aysnc{}</code>一般都是子协程。对于父子协程需要注意下面三种关系：</p>
 <ul>
@@ -539,7 +549,7 @@
 <li><p>子协程抛出未捕获的异常时，默认情况下会取消其父协程。</p>
 </li>
 </ul>
-<p>对于协程的取消，<code>cancel()</code>只是将协程的状态修改为已取消状态，并不能取消协程的运算逻辑，协程库中很多挂起函数都会检测协程状态，如果想及时取消协程的运算，最好使用<code>isActive</code>判断协程状态。</p>
+<p>对于协程的取消，<code>cancel()</code>只是将协程的状态修改为已取消状态，并不能取消协程的运算逻辑，协程库中很多挂起函数都会检测协程状态，如果想及时取消协程的运算，最好使用<code>isActive</code>判断协程状态。而<code>withContext(NonCancellable) { ... }</code>可以执行不会被取消的代码，<code>withTimeout() { ... }</code>和<code>withTimeoutOrNull() { ... }</code>则可以简化超时处理逻辑。</p>
       
     </div>
 
@@ -620,6 +630,10 @@
 
           <div class="post-nav-prev post-nav-item">
             
+              <a href="/posts/kotlin-coroutine-exception-handling/" rel="prev" title="Kotlin Coroutines(协程) 完全解析（四），协程的异常处理">
+                Kotlin Coroutines(协程) 完全解析（四），协程的异常处理 <i class="fa fa-chevron-right"></i>
+              </a>
+            
           </div>
         </div>
       
@@ -690,7 +704,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">71</span>
+                <span class="site-state-item-count">73</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -777,8 +791,9 @@
     </ul>
     <ul class="series-posts" style="font-size: 14px; padding-left: 10px; list-style: none; text-align: left;">
         <li><span><a href="http://johnnyshieh.me/tags/dagger/">Dagger 完全解析</a></span>（6）</li>
-         <li><span><a href="http://johnnyshieh.me/categories/AspectJ/">AspectJ in Android</a></span>（3）</li>
+        <li><span><a href="http://johnnyshieh.me/categories/AspectJ/">AspectJ in Android</a></span>（3）</li>
         <li><span><a href="http://johnnyshieh.me/categories/unit-test/">Kotlin 写 Android 单元测试</a>（4）</span></li>
+        <li><span><a href="http://johnnyshieh.me/tags/coroutines/">Kotlin Coroutines(协程) 完全解析</a>（4）</span></li>
     </ul>
 </div>
 -->
@@ -795,7 +810,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-封装异步回调为挂起函数"><span class="nav-text">1. 封装异步回调为挂起函数</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-1-delay-的实现"><span class="nav-text">1.1 delay 的实现</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-2-yield-的实现"><span class="nav-text">1.2 yield 的实现</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-协程之间的关系"><span class="nav-text">2. 协程之间的关系</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-1-父协程手动调用cancel-或者异常结束，会立即取消它的所有子协程"><span class="nav-text">2.1 父协程手动调用cancel()或者异常结束，会立即取消它的所有子协程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-父协程必须等待所有子协程完成（处于完成或者取消状态）才能完成"><span class="nav-text">2.2 父协程必须等待所有子协程完成（处于完成或者取消状态）才能完成</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3-子协程抛出未捕获的异常时，默认情况下会取消其父协程。"><span class="nav-text">2.3 子协程抛出未捕获的异常时，默认情况下会取消其父协程。</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-协程的取消"><span class="nav-text">3. 协程的取消</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-小结"><span class="nav-text">4. 小结</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-封装异步回调为挂起函数"><span class="nav-text">1. 封装异步回调为挂起函数</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-1-delay-的实现"><span class="nav-text">1.1 delay 的实现</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-2-yield-的实现"><span class="nav-text">1.2 yield 的实现</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-协程之间的关系"><span class="nav-text">2. 协程之间的关系</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-1-父协程手动调用cancel-或者异常结束，会立即取消它的所有子协程"><span class="nav-text">2.1 父协程手动调用cancel()或者异常结束，会立即取消它的所有子协程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-父协程必须等待所有子协程完成（处于完成或者取消状态）才能完成"><span class="nav-text">2.2 父协程必须等待所有子协程完成（处于完成或者取消状态）才能完成</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3-子协程抛出未捕获的异常时，默认情况下会取消其父协程。"><span class="nav-text">2.3 子协程抛出未捕获的异常时，默认情况下会取消其父协程。</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-协程的取消"><span class="nav-text">3. 协程的取消</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#3-1-运行不能取消的代码块"><span class="nav-text">3.1 运行不能取消的代码块</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-2-超时取消"><span class="nav-text">3.2 超时取消</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-小结"><span class="nav-text">4. 小结</span></a></li></ol></div>
             
 
           </div>
@@ -812,8 +827,9 @@
     </ul>
     <ul class="series-posts" style="font-size: 14px; padding-left: 10px; list-style: none; text-align: left">
         <li><span><a href="http://johnnyshieh.me/tags/dagger/">Dagger 完全解析</a></span>（6）</li>
-         <li><span><a href="http://johnnyshieh.me/categories/AspectJ/">AspectJ in Android</a></span>（3）</li>
+        <li><span><a href="http://johnnyshieh.me/categories/AspectJ/">AspectJ in Android</a></span>（3）</li>
         <li><span><a href="http://johnnyshieh.me/categories/unit-test/">Kotlin 写 Android 单元测试</a>（4）</span></li>
+        <li><span><a href="http://johnnyshieh.me/tags/coroutines/">Kotlin Coroutines(协程) 完全解析</a>（4）</span></li>
     </ul>
 </div>
 
@@ -831,7 +847,7 @@
         <div class="copyright">
   
   &copy;  2015 - 
-  <span itemprop="copyrightYear">2018</span>
+  <span itemprop="copyrightYear">2019</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>

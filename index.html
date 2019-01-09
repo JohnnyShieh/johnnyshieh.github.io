@@ -355,6 +355,361 @@
   
 
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://johnnyshieh.me/posts/kotlin-coroutine-concurrency/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Johnny Shieh">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Johnny Shieh">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/posts/kotlin-coroutine-concurrency/" itemprop="url">Kotlin Coroutines(协程) 完全解析（五），协程的并发</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-01-07T12:13:54+08:00">
+                2019-01-07
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/kotlin/" itemprop="url" rel="index">
+                    <span itemprop="name">Kotlin</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+              <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-comment-o"></i>
+              </span>
+              
+                <a href="/posts/kotlin-coroutine-concurrency/#SOHUCS" itemprop="discussionUrl">
+                  <span id="sourceId::posts/kotlin-coroutine-concurrency/" class="cy_cmt_count" data-xid="posts/kotlin-coroutine-concurrency/" itemprop="commentsCount"></span>
+                </a>
+              
+            
+          
+
+          
+          
+             <span id="/posts/kotlin-coroutine-concurrency/" class="leancloud_visitors" data-flag-title="Kotlin Coroutines(协程) 完全解析（五），协程的并发">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </span></div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>Kotlin Coroutines(协程) 完全解析系列：</p>
+<p><a href="http://johnnyshieh.me/posts/kotlin-coroutine-introduction/">Kotlin Coroutines(协程) 完全解析（一），协程简介</a></p>
+<p><a href="http://johnnyshieh.me/posts/kotlin-coroutine-deep-diving/">Kotlin Coroutines(协程) 完全解析（二），深入理解协程的挂起、恢复与调度</a></p>
+<p><a href="http://johnnyshieh.me/posts/kotlin-coroutine-integration-and-cancel/">Kotlin Coroutines(协程) 完全解析（三），封装异步回调、协程间关系及协程的取消</a></p>
+<p><a href="http://johnnyshieh.me/posts/kotlin-coroutine-exception-handling/">Kotlin Coroutines(协程) 完全解析（四），协程的异常处理</a></p>
+<p><a href="http://johnnyshieh.me/posts/kotlin-coroutine-concurrency/">Kotlin Coroutines(协程) 完全解析（五），协程的并发</a></p>
+<blockquote>
+<p>本文基于 Kotlin v1.3.0-rc-146，Kotlin-Coroutines v1.0.0-RC1</p>
+</blockquote>
+<p>通过前面几篇文章可以明白协程就是可以挂起和恢复执行的运算逻辑，挂起函数用状态机的方式用挂起点将协程的运算逻辑拆分为不同的片段，每次运行协程执行的不同的逻辑片段。所以协程在运行时只是线程中的一块代码，线程的并发处理方式都可以用在协程上。不过协程还提供两种特有的方式，一是不阻塞线程的互斥锁<code>Mutex</code>，一是通过 ThreadLocal 实现的协程局部数据。</p>
+<h3 id="1-Mutex"><a href="#1-Mutex" class="headerlink" title="1. Mutex"></a>1. Mutex</h3><p>线程中锁都是阻塞式，在没有获取锁时无法执行其他逻辑，而协程可以通过挂起函数解决这个，没有获取锁就挂起协程，获取后再恢复协程，协程挂起时线程并没有阻塞可以执行其他逻辑。这种互斥锁就是<code>Mutex</code>，它与<code>synchronized</code>关键字有些类似，还提供了<code>withLock</code>扩展函数，替代常用的<code>mutex.lock; try {...} finally { mutex.unlock() }</code>:</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">fun</span> <span class="title">main</span><span class="params">(args: <span class="type">Array</span>&lt;<span class="type">String</span>&gt;)</span></span> = runBlocking&lt;<span class="built_in">Unit</span>&gt; &#123;</div><div class="line">    <span class="keyword">val</span> mutex = Mutex()</div><div class="line">    <span class="keyword">var</span> counter = <span class="number">0</span></div><div class="line">    repeat(<span class="number">10000</span>) &#123;</div><div class="line">        GlobalScope.launch &#123;</div><div class="line">            mutex.withLock &#123;</div><div class="line">                counter ++</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    println(<span class="string">"The final count is <span class="subst">$counter</span>"</span>)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><code>Mutex</code>的使用比较简单，不过需要注意的是多个协程竞争的应该是同一个<code>Mutex</code>互斥锁。</p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/posts/kotlin-coroutine-concurrency/" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://johnnyshieh.me/posts/kotlin-coroutine-exception-handling/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Johnny Shieh">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Johnny Shieh">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/posts/kotlin-coroutine-exception-handling/" itemprop="url">Kotlin Coroutines(协程) 完全解析（四），协程的异常处理</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-01-07T12:13:22+08:00">
+                2019-01-07
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/kotlin/" itemprop="url" rel="index">
+                    <span itemprop="name">Kotlin</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+              <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-comment-o"></i>
+              </span>
+              
+                <a href="/posts/kotlin-coroutine-exception-handling/#SOHUCS" itemprop="discussionUrl">
+                  <span id="sourceId::posts/kotlin-coroutine-exception-handling/" class="cy_cmt_count" data-xid="posts/kotlin-coroutine-exception-handling/" itemprop="commentsCount"></span>
+                </a>
+              
+            
+          
+
+          
+          
+             <span id="/posts/kotlin-coroutine-exception-handling/" class="leancloud_visitors" data-flag-title="Kotlin Coroutines(协程) 完全解析（四），协程的异常处理">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </span></div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>Kotlin Coroutines(协程) 完全解析系列：</p>
+<p><a href="http://johnnyshieh.me/posts/kotlin-coroutine-introduction/">Kotlin Coroutines(协程) 完全解析（一），协程简介</a></p>
+<p><a href="http://johnnyshieh.me/posts/kotlin-coroutine-deep-diving/">Kotlin Coroutines(协程) 完全解析（二），深入理解协程的挂起、恢复与调度</a></p>
+<p><a href="http://johnnyshieh.me/posts/kotlin-coroutine-integration-and-cancel/">Kotlin Coroutines(协程) 完全解析（三），封装异步回调、协程间关系及协程的取消</a></p>
+<p><a href="http://johnnyshieh.me/posts/kotlin-coroutine-exception-handling/">Kotlin Coroutines(协程) 完全解析（四），协程的异常处理</a></p>
+<p><a href="http://johnnyshieh.me/posts/kotlin-coroutine-concurrency/">Kotlin Coroutines(协程) 完全解析（五），协程的并发</a></p>
+<blockquote>
+<p>本文基于 Kotlin v1.3.0-rc-146，Kotlin-Coroutines v1.0.0-RC1</p>
+</blockquote>
+<p>在上一篇文章中提到子协程抛出未捕获的异常时默认会取消其父协程，而抛出<code>CancellationException</code>却会当作正常的协程结束不会取消其父协程。本文来详细解析协程中的异常处理，抛出未捕获异常后协程结束后运行会不会崩溃，可以拦截协程的未捕获异常吗，如何让子协程的异常不影响父协程。</p>
+<p>Kotlin 官网文档中有关于协程异常处理的文章，里面的内容本文就不再重复，所以读者们先阅读官方文档：</p>
+<p><a href="https://kotlinlang.org/docs/reference/coroutines/exception-handling.html" target="_blank" rel="external">Coroutine Exception handling</a></p>
+<p><a href="https://www.kotlincn.net/docs/reference/coroutines/exception-handling.html" target="_blank" rel="external">协程的异常处理（官方文档中文版）</a></p>
+<p>看完官方文档后，可能还是会有一些疑问：</p>
+<p><code>launch</code>式协程的未捕获异常为什么会自动传播到父协程，为什么对异常只是在控制台打印而已？</p>
+<p><code>async</code>式协程的未捕获异常为什么需要依赖用户来最终消耗异常？</p>
+<p>自定义的<code>CoroutineExceptionHandler</code>的是如何生效的？</p>
+<p>异常的聚合是怎么处理的？</p>
+<p><code>SupervisorJob</code>和<code>supervisorScope</code>实现异常单向传播的原理是什么？</p>
+<p>这些疑问在本文逐步解析协程中异常处理的流程时，会一一解答。</p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/posts/kotlin-coroutine-exception-handling/" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://johnnyshieh.me/posts/kotlin-coroutine-integration-and-cancel/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -470,6 +825,8 @@
 <p><a href="http://johnnyshieh.me/posts/kotlin-coroutine-introduction/">Kotlin Coroutines(协程) 完全解析（一），协程简介</a></p>
 <p><a href="http://johnnyshieh.me/posts/kotlin-coroutine-deep-diving/">Kotlin Coroutines(协程) 完全解析（二），深入理解协程的挂起、恢复与调度</a></p>
 <p><a href="http://johnnyshieh.me/posts/kotlin-coroutine-integration-and-cancel/">Kotlin Coroutines(协程) 完全解析（三），封装异步回调、协程间关系及协程的取消</a></p>
+<p><a href="http://johnnyshieh.me/posts/kotlin-coroutine-exception-handling/">Kotlin Coroutines(协程) 完全解析（四），协程的异常处理</a></p>
+<p><a href="http://johnnyshieh.me/posts/kotlin-coroutine-concurrency/">Kotlin Coroutines(协程) 完全解析（五），协程的并发</a></p>
 <blockquote>
 <p>本文基于 Kotlin v1.3.0-rc-146，Kotlin-Coroutines v1.0.0-RC1</p>
 </blockquote>
@@ -641,6 +998,8 @@
 <p><a href="http://johnnyshieh.me/posts/kotlin-coroutine-introduction/">Kotlin Coroutines(协程) 完全解析（一），协程简介</a></p>
 <p><a href="http://johnnyshieh.me/posts/kotlin-coroutine-deep-diving/">Kotlin Coroutines(协程) 完全解析（二），深入理解协程的挂起、恢复与调度</a></p>
 <p><a href="http://johnnyshieh.me/posts/kotlin-coroutine-integration-and-cancel/">Kotlin Coroutines(协程) 完全解析（三），封装异步回调、协程间关系及协程的取消</a></p>
+<p><a href="http://johnnyshieh.me/posts/kotlin-coroutine-exception-handling/">Kotlin Coroutines(协程) 完全解析（四），协程的异常处理</a></p>
+<p><a href="http://johnnyshieh.me/posts/kotlin-coroutine-concurrency/">Kotlin Coroutines(协程) 完全解析（五），协程的并发</a></p>
 <blockquote>
 <p>本文基于 Kotlin v1.3.0-rc-146，Kotlin-Coroutines v1.0.0-RC1</p>
 </blockquote>
@@ -857,341 +1216,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://johnnyshieh.me/posts/download-android-source/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Johnny Shieh">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Johnny Shieh">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/posts/download-android-source/" itemprop="url">Mac 中下载阅读 Android 源码</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-06-05T16:19:44+08:00">
-                2018-06-05
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/android/" itemprop="url" rel="index">
-                    <span itemprop="name">Android</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-              <span class="post-meta-divider">|</span>
-              <span class="post-meta-item-icon">
-                <i class="fa fa-comment-o"></i>
-              </span>
-              
-                <a href="/posts/download-android-source/#SOHUCS" itemprop="discussionUrl">
-                  <span id="sourceId::posts/download-android-source/" class="cy_cmt_count" data-xid="posts/download-android-source/" itemprop="commentsCount"></span>
-                </a>
-              
-            
-          
-
-          
-          
-             <span id="/posts/download-android-source/" class="leancloud_visitors" data-flag-title="Mac 中下载阅读 Android 源码">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数 </span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </span></div>
-      </header>
-    
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h3 id="1-Mac-中下载-Android-源码"><a href="#1-Mac-中下载-Android-源码" class="headerlink" title="1. Mac 中下载 Android 源码"></a>1. Mac 中下载 Android 源码</h3><blockquote>
-<p>准备工作：创建区分大小写的 APFS 宗卷</p>
-</blockquote>
-<p>国内使用 Android Source 官方的下载方式有点慢，所以通常建议使用国内的 AOSP 镜像，一般是<a href="https://lug.ustc.edu.cn/wiki/mirrors/help/aosp" target="_blank" rel="external">中科大的镜像</a>或者<a href="https://mirrors.tuna.tsinghua.edu.cn/help/AOSP/" target="_blank" rel="external">清华大学的镜像</a>，本文使用的是清华大学的镜像。</p>
-<p>先下载 repo 工具：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">mkdir ~/bin</div><div class="line">PATH=~/bin:<span class="variable">$PATH</span></div><div class="line">curl https://storage.googleapis.com/git-repo-downloads/repo &gt; ~/bin/repo</div><div class="line">chmod a+x ~/bin/repo</div></pre></td></tr></table></figure>
-<p>然后有两种下载方式，分别适合不同场景。</p>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/posts/download-android-source/" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://johnnyshieh.me/posts/kotlin-generic/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Johnny Shieh">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Johnny Shieh">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/posts/kotlin-generic/" itemprop="url">Kotlin 泛型 VS Java 泛型</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-05-03T19:06:06+08:00">
-                2018-05-03
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/kotlin/" itemprop="url" rel="index">
-                    <span itemprop="name">Kotlin</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-              <span class="post-meta-divider">|</span>
-              <span class="post-meta-item-icon">
-                <i class="fa fa-comment-o"></i>
-              </span>
-              
-                <a href="/posts/kotlin-generic/#SOHUCS" itemprop="discussionUrl">
-                  <span id="sourceId::posts/kotlin-generic/" class="cy_cmt_count" data-xid="posts/kotlin-generic/" itemprop="commentsCount"></span>
-                </a>
-              
-            
-          
-
-          
-          
-             <span id="/posts/kotlin-generic/" class="leancloud_visitors" data-flag-title="Kotlin 泛型 VS Java 泛型">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数 </span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </span></div>
-      </header>
-    
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <blockquote>
-<p>建议先阅读我的上一篇文章 – <a href="http://johnnyshieh.me/posts/java-generics/">Java 泛型</a></p>
-</blockquote>
-<p>和 Java 泛型一样，Kotlin 泛型也是 Kotlin 语言中较难理解的一个部分。Kotlin 泛型的本质也是参数化类型，并且提供了编译时强类型检查，实际上也是伪泛型，和 Java 泛型类型一样。这篇文章将介绍 Kotlin 泛型里中的重要概念，以及与 Java 泛型的对比。</p>
-<h3 id="1-泛型类型与泛型函数"><a href="#1-泛型类型与泛型函数" class="headerlink" title="1. 泛型类型与泛型函数"></a>1. 泛型类型与泛型函数</h3><p>Kotlin 下泛型类型与泛型函数的写法，与 Java 差不多，直接看下面的例子：</p>
-<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 泛型类型</span></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Box</span>&lt;<span class="type">T</span>&gt; </span>&#123;</div><div class="line">    <span class="keyword">var</span> t: T? = <span class="literal">null</span></div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// 泛型函数，类型参数在函数名之前</span></div><div class="line"><span class="keyword">object</span> Util &#123;</div><div class="line">    <span class="function"><span class="keyword">fun</span> <span class="type">&lt;K, V&gt;</span> <span class="title">compare</span><span class="params">(p1: <span class="type">Pair</span>&lt;<span class="type">K</span>, V&gt;, p2: <span class="type">Pair</span>&lt;<span class="type">K</span>, V&gt;)</span></span>: <span class="built_in">Boolean</span> &#123;</div><div class="line">         <span class="keyword">return</span> p1.first == p1.first &amp;&amp; p2.second == p2.second</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/posts/kotlin-generic/" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -1245,7 +1269,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">71</span>
+                <span class="site-state-item-count">73</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -1332,8 +1356,9 @@
     </ul>
     <ul class="series-posts" style="font-size: 14px; padding-left: 10px; list-style: none; text-align: left;">
         <li><span><a href="http://johnnyshieh.me/tags/dagger/">Dagger 完全解析</a></span>（6）</li>
-         <li><span><a href="http://johnnyshieh.me/categories/AspectJ/">AspectJ in Android</a></span>（3）</li>
+        <li><span><a href="http://johnnyshieh.me/categories/AspectJ/">AspectJ in Android</a></span>（3）</li>
         <li><span><a href="http://johnnyshieh.me/categories/unit-test/">Kotlin 写 Android 单元测试</a>（4）</span></li>
+        <li><span><a href="http://johnnyshieh.me/tags/coroutines/">Kotlin Coroutines(协程) 完全解析</a>（4）</span></li>
     </ul>
 </div>
 -->
@@ -1351,8 +1376,9 @@
     </ul>
     <ul class="series-posts" style="font-size: 14px; padding-left: 10px; list-style: none; text-align: left">
         <li><span><a href="http://johnnyshieh.me/tags/dagger/">Dagger 完全解析</a></span>（6）</li>
-         <li><span><a href="http://johnnyshieh.me/categories/AspectJ/">AspectJ in Android</a></span>（3）</li>
+        <li><span><a href="http://johnnyshieh.me/categories/AspectJ/">AspectJ in Android</a></span>（3）</li>
         <li><span><a href="http://johnnyshieh.me/categories/unit-test/">Kotlin 写 Android 单元测试</a>（4）</span></li>
+        <li><span><a href="http://johnnyshieh.me/tags/coroutines/">Kotlin Coroutines(协程) 完全解析</a>（4）</span></li>
     </ul>
 </div>
 
@@ -1370,7 +1396,7 @@
         <div class="copyright">
   
   &copy;  2015 - 
-  <span itemprop="copyrightYear">2018</span>
+  <span itemprop="copyrightYear">2019</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
