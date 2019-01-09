@@ -114,7 +114,7 @@
 <meta property="og:url" content="http://johnnyshieh.me/posts/kotlin-coroutine-exception-handling/index.html">
 <meta property="og:site_name" content="Johnny Shieh">
 <meta property="og:description" content="Kotlin Coroutines 完全解析系列文章的第四篇，解析协程中异常的传播，自定义未捕获异常处理，以及如何防止子协程的异常影响父协程">
-<meta property="og:updated_time" content="2019-01-09T08:55:36.000Z">
+<meta property="og:updated_time" content="2019-01-09T11:44:42.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Kotlin Coroutines(协程) 完全解析（四），协程的异常处理">
 <meta name="twitter:description" content="Kotlin Coroutines 完全解析系列文章的第四篇，解析协程中异常的传播，自定义未捕获异常处理，以及如何防止子协程的异常影响父协程">
@@ -480,11 +480,18 @@
 <p><a href="https://kotlinlang.org/docs/reference/coroutines/exception-handling.html" target="_blank" rel="external">Coroutine Exception handling</a></p>
 <p><a href="https://www.kotlincn.net/docs/reference/coroutines/exception-handling.html" target="_blank" rel="external">协程的异常处理（官方文档中文版）</a></p>
 <p>看完官方文档后，可能还是会有一些疑问：</p>
-<p><code>launch</code>式协程的未捕获异常为什么会自动传播到父协程，为什么对异常只是在控制台打印而已？</p>
-<p><code>async</code>式协程的未捕获异常为什么需要依赖用户来最终消耗异常？</p>
-<p>自定义的<code>CoroutineExceptionHandler</code>的是如何生效的？</p>
-<p>异常的聚合是怎么处理的？</p>
-<p><code>SupervisorJob</code>和<code>supervisorScope</code>实现异常单向传播的原理是什么？</p>
+<ul>
+<li><p><code>launch</code>式协程的未捕获异常为什么会自动传播到父协程，为什么对异常只是在控制台打印而已？</p>
+</li>
+<li><p><code>async</code>式协程的未捕获异常为什么需要依赖用户来最终消耗异常？</p>
+</li>
+<li><p>自定义的<code>CoroutineExceptionHandler</code>的是如何生效的？</p>
+</li>
+<li><p>异常的聚合是怎么处理的？</p>
+</li>
+<li><p><code>SupervisorJob</code>和<code>supervisorScope</code>实现异常单向传播的原理是什么？</p>
+</li>
+</ul>
 <p>这些疑问在本文逐步解析协程中异常处理的流程时，会一一解答。</p>
 <a id="more"></a>
 <h3 id="1-协程中异常处理的流程"><a href="#1-协程中异常处理的流程" class="headerlink" title="1. 协程中异常处理的流程"></a>1. 协程中异常处理的流程</h3><p>从抛出异常的地方开始跟踪协程中异常处理的流程，抛出异常时一般都在协程的运算逻辑中。而在第二篇<a href="http://johnnyshieh.me/posts/kotlin-coroutine-deep-diving/">深入理解协程的挂起、恢复与调度</a>中提到在协程的三层包装中，运算逻辑在第二层<code>BaseContinuationImpl</code>的<code>resumeWith()</code>函数中的<code>invokeSuspend</code>运行，所以再来看一次：</p>

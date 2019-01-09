@@ -654,11 +654,18 @@
 <p><a href="https://kotlinlang.org/docs/reference/coroutines/exception-handling.html" target="_blank" rel="external">Coroutine Exception handling</a></p>
 <p><a href="https://www.kotlincn.net/docs/reference/coroutines/exception-handling.html" target="_blank" rel="external">协程的异常处理（官方文档中文版）</a></p>
 <p>看完官方文档后，可能还是会有一些疑问：</p>
-<p><code>launch</code>式协程的未捕获异常为什么会自动传播到父协程，为什么对异常只是在控制台打印而已？</p>
-<p><code>async</code>式协程的未捕获异常为什么需要依赖用户来最终消耗异常？</p>
-<p>自定义的<code>CoroutineExceptionHandler</code>的是如何生效的？</p>
-<p>异常的聚合是怎么处理的？</p>
-<p><code>SupervisorJob</code>和<code>supervisorScope</code>实现异常单向传播的原理是什么？</p>
+<ul>
+<li><p><code>launch</code>式协程的未捕获异常为什么会自动传播到父协程，为什么对异常只是在控制台打印而已？</p>
+</li>
+<li><p><code>async</code>式协程的未捕获异常为什么需要依赖用户来最终消耗异常？</p>
+</li>
+<li><p>自定义的<code>CoroutineExceptionHandler</code>的是如何生效的？</p>
+</li>
+<li><p>异常的聚合是怎么处理的？</p>
+</li>
+<li><p><code>SupervisorJob</code>和<code>supervisorScope</code>实现异常单向传播的原理是什么？</p>
+</li>
+</ul>
 <p>这些疑问在本文逐步解析协程中异常处理的流程时，会一一解答。</p>
           <!--noindex-->
           <div class="post-button text-center">
