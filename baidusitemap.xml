@@ -4,6 +4,48 @@
 
     
   <url>
+    <loc>http://johnnyshieh.me/posts/summary-of-2018/</loc>
+    <lastmod>2019-01-23T02:09:01.000Z</lastmod>
+    <data>
+        <display>
+        <title>2018 年终总结</title>
+        <pubTime>2018-12-31T11:08:24.000Z</pubTime>
+        
+        <tag>年终总结</tag>
+         
+         
+           
+             
+              <breadCrumb title="随笔" url="http://johnnyshieh.me/categories/essay/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://johnnyshieh.me/posts/kotlin-coroutine-introduction/</loc>
+    <lastmod>2019-01-10T08:07:27.000Z</lastmod>
+    <data>
+        <display>
+        <title>Kotlin Coroutines(协程) 完全解析（一），协程简介</title>
+        <pubTime>2018-04-17T07:58:37.000Z</pubTime>
+        
+        <tag>kotlin</tag>
+         
+        <tag>coroutines</tag>
+         
+         
+           
+             
+              <breadCrumb title="Kotlin" url="http://johnnyshieh.me/categories/kotlin/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://johnnyshieh.me/posts/kotlin-coroutine-exception-handling/</loc>
     <lastmod>2019-01-09T11:44:42.000Z</lastmod>
     <data>
@@ -54,28 +96,6 @@
         <display>
         <title>Kotlin Coroutines(协程) 完全解析（三），封装异步回调、协程间关系及协程的取消</title>
         <pubTime>2018-11-14T08:30:29.000Z</pubTime>
-        
-        <tag>kotlin</tag>
-         
-        <tag>coroutines</tag>
-         
-         
-           
-             
-              <breadCrumb title="Kotlin" url="http://johnnyshieh.me/categories/kotlin/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://johnnyshieh.me/posts/kotlin-coroutine-introduction/</loc>
-    <lastmod>2019-01-07T04:25:19.000Z</lastmod>
-    <data>
-        <display>
-        <title>Kotlin Coroutines(协程) 完全解析（一），协程简介</title>
-        <pubTime>2018-04-17T07:58:37.000Z</pubTime>
         
         <tag>kotlin</tag>
          
