@@ -355,6 +355,191 @@
   
 
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://johnnyshieh.me/posts/volleyex-brief/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Johnny Shieh">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Johnny Shieh">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/posts/volleyex-brief/" itemprop="url">一步一步扩展 Volley (一)，Volley 框架解析</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-01-13T00:00:00+08:00">
+                2016-01-13
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/android/" itemprop="url" rel="index">
+                    <span itemprop="name">Android</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+              <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-comment-o"></i>
+              </span>
+              
+                <a href="/posts/volleyex-brief/#SOHUCS" itemprop="discussionUrl">
+                  <span id="sourceId::posts/volleyex-brief/" class="cy_cmt_count" data-xid="posts/volleyex-brief/" itemprop="commentsCount"></span>
+                </a>
+              
+            
+          
+
+          
+          
+             <span id="/posts/volleyex-brief/" class="leancloud_visitors" data-flag-title="一步一步扩展 Volley (一)，Volley 框架解析">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </span></div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>去年 11 月开始写一个扩展 Volley 的网络通信框架 ———— VolleyEx，虽然 Github 上已经有 <a href="https://github.com/DWorkS/VolleyPlus" target="_blank" rel="external">VolleyPlus</a> 等优秀的扩展框架，但我想借此研究异步加载网络请求的原理，学习下 Volley 的代码设计，所以还是自己重新写一个扩展框架。并且把我一步一步扩展 Volley 的过程用博客的形式记录下来，希望可以帮助大家更好地理解 Volley 及网络加载。在扩展 Volley 之前，需要先了解其大致框架，明白它的优势与不足，这也是这篇文章的主要内容。</p>
+<h2 id="Volley-简介"><a href="#Volley-简介" class="headerlink" title="Volley 简介"></a>Volley 简介</h2><p><img src="http://images.johnnyshieh.me/volley.png" alt=""></p>
+<p>Volley 是 2013 Google I/O Session 推出的一个网络通信框架，便于异步加载网络请求和图片请求，适用于<strong>数据量小</strong>和<strong>通信频繁</strong>的网络操作。但是对于数据量大的网络（例如文件下载），Volley 的表现就很糟糕了，这种情况推荐用 DownloadManager。</p>
+<p>根据 Android 官方培训课程中 <a href="http://developer.android.com/training/volley/index.html" target="_blank" rel="external">Volley 教程</a>的说明，Volle 有下面几个优点：</p>
+<ol>
+<li><p>自动调度网络请求</p>
+</li>
+<li><p>高并发网络连接</p>
+</li>
+<li><p>通过标准的 HTTP cache coherence 缓存磁盘，内存透明的响应</p>
+</li>
+<li><p>支持指定请求的优先级</p>
+</li>
+<li><p>框架容易定制，如重试和回退功能</p>
+</li>
+<li><p>清晰的加载流程使异步加载网络数据并正确地显示到UI更加简单</p>
+</li>
+<li><p>包含了调试与追踪工具</p>
+</li>
+</ol>
+<p>关于 Volley 的不足之处，在解析完其框架再来讨论。</p>
+<p>Volley 的官方项目地址： <a href="https://android.googlesource.com/platform/frameworks/volley/" target="_blank" rel="external">https://android.googlesource.com/platform/frameworks/volley/</a></p>
+<p>Volley 的 Github 地址（由国人做的映射）： <a href="https://github.com/mcxiaoke/android-volley" target="_blank" rel="external">https://github.com/mcxiaoke/android-volley</a></p>
+<p>这是 2013 Google I/O 大会上关于 Volley 的文档： <a href="http://images.johnnyshieh.me/Volley-Easy_Fast_Networking_for_Android.pdf" target="_blank" rel="external">Volley-Easy,Fast Networking for Android.pdf</a></p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/posts/volleyex-brief/" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://johnnyshieh.me/posts/summary-of-2015/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1037,171 +1222,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://johnnyshieh.me/posts/how-hashmap-work/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Johnny Shieh">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Johnny Shieh">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/posts/how-hashmap-work/" itemprop="url">[转] Java HashMap 的工作原理</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-08-24T00:00:00+08:00">
-                2015-08-24
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/java/" itemprop="url" rel="index">
-                    <span itemprop="name">Java</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-              <span class="post-meta-divider">|</span>
-              <span class="post-meta-item-icon">
-                <i class="fa fa-comment-o"></i>
-              </span>
-              
-                <a href="/posts/how-hashmap-work/#SOHUCS" itemprop="discussionUrl">
-                  <span id="sourceId::posts/how-hashmap-work/" class="cy_cmt_count" data-xid="posts/how-hashmap-work/" itemprop="commentsCount"></span>
-                </a>
-              
-            
-          
-
-          
-          
-             <span id="/posts/how-hashmap-work/" class="leancloud_visitors" data-flag-title="[转] Java HashMap 的工作原理">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数 </span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </span></div>
-      </header>
-    
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p><strong>本文转载自 <a href="http://www.importnew.com/" target="_blank" rel="external">ImportNew</a> - <a href="http://www.importnew.com/author/miracle1919" target="_blank" rel="external">miracle1919</a>, 翻译自 <a href="http://www.javacodegeeks.com/2014/03/how-hashmap-works-in-java.html" target="_blank" rel="external">javacodegeeks</a>。</strong></p>
-<p>面试的时候经常会遇见诸如：“Java 中的 HashMap 是怎么工作的”，“HashMap 的 get 和 put 内部的工作原理”这样的问题。本文将用一个简单的例子来解释下 HashMap 内部的工作原理。首先我们从一个例子开始，而不仅仅是从理论上，这样，有助于更好地理解，然后，我们来看下 get 和 put 到底是怎样工作的。</p>
-<p>我们来看个非常简单的例子。有一个“国家”（Country）类，我们将要用 Country 对象作为 key，它的首都的名字（String 类型）作为 value。下面的例子有助于我们理解 key-value 对在 HashMap 中是如何存储的。</p>
-<h2 id="Country-java"><a href="#Country-java" class="headerlink" title="Country.java"></a>Country.java</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Country</span> </span>&#123;</div><div class="line"></div><div class="line">    String name;</div><div class="line">    <span class="keyword">long</span> population;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Country</span><span class="params">(String name, <span class="keyword">long</span> population)</span> </span>&#123;</div><div class="line">        <span class="keyword">super</span>();</div><div class="line">        <span class="keyword">this</span>.name = name;</div><div class="line">        <span class="keyword">this</span>.population = population;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getName</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> name;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setName</span><span class="params">(String name)</span> </span>&#123;</div><div class="line">        <span class="keyword">this</span>.name = name;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">long</span> <span class="title">getPopulation</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> population;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setPopulation</span><span class="params">(<span class="keyword">long</span> population)</span> </span>&#123;</div><div class="line">        <span class="keyword">this</span>.population = population;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">// If length of name in country object is even then return 31(any random number) and if odd then return 95(any random number).</span></div><div class="line">    <span class="comment">// This is not a good practice to generate hashcode as below method but I am doing so to give better and easy understanding of hashmap.</span></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">hashCode</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">if</span>(<span class="keyword">this</span>.name.length() % <span class="number">2</span> == <span class="number">0</span>)</div><div class="line">            <span class="keyword">return</span> <span class="number">31</span>;</div><div class="line">        <span class="keyword">else</span> </div><div class="line">            <span class="keyword">return</span> <span class="number">95</span>;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">equals</span><span class="params">(Object obj)</span> </span>&#123;</div><div class="line">        <span class="keyword">if</span>(<span class="keyword">this</span> == obj) &#123;</div><div class="line">            <span class="keyword">return</span> <span class="keyword">true</span>;</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">if</span>(<span class="keyword">null</span> == obj || !(obj <span class="keyword">instanceof</span> Country)) &#123;</div><div class="line">            <span class="keyword">return</span> <span class="keyword">false</span>;</div><div class="line">        &#125;</div><div class="line">        Country other = (Country) obj;</div><div class="line">        <span class="keyword">if</span> (name.equalsIgnoreCase((other.name)))</div><div class="line">            <span class="keyword">return</span> <span class="keyword">true</span>;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">false</span>;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/posts/how-hashmap-work/" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -1249,7 +1269,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">74</span>
+                <span class="site-state-item-count">75</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -1271,7 +1291,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">42</span>
+                <span class="site-state-item-count">43</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>

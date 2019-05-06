@@ -3,6 +3,50 @@
 
 
     
+  <url>
+    <loc>http://johnnyshieh.me/posts/android-7-capture-https-package/</loc>
+    <lastmod>2019-05-06T11:50:54.000Z</lastmod>
+    <data>
+        <display>
+        <title>Android 7.0 以上 Charles 和 Fiddler 无法抓取 HTTPS 包的解决方式</title>
+        <pubTime>2019-05-06T10:12:13.000Z</pubTime>
+        
+        <tag>android</tag>
+         
+        <tag>版本兼容</tag>
+         
+         
+           
+             
+              <breadCrumb title="Android" url="http://johnnyshieh.me/categories/android/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://johnnyshieh.me/posts/android-proguard/</loc>
+    <lastmod>2019-03-25T09:56:07.000Z</lastmod>
+    <data>
+        <display>
+        <title>Android ProGuard 代码混淆那些事儿</title>
+        <pubTime>2017-08-02T08:52:50.000Z</pubTime>
+        
+        <tag>android</tag>
+         
+        <tag>proguard</tag>
+         
+         
+           
+             
+              <breadCrumb title="Android" url="http://johnnyshieh.me/categories/android/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
     
   <url>
     <loc>http://johnnyshieh.me/posts/summary-of-2018/</loc>
@@ -541,28 +585,6 @@
     </url>
 
     
-    
-  <url>
-    <loc>http://johnnyshieh.me/posts/android-proguard/</loc>
-    <lastmod>2017-11-01T07:32:30.000Z</lastmod>
-    <data>
-        <display>
-        <title>Android ProGuard 代码混淆那些事儿</title>
-        <pubTime>2017-08-02T08:52:50.000Z</pubTime>
-        
-        <tag>android</tag>
-         
-        <tag>proguard</tag>
-         
-         
-           
-             
-              <breadCrumb title="Android" url="http://johnnyshieh.me/categories/android/"/>
-          
-        </display>
-    </data>
-    </url>
-
     
   <url>
     <loc>http://johnnyshieh.me/posts/java-reentrantlock/</loc>
