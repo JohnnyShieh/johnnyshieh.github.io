@@ -1,0 +1,1170 @@
+<!doctype html>
+
+
+
+
+<html class="theme-next pisces" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta http-equiv="Content-Language" content="zh-cn">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+  <meta name="google-site-verification" content="r1Es2KSXuS6zYdab4rZeEA6X-pEwRwyT4x89S7a4EHE">
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+  <link href="http://images.johnnyshieh.me/lib/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="http://images.johnnyshieh.me/fonts/font.css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+  
+
+<link href="http://images.johnnyshieh.me/lib/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css">
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1">
+
+
+
+  
+    <link rel="apple-touch-icon-precomposed" sizes="57x57" href="/apple-touch-icon-57x57.png">
+  
+    <link rel="apple-touch-icon-precomposed" sizes="120x120" href="/apple-touch-icon-120x120.png">
+  
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="/apple-touch-icon-152x152.png">
+  
+
+
+
+
+
+
+<meta name="description" content="记录 Android 5.0 开始的版本适配注意事项">
+<meta name="keywords" content="targetSdkVersion, 适配, 8.0, 9.0, 7.0, 6.0, Johnny, Shieh, Johnny Shieh, johnny shieh blog, ">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android targetSdkVersion 版本适配指北（持续更新）">
+<meta property="og:url" content="http://johnnyshieh.me/posts/android-target-sdk-version/index.html">
+<meta property="og:site_name" content="Johnny Shieh">
+<meta property="og:description" content="记录 Android 5.0 开始的版本适配注意事项">
+<meta property="og:updated_time" content="2019-05-29T09:54:19.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Android targetSdkVersion 版本适配指北（持续更新）">
+<meta name="twitter:description" content="记录 Android 5.0 开始的版本适配注意事项">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"right","display":"always","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: false,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: 'QK028ACQPB',
+      apiKey: '4e4a5ec0318356434aed6a3aa5aea209',
+      indexName: 'blog',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"搜索文章","hits_empty":"找不到与您搜索的 ${query} 相符的文章，请尝试其他关键字","hits_stats":"找到 ${hits} 条搜索结果，用时 ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://johnnyshieh.me/posts/android-target-sdk-version/">
+
+
+
+
+
+  <title>Android targetSdkVersion 版本适配指北（持续更新） | Johnny Shieh</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?43cea51223ad3b7bc740196aab48d664";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Johnny Shieh</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">人如果没有梦想，跟咸鱼有什么分别</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-books">
+          <a href="/books" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br>
+            
+            读书
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-friends">
+          <a href="/friends" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-users"></i> <br>
+            
+            小伙伴
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  
+  <div class="algolia-popup popup search-popup">
+    <div class="algolia-search">
+      <div class="algolia-search-input-icon">
+        <i class="fa fa-search"></i>
+      </div>
+      <div class="algolia-search-input" id="algolia-search-input"></div>
+    </div>
+
+    <div class="algolia-results">
+      <div id="algolia-stats"></div>
+      <div id="algolia-hits"></div>
+      <div id="algolia-pagination" class="algolia-pagination"></div>
+    </div>
+
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+  </div>
+
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://johnnyshieh.me/posts/android-target-sdk-version/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Johnny Shieh">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Johnny Shieh">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Android targetSdkVersion 版本适配指北（持续更新）</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-05-17T11:13:09+08:00">
+                2019-05-17
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/android/" itemprop="url" rel="index">
+                    <span itemprop="name">Android</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+              <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-comment-o"></i>
+              </span>
+              
+                <a href="/posts/android-target-sdk-version/#SOHUCS" itemprop="discussionUrl">
+                  <span id="changyan_count_unit" class="post-comments-count hc-comment-count" data-xid="posts/android-target-sdk-version/" itemprop="commentsCount"></span>
+                </a>
+              
+            
+          
+
+          
+          
+             <span id="/posts/android-target-sdk-version/" class="leancloud_visitors" data-flag-title="Android targetSdkVersion 版本适配指北（持续更新）">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </span></div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>Google Play 要求新应用（自 2019 年 8 月 1 日起）和应用更新（自 2019 年 11 月 1 日起）将目标 API 级别至少设为 28（至少为 Android 9.0）。在这两个日期之前，新应用和应用更新的目标 API 级别必须至少为 26（至少为 Android 8.0）。</p>
+<p>同时，国内的华为、360、应用宝等也开始要求开发者适配 Android 9.0，所以必须面对版本适配这个难题，下面记录了从 Android 5.0 开始版本适配的注意事项。</p>
+<h3 id="Android-5-0（API-21）"><a href="#Android-5-0（API-21）" class="headerlink" title="Android 5.0（API 21）"></a>Android 5.0（API 21）</h3><p><a href="https://developer.android.com/about/versions/android-5.0-changes.html?hl=zh-cn" target="_blank" rel="external">Android 5.0 行为变更</a></p>
+<p>在 Android 5.0 中，ART 运行时取代 Dalvik 成为平台默认设置。</p>
+<h4 id="Context-bindService不再支持隐式的-Intent"><a href="#Context-bindService不再支持隐式的-Intent" class="headerlink" title="Context.bindService不再支持隐式的 Intent"></a><code>Context.bindService</code>不再支持隐式的 Intent</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"> <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">validateServiceIntent</span><span class="params">(Intent service)</span> </span>&#123;</div><div class="line">     <span class="keyword">if</span> (service.getComponent() == <span class="keyword">null</span> &amp;&amp; service.getPackage() == <span class="keyword">null</span>) &#123;</div><div class="line">        <span class="keyword">if</span> (getApplicationInfo().targetSdkVersion &gt;= Build.VERSION_CODES.LOLLIPOP) &#123;</div><div class="line">            IllegalArgumentException ex = <span class="keyword">new</span> IllegalArgumentException(</div><div class="line">                    <span class="string">"Service Intent must be explicit: "</span> + service);</div><div class="line">            <span class="keyword">throw</span> ex;</div><div class="line">        &#125; <span class="keyword">else</span> &#123;</div><div class="line">            Log.w(TAG, <span class="string">"Implicit intents with startService are not safe: "</span> + service</div><div class="line">                    + <span class="string">" "</span> + Debug.getCallers(<span class="number">2</span>, <span class="number">3</span>));</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><code>Context.bindService</code>方法需要显式 Intent，需要调用<code>Intent.setComponent()</code>或<code>Intent.setPackage()</code>即可。</p>
+<h3 id="Android-6-0（API-23）"><a href="#Android-6-0（API-23）" class="headerlink" title="Android 6.0（API 23）"></a>Android 6.0（API 23）</h3><p><a href="https://developer.android.com/about/versions/marshmallow/android-6.0-changes?hl=zh-cn" target="_blank" rel="external">Android 6.0 行为变更</a></p>
+<h4 id="运行时权限"><a href="#运行时权限" class="headerlink" title="运行时权限"></a>运行时权限</h4><p>Android 6.0 最大的改动就是对于危险权限，需要在运行时申请，<a href="https://developer.android.com/guide/topics/permissions/overview#permission-groups" target="_blank" rel="external">危险权限列表</a>如下：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div></pre></td><td class="code"><pre><div class="line"><span class="comment">&lt;!-- 危险权限 start --&gt;</span></div><div class="line"><span class="comment">&lt;!--PHONE--&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">uses-permission</span> <span class="attr">android:name</span>=<span class="string">"android.permission.READ_PHONE_STATE"</span>/&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">uses-permission</span> <span class="attr">android:name</span>=<span class="string">"android.permission.CALL_PHONE"</span>/&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">uses-permission</span> <span class="attr">android:name</span>=<span class="string">"android.permission.READ_CALL_LOG"</span>/&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">uses-permission</span> <span class="attr">android:name</span>=<span class="string">"android.permission.ADD_VOICEMAIL"</span>/&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">uses-permission</span> <span class="attr">android:name</span>=<span class="string">"android.permission.WRITE_CALL_LOG"</span>/&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">uses-permission</span> <span class="attr">android:name</span>=<span class="string">"android.permission.USE_SIP"</span>/&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">uses-permission</span> <span class="attr">android:name</span>=<span class="string">"android.permission.PROCESS_OUTGOING_CALLS"</span>/&gt;</span></div><div class="line"><span class="comment">&lt;!--CALENDAR--&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">uses-permission</span> <span class="attr">android:name</span>=<span class="string">"android.permission.READ_CALENDAR"</span>/&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">uses-permission</span> <span class="attr">android:name</span>=<span class="string">"android.permission.WRITE_CALENDAR"</span>/&gt;</span></div><div class="line"><span class="comment">&lt;!--CAMERA--&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">uses-permission</span> <span class="attr">android:name</span>=<span class="string">"android.permission.CAMERA"</span>/&gt;</span></div><div class="line"><span class="comment">&lt;!--CONTACTS--&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">uses-permission</span> <span class="attr">android:name</span>=<span class="string">"android.permission.READ_CONTACTS"</span>/&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">uses-permission</span> <span class="attr">android:name</span>=<span class="string">"android.permission.WRITE_CONTACTS"</span>/&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">uses-permission</span> <span class="attr">android:name</span>=<span class="string">"android.permission.GET_ACCOUNTS"</span>/&gt;</span></div><div class="line"><span class="comment">&lt;!--LOCATION--&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">uses-permission</span> <span class="attr">android:name</span>=<span class="string">"android.permission.ACCESS_FINE_LOCATION"</span>/&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">uses-permission</span> <span class="attr">android:name</span>=<span class="string">"android.permission.ACCESS_COARSE_LOCATION"</span>/&gt;</span></div><div class="line"><span class="comment">&lt;!--MICROPHONE--&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">uses-permission</span> <span class="attr">android:name</span>=<span class="string">"android.permission.RECORD_AUDIO"</span>/&gt;</span></div><div class="line"><span class="comment">&lt;!--SENSORS--&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">uses-permission</span> <span class="attr">android:name</span>=<span class="string">"android.permission.BODY_SENSORS"</span>/&gt;</span></div><div class="line"><span class="comment">&lt;!--SMS--&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">uses-permission</span> <span class="attr">android:name</span>=<span class="string">"android.permission.SEND_SMS"</span>/&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">uses-permission</span> <span class="attr">android:name</span>=<span class="string">"android.permission.RECEIVE_SMS"</span>/&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">uses-permission</span> <span class="attr">android:name</span>=<span class="string">"android.permission.READ_SMS"</span>/&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">uses-permission</span> <span class="attr">android:name</span>=<span class="string">"android.permission.RECEIVE_WAP_PUSH"</span>/&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">uses-permission</span> <span class="attr">android:name</span>=<span class="string">"android.permission.RECEIVE_MMS"</span>/&gt;</span></div><div class="line"><span class="comment">&lt;!--STORAGE--&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">uses-permission</span> <span class="attr">android:name</span>=<span class="string">"android.permission.READ_EXTERNAL_STORAGE"</span>/&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">uses-permission</span> <span class="attr">android:name</span>=<span class="string">"android.permission.WRITE_EXTERNAL_STORAGE"</span>/&gt;</span></div><div class="line"><span class="comment">&lt;!-- 危险权限 Permissions end --&gt;</span></div></pre></td></tr></table></figure>
+<p>目前 Github 上封装运行时权限处理的开源库中，star 数前列的有 <a href="https://github.com/permissions-dispatcher/PermissionsDispatcher" target="_blank" rel="external">PermissionsDispatcher</a>、<a href="https://github.com/tbruyelle/RxPermissions" target="_blank" rel="external">RxPermissions</a> 、<a href="https://github.com/soulqw/SoulPermission/" target="_blank" rel="external">SoulPermission</a>等。</p>
+<h4 id="不支持-org-apache"><a href="#不支持-org-apache" class="headerlink" title="不支持 org.apache"></a>不支持 org.apache</h4><p>Android 6.0 移除了对 Apache HTTP 的支持，官方建议改用<a href="https://developer.android.com/reference/java/net/HttpURLConnection.html?hl=zh-cn#constants_2" target="_blank" rel="external">HttpURLConnection</a>类。如果想继续使用 Apache HTTP API，必须在<code>build.gradle</code>文件中声明以下编译时依赖：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">android &#123;</div><div class="line">    useLibrary <span class="string">'org.apache.http.legacy'</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="Android-7-0（API-24）"><a href="#Android-7-0（API-24）" class="headerlink" title="Android 7.0（API 24）"></a>Android 7.0（API 24）</h3><p><a href="https://developer.android.com/about/versions/nougat/android-7.0-changes?hl=zh-cn" target="_blank" rel="external">Android 7.0 行为变更</a></p>
+<h4 id="后台优化"><a href="#后台优化" class="headerlink" title="后台优化"></a>后台优化</h4><p>为了优化内存使用和电量消耗，在 Android 7.0 以上的设备上：</p>
+<ul>
+<li><p>targetSdkVersion 为 24 的应用无法接收<code>CONNECTIVITY_ACTION</code>广播。但是在前台运行的应用使用 BroadcastReceiver 手动请求接收通知，则仍可以在主线程中接收到<code>CONNECTIVITY_ACTION</code>。</p>
+</li>
+<li><p>在 Android 7.0 以上的设备上的所有应用都无法发送或接收<code>ACTION_NEW_PICTURE</code>或<code>ACTION_NEW_VIDEO</code>广播。</p>
+</li>
+</ul>
+<p>对于这种情况，官方推荐使用<a href="https://developer.android.com/topic/performance/background-optimization" target="_blank" rel="external">JobScheduler</a>。</p>
+<h4 id="应用私有目录限制访问"><a href="#应用私有目录限制访问" class="headerlink" title="应用私有目录限制访问"></a>应用私有目录限制访问</h4><p>对于 targetSdkVersion 为 7.0（API 24）的应用，在 Android 7.0 以上不能简单地通过<code>file://</code>URI 访问其他应用的私有目录文件或者让其他应用访问自己的私有目录文件。而且 Android 框架执行的 StrictMode API 禁止在您的应用外部公开<code>file://</code>URI。如果使用包含了<code>file://URI</code>的 Intent 离开自己的应用，会出现 FileUriExposedException 异常，常见场景有自动安装应用更新、调用系统拍照、调用系统裁剪等。</p>
+<p>适配该限制的方式是使用<a href="https://developer.android.com/reference/androidx/core/content/FileProvider.html" target="_blank" rel="external">FileProvider</a>类。</p>
+<h4 id="Charles-和-Fiddler-抓-https-包时报错找不到证书"><a href="#Charles-和-Fiddler-抓-https-包时报错找不到证书" class="headerlink" title="Charles 和 Fiddler 抓 https 包时报错找不到证书"></a>Charles 和 Fiddler 抓 https 包时报错找不到证书</h4><p>原因是因为在 Android 7.0（API 24）到 Android 8.1（API 27）的默认网络安全性配置如下：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="comment">&lt;!-- 默认允许所有明文通信 --&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">base-config</span> <span class="attr">cleartextTrafficPermitted</span>=<span class="string">"true"</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">trust-anchors</span>&gt;</span></div><div class="line">        <span class="comment">&lt;!-- 信任系统预装 CA 证书 --&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">certificates</span> <span class="attr">src</span>=<span class="string">"system"</span> /&gt;</span></div><div class="line">    <span class="tag">&lt;/<span class="name">trust-anchors</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">base-config</span>&gt;</span></div></pre></td></tr></table></figure>
+<p>解决方式具体见<a href="http://johnnyshieh.me/posts/android-7-capture-https-package/">Android 7.0 以上 Charles 和 Fiddler 无法抓取 HTTPS 包的解决方式</a>。</p>
+<h3 id="Android-8-0（API-26）"><a href="#Android-8-0（API-26）" class="headerlink" title="Android 8.0（API 26）"></a>Android 8.0（API 26）</h3><p><a href="https://developer.android.com/about/versions/oreo/android-8.0-changes?hl=zh-cn" target="_blank" rel="external">Android 8.0 行为变更</a></p>
+<h4 id="应用图标适配"><a href="#应用图标适配" class="headerlink" title="应用图标适配"></a>应用图标适配</h4><p>推荐郭霖大神的<a href="https://blog.csdn.net/guolin_blog/article/details/79417483" target="_blank" rel="external">Android应用图标微技巧，8.0系统中应用图标的适配</a>。</p>
+<h4 id="通知栏适配"><a href="#通知栏适配" class="headerlink" title="通知栏适配"></a>通知栏适配</h4><p>Android 8.0 引入了通知渠道，以通知渠道作为分组管理，具体适配推荐郭霖大神的<a href="https://blog.csdn.net/guolin_blog/article/details/79854070" target="_blank" rel="external">Android通知栏微技巧，8.0系统中通知栏的适配</a>。</p>
+<h4 id="后台服务限制"><a href="#后台服务限制" class="headerlink" title="后台服务限制"></a>后台服务限制</h4><p>处于前台时，应用可以自由创建和运行前台与后台 Service。 进入后台时，在一个持续数分钟的时间窗内，应用仍可以创建和使用 Service。 在该时间窗结束后，应用将被视为处于空闲状态。 此时，系统将停止应用的后台 Service，就像应用已经调用 Service 的<code>Service.stopSelf()</code>方法一样。</p>
+<p>在 Android 8.0 之前，创建前台 Service 的方式通常是先创建一个后台 Service，然后将该 Service 推到前台。 Android 8.0 有一项复杂功能：系统不允许后台应用创建后台 Service。 因此，Android 8.0 引入了一种全新的方法，即<code>startForegroundService()</code>，以在前台启动新 Service。 在系统创建 Service 后，应用有五秒的时间来调用该 Service 的<code>startForeground()</code>方法以显示新 Service 的用户可见通知。 如果应用在此时间限制内未调用<code>startForeground()</code>，则系统将停止此 Service 并声明此应用为 ANR。</p>
+<h4 id="广播限制"><a href="#广播限制" class="headerlink" title="广播限制"></a>广播限制</h4><p>针对 Android 8.0 的应用无法继续在其清单中为隐式广播注册广播接收器，不过应用可以在运行时使用 <code>Context.registerReceiver()</code>为任意广播（不管是隐式还是显式）注册接收器。</p>
+<p>对于应用内的广播，使用<code>intent.setPackage()</code>将广播 intent 设置为显式 intent。</p>
+<h4 id="提醒窗口"><a href="#提醒窗口" class="headerlink" title="提醒窗口"></a>提醒窗口</h4><p>使用<code>SYSTEM_ALERT_WINDOW</code>权限的应用无法再使用以下窗口类型来在其他应用和系统窗口上方显示提醒窗口：</p>
+<ul>
+<li><p>TYPE_PHONE</p>
+</li>
+<li><p>TYPE_PRIORITY_PHONE</p>
+</li>
+<li><p>TYPE_SYSTEM_ALERT</p>
+</li>
+<li><p>TYPE_SYSTEM_OVERLAY</p>
+</li>
+<li><p>TYPE_SYSTEM_ERROR</p>
+</li>
+</ul>
+<p>相反，应用必须使用名为<code>TYPE_APPLICATION_OVERLAY</code>的新窗口类型。</p>
+<p>使用<code>TYPE_APPLICATION_OVERLAY</code>窗口类型显示应用的提醒窗口时，请记住新窗口类型的以下特性：</p>
+<ul>
+<li><p>应用的提醒窗口始终显示在状态栏和输入法等关键系统窗口的下面。</p>
+</li>
+<li><p>系统可以移动使用<code>TYPE_APPLICATION_OVERLAY</code>窗口类型的窗口或调整其大小，以改善屏幕显示效果。</p>
+</li>
+<li><p>通过打开通知栏，用户可以访问设置来阻止应用显示使用<code>TYPE_APPLICATION_OVERLAY</code>窗口类型显示的提醒窗口。</p>
+</li>
+</ul>
+<h4 id="应用内安装-apk-需要申请权限"><a href="#应用内安装-apk-需要申请权限" class="headerlink" title="应用内安装 apk 需要申请权限"></a>应用内安装 apk 需要申请权限</h4><p>1.在清单文件中添加权限：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">uses-permission</span> <span class="attr">android:name</span>=<span class="string">"android.permission.REQUEST_INSTALL_PACKAGES"</span>/&gt;</span></div></pre></td></tr></table></figure>
+<p>2.判断应用是否拥有安装未知来源应用的权限</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">XXActivity</span> : <span class="type">AppCompatActivity &#123;</span></span></div><div class="line">    <span class="keyword">companion</span> <span class="keyword">object</span> &#123;</div><div class="line">        const <span class="keyword">val</span> REQUEST_CODE_UNKNOWN_APP = <span class="number">0x66</span></div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">fun</span> <span class="title">installApp</span><span class="params">()</span></span> &#123;</div><div class="line">        <span class="keyword">if</span> (Build.VERSION.SDK_INT &gt;= Build.VERSION_CODES.O) &#123;</div><div class="line">            <span class="keyword">if</span> (packageManager.canRequestPackageInstalls()) &#123;</div><div class="line">                <span class="comment">// install app</span></div><div class="line">            &#125; <span class="keyword">else</span> &#123;</div><div class="line">                <span class="comment">// 跳转到安装权限设置页</span></div><div class="line">                startActivityForResult(Intent(Settings.ACTION_MANAGE_UNKNOWN_APP_SOURCES, Uri.parse(<span class="string">"package:<span class="subst">$packageName</span>"</span>)), REQUEST_CODE_UNKNOWN_APP)</div><div class="line">            &#125;</div><div class="line">        &#125; <span class="keyword">else</span> &#123;</div><div class="line">            <span class="comment">// install app</span></div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">onActivityResult</span><span class="params">(requestCode: <span class="type">Int</span>, resultCode: <span class="type">Int</span>, <span class="keyword">data</span>: <span class="type">Intent</span>?)</span></span> &#123;</div><div class="line">        <span class="keyword">super</span>.onActivityResult(requestCode, resultCode, <span class="keyword">data</span>)</div><div class="line">        <span class="keyword">if</span> (requestCode == REQUEST_CODE_UNKNOWN_APP) &#123;</div><div class="line">            installApp()</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="Only-fullscreen-opaque-activities-can-request-orientation"><a href="#Only-fullscreen-opaque-activities-can-request-orientation" class="headerlink" title="Only fullscreen opaque activities can request orientation"></a>Only fullscreen opaque activities can request orientation</h4><p>在 Android 8.0 中非全屏的透明 Activity 不能设置固定方向，不管在清单文件中声明<code>android:screenOrientation=&quot;portrait&quot;</code>，或者在代码中调用<code>setRequestedOrientation</code>方法。因为非全屏的透明 Activity 的方向会与其 parent Activity 保持一致。不过这个问题只在 Android 8.0 出现，8.1 和 9.0 都没有。</p>
+<p>有两种解决方式：</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 1. 在非 8.0 版本手动设置方向</span></div><div class="line"><span class="keyword">if</span> (Build.VERSION.SDK_INT != Build.VERSION_CODES.O) &#123;</div><div class="line">    requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// 2. 设置为 behind，由 parent activity 方向决定</span></div><div class="line">android:screenOrientation=<span class="string">"behind"</span></div></pre></td></tr></table></figure>
+<h3 id="Android-9-0（API-28）"><a href="#Android-9-0（API-28）" class="headerlink" title="Android 9.0（API 28）"></a>Android 9.0（API 28）</h3><p><a href="https://developer.android.com/about/versions/pie/android-9.0-changes-28?hl=zh-CN" target="_blank" rel="external">Android 9.0 行为变更</a></p>
+<h4 id="针对-Android-9-0-及以上版本使用前台服务，需要注册FOREGROUND-SERVICE权限"><a href="#针对-Android-9-0-及以上版本使用前台服务，需要注册FOREGROUND-SERVICE权限" class="headerlink" title="针对 Android 9.0 及以上版本使用前台服务，需要注册FOREGROUND_SERVICE权限"></a>针对 Android 9.0 及以上版本使用前台服务，需要注册<code>FOREGROUND_SERVICE</code>权限</h4><p>如果应用中有使用前台服务，需要在清单文件中添加：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">uses-permission</span> <span class="attr">android:name</span>=<span class="string">"android.permission.FOREGROUND_SERVICE"</span>/&gt;</span></div></pre></td></tr></table></figure>
+<h4 id="默认不支持明文流量（HTTP）的请求"><a href="#默认不支持明文流量（HTTP）的请求" class="headerlink" title="默认不支持明文流量（HTTP）的请求"></a>默认不支持明文流量（HTTP）的请求</h4><p>在 Android 9.0（API 28）及更高版本的默认网络安全性配置如下：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="comment">&lt;!-- 默认禁止所有明文通信 --&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">base-config</span> <span class="attr">cleartextTrafficPermitted</span>=<span class="string">"false"</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">trust-anchors</span>&gt;</span></div><div class="line">        <span class="comment">&lt;!-- 信任系统预装 CA 证书 --&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">certificates</span> <span class="attr">src</span>=<span class="string">"system"</span> /&gt;</span></div><div class="line">    <span class="tag">&lt;/<span class="name">trust-anchors</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">base-config</span>&gt;</span></div></pre></td></tr></table></figure>
+<p>在 Android 9.0（API 28）及更高版本上，不仅默认只系统预装的 CA 证书，还默认禁止所有明文通信（不允许 http 请求）。如果有些请求或测试环境下还是需要使用 http 请求，需要在网络安全性配置添加白名单。具体见<a href="http://johnnyshieh.me/posts/android-7-capture-https-package/">Android 7.0 以上 Charles 和 Fiddler 无法抓取 HTTPS 包的解决方式</a>。</p>
+<h4 id="Android-9-0-移除了Crypto-Java-加密架构-JCA-提供程序"><a href="#Android-9-0-移除了Crypto-Java-加密架构-JCA-提供程序" class="headerlink" title="Android 9.0 移除了Crypto Java 加密架构 (JCA) 提供程序"></a>Android 9.0 移除了Crypto Java 加密架构 (JCA) 提供程序</h4><p>如果使用<code>SecureRandom.getInstance(&quot;SHA1PRNG&quot;, &quot;Crypto&quot;)</code>，将抛出 NoSuchProviderException。</p>
+<h4 id="Apache-HTTP-客户端弃用"><a href="#Apache-HTTP-客户端弃用" class="headerlink" title="Apache HTTP 客户端弃用"></a>Apache HTTP 客户端弃用</h4><p>在 Android 6.0 中，移除了对 Apache HTTP 客户端的支持。从 Android 9.0 开始，默认情况下该内容库已从 bootclasspath 中移除且不可用于应用。</p>
+<p>要继续使用 Apache HTTP 客户端，以 Android 9 及更高版本为目标的应用可以向其 AndroidManifest.xml 添加以下内容：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">uses-library</span> <span class="attr">android:name</span>=<span class="string">"org.apache.http.legacy"</span> <span class="attr">android:required</span>=<span class="string">"false"</span>/&gt;</span></div></pre></td></tr></table></figure>
+<h4 id="移除对-Build-SERIAL-的直接访问"><a href="#移除对-Build-SERIAL-的直接访问" class="headerlink" title="移除对 Build.SERIAL 的直接访问"></a>移除对 Build.SERIAL 的直接访问</h4><p>在 Android 9 中，<code>Build.SERIAL</code>始终设置为 “UNKNOWN” 以保护用户的隐私。</p>
+<p>如果您的应用需要访问设备的硬件序列号，您应改为请求<code>READ_PHONE_STATE</code>权限，然后调用<code>Build.getSerial()</code>。</p>
+<p><strong>推荐阅读：</strong></p>
+<ul>
+<li><a href="https://developer.android.com/distribute/best-practices/develop/target-sdk?hl=zh-cn" target="_blank" rel="external">符合 Google Play 的目标 API 级别要求</a></li>
+</ul>
+      
+    </div>
+
+    
+    <section data-mpa-template-id="95" class="mpa-template" data-mpa-color="#ffffff">
+      <section style="margin-top: 20px;display: -webkit-box;display: flex;-webkit-box-pack: center;justify-content: center;-webkit-box-align: center;align-items: center" data-mid="t22">
+        <section style="text-align: center;line-height: 30px" data-mid="">
+          <section style="display: inline-block;float: left;width: 95px;height: 2px;background: -webkit-linear-gradient(right, #141414, #f0f0f0);background: linear-gradient(to left, #141414, #f0f0f0);-webkit-transform: translate(0px, 12px);-ms-transform: translate(0px, 12px);transform: translate(0px, 12px)" data-mid="" data-contenteditable="false">
+          </section>
+          <section style="float: left;width: 4px;height: 4px;border-radius: 50%;padding: 3px;background-color: #b1b1b1;text-align: center;-webkit-transform: translate(0px, 8px);-ms-transform: translate(0px, 8px);transform: translate(0px, 8px)" data-mid="" data-contenteditable="false">
+            <section style="width: 5px;height: 5px;border-radius: 50%;background-color: #141414" data-mid="">
+            </section>
+          </section>
+          <section style="float: left;min-width: 50px;padding: 0 10px 0 10px;font-size: 16px;color: #4f4f4f;text-align: center;line-height: 30px" data-mid="">END</section>
+          <section style="float: left;padding: 3px;width: 4px;height: 4px;border-radius: 50%;background-color: #b1b1b1;text-align: center;-webkit-transform: translate(0px, 9px);-ms-transform: translate(0px, 9px);transform: translate(0px, 9px)" data-mid="" data-contenteditable="false">
+            <section style="width: 5px;height: 5px;border-radius: 50%;background-color: #141414" data-mid="">
+            </section>
+          </section>
+          <section style="display: inline-block;float: left;width: 95px;height: 2px;background: -webkit-linear-gradient(left, #141414, #f0f0f0);background: linear-gradient(to right, #141414, #f0f0f0);-webkit-transform: translate(-1px, 14px);-ms-transform: translate(-1px, 14px);transform: translate(-1px, 14px)" data-mid="" data-contenteditable="false">
+          </section>
+        </section>
+      </section>
+    </section>
+    
+
+    <div>
+      
+        
+<div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
+    <img id="wechat_subscriber_qcode" src="/uploads/wechat_qcode.jpg" alt="Johnny Shieh wechat" style="width: 200px; max-width: 100%">
+    <div>我的公众号，不只有技术，还有咖啡和彩蛋！</div>
+</div>
+
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/android/" rel="tag"># android</a>
+          
+            <a href="/tags/版本兼容/" rel="tag"># 版本兼容</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/posts/android-7-capture-https-package/" rel="next" title="Android 7.0 以上 Charles 和 Fiddler 无法抓取 HTTPS 包的解决方式">
+                <i class="fa fa-chevron-left"></i> Android 7.0 以上 Charles 和 Fiddler 无法抓取 HTTPS 包的解决方式
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="SOHUCS" sid="posts/android-target-sdk-version/"></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image" src="/uploads/avatar.png" alt="Johnny Shieh">
+          <p class="site-author-name" itemprop="name">Johnny Shieh</p>
+           
+              <p class="site-description motion-element" itemprop="description">我本微末，心向天空</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">76</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">13</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">43</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/JohnnyShieh" rel="external nofollow" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/johnnyshieh17" rel="external nofollow" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  Weibo
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="mailto:JohnnyShieh17@gmail.com" rel="external nofollow" target="_blank" title="Gmail">
+                  
+                    <i class="fa fa-fw fa-envelope"></i>
+                  
+                  Gmail
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.jianshu.com/u/763027594c0b" rel="external nofollow" target="_blank" title="简书">
+                  
+                    <i class="fa fa-fw fa-book"></i>
+                  
+                  简书
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        <!--<div style="margin: 20px 0 20px 0; height: 1px; background: #eee"></div> 
+<div id="hot-series">
+    <ul class="sidebar-nav" style="margin-bottom: 0;">
+        <li>热门系列</li>
+    </ul>
+    <ul class="series-posts" style="font-size: 14px; padding-left: 10px; list-style: none; text-align: left;">
+        <li><span><a href="http://johnnyshieh.me/tags/dagger/">Dagger 完全解析</a></span>（6）</li>
+        <li><span><a href="http://johnnyshieh.me/categories/AspectJ/">AspectJ in Android</a></span>（3）</li>
+        <li><span><a href="http://johnnyshieh.me/categories/unit-test/">Kotlin 写 Android 单元测试</a>（4）</span></li>
+        <li><span><a href="http://johnnyshieh.me/tags/coroutines/">Kotlin 协程完全解析</a>（5）</span></li>
+    </ul>
+</div>
+<div style="margin: 20px 0 20px 0; height: 1px; background: #eee"></div>
+<a href="https://www.vultr.com/?ref=7501777"><img src="https://www.vultr.com/media/banner_3.png" width="220" height="183"></a>
+-->
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Android-5-0（API-21）"><span class="nav-text">Android 5.0（API 21）</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Context-bindService不再支持隐式的-Intent"><span class="nav-text">Context.bindService不再支持隐式的 Intent</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Android-6-0（API-23）"><span class="nav-text">Android 6.0（API 23）</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#运行时权限"><span class="nav-text">运行时权限</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#不支持-org-apache"><span class="nav-text">不支持 org.apache</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Android-7-0（API-24）"><span class="nav-text">Android 7.0（API 24）</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#后台优化"><span class="nav-text">后台优化</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#应用私有目录限制访问"><span class="nav-text">应用私有目录限制访问</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Charles-和-Fiddler-抓-https-包时报错找不到证书"><span class="nav-text">Charles 和 Fiddler 抓 https 包时报错找不到证书</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Android-8-0（API-26）"><span class="nav-text">Android 8.0（API 26）</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#应用图标适配"><span class="nav-text">应用图标适配</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#通知栏适配"><span class="nav-text">通知栏适配</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#后台服务限制"><span class="nav-text">后台服务限制</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#广播限制"><span class="nav-text">广播限制</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#提醒窗口"><span class="nav-text">提醒窗口</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#应用内安装-apk-需要申请权限"><span class="nav-text">应用内安装 apk 需要申请权限</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Only-fullscreen-opaque-activities-can-request-orientation"><span class="nav-text">Only fullscreen opaque activities can request orientation</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Android-9-0（API-28）"><span class="nav-text">Android 9.0（API 28）</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#针对-Android-9-0-及以上版本使用前台服务，需要注册FOREGROUND-SERVICE权限"><span class="nav-text">针对 Android 9.0 及以上版本使用前台服务，需要注册FOREGROUND_SERVICE权限</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#默认不支持明文流量（HTTP）的请求"><span class="nav-text">默认不支持明文流量（HTTP）的请求</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Android-9-0-移除了Crypto-Java-加密架构-JCA-提供程序"><span class="nav-text">Android 9.0 移除了Crypto Java 加密架构 (JCA) 提供程序</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Apache-HTTP-客户端弃用"><span class="nav-text">Apache HTTP 客户端弃用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#移除对-Build-SERIAL-的直接访问"><span class="nav-text">移除对 Build.SERIAL 的直接访问</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+      <div style="margin: 20px 0 20px 0; height: 1px; background: #eee"></div> 
+<div id="hot-series">
+    <ul class="sidebar-nav" style="margin-bottom: 0">
+        <li>热门系列</li>
+    </ul>
+    <ul class="series-posts" style="font-size: 14px; padding-left: 10px; list-style: none; text-align: left">
+        <li><span><a href="http://johnnyshieh.me/tags/dagger/">Dagger 完全解析</a></span>（6）</li>
+        <li><span><a href="http://johnnyshieh.me/categories/AspectJ/">AspectJ in Android</a></span>（3）</li>
+        <li><span><a href="http://johnnyshieh.me/categories/unit-test/">Kotlin 写 Android 单元测试</a>（4）</span></li>
+        <li><span><a href="http://johnnyshieh.me/tags/coroutines/">Kotlin 协程完全解析</a>（5）</span></li>
+    </ul>
+</div>
+<div style="margin: 20px 0 20px 0; height: 1px; background: #eee"></div>
+<a href="https://www.vultr.com/?ref=7501777"><img src="https://www.vultr.com/media/banner_3.png" width="220" height="183"></a>
+
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy;  2015 - 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Johnny Shieh</span>
+</div>
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i><span>访客数</span>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i><span>访问量</span>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="http://images.johnnyshieh.me/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.1"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+  
+    <script type="text/javascript">
+    (function(){
+      var appid = 'cyt8KwhJ1';
+      var conf = 'prod_651756cd8d701505ffbb60e416929831';
+      var width = window.innerWidth || document.documentElement.clientWidth;
+      if (width < 960) {
+      window.document.write('<script id="changyan_mobile_js" charset="utf-8" type="text/javascript" src="https://changyan.sohu.com/upload/mobile/wap-js/changyan_mobile.js?client_id=' + appid + '&conf=' + conf + '"><\/script>'); } else { var loadJs=function(d,a){var c=document.getElementsByTagName("head")[0]||document.head||document.documentElement;var b=document.createElement("script");b.setAttribute("type","text/javascript");b.setAttribute("charset","UTF-8");b.setAttribute("src",d);if(typeof a==="function"){if(window.attachEvent){b.onreadystatechange=function(){var e=b.readyState;if(e==="loaded"||e==="complete"){b.onreadystatechange=null;a()}}}else{b.onload=a}}c.appendChild(b)};loadJs("https://changyan.sohu.com/upload/changyan.js",function(){
+        window.changyan.api.config({appid:appid,conf:conf})});
+      }
+    })();
+    </script>
+    <script type="text/javascript" src="https://assets.changyan.sohu.com/upload/plugins/plugins.count.js"></script>
+
+
+
+  
+
+
+
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/algolia-instant-search/instantsearch.min.css">
+
+  
+  
+  <script src="/lib/algolia-instant-search/instantsearch.min.js"></script>
+  
+
+  <script src="/js/src/algolia-search.js?v=5.1.1"></script>
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("n55tIxEzsDxW0BEFhehOkP2K-gzGzoHsz", "TwYjARitxhv7iOhbg7k2a9xB");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  
+
+  
+
+</body>
+</html>
